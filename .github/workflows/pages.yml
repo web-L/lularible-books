@@ -1,0 +1,59 @@
+name: Deploy mdBook to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout site config
+        uses: actions/checkout@v4
+        with:
+          path: site
+
+      - name: Clone book repos
+        run: |
+          for repo in from-sand-to-ruts ptp-book hsm-book storage-book uds-book; do
+            git clone --depth 1 "https://github.com/Lularible/${repo}.git"
+          done
+
+      - name: Install mdBook
+        run: |
+          curl -sSL "https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar -xz -C /usr/local/bin
+          mdbook --version
+
+      - name: Build site
+        working-directory: site
+        run: |
+          python3 setup_symlinks.py
+          python3 generate_summary.py
+          mdbook build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/book
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
