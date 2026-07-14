@@ -49,7 +49,8 @@ def link(book: str, safe_filename: str) -> str:
 def title_of(real_filename: str) -> str:
     m = NUM_RE.match(real_filename)
     if m:
-        return m.group(3).replace("-", " · ")
+        # 保留分册自己的章节号（如 2.17），代替 mdBook 的多级自动编号
+        return f"{m.group(1)}.{m.group(2)} {m.group(3).replace('-', ' · ')}"
     return real_filename[:-3]
 
 

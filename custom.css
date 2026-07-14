@@ -1,0 +1,384 @@
+/* ============================================================
+   纸质书阅读主题（配合 mdBook 0.5.x）
+   - 暖色纸张背景（light 主题）
+   - 中文衬线字体 + 加大字号 / 行距 / 段距
+   - 阅读进度条、字号调节（见 custom.js）
+   ============================================================ */
+
+/* 尝试加载 Web 字体（国内镜像，加载失败时自动回退到系统字体） */
+@import url('https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  /* 正文衬线字体栈：思源宋体 → 苹方宋 → 宋体 → 西文衬线 */
+  --reading-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+    "STSong", "SimSun", Georgia, "Times New Roman", serif;
+  --reading-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Helvetica Neue", Arial, sans-serif;
+  --mono-font: "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas,
+    "Source Code Pro", Menlo, monospace;
+
+  /* 正文栏宽：书页宽度，过宽不利于阅读 */
+  --content-max-width: 820px;
+
+  /* 字号由 custom.js 动态调节，默认 1.9rem ≈ 19px */
+  --reading-font-size: 1.9rem;
+  --reading-line-height: 2.0;
+}
+
+/* ---------- Light 主题 → 米黄色纸张 ---------- */
+.light,
+html:not(.js) {
+  --bg: #f7f1e4;                 /* 纸张米黄 */
+  --fg: #3b3228;                 /* 暖黑墨色 */
+  --sidebar-bg: #efe7d5;
+  --sidebar-fg: #57493a;
+  --sidebar-active: #a05a2c;
+  --sidebar-spacer: #e3d8c2;
+  --scrollbar: #c9b995;
+  --icons: #8a7a63;
+  --icons-hover: #3b3228;
+  --links: #9c5221;              /* 赭石色链接 */
+  --inline-code-color: #8a4b12;
+  --theme-popup-bg: #f2ebdb;
+  --theme-popup-border: #d8cbae;
+  --theme-hover: #e9dfc9;
+  --quote-bg: #f0e8d4;
+  --quote-border: #d9c9a3;
+  --table-border-color: #e0d4b8;
+  --table-header-bg: #e9dfc7;
+  --table-alternate-bg: #f2ecdc;
+  --searchbar-border-color: #c9b995;
+  --searchbar-bg: #fbf7ec;
+  --searchbar-fg: #3b3228;
+  --searchbar-shadow-color: #d8cbae;
+  --searchresults-header-fg: #857250;
+  --searchresults-border-color: #c9b995;
+  --searchresults-li-bg: #f0e8d4;
+  --search-mark-bg: #f3d9a4;
+  --footnote-highlight: #f3d9a4;
+  --color-scheme: light;
+}
+
+/* ---------- Navy（默认深色）微调：更柔和的夜读色 ---------- */
+.navy {
+  --bg: #1f2430;
+  --fg: #c8ccd8;
+  --links: #d0a56a;              /* 深色下用暖金色链接，呼应书页 */
+  --quote-bg: #262c3a;
+  --quote-border: #3a4356;
+}
+
+/* ---------- 全局排版 ---------- */
+html {
+  font-family: var(--reading-serif);
+  scroll-behavior: smooth;
+}
+
+body.sans-reading {
+  --reading-serif: var(--reading-sans);
+}
+
+/* 正文区域 */
+.content main {
+  font-family: var(--reading-serif);
+  font-size: var(--reading-font-size);
+  line-height: var(--reading-line-height);
+  letter-spacing: 0.02em;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  padding-bottom: 8rem;
+}
+
+.content main p {
+  margin: 1.15em 0;
+}
+
+/* ---------- 标题：书籍章节风格 ---------- */
+.content main h1,
+.content main h2,
+.content main h3,
+.content main h4 {
+  font-family: var(--reading-serif);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.content main h1 {
+  font-size: 1.85em;
+  text-align: center;
+  margin: 1.6em 0 1.2em;
+  padding-bottom: 0.6em;
+  position: relative;
+}
+
+/* 章节标题下的装饰线 */
+.content main h1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--links);
+  opacity: 0.65;
+}
+
+.content main h2 {
+  font-size: 1.45em;
+  margin: 2em 0 1em;
+  padding-left: 0.6em;
+  border-left: 4px solid var(--links);
+}
+
+.content main h3 {
+  font-size: 1.2em;
+  margin: 1.8em 0 0.8em;
+}
+
+/* ---------- 引用块：书本批注样式 ---------- */
+.content main blockquote {
+  margin: 1.4em 0;
+  padding: 0.8em 1.4em;
+  border-left: 4px solid var(--quote-border);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95em;
+  color: var(--fg);
+  opacity: 0.92;
+}
+
+/* ---------- 代码 ---------- */
+.content main code {
+  font-family: var(--mono-font);
+  font-size: 0.82em;
+  border-radius: 4px;
+}
+
+.content main pre {
+  border-radius: 8px;
+  line-height: 1.65;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.content main pre > code {
+  font-size: 0.78em;
+}
+
+/* ---------- 图片：居中 + 圆角 + 轻投影 ---------- */
+.content main img {
+  display: block;
+  margin: 1.6em auto;
+  max-width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- 表格 ---------- */
+.content main table {
+  margin: 1.4em auto;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.content main table th,
+.content main table td {
+  padding: 0.55em 1em;
+}
+
+/* ---------- 分隔线：书籍花式分隔 ---------- */
+.content main hr {
+  border: none;
+  text-align: center;
+  margin: 2.5em 0;
+}
+
+.content main hr::after {
+  content: "❦";
+  font-size: 1.3em;
+  color: var(--links);
+  opacity: 0.6;
+}
+
+/* ---------- 列表 ---------- */
+.content main ul,
+.content main ol {
+  padding-left: 1.8em;
+}
+
+.content main li {
+  margin: 0.4em 0;
+}
+
+/* ---------- 链接 ---------- */
+.content main a {
+  text-decoration: none;
+  border-bottom: 1px dashed currentColor;
+  transition: opacity 0.15s;
+}
+
+.content main a:hover {
+  opacity: 0.75;
+}
+
+.content main a > code {
+  border-bottom: none;
+}
+
+/* ---------- 侧边栏 ---------- */
+:root {
+  /* 默认侧边栏加宽，容纳较长的中文章节名 */
+  --sidebar-target-width: 340px;
+}
+
+.sidebar,
+.sidebar-iframe-inner {
+  font-family: var(--reading-sans);
+  font-size: 0.92em;
+  line-height: 1.65;
+}
+
+/* 目录条目：单行显示，超长省略（标题不再折行） */
+.chapter-link-wrapper {
+  align-items: center;
+  min-width: 0;
+}
+
+.chapter-link-wrapper > a:first-child,
+.chapter-link-wrapper > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* 悬停时临时展开完整标题 */
+.chapter-link-wrapper:hover > a:first-child,
+.chapter-link-wrapper:hover > span:first-child {
+  white-space: normal;
+}
+
+/* 折叠箭头固定在最右侧，不被标题挤走 */
+.chapter-fold-toggle {
+  flex: 0 0 auto;
+}
+
+.chapter li.chapter-item {
+  margin-block-start: 0.35em;
+  line-height: 1.6em;
+}
+
+/* 嵌套层级：缩小缩进，留出更多标题空间 */
+.chapter ol.section {
+  padding-inline-start: 0.9em;
+  margin-block-start: 0.2em;
+}
+
+/* 分册一级条目：加粗醒目 */
+.chapter > li.chapter-item > .chapter-link-wrapper > a,
+.chapter > li.chapter-item > .chapter-link-wrapper > span {
+  font-weight: 650;
+}
+
+/* 当前页的页内小节大纲：弱化显示、区别于章节 */
+.chapter li.header-item {
+  font-size: 0.88em;
+  opacity: 0.75;
+  margin-block-end: 0.2em;
+  line-height: 1.5em;
+}
+
+.chapter li.header-item a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* 当前章节高亮 */
+.chapter li a.active {
+  color: var(--sidebar-active);
+  font-weight: 700;
+}
+
+/* 部/册分组标题 */
+.part-title {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  margin-block-start: 1.2em;
+}
+
+/* ---------- 顶栏 ---------- */
+#menu-bar,
+#mdbook-menu-bar {
+  font-family: var(--reading-sans);
+}
+
+/* 字号调节按钮（custom.js 注入） */
+.reading-ctrl {
+  font-family: var(--reading-sans) !important;
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+/* ---------- 选中文字 ---------- */
+::selection {
+  background: #f3d9a4;
+  color: #3b3228;
+}
+
+.navy ::selection,
+.coal ::selection,
+.ayu ::selection {
+  background: #6b5a36;
+  color: #f5efdf;
+}
+
+/* ---------- 阅读进度条（custom.js 注入） ---------- */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #c98a3d, #9c5221);
+  z-index: 1000;
+  transition: width 0.1s ease-out;
+}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 5px;
+}
+
+/* ---------- 移动端适配 ---------- */
+@media (max-width: 720px) {
+  :root {
+    --reading-font-size: 1.7rem;
+  }
+
+  .content main {
+    text-align: left;
+  }
+}
+
+/* ---------- 打印样式：保持白纸黑字 ---------- */
+@media print {
+  .content main {
+    font-size: 12pt;
+    line-height: 1.8;
+  }
+}

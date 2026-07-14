@@ -9,7 +9,9 @@ src = "src"
 default-theme = "light"
 preferred-dark-theme = "navy"
 mathjax-support = false
-no-section-label = false
+no-section-label = true
+additional-css = ["custom.css"]
+additional-js = ["custom.js"]
 
 [output.html.print]
 enable = true
