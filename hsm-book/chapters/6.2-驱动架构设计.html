@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>驱动架构设计 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="62-驱动架构设计分层思想的现实应用"><a class="header" href="#62-驱动架构设计分层思想的现实应用">6.2 驱动架构设计：分层思想的现实应用</a></h2>
+<h3 id="一个问题sdk的驱动层是怎么组织的"><a class="header" href="#一个问题sdk的驱动层是怎么组织的">一个问题：SDK的驱动层是怎么组织的？</a></h3>
+<p>假设你理解了SDK的整体架构，现在打开传输层的代码目录。</p>
+<p>你发现代码分散在多个文件：</p>
+<ul>
+<li><code>driver_i2c.c</code>、<code>driver_spi.c</code></li>
+<li><code>hal_gpio.c</code>、<code>hal_i2c.c</code></li>
+<li><code>device_hsm.c</code></li>
+</ul>
+<p>你可能会困惑：</p>
+<ul>
+<li>这些文件是什么关系？</li>
+<li>为什么需要这么多层级？</li>
+<li>调用顺序是什么？</li>
+</ul>
+<p>更深层的问题是：</p>
+<p><strong>SDK如何用分层设计实现硬件抽象？这与hsm-lite有什么不同？</strong></p>
+<h3 id="与hsm-lite的对比"><a class="header" href="#与hsm-lite的对比">与hsm-lite的对比</a></h3>
+<p>hsm-lite没有驱动层——密钥和Session都在内存中，不需要与硬件通信。</p>
+<p>真实SDK必须解决硬件通信问题：</p>
+<pre><code>对比：
+
+hsm-lite（教学简化）
+├── C_GenerateKey → 直接生成随机数 → 存到内存数组
+├── C_Encrypt → 直接调用xor_encrypt
+└── 无硬件通信
+
+真实SDK（生产实现）
+├── hsm_generate_key → 组APDU → 封帧 → 发SPI → HSM处理 → 收响应 → 解帧 → 返回结果
+└── 每一步都要处理硬件细节
+</code></pre>
+<p>真实SDK需要在应用层和硬件之间插入多层驱动，每层处理一类问题。</p>
+<h3 id="三层驱动架构"><a class="header" href="#三层驱动架构">三层驱动架构</a></h3>
+<p>典型的SDK采用三层驱动架构：</p>
+<pre><code>三层驱动架构
+
+┌─────────────────────────────────────────────────┐
+│  第一层：总线驱动（bus_driver）                   │
+│  职责：管理特定总线类型（I2C/SPI/UART）的通用操作   │
+│  存储：全局数组 g_bus_drivers[]                   │
+│  特点：一个总线类型对应一个驱动实例                 │
+└─────────────────────────────────────────────────┘
+                      ↓ 挂载设备
+┌─────────────────────────────────────────────────┐
+│  第二层：设备驱动（device_driver）                │
+│  职责：管理连接到总线上的具体设备                  │
+│  存储：总线驱动的 devices[] 数组                  │
+│  特点：同一总线上的不同设备有不同驱动实例           │
+└─────────────────────────────────────────────────┘
+                      ↓ 硬件操作
+┌─────────────────────────────────────────────────┐
+│  第三层：硬件抽象层（HAL）                        │
+│  职责：封装GPIO/I2C/SPI的具体操作                 │
+│  存储：设备驱动的函数指针                          │
+│  特点：平台相关代码，需要适配                      │
+└─────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="数据结构设计"><a class="header" href="#数据结构设计">数据结构设计</a></h3>
+<h4 id="总线驱动结构"><a class="header" href="#总线驱动结构">总线驱动结构</a></h4>
+<pre><code class="language-c">typedef struct {
+    bus_type_t type;                 // 总线类型：SPI/I2C/UART
+    device_driver *devices[MAX_DEVICES];  // 挂载的设备数组
+    int (*init)(device_driver *);    // 总线初始化
+    int (*open)(device_driver *, uint8_t *, size_t *); // 打开设备（含ATR）
+    int (*close)(device_driver *);   // 关闭设备
+    int (*transmit)(device_driver *, uint8_t *, size_t);  // 发送
+    int (*receive)(device_driver *, uint8_t *, size_t *); // 接收
+    void *extra;                     // 扩展数据
+} bus_driver;
+</code></pre>
+<h4 id="设备驱动结构"><a class="header" href="#设备驱动结构">设备驱动结构</a></h4>
+<pre><code class="language-c">typedef struct {
+    bus_type_t type;                 // 设备类型（与总线类型一致）
+    uint32_t id;                     // 设备标识
+    int (*init)(void *);             // 设备特定初始化
+    int (*transmit)(void *, uint8_t *, size_t);  // 设备特定发送
+    int (*receive)(void *, uint8_t *, size_t *); // 设备特定接收
+    void *config;                    // 设备配置参数
+} device_driver;
+</code></pre>
+<h4 id="全局管理"><a class="header" href="#全局管理">全局管理</a></h4>
+<pre><code class="language-c">bus_driver *g_bus_drivers[MAX_BUS_TYPES];  // 全局驱动数组
+struct {
+    bus_driver *bus;
+    device_driver *device;
+} g_current_driver;                       // 当前选择的驱动
+</code></pre>
+<h3 id="注册选择连接流程"><a class="header" href="#注册选择连接流程">注册/选择/连接流程</a></h3>
+<h4 id="注册流程hsm_register_driver"><a class="header" href="#注册流程hsm_register_driver">注册流程：hsm_register_driver</a></h4>
+<pre><code class="language-c">int hsm_register_driver(bus_type_t type, uint32_t device_id) {
+    bus_driver *bus = find_bus_driver(type);
+    device_driver *device = find_device_driver(type, device_id);
+    
+    if (bus == NULL || device == NULL) {
+        return HSM_ERR_INVALID_PARAM;
+    }
+    
+    return add_driver_to_global(bus, device);
+}
+</code></pre>
+<p>注册后的结构：</p>
+<pre><code>全局驱动管理器 g_bus_drivers[4]
+├── g_bus_drivers[0] → I2C总线驱动
+│   ├── devices[0] → HSM设备
+│   ├── devices[1] → NULL
+│   └── ...
+├── g_bus_drivers[1] → NULL
+├── g_bus_drivers[2] → NULL
+└── g_bus_drivers[3] → NULL
+</code></pre>
+<h4 id="选择流程hsm_select_device"><a class="header" href="#选择流程hsm_select_device">选择流程：hsm_select_device</a></h4>
+<pre><code class="language-c">int hsm_select_device(bus_type_t type, uint32_t device_id) {
+    bus_driver *bus = find_bus_driver(type);
+    if (bus == NULL) return HSM_ERR_NOT_FOUND;
+    
+    device_driver *device = find_device(bus, device_id);
+    if (device == NULL) return HSM_ERR_NOT_FOUND;
+    
+    g_current_driver.bus = bus;
+    g_current_driver.device = device;
+    
+    return HSM_OK;
+}
+</code></pre>
+<p>后续操作通过<code>g_current_driver</code>获取当前驱动。</p>
+<h4 id="连接流程hsm_connect"><a class="header" href="#连接流程hsm_connect">连接流程：hsm_connect</a></h4>
+<pre><code class="language-c">int hsm_connect(uint8_t *atr, size_t *atr_len) {
+    bus_driver *bus = g_current_driver.bus;
+    device_driver *device = g_current_driver.device;
+    
+    // 初始化总线
+    int ret = bus-&gt;init(device);
+    if (ret != HSM_OK) return ret;
+    
+    // 打开设备，获取ATR
+    ret = bus-&gt;open(device, atr, atr_len);
+    if (ret != HSM_OK) return ret;
+    
+    return HSM_OK;
+}
+</code></pre>
+<h3 id="初始化的层层调用"><a class="header" href="#初始化的层层调用">初始化的层层调用</a></h3>
+<p><code>bus-&gt;init()</code>会层层向下：</p>
+<pre><code>调用链：
+
+hsm_connect
+    ↓
+bus-&gt;init(device)               ← 总线驱动层：driver_i2c_init
+    ↓
+device-&gt;init(device)            ← 设备驱动层：hal_i2c_device_init
+    ↓
+hal_gpio_init()                 ← 硬件抽象层：GPIO初始化
+hal_i2c_config()                ← 硬件抽象层：I2C配置
+    ↓
+open("/dev/i2c-1", O_RDWR)      ← 打开设备文件
+ioctl(fd, I2C_SLAVE, addr)      ← 设置从设备地址
+ioctl(fd, I2C_TIMEOUT, timeout) ← 设置超时
+</code></pre>
+<h3 id="完整调用示例"><a class="header" href="#完整调用示例">完整调用示例</a></h3>
+<pre><code class="language-c">// 步骤1：注册驱动
+int ret = hsm_register_driver(BUS_I2C, DEVICE_HSM_0);
+if (ret != HSM_OK) {
+    return ret;
+}
+
+// 步骤2：选择设备
+ret = hsm_select_device(BUS_I2C, DEVICE_HSM_0);
+if (ret != HSM_OK) {
+    return ret;
+}
+
+// 步骤3：连接设备
+uint8_t atr[32];
+size_t atr_len;
+ret = hsm_connect(atr, &amp;atr_len);
+if (ret != HSM_OK) {
+    return ret;
+}
+</code></pre>
+<h3 id="设计优势总结"><a class="header" href="#设计优势总结">设计优势总结</a></h3>
+<p>三层架构的分层思想与PKCS#11的设计理念一致：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>PKCS#11理念</th><th>SDK驱动设计</th><th>共通原理</th></tr>
+</thead>
+<tbody>
+<tr><td>Slot抽象硬件差异</td><td>总线驱动抽象总线差异</td><td>概念抽象</td></tr>
+<tr><td>Session管理状态</td><td>设备驱动管理设备状态</td><td>状态管理</td></tr>
+<tr><td>Object统一接口</td><td>HAL统一硬件接口</td><td>接口统一</td></tr>
+<tr><td>Mechanism支持扩展</td><td>多总线类型可扩展</td><td>扩展性</td></tr>
+</tbody>
+</table>
+</div>
+<p>理解了PKCS#11的设计哲学，再看SDK的驱动架构，会发现它们遵循相同的分层抽象原则。
+下一节，我们将深入通信协议——看数据如何从代码变成波形。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>APDU是什么？帧格式是什么？</p>
+<p>I2C和SPI有什么区别？</p>
+<p>长帧传输会遇到什么问题？</p>
+<p>下一节，通信协议实战。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/6.1-SDK集成概述.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/6.3-通信协议实战.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/6.1-SDK集成概述.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/6.3-通信协议实战.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

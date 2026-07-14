@@ -1,0 +1,381 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>半导体制造工艺 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="25-半导体制造工艺"><a class="header" href="#25-半导体制造工艺">2.5 半导体制造工艺</a></h1>
+<h3 id="一粒尘埃可以破坏整个电路"><a class="header" href="#一粒尘埃可以破坏整个电路">一粒尘埃可以破坏整个电路</a></h3>
+<p>我做的第一份真正意义上的“工程师“工作，是良率工程师。我的日常工作就是追踪玻璃基板上的缺陷——哪些面板单元是好的，哪些是坏的，为什么坏。</p>
+<p>这份工作教会了我一件事：<strong>在半导体制造中，一粒尘埃就是一场灾难。</strong></p>
+<p>不是修辞。是物理事实。</p>
+<p>半导体制造的线宽——用光刻在基板上画出的最小线条的宽度——在现代芯片工艺中是几十纳米到几纳米，在面板工艺中是几微米。而一个浮在空气中的灰尘颗粒，直径大约是 0.5 到 10 <strong>微米</strong>。所以一粒普通的灰尘，直径可能是芯片最小线宽的几百到几千倍，是面板最小线宽的几倍。</p>
+<p>想象你在一张 A4 纸上画线条，要求线条宽度不超过 1 毫米。然后一颗直径几厘米的石块落在纸上——这就是一颗灰尘落在基板上的等效效果。它会完全覆盖大量的图案，造成大面积的开路、短路、图形缺失。</p>
+<p>所以 fab 的核心技术不是某台具体的设备——是<strong>洁净度</strong>。洁净室里，每立方米空气中的颗粒数量被严格限制。而人——一个坐着不动的人——每分钟向空气中散发大量颗粒（皮肤碎屑、纤维、细菌）。所以 fab 里所有和基板接触的操作都是自动化的。人类穿着全密封的无尘服，只露出眼睛——不是保护人，是保护基板不受人的污染。</p>
+<p><strong>人——是 fab 里最大的污染源。</strong></p>
+<hr>
+<h3 id="五步循环在基板上造城"><a class="header" href="#五步循环在基板上造城">五步循环：在基板上“造城“</a></h3>
+<p>半导体制造的宏观流程是一组五步循环，要重复多次。每一次循环在基板表面添加新材料、改变材料性质、或者去除不需要的材料。</p>
+<p><strong>在芯片制造中</strong>，最终在硅衬底上堆叠出三层结构：</p>
+<ol>
+<li><strong>FEOL</strong>（Front End Of Line，前道）：晶体管层。包括阱掺杂、栅氧化、多晶硅/金属栅、源漏离子注入——在硅表面做出几十亿个独立的 MOSFET。</li>
+<li><strong>MEOL</strong>（Middle End Of Line，中道）：接触层。把晶体管的源极、漏极、栅极用金属接触引到表面。</li>
+<li><strong>BEOL</strong>（Back End Of Line，后道）：多层金属互联线。用铜大马士革工艺层层叠加，把几十亿个 MOSFET 按照设计连接成逻辑门、寄存器、功能模块。</li>
+</ol>
+<p><strong>在面板制造中</strong>，工艺相对简化：在玻璃基板上制造 TFT 阵列，然后加上后续的显示层。面板工艺的复杂度低于芯片，但同样需要光刻、刻蚀、沉积、离子注入、CMP 等核心工艺。</p>
+<p>整个流程的核心五步是：<strong>光刻（Lithography）→ 刻蚀（Etch）→ 沉积（Deposition）→ 离子注入（Ion Implantation）→ CMP（化学机械抛光）</strong>。这些工艺在面板厂和芯片厂都用到——原理相似，但尺度不同。面板厂的线宽是微米级别，芯片厂的线宽是纳米级别。我在面板厂亲眼见过这些工艺在面板制造中的应用，下面我以第一人称的视角还原面板厂的经历。芯片制造的相关知识作为行业背景穿插介绍。</p>
+<hr>
+<h3 id="光刻用光画出电路图案"><a class="header" href="#光刻用光画出电路图案">光刻——用光画出电路图案</a></h3>
+<h4 id="光刻胶不止是一层胶"><a class="header" href="#光刻胶不止是一层胶">光刻胶：不止是“一层胶“</a></h4>
+<p>光刻的灵魂不在光——在<strong>光刻胶</strong>（photoresist）。</p>
+<p>光刻胶是一种高分子材料，对特定波长的光敏感。曝光区域发生光化学反应，改变其在显影液中的溶解度。正性光刻胶（positive resist）曝光后变得可溶——显影后曝光区域被洗掉，留下未曝光区域的图案。负性光刻胶（negative resist）曝光后变得不可溶——显影后未曝光区域被洗掉。</p>
+<p>我在面板厂见过光刻工艺。面板厂用的是步进式光刻机（stepper），线宽是微米级别。光刻胶涂布在玻璃基板上，通过掩模版曝光，显影后形成图案。</p>
+<p>光刻胶图形的质量决定了刻蚀后图形的质量。光刻胶侧壁必须陡直（避免斜角导致线宽偏差），光刻胶厚度必须均匀（避免显影不均匀），光刻胶和衬底的粘附性必须牢固（避免显影时浮胶）。</p>
+<h4 id="分辨率瑞利准则"><a class="header" href="#分辨率瑞利准则">分辨率：瑞利准则</a></h4>
+<p>光刻的分辨率由瑞利准则决定：</p>
+<p><strong>CD = k₁ × λ / NA</strong></p>
+<p>其中 CD 是临界尺寸（最小可分辨的线宽），λ 是光源波长，NA 是投影物镜的数值孔径，k₁ 是工艺因子。</p>
+<p>波长越短，分辨率越高。i-line（365nm 紫外光）可以做到几百纳米的线宽，DUV（深紫外，248nm 或 193nm）可以做到几十纳米的线宽。面板厂的线宽是微米级别，用 i-line 或稍短波长的光源就能满足需求。</p>
+<p><strong>在芯片制造中</strong>（这是行业知识，不是面板厂亲身经历），当线宽进入纳米级别时，需要更极端的技术：浸没式光刻（在透镜和晶圆之间填充液体以提高分辨率）、多图案技术（把一层分成多次曝光）、EUV（极紫外光刻，波长 13.5nm）。但这些技术面板厂不需要——面板的线宽是微米级别，步进式光刻机已经足够。</p>
+<hr>
+<h3 id="我在-sem-上第一次看面板剖面"><a class="header" href="#我在-sem-上第一次看面板剖面">我在 SEM 上第一次看面板剖面</a></h3>
+<p>我至今记得第一次在扫描电子显微镜（SEM）上看自己切的面板剖面的样子。</p>
+<p>FIB 已经切好了剖面——一块约 10μm × 5μm 的区域暴露出来。我把样品放进 SEM 腔体，抽真空，打开电子束。屏幕上的图像渐渐清晰——从噪声中浮现出一幅壮观的画面。</p>
+<p>最下面是玻璃基板。在玻璃基板之上，是缓冲层——不是一层，而是多层叠在一起。氮化硅、二氧化硅、非晶硅，一层一层叠起来。总厚度不到 1μm。这些层承担着关键任务：阻隔玻璃基板中的金属离子在后续高温工艺中扩散到上面的有源层；改善多晶硅背面的界面质量；某些层的热导系数低，在激光退火时起到保温作用，帮助多晶硅晶粒长大。</p>
+<p>在缓冲层之上，是 TFT 的核心结构。我看到<strong>多层工艺层叠在一起</strong>——有源层、栅极金属层、栅绝缘层、数据线金属层、接触孔、钝化层、平坦化层、阳极层、像素设计层、间隔柱层。每一层都是一个独立的工艺循环：薄膜沉积（CVD 或 PVD）→ 光刻胶涂布 → 曝光 → 显影 → 刻蚀 → 光刻胶剥离 → 清洗。然后是下一层。如此重复十几次。</p>
+<p>在 SEM 下，我能看到栅极金属线——浅灰色的条带。栅极和有源层之间，是栅绝缘层——几十纳米厚的介质层，在 SEM 图像里几乎看不出来，但我知道它就在那里，承担着隔离栅极和沟道的全部责任。数据线是金属叠层——三明治结构，厚度比栅极更厚，承载更大的电流。阳极也是金属叠层——既能导电又能反射光。</p>
+<p>密集排列的通孔（via）像微型隧道一样，连接着不同层的金属走线。每一个通孔的直径只有几微米，但里面穿过的金属线要承受几百毫安的电流。多层金属互连和绝缘层层层叠加——越往上金属线越宽（上层金属承载更大的电流和更长的跨面板距离），间距也越大。</p>
+<p>这是一个立体的、有纵深感的微型结构。我看到的是<strong>电路图如何在基板上一层层长起来</strong>——不是印刷，不是组装，而是原子级别的沉积、刻蚀、再沉积。每一层薄膜的厚度精确到 Å（0.1nm），每一条金属线的宽度精确到 μm。成千上万个 TFT 排列在一片玻璃基板上，每一个 TFT 的栅极、源极、漏极都对齐在微米级别的精度内。</p>
+<p><strong>如果你从来没有在显微镜下看过 TFT 面板的剖面——你很难真正理解什么叫“精密制造“。</strong></p>
+<hr>
+<h3 id="刻蚀等离子体挖坑"><a class="header" href="#刻蚀等离子体挖坑">刻蚀——等离子体“挖坑“</a></h3>
+<p>光刻胶形成了图案之后，下一步是把图案转移到基板表面。这步叫<strong>刻蚀</strong>。</p>
+<p>我在面板厂见过刻蚀工艺。湿法刻蚀用化学溶液溶解材料——但湿法刻蚀是各向同性的，在各个方向上刻蚀速率差不多。也就是说，它不但往下挖，也往侧面挖。对于微米级的器件，侧面刻蚀的误差可以容忍。但对于更精细的线宽——侧向刻蚀会把线宽吃掉一大截，图案报废。</p>
+<p>所以关键尺寸的刻蚀用<strong>干法刻蚀</strong>（等离子体刻蚀，也称反应离子刻蚀 RIE）。</p>
+<p>干法刻蚀的工作原理：在真空腔体中通入反应气体，施加射频电场激发等离子体。等离子体中的活性自由基化学侵蚀没有被光刻胶保护的表面。同时，等离子体中的正离子在电场作用下垂直轰击基板表面——这个物理轰击使得底面的刻蚀速率远高于侧面。所以干法刻蚀是<strong>各向异性</strong>的——纵向挖得快，横向几乎不动。</p>
+<p>刻蚀的另一个关键是<strong>选择性</strong>（selectivity）——刻蚀速率之比。理想情况下，刻蚀剂只刻蚀目标材料，不刻蚀光刻胶或硬掩模。但现实中不可能。选择性有一定范围——意即每刻蚀一定深度，光刻胶也会被削掉一部分。如果刻蚀深度较大，光刻胶必须有足够的厚度撑完全程——否则光刻胶被吃光后，下面的区域就要遭殃了。</p>
+<p><strong>在芯片制造中</strong>（这是行业知识，不是面板厂亲身经历），刻蚀的精度要求更高。芯片的线宽是纳米级别，需要更精确的等离子体密度和离子能量控制。某些特殊工艺（如MEMS器件、3D NAND闪存）需要极高深宽比的刻蚀——沟槽深度远大于宽度。这需要特殊的工艺循环（如博世工艺，交替进行刻蚀和沉积）。但面板制造不需要这种极端的深宽比。</p>
+<hr>
+<h3 id="沉积一层一层地盖"><a class="header" href="#沉积一层一层地盖">沉积——一层一层地“盖“</a></h3>
+<p>半导体制造中需要在基板表面反复添加新材料层。晶体管栅极的介质层、金属走线、层间的绝缘层——这些都需要<strong>沉积</strong>工艺。</p>
+<h4 id="cvd化学气相沉积"><a class="header" href="#cvd化学气相沉积">CVD——化学气相沉积</a></h4>
+<p>化学气相沉积（CVD）是把气态前驱物通入反应腔，在基板表面发生化学反应，沉积固态薄膜。CVD 可以沉积多种材料：二氧化硅、氮化硅、多晶硅等。</p>
+<p>我在面板厂见过 PECVD（等离子体增强 CVD）设备。气体通过 shower head（气体喷淋头）进入腔体。射频电场激发等离子体，把气体分子分解成活性自由基。自由基在腔体中扩散，到达基板表面，化学吸附并沉积成薄膜。</p>
+<p><strong>薄膜成膜的物理过程</strong>：</p>
+<ol>
+<li>气体进入反应室</li>
+<li>射频输入，形成电场，分解反应物，生成活性自由基</li>
+<li>自由基扩散至基板表面</li>
+<li>自由基在基板表面发生反应，先成核，形成岛状物</li>
+<li>岛状物继续生长，合并并形成连续薄膜</li>
+<li>气体副产物从基板表面脱附</li>
+<li>气体副产物通过泵抽出</li>
+</ol>
+<p>这七个步骤在几秒钟内完成。每一次成膜都是一场原子级别的“岛屿合并“游戏——从离散的核到连续的薄膜，从气态自由基到固态薄膜。<strong>薄膜就是这样“长“出来的。</strong></p>
+<p>等离子体的作用是什么？在普通 CVD 中，化学反应全靠高温提供能量。但高温会改变已经做好的掺杂分布——杂质原子在高温下会扩散，导致器件特性退化。PECVD 用射频电场提供的等离子体能量替代热能——在较低温度下就能驱动反应。</p>
+<p>CVD 腔体里的“shower head“（气体喷淋头）设计至关重要。它是一个布满小孔的面板，气体从小孔均匀喷射在基板表面。如果气体分布不均匀——某个区域沉积得快，某个区域慢——薄膜厚度就不均匀，后续的工艺就会不均匀……一个环节的不均匀会在后续几十道工序中逐级放大，最终变成良率损失。</p>
+<h4 id="pvd物理气相沉积溅射"><a class="header" href="#pvd物理气相沉积溅射">PVD——物理气相沉积（溅射）</a></h4>
+<p>物理气相沉积（PVD，也称 sputtering）物理原理完全不同。它不是化学反应的产物——而是物理过程。</p>
+<p>我在面板厂见过 PVD 设备。在一个高真空腔体里，把要做成薄膜的金属做成一块<strong>靶材</strong>（target）。腔体内通入氩气（Ar），施加高电压，把氩气激发成等离子体。氩离子（Ar⁺）在电场加速下，以几百电子伏特的能量轰击靶材表面——像用原子级的“炮弹“射击靶材。靶材表面的金属原子被“打“出来（溅射出来），然后沉积到对面的基板上，形成薄膜。</p>
+<p>这个过程叫做<strong>辉光放电</strong>（Glow Discharge）——一种自维持的低压气体放电现象。氩离子在电场中被加速，轰击靶材（阴极）；靶材表面的原子获得能量后飞出，沉积到基板（阳极）上。</p>
+<p><strong>溅射成膜的四个步骤</strong>：</p>
+<ol>
+<li>辉光放电，Ar⁺产生：在高真空条件下，Ar 氛中施加直流电场，发生辉光放电，产生 Ar⁺等离子体。</li>
+<li>Ar⁺轰击靶材表面：Ar⁺在电场加速下，以几百电子伏特的能量轰击靶材表面。</li>
+<li>靶材原子获得能量飞出：靶材内的原子被撞击后获得动能，脱离靶材表面，飞向对面的基板。</li>
+<li>靶材原子附着在基板上：飞出的靶材原子到达基板表面，化学吸附并形成薄膜。</li>
+</ol>
+<p>PVD 最精妙的设计之一是<strong>磁控管</strong>（magnetron）。在靶材背面放置永磁体阵列，形成一个环形磁场。磁场将电子束缚在靶材表面附近的闭合轨道中——电子在磁场中做螺旋运动，增加了与氩原子的碰撞概率，大幅提升了等离子体密度和溅射速率。</p>
+<p><strong>在芯片制造中</strong>（这是行业知识，不是面板厂亲身经历），还有另一种沉积工艺：原子层沉积（ALD）。ALD 的核心特征是<strong>自限制表面反应</strong>——每次只沉积一个原子层的厚度。一个循环结束后，薄膜厚度增加约 1Å（0.1nm）。想要一定厚度的薄膜就要重复多个循环——不需要你控制“什么时候停“，因为它自己会停。ALD 用于某些需要原子级别厚度控制的场合（如芯片的栅介质层）。面板制造一般不需要这种极端的厚度控制精度。</p>
+<hr>
+<h3 id="一粒尘埃落在掩模版上重复缺陷的噩梦"><a class="header" href="#一粒尘埃落在掩模版上重复缺陷的噩梦">一粒尘埃落在掩模版上——重复缺陷的噩梦</a></h3>
+<p>这是我亲身经历过的。</p>
+<p>我们那时有一批玻璃基板，良率地图上呈现出一个奇怪的图案——几乎每一个面板单元的同一个位置都有 fail。不管单元在基板的哪个位置——中心还是边缘，上面还是下面——fail 位置都一样。</p>
+<p>这种“每个面板单元重复“的缺陷分布，通常指向一个源头——<strong>掩模版</strong>（photomask 或 reticle）。因为在光刻时，掩模版上有一个图案区域（field），步进式光刻机（stepper）把同一个 field 的图案重复投影到基板的每个单元位置上——一个 field 覆盖一个面板单元。如果掩模版上有一个缺陷——一粒灰尘、一个微小的图案缺失——这颗缺陷就会被复制到基板上的<strong>每一个面板单元</strong>。</p>
+<p>每片玻璃基板上有几百到几千个面板单元。一粒灰尘在掩模版上——就是几百到几千个面板单元同时报废。良率直接跳水。</p>
+<p>我们停下了那台光刻机，把掩模版送去检查。在掩模版检测设备上，果然发现在 field 的某个位置——大概是一个金属互联层的线端——有一颗微小的颗粒附着。颗粒直径大约 0.5μm。在芯片的尺度上，0.5μm 是巨大的。它刚好挡住了那个区域的光，导致那一条金属线在每一个 die 上都出现了断路。</p>
+<p>这颗颗粒是怎么落在掩模版上的？我们回溯了掩模版的使用记录，发现前一天这台光刻机的 Load Port 密封圈（O-ring）有轻微磨损，在传送掩模版时产生了微量碎屑。O-ring 材料是氟橡胶——在真空和紫外辐射下老化，表面产生裂纹。裂纹中微小的橡胶颗粒脱落，被静电吸附到了掩模版上。</p>
+<p>换了 O-ring。清洁了掩模版。良率恢复。</p>
+<p><strong>这——就是“一粒尘埃毁灭整个电路“的真实版本。</strong> 不是夸张。不是在吓你。是日常。</p>
+<hr>
+<h3 id="离子注入把杂质原子撞进晶格"><a class="header" href="#离子注入把杂质原子撞进晶格">离子注入——把杂质原子“撞“进晶格</a></h3>
+<p>离子注入的目的：在半导体晶格中有意引入杂质原子，改变半导体的导电类型（P 型或 N 型）和导电浓度。</p>
+<p>离子注入机的工作过程：把杂质源电离，用质谱分析器筛选出精确的离子质量——只让目标杂质离子通过，筛掉其他的离子和中性粒子。然后用高压加速这些离子，形成一条高速离子束。离子束撞入基板表面，穿透一定深度，嵌入晶格中。</p>
+<p>注入的<strong>剂量</strong>决定了掺杂浓度，注入的<strong>能量</strong>决定了掺杂深度。浅掺杂用低能量，深掺杂用高能量。</p>
+<p>注入后晶格被轰击得七零八落——注入离子撞断了很多键，原子偏离了晶格位置。所以注入后必须做<strong>热退火</strong>——在高温下快速热处理，让原子重新排列成完美晶格，同时让杂质原子占据晶格中的替代位置（变成具有电活性的掺杂原子）。</p>
+<p>在面板厂（LTPS 工艺），离子注入是形成 TFT 的关键步骤。一片玻璃基板上的 TFT 需要经过多次注入：</p>
+<ul>
+<li>
+<p><strong>沟道掺杂</strong>：控制 TFT 的阈值电压。硼离子注入后，阈值电压偏正——需要更大的栅极电压才能形成反型层。</p>
+</li>
+<li>
+<p><strong>源漏掺杂</strong>：形成 NMOS 和 PMOS 的源极和漏极区域。改变半导体的导电类型，形成 PN 结，阻止少数载流子通过。注入后，源极和漏极的接触电阻降低。</p>
+</li>
+<li>
+<p><strong>轻掺杂漏极（LDD）</strong>：在某些 TFT 的源极/漏极和沟道之间形成一层轻掺杂的薄层。这层薄层的电阻较大，能够降低水平方向的电场，抑制“热载流子效应“——载流子在强电场下被加速，获得高能量，破坏氧化层。</p>
+</li>
+</ul>
+<p>多次注入，每次的离子种类、能量、剂量都不同。能量决定注入深度——低能量只穿透几纳米，高能量穿透几十纳米。剂量决定掺杂浓度——沟道掺杂是轻掺杂，源漏掺杂是重掺杂。</p>
+<p><strong>每一次注入都是一次“原子霰弹枪射击“——离子以高压加速，撞进晶格。</strong></p>
+<p>注入后，必须快速热退火。退火的作用是：修复晶格损伤（注入离子撞断了很多键），让杂质原子占据晶格中的替代位置。如果没有退火——晶格还是混乱的，掺杂原子还在晶格间隙中——TFT 就不能工作。</p>
+<p>离子注入的均匀性是关键——束流必须均匀扫描整个基板表面，否则不同位置的器件参数会不同。束流中的静电中和系统也很重要——离子束带正电，打在绝缘的基板表面会积累电荷，可能击穿介质层。</p>
+<hr>
+<h3 id="cmp化学机械抛光"><a class="header" href="#cmp化学机械抛光">CMP——化学机械抛光</a></h3>
+<p>光刻要求基板表面极其平坦——否则焦深不够，同一片基板上不同位置的光刻图案模糊程度不同。做完每一层薄膜沉积后，表面可能不平整。下道光刻没法干净临摹。</p>
+<p>CMP（Chemical Mechanical Polishing）负责把表面磨平。</p>
+<p>CMP 的装置是一个旋转的抛光垫（pad），基板被压在这个垫上，同时滴入<strong>抛光浆料</strong>（slurry）。浆料中含有纳米级的磨料和化学活性剂。</p>
+<p>化学和机械共同作用：化学剂软化表面，磨料颗粒移除软化层——新的表面露出来后又被化学剂软化。如此循环，表面逐渐平坦。</p>
+<p>CMP 的难点是“均匀地磨“很难真正实现。不同图案密度下磨除速率不同——大面积金属图案的区域被磨得比密集线条区域快（<strong>凹陷</strong>，dishing）。材料之间界面的磨除速率不同（<strong>腐蚀</strong>，erosion）。CMP 工艺的优化——浆料配方、垫子硬度、下压力、旋转速度——是良率工程师的重大功课。</p>
+<p><strong>在芯片制造中</strong>（这是行业知识，不是面板厂亲身经历），CMP 用途更广泛：后道金属互联层需要 CMP 把铜线磨平，通孔填充（钨或铜）需要 CMP。芯片的 CMP 要求更极端——平坦度控制到纳米级别的偏差。面板厂的 CMP 相对简单，主要用于某些层的平坦化处理。</p>
+<hr>
+<h3 id="在产线里每一片玻璃基板都是一个月几百道工序几百位工程师的心血"><a class="header" href="#在产线里每一片玻璃基板都是一个月几百道工序几百位工程师的心血">在产线里，每一片玻璃基板都是一个月、几百道工序、几百位工程师的心血</a></h3>
+<p>我离开产线后，偶尔会想起那些在明黄色灯光下的日子。</p>
+<p>一片玻璃基板从进入产线到完成全部工序，大约需要一个月左右。不是连续的一个月——是在不同设备之间等待、传输、加工、检测的一个月。全程经过几百道工序。每一道工序都有专门的设备、专门的工艺工程师、专门的检测步骤。</p>
+<p>一片基板上有几百到几千个面板单元。每个单元有上百万到上千万个 TFT。每个 TFT 有栅极、源极、漏极——三个端子。任何一个端子的任何一个参数超出 spec——这颗单元就是废的。任何一道工序的任何一个参数偏离——整片基板、甚至整批玻璃基板都可能报废。</p>
+<p>而基板的价值随着工序不断增长。光基板——几十美元。做完 TFT 背板的——几百美元。做完蒸镀和封装的——几千美元。</p>
+<p>所以产线里每一个工艺工程师都肩扛着巨大的成本。一个疏忽——一个参数设错了——就是几十万美元的损失。一个工艺漂移没有及时发现——损失就是几百万美元。</p>
+<p><strong>我在产线里学到的，不是“高科技“有多酷——而是“control“有多难。</strong> 把大量原子按你想要的方式排列，允许的偏差很小，而且要在一片玻璃基板上、以每小时几十片的产率、以高良率连续不断地复制——这不是“高科技“。这是“最高科技“。</p>
+<p>这是地球上最复杂的人造系统之一。而它只是给汽车 ECU 提供核心部件的一个环节。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>从一个良率工程师的视角，走完了半导体制造的核心工艺——光刻、刻蚀、沉积、离子注入、CMP。这些工艺在面板厂和芯片厂都用到，原理相似但尺度不同。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>一粒尘埃可以破坏整个电路——这不是修辞，是物理事实</strong>：在半导体制造中，一颗灰尘可以覆盖大量电路图案，造成大面积失效。</li>
+<li><strong>良率是一个涉及几十个设备、几百种化学品、几千个参数的系统性问题</strong>：任何一个微小环节的微小偏差，都可能在几十道工序后变成灾难性的良率损失。</li>
+<li><strong>在产线里，每一片基板都是一个月、几百道工序、几百位工程师的心血</strong>：把大量原子按你想要的方式排列，允许的偏差很小，而且要在一片基板上、以较高的产率、以高良率连续不断地复制——这是地球上最复杂的人造系统之一。</li>
+</ol>
+<p>下一节，车规芯片和消费芯片——从设计思路到测试要求，它们是完全不同的两个物种。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>通用芯片这么精密——但汽车需要的不只是精细。还需要可靠。-40°C 冷启动、15 年供货保证、1000 小时高温老化、&lt; 1 DPPM 的缺陷率。消费芯片可以容忍的——车规芯片不能。</p>
+<p>车规芯片和消费芯片，从设计思路到测试要求，是两个物种。下一节，我们从产线的良率办公室，走进车规认证的残酷世界。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/2.4-CMOS-互补的智慧.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/2.6-从晶圆到ECU核心.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/2.4-CMOS-互补的智慧.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/2.6-从晶圆到ECU核心.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

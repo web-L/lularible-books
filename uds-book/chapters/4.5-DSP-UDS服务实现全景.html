@@ -1,0 +1,560 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>DSP · UDS服务实现全景 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="45-dspuds服务实现全景"><a class="header" href="#45-dspuds服务实现全景">4.5 DSP——UDS服务实现全景</a></h1>
+<h3 id="6492行的服务处理器从init到main"><a class="header" href="#6492行的服务处理器从init到main">6492行的服务处理器——从Init到Main</a></h3>
+<p>打开<code>Dcm_Dsp.c</code>的第1行，光标游走在6492行代码的边缘。你看到的不是一堆杂乱的服务函数，而是一座井然有序的医院科室楼——每一个UDS SID都是一间独立的诊室，每间诊室里有一位医生（<code>DspUdsXxx()</code>函数），有自己的医疗设备（静态全局状态变量），有自己的病历记录方式（pending状态机）。而走廊上，一个名叫<code>DspInit</code>的院长每天早上巡查所有诊室，确保设备归零、病历归档。</p>
+<p>但这座医院有一个严格的规定：<strong>不允许动态申请诊室</strong>。所有的房间都是预建的——用<code>static</code>关键字钉死在编译期分配的内存里。你不禁要问：<strong>为什么？</strong></p>
+<p>因为在嵌入式系统的世界里，<code>malloc</code>是一把双刃剑——它带来了灵活性，也带来了碎片化和不可预测的分配时间。一辆行驶中的汽车，ECU必须在可预测的时间窗口内完成诊断响应。如果DSP在高速行驶时突然需要分配一块内存而遭遇碎片化延迟，后果不堪设想。所以，一切都得是静态的——这不是固执，而是安全的底牌。</p>
+<hr>
+<h3 id="dspinit--复位所有服务状态机"><a class="header" href="#dspinit--复位所有服务状态机">DspInit —— 复位所有服务状态机</a></h3>
+<p>想象医院早晨8点，护士长走过每一间诊室，逐一检查设备：</p>
+<pre><code class="language-c">void DspInit(boolean firstCall) {
+    uint8 i;
+
+    // 复位安全访问状态
+    dspUdsSecurityAccessData.reqInProgress = FALSE;
+    for (i = 0; i &lt; DCM_CFG_NUM_OF_SECURITY_LEVELS; i++) {
+        dspUdsSecurityAccessData.secFalseAttemptChk[i].startDelayTimer
+            = DELAY_TIMER_DEACTIVE;
+    }
+
+    // 复位ECU复位状态
+    dspUdsEcuResetData.resetPending = DCM_DSP_RESET_NO_RESET;
+
+    // 复位上传/下载传输状态
+    TransferStatus.transferType = DCM_NO_DATA_TRANSFER;
+    TransferStatus.blockSequenceCounter = 0;
+
+    // 复位DTC设置控制
+    DspDTCSetting.settingDisabled = FALSE;
+
+    // 复位周期性DID
+    for (i = 0; i &lt; DCM_CFG_NUM_OF_PERIODICDID_IDENTIFIER; i++) {
+        DspPdIdTable[i].enabled = FALSE;
+    }
+
+    // 复位动态DID缓冲区
+    for (i = 0; i &lt; DCM_CFG_NUM_OF_DYNAMIC_DEFINED_DATA_IDENTIFIER; i++) {
+        dspDDD[i].defined = FALSE;
+    }
+
+    // 复位IO控制状态
+    for (i = 0; i &lt; DCM_CFG_NUM_OF_IOCONTROL_DID_IDENTIFIER; i++) {
+        IOControlStateList[i].active = FALSE;
+    }
+
+    // 复位通信控制通道
+    for (i = 0; i &lt; DCM_CFG_NUMBER_OF_COMM_CHANNEL; i++) {
+        DspComControlChannel[i].active = FALSE;
+    }
+}
+</code></pre>
+<p>每一行复位都对应着一个具体的临床场景：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>静态变量</th><th>所属服务</th><th>复位值</th><th>场景含义</th></tr>
+</thead>
+<tbody>
+<tr><td><code>dspUdsSecurityAccessData</code></td><td>0x27 安全访问</td><td><code>reqInProgress=FALSE</code></td><td>取消所有进行中的安全验证</td></tr>
+<tr><td><code>dspUdsEcuResetData</code></td><td>0x11 ECU复位</td><td><code>DCM_DSP_RESET_NO_RESET</code></td><td>没有待执行的复位</td></tr>
+<tr><td><code>TransferStatus</code></td><td>0x34-0x37 上传下载</td><td><code>DCM_NO_DATA_TRANSFER</code></td><td>没有进行中的数据传输</td></tr>
+<tr><td><code>DspDTCSetting</code></td><td>0x85 控制DTC设置</td><td><code>settingDisabled=FALSE</code></td><td>DTC记录没有被关闭</td></tr>
+<tr><td><code>DspPdIdTable[]</code></td><td>0x2A 周期性DID读取</td><td><code>enabled=FALSE</code></td><td>所有周期性读取暂停</td></tr>
+<tr><td><code>dspDDD[]</code></td><td>0x2C 动态定义DID</td><td><code>defined=FALSE</code></td><td>所有动态DID被清除</td></tr>
+<tr><td><code>IOControlStateList[]</code></td><td>0x2F IO控制</td><td><code>active=FALSE</code></td><td>所有IO控制释放回ECU</td></tr>
+<tr><td><code>DspComControlChannel[]</code></td><td>0x28 通信控制</td><td><code>active=FALSE</code></td><td>所有通信通道恢复正常</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>核心洞察</strong>：DSP的所有服务状态都是<strong>静态全局变量</strong>——没有动态分配。这意味着每一条UDS服务都是一个<strong>状态机</strong>，其当前状态存储在全局数组中，在后续的MainFunction中基于前一次的状态继续推进。你可以把它理解为医院的“住院部“——有的病人（服务请求）需要在医院里待好几个MainFunction周期才能“治愈“（返回最终响应）。</p>
+</blockquote>
+<p>让我们来看看这些全局变量的实际定义。在DSP的第296行开始，你看到一排齐整的<code>static</code>声明：</p>
+<pre><code class="language-c">static DspUdsEcuResetDataType dspUdsEcuResetData;
+static DspUdsSessionControlDataType dspUdsSessionControlData;
+static DspUdsReadDidPendingType dspUdsReadDidPending;
+static DspUdsGeneralPendingType dspUdsWriteDidPending;
+static DspUdsGeneralPendingType dspUdsRoutineControlPending;
+static DspUdsGeneralPendingType dspUdsSecurityAccessPending;
+static DspUdsGeneralPendingType dspUdsUploadDownloadPending;
+static DspUdsCommunicationControlDataType communicationControlData;
+static DspUdsSecurityAccessDataType dspUdsSecurityAccessData;
+</code></pre>
+<p>每一个结构体都是一个“病历夹“，里面记录着该服务当前的“病情状态“。以<code>DspUdsReadDidPendingType</code>为例：</p>
+<pre><code class="language-c">typedef struct {
+    ReadDidPendingStateType state;
+    const PduInfoType* pduRxData;
+    PduInfoType* pduTxData;
+    uint16 txWritePos;
+    uint16 nofReadDids;
+    uint16 reqDidIndex;
+    uint16 pendingDid;
+    uint16 pendingDataLength;
+    uint16 pendingSignalIndex;
+    uint16 pendingDataStartPos;
+} DspUdsReadDidPendingType;
+</code></pre>
+<p>看到了吗？<code>pendingSignalIndex</code>——这就是断点续传的“行号“！当NvM的回调在下一次MainFunction才返回时，DSP就从这个索引处继续往响应缓冲区填数据。</p>
+<hr>
+<h3 id="异步服务模型e_pending的魔力"><a class="header" href="#异步服务模型e_pending的魔力">异步服务模型——E_PENDING的魔力</a></h3>
+<p>DSP里的很多服务是异步的。NvM写块可能需要几毫秒，安全访问的CompareKey可能要走加密引擎——这些不能在一个MainFunction周期内完成。AUTOSAR的答案是<strong>opStatus</strong>回调参数：</p>
+<pre><code class="language-c">// DID读取——异步版本的核心逻辑
+void getDidData(...) {
+    for (each signal in DID) {
+        if (signal-&gt;portType == DATA_PORT_ASYNCH) {
+            Dcm_OpStatusType opStatus;
+            signal-&gt;AsynchDataReadFnc(signal-&gt;data, &amp;opStatus);
+
+            if (opStatus == DCM_READ_PENDING) {
+                // 存储当前位置——下次MainFunction从这里继续
+                pendingState-&gt;signalIndex = currentSignal;
+                pendingState-&gt;dataLen = currentDataPos;
+                return;  // 返回E_PENDING状态
+            }
+        }
+    }
+}
+</code></pre>
+<p>这个机制的精妙之处在于<strong>opStatus的双向通信</strong>：DSP传入<code>DCM_INITIAL</code>表示“这是第一次调用，请执行实际操作“，传入<code>DCM_PENDING</code>表示“这是重试，该返回就返回“。而回调函数通过<code>opStatus</code>告诉DSP：“还没好”(<code>DCM_READ_PENDING</code>)或者“好了“(<code>DCM_READ_OK</code>)，或者“强制响应挂起“(<code>DCM_FORCE_RCRRP</code>)。</p>
+<p>更完整的状态编码来自<code>GeneralPendingStateType</code>：</p>
+<pre><code class="language-c">typedef enum {
+    DCM_GENERAL_IDLE,
+    DCM_GENERAL_PENDING,
+    DCM_GENERAL_FORCE_RCRRP_AWAITING_SEND,
+    DCM_GENERAL_FORCE_RCRRP,
+} GeneralPendingStateType;
+</code></pre>
+<p>而DSD那边的状态模型是另一套（来源<code>Dcm_Dsd.c:54-58</code>）：</p>
+<pre><code class="language-c">typedef enum {
+    DCM_SERVICE_IDLE,
+    DCM_SERVICE_PENDING,
+    DCM_SERVICE_WAIT_DONE,
+    DCM_SERVICE_DONE,
+    DCM_SERVICE_WAIT_TX_CONFIRM
+} ServicePendingStateType;
+</code></pre>
+<p>注意这个微妙的关系——<strong>DSP用<code>GeneralPendingStateType</code>管理内部异步操作的断点推进，而DSD用<code>ServicePendingStateType</code>管理外部服务调用的生命周期</strong>。DSP说“我还在忙“，DSD就挂起响应发送；DSP说“我做完了“，DSD从状态切换到<code>DCM_SERVICE_DONE</code>然后触发正面响应的组装和发送。</p>
+<p><strong>为什么要把DSP和DSD的状态机分开？</strong> 因为DSP关心的是“数据的读取/写入/验证是否完成“，DSD关心的是“这个请求的整体生命周期到了哪一步（受理→处理中→响应组装→发送确认）“。这是经典的关注点分离。</p>
+<hr>
+<h3 id="dspmain--推进所有异步状态机"><a class="header" href="#dspmain--推进所有异步状态机">DspMain —— 推进所有异步状态机</a></h3>
+<pre><code class="language-c">void DspMain(void) {
+    DspResetMainFunction();          // ECU复位 pending
+    DspMemoryMainFunction();         // 内存读写 pending
+    DspReadDidMainFunction();        // DID读取 pending
+    DspRoutineControlMainFunction(); // 例行控制 pending
+    DspUploadDownloadMainFunction(); // 上传下载 pending
+    DspSecurityAccessMainFunction(); // 安全访问 pending
+    DspJumpToBootMainFunction();     // Boot跳转 pending
+    DspStartupServiceResponseMainFunction(); // 启动响应
+    DspIOControlMainFunction();      // IO控制 pending
+}
+</code></pre>
+<p><strong>为什么是这个顺序？</strong> 这不是随意排列的——有四个原因：</p>
+<ol>
+<li>
+<p><strong>ECU复位优先</strong>：如果复位处于pending状态，先处理它。因为复位会改变ECU的运行模式，影响其他所有服务的有效性。这就像急救室优先处理心搏骤停的病人。<code>DspResetMainFunction</code>在前面是为了尽快完成复位请求，减少其他服务在“即将被复位“的ECU上浪费时间。</p>
+</li>
+<li>
+<p><strong>内存操作随后</strong>：<code>DspMemoryMainFunction</code>处理内存的异步读写（通过NvM块）。如果内存读写失败，很多后续服务（如DID读取可能依赖NvM数据）会受到影响。</p>
+</li>
+<li>
+<p><strong>高优先级数据服务居中</strong>：DID读取和例行控制是比上传下载更轻量但更频繁的异步操作，放在中间位置以均衡地处理。</p>
+</li>
+<li>
+<p><strong>安全访问与Boot跳转靠后</strong>：安全访问和Boot跳转是“终结性“操作——安全访问完成后会话锁定，Boot跳转后程序失去控制权。放在后面处理，给前面的轻量级服务让出优先权。</p>
+</li>
+</ol>
+<p><strong>核心设计原则是：每一个<code>MainFunction</code>处理一个特定的异步服务。如果一个服务没有pending状态——它的MainFunction直接返回，不消耗任何有效CPU时间。</strong> 这种“无则跳过“的模式避免了在无异步操作时浪费CPU周期。</p>
+<hr>
+<h3 id="dsdmain-vs-dspmain--为什么需要两层mainfunction"><a class="header" href="#dsdmain-vs-dspmain--为什么需要两层mainfunction">DsdMain vs DspMain —— 为什么需要两层MainFunction？</a></h3>
+<p>待看DSD的Main函数（<code>Dcm_Dsd.c:606</code>）：</p>
+<pre><code class="language-c">void DsdMain(void)
+{
+    if (TRUE == dsdDslDataIndication) {
+        dsdDslDataIndication = FALSE;
+        DsdHandleRequest();
+    }
+    externalServiceMainFunction();
+}
+</code></pre>
+<p>对比DspMain，你注意到关键差异了吗？<strong>DsdMain处理的是“新请求“和“外部服务的推进“，DspMain处理的是“内部异步操作的断点续传“</strong>。</p>
+<p>这背后是DCM架构的分层逻辑：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>层次</th><th>函数</th><th>职责</th><th>类比</th></tr>
+</thead>
+<tbody>
+<tr><td>DSL</td><td>主循环</td><td>缓冲区管理、超时监控</td><td>挂号台：控制人流</td></tr>
+<tr><td>DSD</td><td><code>DsdMain</code></td><td>分发新请求、推进外部服务</td><td>分诊台：分配到科室</td></tr>
+<tr><td>DSP</td><td><code>DspMain</code></td><td>推进内部异步操作</td><td>各科室：继续治疗</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>为什么需要<code>DspPreDsdMain</code>？</strong>——等等，我们先澄清一个事实：在Arctic Core的开源实现中，实际上并没有显式的<code>DspPreDsdMain</code>函数。这个概念在商业AUTOSAR栈中是存在的，用于在请求<strong>被DSD分发之前</strong>让DSP有机会预处理请求数据（比如，在0x27安全访问中在分发给子功能之前先检查安全级别）。Arctic Core通过在DSD的<code>DsdHandleRequest</code>内部检查Session和Security Level来达到相同的效果。</p>
+<hr>
+<h3 id="runinternalservice--巨大switch-case的调兵遣将"><a class="header" href="#runinternalservice--巨大switch-case的调兵遣将">runInternalService —— 巨大switch-case的调兵遣将</a></h3>
+<p>当DSD确认“SID合法、session允许、security level足够“之后，它调用<code>runInternalService</code>来真正执行服务代码。你打开<code>Dcm_Dsd.c:220</code>，看到的是一个巨型switch-case：</p>
+<pre><code class="language-c">static void runInternalService(uint8 SID)
+{
+    switch(SID) {
+#ifdef DCM_USE_SERVICE_DIAGNOSTICSESSIONCONTROL
+        case SID_DIAGNOSTIC_SESSION_CONTROL:
+            DspUdsDiagnosticSessionControl(msgData.pduRxData, msgData.pdurTxPduId,
+                msgData.pduTxData, msgData.sendRespPendOnTransToBoot,
+                msgData.internalRequest);
+            break;
+#endif
+#ifdef DCM_USE_SERVICE_LINKCONTROL
+        case SID_LINK_CONTROL:
+            DspUdsLinkControl(msgData.pduRxData, msgData.pdurTxPduId,
+                msgData.pduTxData, msgData.sendRespPendOnTransToBoot);
+            break;
+#endif
+#ifdef DCM_USE_SERVICE_ECURESET
+        case SID_ECU_RESET:
+            DspUdsEcuReset(msgData.pduRxData, msgData.pdurTxPduId,
+                msgData.pduTxData, msgData.startupResponseRequest);
+            break;
+#endif
+        case SID_CLEAR_DIAGNOSTIC_INFORMATION:
+            DspUdsClearDiagnosticInformation(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_READ_DTC_INFORMATION:
+            DspUdsReadDtcInformation(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_READ_DATA_BY_IDENTIFIER:
+            DspUdsReadDataByIdentifier(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_READ_MEMORY_BY_ADDRESS:
+            DspUdsReadMemoryByAddress(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_WRITE_MEMORY_BY_ADDRESS:
+            DspUdsWriteMemoryByAddress(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_READ_SCALING_DATA_BY_IDENTIFIER:
+            DspUdsReadScalingDataByIdentifier(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_SECURITY_ACCESS:
+            DspUdsSecurityAccess(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_WRITE_DATA_BY_IDENTIFIER:
+            DspUdsWriteDataByIdentifier(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_ROUTINE_CONTROL:
+            DspUdsRoutineControl(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_TESTER_PRESENT:
+            DspUdsTesterPresent(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_CONTROL_DTC_SETTING:
+            DspUdsControlDtcSetting(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_RESPONSE_ON_EVENT:
+            DspResponseOnEvent(msgData.pduRxData, msgData.rxPduId, msgData.pduTxData);
+            break;
+        case SID_READ_DATA_BY_PERIODIC_IDENTIFIER:
+            DspReadDataByPeriodicIdentifier(msgData.pduRxData, msgData.pduTxData,
+                msgData.rxPduId, msgData.txType, msgData.internalRequest);
+            break;
+        case SID_DYNAMICALLY_DEFINE_DATA_IDENTIFIER:
+            DspDynamicallyDefineDataIdentifier(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_INPUT_OUTPUT_CONTROL_BY_IDENTIFIER:
+            DspIOControlByDataIdentifier(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_COMMUNICATION_CONTROL:
+            DspCommunicationControl(msgData.pduRxData, msgData.pduTxData,
+                msgData.rxPduId, msgData.pdurTxPduId);
+            break;
+        case SID_REQUEST_DOWNLOAD:
+            DspUdsRequestDownload(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_REQUEST_UPLOAD:
+            DspUdsRequestUpload(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_TRANSFER_DATA:
+            DspUdsTransferData(msgData.pduRxData, msgData.pduTxData);
+            break;
+        case SID_REQUEST_TRANSFER_EXIT:
+            DspUdsRequestTransferExit(msgData.pduRxData, msgData.pduTxData);
+            break;
+        /* OBD services */
+        case SID_REQUEST_CURRENT_POWERTRAIN_DIAGNOSTIC_DATA:
+            DspObdRequestCurrentPowertrainDiagnosticData(...);
+            break;
+        // ... 更多OBD服务 ...
+        default:
+            createAndSendNcr(DCM_E_SERVICENOTSUPPORTED);
+            break;
+    }
+}
+</code></pre>
+<p>这大约30个<code>case</code>覆盖了ISO 14229-1中定义的核心UDS服务，外加OBD-II服务（0x01-0x0A）。每个case都经过<code>#ifdef</code>条件编译——<strong>只有在编译时配置了该服务才会被包含，未配置的代码完全不存在于二进制中</strong>。</p>
+<hr>
+<h3 id="dsd与dsp的协作关系"><a class="header" href="#dsd与dsp的协作关系">DSD与DSP的协作关系</a></h3>
+<p>最后，让我们梳理一下DSD分发和DSP执行之间的完整关系：</p>
+<ol>
+<li>
+<p><strong>DSD是前台</strong>：接收到来自DSL的请求后，DSD通过<code>lookupSid</code>在<code>DsdServiceTable[]</code>中查找SID配置。找到后检查session和security level。</p>
+</li>
+<li>
+<p><strong>DSD决定大小</strong>：如果service配置了<code>DspSidTabFnc</code>（外部服务回调），DSD调用<code>startExternalServiceProcessing</code>，由外部SW-C处理。否则走<code>selectServiceFunction</code>→<code>runInternalService</code>路径，这就是DSP的内部分支。</p>
+</li>
+<li>
+<p><strong>DSP是后台</strong>：<code>DspMain</code>的9个子函数不管“下一个请求是什么“——它们只关心“是否有pending的异步操作需要推进“。它们不参与请求分发。</p>
+</li>
+<li>
+<p><strong>DSD也管外部pending</strong>：<code>externalServiceMainFunction</code>在DsdMain中被调用，它推进<code>ExternalService.state</code>从<code>DCM_SERVICE_PENDING</code>到<code>DCM_SERVICE_DONE</code>到<code>DCM_SERVICE_WAIT_TX_CONFIRM</code>。</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>核心洞察</strong>：DSD像一个分诊台——它决定哪个病人去哪个科室。DSP是各个科室——执行具体的治疗。分诊台不知道心内科具体怎么治心脏病，心内科也不关心还有多少病人在排队。但分诊台有一个“outside-the-hospital“通道（外部服务回调），可以让病人转到外面的专科医院（其他SW-C）治疗。</p>
+</blockquote>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li><code>DspInit</code>复位所有22个服务的内置状态机——全部使用静态全局数组而非动态分配，这是嵌入式系统对实时性和内存碎片化的防御。</li>
+<li>异步服务通过<code>opStatus</code> + <code>E_PENDING</code>机制实现跨MainFunction周期的断点续传——DSP状态机记录中断位置，DSD状态机管理服务生命周期。</li>
+<li><code>DspMain</code>顺序调用9个异步推进函数，顺序按“终结性“程度排列：复位→内存→数据→安全→跳转。每个函数只在对应服务有pending状态时才消耗CPU。</li>
+<li><code>DsdMain</code>处理新请求分发和外部服务推进，<code>DspMain</code>处理内部异步断点续传——两者分工明确，前者是分诊台，后者是各科室。</li>
+<li><code>runInternalService</code>中约30个case覆盖了UDS和OBD的核心SID，全部由<code>#ifdef</code>条件编译控制，未配置的服务代码在二进制中不存在。</li>
+<li>6492行中大约60%是具体的<code>DspUdsXxx</code>处理函数，20%是DID和信号读写基础设施，20%是状态机和辅助函数。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：框架看完了——现在我们深入第一个具体服务——0x10诊断会话控制和0x27安全访问。这两个服务是DSP里状态机最复杂的——会话切换涉及JumpToBoot的跳转器，安全访问涉及防爆破延迟定时器。我们逐行拆。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/4.4-DSD-SID分发路由与鉴权.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/4.6-DSP-会话与安全0x10与0x27的完整实现.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/4.4-DSD-SID分发路由与鉴权.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/4.6-DSP-会话与安全0x10与0x27的完整实现.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

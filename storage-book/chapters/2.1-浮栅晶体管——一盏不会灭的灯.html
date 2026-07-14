@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>浮栅晶体管——一盏不会灭的灯 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="第二章-flash的物理本质一块硅的自我修养"><a class="header" href="#第二章-flash的物理本质一块硅的自我修养">第二章 Flash的物理本质——一块硅的自我修养</a></h1>
+<h2 id="21-浮栅晶体管一盏不会灭的灯"><a class="header" href="#21-浮栅晶体管一盏不会灭的灯">2.1 浮栅晶体管——一盏不会灭的灯</a></h2>
+<h3 id="你手里有一个水桶但它不漏"><a class="header" href="#你手里有一个水桶但它不漏">你手里有一个水桶，但它不漏</a></h3>
+<p>想象你手里有一个密封的水桶。你把水倒进去，盖上盖子，把它扔进储藏室。一年后你回来，打开盖子——水还在。</p>
+<p>这个水桶不服从你日常生活的物理直觉。你的水杯敞口会蒸发，你的水管接头会渗漏，你的塑料瓶放久了水会变味。但这个水桶，一滴都不漏。</p>
+<p>因为它不用“堵住“来防止泄漏。它用的是一个物理定律——量子力学隧穿效应——来创造一个“进去需要条件、出来也需要条件“的势阱。</p>
+<p><strong>这就是浮栅晶体管。</strong></p>
+<p>在Flash诞生之前，所有的非易失性存储都是有代价的：EPROM（紫外线可擦除可编程只读存储器）需要用紫外光照射20分钟才能擦除，而且你得把芯片上的石英窗口对准紫外灯；EEPROM（电可擦除可编程只读存储器）可以电擦除，但每一个单元需要两个额外的选择晶体管，面积巨大，容量极小，成本极高。</p>
+<p>1984年，东芝的舛冈富士雄发明了Flash存储器。他的核心创新是：<strong>利用Fowler-Nordheim隧穿效应，让电子在高压下“穿越“绝缘层，不需要紫外线，不需要每个单元两个额外晶体管，结构简单，密度极高。</strong></p>
+<p>Flash的中文翻译是“闪存“。“闪“这个词来自他的同事有泉正二的描述——擦除过程“像照相机的闪光灯一样快”。在此之前，EPROM擦除需要20分钟，而Flash擦除只需要1秒。</p>
+<p>从那一刻起，非易失性存储进入了“闪“时代。</p>
+<hr>
+<h3 id="被遗忘的前辈eeprom"><a class="header" href="#被遗忘的前辈eeprom">被遗忘的前辈：EEPROM</a></h3>
+<p>在Flash诞生的前夜，EEPROM（Electrically Erasable Programmable Read-Only Memory）统治了嵌入式存储世界二十多年。EEPROM的基本原理与Flash几乎一样——浮栅晶体管加F-N隧穿——但有一个关键区别：<strong>EEPROM可以按字节擦除。</strong></p>
+<p>这意味着你可以直接修改EEPROM中的任意一个字节，不需要擦除整个扇区。听起来很完美？</p>
+<p>问题出在结构上。EEPROM的每个单元需要两个晶体管：一个存储晶体管存放电荷，一个选择晶体管负责字节级寻址。而Flash的每个单元只需要一个晶体管——舛冈富士雄的精妙之处就在于，<strong>删掉了那个选择晶体管</strong>。</p>
+<pre><code>EEPROM vs Flash 的结构差异
+=======================
+
+EEPROM 单元:
+  每个单元有两个晶体管：
+    ┌───┐    ┌───┐
+    │存储│    │选择│   ← 选择晶体管用于字节级寻址
+    │单元│    │管  │      使每个字节可以独立擦除
+    └───┘    └───┘
+  
+  代价：面积 × 2（两个晶体管 vs 一个）
+       每bit成本远高于Flash
+
+Flash 单元:
+   ┌───┐
+   │存储│        ← 单晶体管单元，面积最小
+   │单元│        但擦除必须以扇区为单位
+   └───┘
+
+选择晶体管虽然解决了"字节级擦除"的问题，
+但让EEPROM永远无法在成本上战胜Flash。
+这是工程中最常见的取舍：灵活性 vs 成本。
+</code></pre>
+<p>EEPROM至今仍然存在，用在需要少量、频繁修改的数据存储场景——比如车载ECU的里程数、配置参数、故障码。它的典型容量是几KB到几十KB。而Flash用“放弃字节级擦除“的代价，换来了百倍以上的容量优势。</p>
+<p>你的ECU可能同时有一片EEPROM（存运行参数）和一片NOR Flash（存固件和大块数据）。EEPROM处理需要频繁修改的小数据，Flash处理固件和日志——各司其职，各自为自己的物理选择承担后果。</p>
+<hr>
+<h3 id="打开一颗浮栅晶体管"><a class="header" href="#打开一颗浮栅晶体管">打开一颗浮栅晶体管</a></h3>
+<p>浮栅晶体管的结构，本质上是一个带有两个栅极的MOSFET：</p>
+<pre><code>浮栅晶体管物理结构和电路符号
+=====================================
+
+  结构截面图：                          电路符号（简化）：
+
+     控制栅 CG ──────────┐              
+  ┌──────────────────────┐                ┌─── Drain
+  │═══ ONO 绝缘层 ══════││ ← 阻挡电子逃逸        │
+  ├──────────────────────┤              │  ┌──── CG
+  │   ★浮栅 FG ★        ││ ← 电子监狱        ├──┤
+  ├──────────────────────┤              │  └──── FG(隐式)
+  │══ 隧道氧化层(~8nm)══││ ← 量子隧道        │
+  ├────────┬─────────────┤              └─── Source
+  │ N+源极 │ N+漏极       │
+  │  (S)  │   (D)        │
+  └────────┴─────────────┘
+      P型衬底(沟道区)
+</code></pre>
+<p>五层结构，从底往上：</p>
+<ol>
+<li><strong>P型硅衬底</strong>——这是地基。掺了硼的硅，空穴导电。源极和漏极是N+重掺杂区，像两个岛屿嵌在P型海洋里。</li>
+<li><strong>隧道氧化层</strong>——约8nm厚的二氧化硅。够薄，电子在高压下能量子隧穿过去；够厚，在常压下电子没有足够的能量穿越。这是整个器件的“单向通道“。</li>
+<li><strong>浮栅（Floating Gate）</strong>——多晶硅导带。它被ONO和隧道氧化层上、下、左、右、前、后完全包裹，没有任何电学连接。这是一个绝对的“孤岛“。电子一旦进去，就困在里面。</li>
+<li><strong>ONO叠层（Oxide-Nitride-Oxide）</strong>——约15nm厚的SiO₂/Si₃N₄/SiO₂三层绝缘结构。ONO的泄漏电流比纯SiO₂小三到四个数量级。它确保浮栅里的电子几十年都不会从上面跑掉。</li>
+<li><strong>控制栅（Control Gate）</strong>——多晶硅电极，外接字线（Word Line）。它通过电容耦合“间接“控制浮栅电位，因为在物理上，CG和FG是隔开的——中间隔着15nm的ONO。</li>
+</ol>
+<p>关键就在这里：<strong>CG和FG在物理上是隔离的，在电学上却是耦合的。</strong></p>
+<p>这意味着你可以通过控制CG上的电压，“隔着ONO“改变FG的电位——进而控制沟道的导通状态。而FG上的电荷量，由于没有任何放电通道，可以在没有外电压的情况下保持数十年。</p>
+<hr>
+<h3 id="写入量子隧穿电子正在穿墙"><a class="header" href="#写入量子隧穿电子正在穿墙">写入：量子隧穿——电子正在“穿墙“</a></h3>
+<p>写入，在Flash的术语里叫<strong>编程（Program）</strong>。它的目的是把电子送进浮栅。</p>
+<p>但浮栅周围全是绝缘体——所有方向上都是氧化物。按照经典物理，电子根本不可能穿越氧化物势垒（SiO₂的禁带宽度约9eV，电子的热运动能量只有0.026eV——差了三百多倍）。</p>
+<p>量子力学给了一条路：<strong>Fowler-Nordheim隧穿（F-N Tunneling）</strong>。</p>
+<p>在经典物理中，一个能量为E的电子遇到一个高度为V₀的势垒（V₀ &gt; E）时，一定会被弹回来。就像你往墙上扔一个网球——墙比你扔的力量大，球一定会弹回来。</p>
+<p>但在量子力学中，电子不是一个小球，而是一个<strong>波函数</strong>。波函数在势垒中不会瞬间衰减到零，而是指数递减。如果势垒足够薄，波函数从势垒的另一侧“漏“出来——电子就穿越了。</p>
+<pre><code>F-N隧穿原理示意
+=================
+
+  (a) 无偏压：                         (b) 加正高压到CG：
+  
+  能量 ↑                              能量 ↑
+       │    ┌─────────────┐                │    ┌─────────────┐
+       │    │  势垒 (V₀)   │                │    │  势垒(变薄！)│
+       │    │             │                │    │  ┌──────┐   │
+  ─────┤    │             │           ─────┤   /│ │隧穿！│   │
+  Eₑ   │→  │             │           Eₑ   │→ / │ │  →   │   │
+  ─────┤    │             │           ─────┤  /  │ └──────┘   │
+       └────┤   隧道氧化层  │                └────┤           │
+            │  (SiO₂ 8nm) │                     │           │
+            └─────────────┘                     └─────────────┘
+  
+  电子能量 &lt; 势垒高度 → 电子被弹回      高压让势垒"倾斜变薄" → 电子隧穿通过！
+</code></pre>
+<p>FLASH编程时的做法是：在控制栅上加+10V到+20V的高压（具体电压取决于工艺），源极和漏极接地。这个高压通过电容耦合让浮栅的电位也升高，在浮栅和沟道之间形成一个极强的电场（约10MV/cm级别！）。</p>
+<p>在这个电场下，隧道氧化层的能带发生倾斜——势垒从矩形变成一个三角形。三角形的底部宽度比原来的8nm薄得多。沟道中的电子有足够高的概率隧穿这个变薄的势垒，进入浮栅。</p>
+<p>一旦高压撤掉，势垒恢复原来的形状和高度。浮栅里的电子被困住了——它们没有足够的能量再次隧穿出去。</p>
+<p><strong>电子进去了，门关了。</strong></p>
+<hr>
+<h3 id="擦除把电子赶出来"><a class="header" href="#擦除把电子赶出来">擦除：把电子赶出来</a></h3>
+<p>擦除是把浮栅里的电子赶出来。同样利用F-N隧穿，但方向相反。</p>
+<p>NOR Flash的擦除方式是在源极加高压、控制栅接地（或负压）：</p>
+<pre><code>擦除过程
+=========
+
+         CG = 0V (或负压)
+    ┌──────────────────────┐
+    │═══ ONO ═════════════││
+    ├──────────────────────┤
+    │   ★▉▉▉▉▉▉★         ││ ← 浮栅里的电子
+    ├──────────────────────┤
+    │══ 隧道氧化层 ═══════││
+    ├────────┬─────────────┤
+    │ S=+12V │  D=浮空/0V   │
+    │ ↑高压   │             │
+    │ 电子从浮栅隧穿回源极→  │
+    └────────┴─────────────┘
+    
+    电子路径：浮栅 → 隧道氧化层 → 源极
+</code></pre>
+<p>在源极加高压（+12V左右），控制栅接地。浮栅-源极之间的强电场让隧道氧化层的能带再次倾斜——这次电子从浮栅侧隧穿回源极。</p>
+<p>注意：NOR Flash擦除是按<strong>扇区（Sector）</strong> 进行的——通常4KB到64KB一组，一次性擦除。你不可能只擦除一个字节。这是因为擦除电压需要施加到整个扇区所有单元的源极线上，而源极线是共用的。</p>
+<p>这就是NOR Flash的特性之一：<strong>写入快，擦除慢</strong>（擦除一片4KB扇区可能需要100ms）。</p>
+<hr>
+<h3 id="读取猜水桶的重量"><a class="header" href="#读取猜水桶的重量">读取：猜水桶的重量</a></h3>
+<p>读取不进也不出电子。它只是“称一下浮栅的重量“——看里面有没有电子。</p>
+<p>具体做法是：在控制栅上加一个介于擦除态阈值电压和编程态阈值电压之间的读取电压V_read，在漏极加一个小电压（~1V）。</p>
+<pre><code>读取原理
+=========
+
+           ┌─ V_read ───┐
+           │  CG         │
+  ┌────────┼─────────────┼──┐
+  │  ONO                  │
+  │         ★FG★          │ ← FG电荷量 = ?
+  │ 隧道氧化层             │
+  │  ┌─────┬─────┐        │
+  │  │ S   │ D   │  Vd=1V │
+  │  │     │     │←───────┤
+  │  │     │ 读!  │        │
+  │  └─────┴─────┘        │
+  │      P-sub            │
+  └────────────────────────┘
+  
+  擦除态（FG无电子）:  Vth低 → V_read &gt; Vth → 沟道导通 → 读"1"
+  编程态（FG有电子）:  Vth高 → V_read &lt; Vth → 沟道截止 → 读"0"
+  
+  注意：NOR Flash逻辑中，"擦除态=1, 编程态=0"
+</code></pre>
+<p>浮栅里没有电子时，阈值电压Vth很低（比如说3V）。你把V_read设成5V——5V &gt; 3V，沟道导通，漏极有电流流出。读“1“。</p>
+<p>浮栅里有电子时，那些电子产生的电场会抵消一部分控制栅的电场，阈值电压Vth变高（比如说7V）。你V_read还是5V——5V &lt; 7V，沟道不导通，漏极没有电流。读“0“。</p>
+<p><strong>读取不消耗、不改动浮栅里的电荷。所以Flash可以无限次读取——读取寿命几乎是无限的。</strong></p>
+<hr>
+<h3 id="水桶比喻为什么不漏是奇迹"><a class="header" href="#水桶比喻为什么不漏是奇迹">水桶比喻：为什么“不漏“是奇迹</a></h3>
+<p>把浮栅想象成一个密封的水桶：</p>
+<ul>
+<li><strong>编程</strong> = 往水桶里灌水（注入电子）。你通过F-N隧穿，用高压把电子从沟道“压“进浮栅——桶里有水了。</li>
+<li><strong>擦除</strong> = 把水桶倒过来，从同一个入口把电子排出去。你不能只倒一滴——必须整桶清空。</li>
+<li><strong>读取</strong> = 称水桶的重量。桶里有电子→重→阈值电压高→读“0“。桶里没电子→轻→阈值电压低→读“1“。称重不改变桶里的水量——所以读取寿命是无限的。</li>
+<li><strong>磨损</strong> = 桶壁变薄。每次灌水和倒水，电子穿越隧道氧化层时都会破坏一些Si-O键，形成陷阱态——微小的泄漏点。陷阱态越多，泄漏越厉害。最终桶壁穿孔——这个桶就废了。</li>
+</ul>
+<p><strong>这个水桶已经在漏了。只是漏得极慢——慢到你以为它不漏。</strong></p>
+<p>你可能会问：既然一个晶体管只能区分“有水“和“没水“两种状态，能不能精确控制水量，在一个单元里存更多比特？当然可以。但每多一个比特，感测裕度就压缩一档——这个问题贯穿了从SLC到QLC的全部物理困境，后面会有专门一节展开。</p>
+<p>而现在，我们先放下“一个单元存几个比特“的问题，问一个更基础的问题：几十亿个这样的单元，在硅片上怎么连接？</p>
+<hr>
+<h3 id="一盏不会灭的灯"><a class="header" href="#一盏不会灭的灯">一盏不会灭的灯</a></h3>
+<p>你合上手心里那颗Flash芯片的外壳。硅片被黑胶封装在内部，你看不到任何东西。但你知道——那里面有几十亿个浮栅晶体管，每一个都是一盏小小的灯。</p>
+<p>这些灯不需要电源来维持。你写进去的0和1，是浮栅里有没有电子。电子在那8nm的氧化层监狱里，如果没有人给高压开门，它们可以待几十年。</p>
+<p>这不违反热力学第二定律。这是一个<strong>亚稳态</strong>——就像山顶上的石头没有立刻滚下来，但不是永远不滚下来。滚下来需要一点初始的扰动——对浮栅来说，那个扰动就是氧化层里的陷阱态。陷阱态足够多时，石头的“坡度“就变得足够大，电子就漏了。</p>
+<p>但你不管这些。你只知道，在你写下一行代码、一条短信、一个密码的那一瞬间，几十亿个电子被赶进了几十亿个小小的量子监狱里。它们就静静地待在那里，日日夜夜，等待未来的某一天被读取出来。</p>
+<p><strong>你要么读取，要么擦除。除此之外，它们就在时间中沉默地亮着。</strong></p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>浮栅晶体管讲完了：一个存储单元如何捕获电子、如何释放电子、如何读取状态。但一颗芯片上有几十亿个这样的单元——你怎么把它们组织起来？是每个单元独立引出一条位线（NOR），还是把几十个单元串联成一串共享一条位线（NAND）？</p>
+<p>这个选择，决定了读取延迟、芯片面积、每比特成本，以及——你的固件能不能直接从Flash上执行（XIP）。</p>
+<p>下一节，存储世界的两条路。</p>
+<p><strong>悬念留给：NOR的读取延迟是70纳秒，NAND的读取延迟是25微秒——差了357倍。这357倍，来自它们在硅片上的连接方式。</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/1.5-文件系统——与不可靠介质的和解协议.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/2.2-NOR与NAND——存储世界的两条路.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/1.5-文件系统——与不可靠介质的和解协议.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/2.2-NOR与NAND——存储世界的两条路.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

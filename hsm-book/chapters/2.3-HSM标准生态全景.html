@@ -1,0 +1,541 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>HSM标准生态全景 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="23-hsm标准生态全景一个工字形的世界"><a class="header" href="#23-hsm标准生态全景一个工字形的世界">2.3 HSM标准生态全景：一个“工“字形的世界</a></h2>
+<h3 id="为什么需要标准"><a class="header" href="#为什么需要标准">为什么需要标准？</a></h3>
+<p>让我们先问一个问题：为什么HSM需要标准？</p>
+<p>假设你是一家银行的IT负责人，你需要选择一个HSM来保护交易密钥。</p>
+<p>市场上有很多HSM厂商：Thales、Entrust、Atos、华大电子、NXP、Infineon……每个厂商都有自己的接口、自己的SDK、自己的功能。</p>
+<p>如果没有标准，你会面临这些问题：</p>
+<p><strong>问题一：接口碎片化</strong></p>
+<p>每个厂商的API都不同。你选择了Thales的HSM，开发了一套应用。几年后，你想换成Entrust的HSM，需要重写所有应用代码。</p>
+<p><strong>问题二：认证不一致</strong></p>
+<p>每个厂商声称自己的HSM“很安全“，但你无法验证。什么是“很安全“？定义不一致。</p>
+<p><strong>问题三：互操作性差</strong></p>
+<p>你的应用需要和多个系统交互。每个系统可能使用不同的HSM。如果没有标准，这些系统之间很难互操作。</p>
+<p><strong>问题四：选型困难</strong></p>
+<p>你不知道哪个HSM更安全。厂商的宣传材料各不相同，缺乏可比性。</p>
+<p>标准解决这些问题：</p>
+<ul>
+<li><strong>接口标准</strong>：统一API，应用可以跨厂商移植</li>
+<li><strong>认证标准</strong>：统一安全评估，可以对比不同HSM的安全等级</li>
+<li><strong>架构标准</strong>：统一设计规范，不同系统可以互操作</li>
+<li><strong>选型指南</strong>：基于标准认证，可以对比选型</li>
+</ul>
+<hr>
+<h3 id="hsm标准的工字形结构"><a class="header" href="#hsm标准的工字形结构">HSM标准的“工“字形结构</a></h3>
+<p>HSM的标准生态，可以用一个“工“字形结构来理解：</p>
+<pre><code>HSM标准生态"工"字形结构：
+
+           ┌─────────────────────────────────┐
+           │   上层：应用接口标准             │
+           │                                 │
+           │   PKCS#11                       │
+           │   "怎么用"                       │
+           │                                 │
+           └───────────────┬─────────────────┘
+                           │
+                           │
+           ┌───────────────┴─────────────────┐
+           │   中层：安全认证标准             │
+           │                                 │
+           │   FIPS 140-3                    │
+           │   Common Criteria               │
+           │   国密认证                       │
+           │   "怎么造"                       │
+           │                                 │
+           └───────────────┬─────────────────┘
+                           │
+                           │
+           ┌───────────────┴─────────────────┐
+           │   底层：硬件架构标准             │
+           │                                 │
+           │   EVITA                         │
+           │   SHE                           │
+           │   TPM                           │
+           │   "怎么装"                       │
+           │                                 │
+           └─────────────────────────────────┘
+</code></pre>
+<p>这个“工“字形结构清晰地区分了三个层次：</p>
+<ul>
+<li><strong>上层</strong>：应用接口标准（怎么用）</li>
+<li><strong>中层</strong>：安全认证标准（怎么造）</li>
+<li><strong>底层</strong>：硬件架构标准（怎么装）</li>
+</ul>
+<p>让我们逐层分析。</p>
+<hr>
+<h3 id="上层pkcs11密码世界的普通话"><a class="header" href="#上层pkcs11密码世界的普通话">上层：PKCS#11——密码世界的“普通话“</a></h3>
+<p>PKCS#11是HSM最重要的应用接口标准。</p>
+<p><strong>PKCS#11是什么？</strong></p>
+<p>PKCS#11（Public-Key Cryptography Standard #11），又称Cryptographic Token Interface Standard，是RSA实验室定义的密码令牌接口标准。</p>
+<p>它定义了：</p>
+<ul>
+<li>应用程序如何与密码令牌（HSM、智能卡等）交互</li>
+<li>密钥如何管理</li>
+<li>密码运算如何执行</li>
+</ul>
+<p><strong>PKCS#11的核心概念</strong>：</p>
+<p>PKCS#11定义了几个核心对象：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">对象</th><th style="text-align: left">比喻</th><th style="text-align: left">描述</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>Slot</strong></td><td style="text-align: left">保险箱窗口</td><td style="text-align: left">令牌插槽，可以插入一个Token</td></tr>
+<tr><td style="text-align: left"><strong>Token</strong></td><td style="text-align: left">保险箱</td><td style="text-align: left">存储密钥的令牌，对应一个HSM实例</td></tr>
+<tr><td style="text-align: left"><strong>Session</strong></td><td style="text-align: left">访问记录</td><td style="text-align: left">与Token的一次交互会话</td></tr>
+<tr><td style="text-align: left"><strong>Object</strong></td><td style="text-align: left">保险箱内容</td><td style="text-align: left">密钥、证书等密码对象</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>PKCS#11的核心函数</strong>：</p>
+<p>PKCS#11定义了几百个函数，但最常用的只有几十个：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">函数</th><th style="text-align: left">描述</th><th style="text-align: left">应用场景</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><code>C_Initialize</code></td><td style="text-align: left">初始化</td><td style="text-align: left">应用启动时调用</td></tr>
+<tr><td style="text-align: left"><code>C_OpenSession</code></td><td style="text-align: left">打开会话</td><td style="text-align: left">与Token建立交互</td></tr>
+<tr><td style="text-align: left"><code>C_Login</code></td><td style="text-align: left">登录</td><td style="text-align: left">认证用户身份</td></tr>
+<tr><td style="text-align: left"><code>C_GenerateKeyPair</code></td><td style="text-align: left">生成密钥对</td><td style="text-align: left">创建新密钥</td></tr>
+<tr><td style="text-align: left"><code>C_Sign</code></td><td style="text-align: left">签名</td><td style="text-align: left">用私钥签名数据</td></tr>
+<tr><td style="text-align: left"><code>C_Verify</code></td><td style="text-align: left">验证签名</td><td style="text-align: left">用公钥验证签名</td></tr>
+<tr><td style="text-align: left"><code>C_Encrypt</code></td><td style="text-align: left">加密</td><td style="text-align: left">用公钥加密数据</td></tr>
+<tr><td style="text-align: left"><code>C_Decrypt</code></td><td style="text-align: left">解密</td><td style="text-align: left">用私钥解密数据</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>为什么PKCS#11重要？</strong></p>
+<p>PKCS#11是密码世界的“普通话“：</p>
+<ul>
+<li>几乎所有HSM厂商都支持PKCS#11</li>
+<li>应用开发者只需要学习一套API</li>
+<li>不同HSM可以互相替换</li>
+</ul>
+<p>后续第三章，我们将深入解析PKCS#11。</p>
+<hr>
+<h3 id="中层安全认证标准hsm的星级认证"><a class="header" href="#中层安全认证标准hsm的星级认证">中层：安全认证标准——HSM的“星级认证“</a></h3>
+<p>安全认证标准定义了HSM需要满足的安全要求，以及如何评估。</p>
+<p><strong>FIPS 140-3（美国国家标准）</strong></p>
+<p>FIPS 140是美国国家标准与技术研究院（NIST）制定的密码模块安全标准。</p>
+<p>FIPS 140-3定义了四个安全等级：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">等级</th><th style="text-align: left">要求</th><th style="text-align: left">典型应用</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>Level 1</strong></td><td style="text-align: left">最低要求，软件模块可能满足</td><td style="text-align: left">低安全场景</td></tr>
+<tr><td style="text-align: left"><strong>Level 2</strong></td><td style="text-align: left">物理防护、角色认证</td><td style="text-align: left">一般商业应用</td></tr>
+<tr><td style="text-align: left"><strong>Level 3</strong></td><td style="text-align: left">物理防篡改、密钥零化</td><td style="text-align: left">金融、政府</td></tr>
+<tr><td style="text-align: left"><strong>Level 4</strong></td><td style="text-align: left">完整物理防护、环境检测</td><td style="text-align: left">最高安全场景</td></tr>
+</tbody>
+</table>
+</div>
+<p>大多数商业HSM达到Level 3。Thales Luna、Entrust nCipher等高端HSM可达Level 3+（部分型号的特定配置可达Level 4）。</p>
+<p><strong>Common Criteria（国际标准）</strong></p>
+<p>Common Criteria（CC）是国际通用的信息安全产品评估标准。</p>
+<p>CC定义了评估保证等级（EAL）：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">等级</th><th style="text-align: left">描述</th><th style="text-align: left">典型HSM</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>EAL2</strong></td><td style="text-align: left">结构测试</td><td style="text-align: left">低端产品</td></tr>
+<tr><td style="text-align: left"><strong>EAL3</strong></td><td style="text-align: left">方法测试和检查</td><td style="text-align: left">一般产品</td></tr>
+<tr><td style="text-align: left"><strong>EAL4+</strong></td><td style="text-align: left">方法设计、测试和复查</td><td style="text-align: left">主流HSM</td></tr>
+<tr><td style="text-align: left"><strong>EAL5+</strong></td><td style="text-align: left">半形式化验证设计</td><td style="text-align: left">高端HSM</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>国密认证（中国标准）</strong></p>
+<p>中国有自己的密码模块认证体系，由国家密码管理局负责，分为四个安全等级。</p>
+<p>国密认证等级及典型应用：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">等级</th><th style="text-align: left">要求</th><th style="text-align: left">典型HSM</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>一级</strong></td><td style="text-align: left">基本安全</td><td style="text-align: left">软件模块</td></tr>
+<tr><td style="text-align: left"><strong>二级</strong></td><td style="text-align: left">较高安全，物理防护</td><td style="text-align: left">华大电子CIU98_B系列等国产HSM</td></tr>
+<tr><td style="text-align: left"><strong>三级</strong></td><td style="text-align: left">更高安全，完整防护</td><td style="text-align: left">高端国产HSM</td></tr>
+<tr><td style="text-align: left"><strong>四级</strong></td><td style="text-align: left">最高安全，环境失效保护</td><td style="text-align: left">军用/特殊用途HSM</td></tr>
+</tbody>
+</table>
+</div>
+<p>华大电子CIU98_B系列通过商密二级、CCRC EAL5+等多项认证，是国内车规安全芯片的主流产品。</p>
+<p><strong>认证的意义</strong>：</p>
+<p>安全认证就像“星级认证“。通过认证的HSM意味着：</p>
+<ul>
+<li>第三方机构评估了安全设计</li>
+<li>安全机制经过测试验证</li>
+<li>可以被信任用于敏感场景</li>
+</ul>
+<hr>
+<h3 id="底层硬件架构标准hsm的设计图纸"><a class="header" href="#底层硬件架构标准hsm的设计图纸">底层：硬件架构标准——HSM的“设计图纸“</a></h3>
+<p>硬件架构标准定义了HSM应该如何设计、集成。</p>
+<p><strong>EVITA（车载HSM架构标准）</strong></p>
+<p>EVITA（E-safety Vehicle Intrusion protected Applications）是欧盟资助的车载安全架构项目。</p>
+<p>EVITA定义了三种车载HSM等级：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">等级</th><th style="text-align: left">功能</th><th style="text-align: left">应用场景</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>EVITA Full</strong></td><td style="text-align: left">完整密码功能、复杂密钥管理</td><td style="text-align: left">中央控制器、网关</td></tr>
+<tr><td style="text-align: left"><strong>EVITA Medium</strong></td><td style="text-align: left">中等密码功能、简化密钥管理</td><td style="text-align: left">ECU控制器</td></tr>
+<tr><td style="text-align: left"><strong>EVITA Light</strong></td><td style="text-align: left">基本密码功能、固定密钥</td><td style="text-align: left">传感器、执行器</td></tr>
+</tbody>
+</table>
+</div>
+<p>EVITA Full HSM需要：</p>
+<ul>
+<li>完整的密码算法引擎（AES、RSA、ECC）</li>
+<li>复杂的密钥管理（密钥生成、存储、协商）</li>
+<li>完整的审计功能</li>
+</ul>
+<p>EVITA Light HSM只需要：</p>
+<ul>
+<li>基本的AES引擎</li>
+<li>固定的密钥槽</li>
+<li>简单的认证机制</li>
+</ul>
+<p><strong>SHE（安全硬件扩展）</strong></p>
+<p>SHE（Secure Hardware Extension）是奥迪、宝马、保时捷等车企联合定义的车载安全扩展标准。</p>
+<p>SHE比EVITA更简化，只定义基本功能：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">功能</th><th style="text-align: left">描述</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>安全启动</strong></td><td style="text-align: left">验证固件签名</td></tr>
+<tr><td style="text-align: left"><strong>密钥存储</strong></td><td style="text-align: left">存储固定数量的密钥槽</td></tr>
+<tr><td style="text-align: left"><strong>AES加密</strong></td><td style="text-align: left">AES-128加密/解密</td></tr>
+<tr><td style="text-align: left"><strong>随机数生成</strong></td><td style="text-align: left">真随机数生成器</td></tr>
+</tbody>
+</table>
+</div>
+<p>SHE是车载HSM的“最低配置“。很多MCU内置的HSM模块满足SHE标准。</p>
+<p><strong>TPM（可信平台模块）</strong></p>
+<p>TPM（Trusted Platform Module）是TCG（可信计算组织）定义的可信平台模块标准。</p>
+<p>TPM主要用于：</p>
+<ul>
+<li>PC、服务器</li>
+<li>安全启动</li>
+<li>密钥存储</li>
+<li>平台身份认证</li>
+</ul>
+<p>TPM和车载HSM的定位不同：</p>
+<ul>
+<li>TPM：PC/服务器平台</li>
+<li>EVITA/SHE：车载平台</li>
+</ul>
+<p>但TPM的设计理念（可信平台、信任根）影响了车载HSM的设计。</p>
+<hr>
+<h3 id="工字形结构的内在逻辑"><a class="header" href="#工字形结构的内在逻辑">“工“字形结构的内在逻辑</a></h3>
+<p>为什么是“工“字形？</p>
+<p>三个层次有不同的关注点：</p>
+<p><strong>上层（PKCS#11）：怎么用</strong></p>
+<p>PKCS#11关注的是“应用开发者如何使用HSM“。</p>
+<p>它定义的是接口、对象、操作。这些是应用开发者每天接触的东西。</p>
+<p><strong>中层（认证）：怎么造</strong></p>
+<p>安全认证关注的是“HSM应该如何设计和制造“。</p>
+<p>它定义的是安全要求、测试方法、评估等级。这些是HSM厂商需要遵守的东西。</p>
+<p><strong>底层（架构）：怎么装</strong></p>
+<p>硬件架构关注的是“HSM应该如何集成到系统“。</p>
+<p>它定义的是功能范围、性能要求、接口类型。这些是系统设计者需要考虑的东西。</p>
+<p>三个层次的关系：</p>
+<pre><code>应用开发者 → 使用上层标准（PKCS#11）
+         ↓
+HSM厂商   → 遵守中层标准（FIPS/CC）
+         ↓
+系统设计者 → 参考底层标准（EVITA/SHE）
+</code></pre>
+<hr>
+<h3 id="标准之间的关系"><a class="header" href="#标准之间的关系">标准之间的关系</a></h3>
+<p>三个层次的标准不是独立的，它们相互关联：</p>
+<p><strong>关系一：上层依赖中层</strong></p>
+<p>PKCS#11假设HSM已经满足一定的安全要求。如果一个HSM通过了FIPS 140-3 Level 3认证，PKCS#11的安全性才有意义。</p>
+<p>如果HSM本身不安全（没有认证），PKCS#11接口再标准，也不安全。</p>
+<p><strong>关系二：中层约束底层</strong></p>
+<p>安全认证定义了HSM必须满足的物理防护、密钥管理要求。这些要求约束了硬件架构的设计。</p>
+<p>比如，FIPS 140-3 Level 3要求物理防篡改。如果车载HSM需要获得FIPS认证，则必须包含相应的防篡改机制。</p>
+<p><strong>关系三：底层影响上层</strong></p>
+<p>硬件架构定义了HSM的功能范围。这些范围影响PKCS#11的能力。</p>
+<p>比如，SHE只有5个固定密钥槽。那么PKCS#11的密钥生成功能受限。</p>
+<hr>
+<h3 id="一个类比餐厅的分级体系"><a class="header" href="#一个类比餐厅的分级体系">一个类比：餐厅的分级体系</a></h3>
+<p>让我用一个类比来理解标准体系。</p>
+<p>想象一个餐厅分级体系：</p>
+<p><strong>上层：菜单标准（怎么吃）</strong></p>
+<p>菜单定义了顾客可以点的菜品、价格、描述。顾客只需要看菜单，不需要知道厨房怎么运作。</p>
+<p>PKCS#11就像菜单标准：定义了“你可以点什么“，“价格是什么”。</p>
+<p><strong>中层：卫生认证（怎么做）</strong></p>
+<p>卫生认证定义了餐厅必须满足的卫生要求：厨房清洁、食材安全、员工健康。顾客看卫生认证等级，就知道餐厅是否可信。</p>
+<p>FIPS 140-3就像卫生认证：定义了“厨房必须满足什么卫生要求“。</p>
+<p><strong>底层：厨房设计规范（怎么建）</strong></p>
+<p>厨房设计规范定义了厨房应该如何布局：通风系统、排烟管道、防火设施。餐厅设计者需要参考这些规范。</p>
+<p>EVITA/SHE就像厨房设计规范：定义了“厨房应该如何设计“。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们分析了HSM的标准生态。</p>
+<p>HSM标准形成一个“工“字形结构：</p>
+<ul>
+<li><strong>上层</strong>：PKCS#11，定义“怎么用“——应用接口标准</li>
+<li><strong>中层</strong>：FIPS 140-3、Common Criteria、国密认证，定义“怎么造“——安全认证标准</li>
+<li><strong>底层</strong>：EVITA、SHE、TPM，定义“怎么装“——硬件架构标准</li>
+</ul>
+<p>三个层次相互关联：</p>
+<ul>
+<li>上层依赖中层（应用依赖认证）</li>
+<li>中层约束底层（认证约束架构）</li>
+<li>底层影响上层（架构影响接口）</li>
+</ul>
+<p>这些标准让HSM世界从“碎片化“走向“有序化“，让不同厂商、不同系统的HSM可以互操作、可比性、可信任。</p>
+<p>下一节，我们将看看HSM的通信全景——Host CPU如何通过SDK、总线、APDU与HSM内部密室交互。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>标准定义了“是什么“，但没有定义“怎么连接“。</p>
+<p>Host CPU如何与HSM通信？</p>
+<p>SDK、SPI/I2C、APDU……这些名词是什么意思？</p>
+<p>下一节，通信全景。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/2.2-HSM的两种物理形态.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/2.4-HSM通信全景.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/2.2-HSM的两种物理形态.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/2.4-HSM通信全景.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

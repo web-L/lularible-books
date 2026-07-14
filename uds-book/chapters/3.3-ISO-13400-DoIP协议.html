@@ -1,0 +1,527 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>ISO · 13400 · DoIP协议 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="33-iso-13400doip协议"><a class="header" href="#33-iso-13400doip协议">3.3 ISO 13400——DoIP协议</a></h1>
+<h3 id="你插上网线的那一刻等等obd口不是can的吗"><a class="header" href="#你插上网线的那一刻等等obd口不是can的吗">你插上网线的那一刻——等等，OBD口不是CAN的吗？</a></h3>
+<p>你的手指捏着一根标准的RJ45网线，愣了两秒。</p>
+<p>面前的这辆2024年新款SUV的OBD-II诊断接口不再是传统的梯形16针插座里只有4号、5号接地、6号CAN-H、14号CAN-L那几根硬线。现在，它的第3针、第11针被指定为以太网激活线——你旁边那个崭新的诊断工具不是通过USB-CAN转换器连到D-Sub9口，而是直接插了一根网线——就像你用笔记本电脑插办公室交换机一样自然。</p>
+<p>你打开诊断仪上的DoIP配置界面，输入广播地址224.0.0.1，端口13400。回车。半秒之内，屏幕上弹出了五个条目——五个ECU的VIN、逻辑地址、EID/GID——每一个都是车载以太网上的一个DoIP节点。你选择一个引擎控制器，点“连接“——路由激活成功——然后一条TCP流绑定完成。</p>
+<p>接下来你测了一个0x22读取DID 0xF190（VIN）——响应在0.3毫秒内返回。同样的请求走你旁边的CAN线通过15765-2经过流控帧和块重组——至少需要2~4毫秒，取决于其他ECU的当前仲裁状态。</p>
+<p>这就是DoIP——Diagnostics over IP（ISO 13400）——它把UDS从CAN的8字节小信封塞进了TCP/IP的巨幅画布上。</p>
+<hr>
+<h3 id="带宽革命从90秒到07秒的物理鸿沟"><a class="header" href="#带宽革命从90秒到07秒的物理鸿沟">带宽革命——从90秒到0.7秒的物理鸿沟</a></h3>
+<p>让我们用数字对比一下这个差距。你要刷写一个4MB（4,194,304字节）的发动机ECU固件：</p>
+<p><strong>走CAN（500 kbps，ISO 15765-2分段传输）</strong>：</p>
+<pre><code>CAN帧利用率分析：
+每帧8字节 → 减去1字节PCI头（单帧SF无此）→ 但多帧CF每帧PCI占1字节
+实际有效数据每帧 ≈ 7字节（CF格式）
+每帧CAN开销 ≈ 帧ID+控制位+CRC+应答槽 ≈ 额外47位
+总线上每7字节有效数据需约 47+8×8=111位时间
+500 kbps -&gt; 500位/毫秒 -&gt; 每7字节 ≈ 0.222ms
+
+4,194,304字节 ÷ 7 ≈ 599,186帧
+考虑流控(FC)的延迟窗口、块间隔(STmin)、其他ECU的仲裁抢占：
+实际刷写时间 ≈ 80~120秒
+</code></pre>
+<p><strong>走DoIP（100 Mbps车载以太网，无分段）</strong>：</p>
+<pre><code>以太网帧利用率：
+每个TCP段可承载多达1460字节(标准以太网MTU 1500)
+DoIP头部仅8字节 + UDS消息负载 = 全部4MB一次或分少数几段
+100 Mbps -&gt; 100,000,000位/秒 ≈ 12,500,000字节/秒
+
+4,194,304字节 ÷ 12,500,000 ≈ 0.34秒（理论）
+考虑DoIP头部、TCP握手、路由激活、ECU的Flash写入延迟：
+实际刷写时间 ≈ 0.5~1秒
+</code></pre>
+<p>差距不是一点点——是100倍数量级的物理鸿沟。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：DoIP的出现不是“CAN不够好“——CAN在1Mbps带宽下处理传感器和执行器的实时控制绰绰有余。问题出在诊断数据的“粒度配错“——UDS的诊断帧在CAN上被强制拆分成7字节一块，就像用注射器往静脉里注射营养液——能注射进去，但太慢了。DoIP给了诊断数据传输一条大动脉——不需要拆分、不需要流控、不需要等待对等方的CF帧——TCP只管源源不断地推字节，ECU只管收。这就是为什么DoIP是刷写和大数据读取的革命性改变——它消除了“运输成本“。</p>
+</blockquote>
+<hr>
+<h3 id="doip架构全景不是替代是扩展"><a class="header" href="#doip架构全景不是替代是扩展">DoIP架构全景——不是替代，是扩展</a></h3>
+<p>DoIP不是CAN的替代品。同一辆车上，CAN总线和车载以太网并存。架构如下：</p>
+<pre><code>                        ┌─────────────────────────────────┐
+                        │          诊断仪 (Tester)          │
+                        │   ┌──────────┐  ┌──────────┐    │
+                        │   │   CAN口   │  │  以太网口  │    │
+                        │   └────┬─────┘  └────┬─────┘    │
+                        └────────┼──────────────┼──────────┘
+                                 │              │
+                    ISO 15765-2 │              │ DoIP (ISO 13400)
+                    CAN 500kbps │              │ Ethernet 100Mbps
+                                 │              │
+              ┌──────────────────┼──────┐  ┌───┴──────────────────────┐
+              │      OBD-II Connector   │  │   OBD-II Ethernet Pins    │
+              │   (Pin 6=CAN-H,14=CAN-L)│  │   (Pin 3=ETH+, 11=ETH-)  │
+              └──────────────────┬──────┘  └───┬──────────────────────┘
+                                 │              │
+    ┌────────────────────────────┼──────────────┼──────────────────────┐
+    │                    车内网络 (In-Vehicle Network)                    │
+    │                            │              │                       │
+    │  ┌─────────┐  ┌─────────┐  │  ┌───────────┴────────────┐         │
+    │  │ 发动机   │  │ 变速箱   │  │  │     DoIP 网关 ECU      │         │
+    │  │ ECU(CAN)│  │ ECU(CAN)│  │  │  ┌─────────────────┐  │         │
+    │  │ 0x7E0  │  │ 0x7E1  │  │  │  │ 自带以太网PHY芯片 │  │         │
+    │  └────┬────┘  └────┬────┘  │  │  ├─────────────────┤  │         │
+    │       └──────┬─────┘       │  │  │ CAN控制器 (多路) │  │         │
+    │              │             │  │  │ → 内部CAN总线    │  │         │
+    │     CAN总线A │ 500kbps     │  │  └────────┬────────┘  │         │
+    │              │             │  │           │           │         │
+    │              │             │  │  ┌───┐ ┌──┴──┐ ┌───┐│         │
+    │              │             │  │  │ABS│ │空调 │ │BMS││         │
+    │              │             │  │  │CAN│ │CAN  │ │CAN││         │
+    │              │             │  │  └───┘ └─────┘ └───┘│         │
+    │              │             │  │    内部CAN总线 B       │         │
+    └──────────────┼─────────────┼──┼──────────────────────┼─────────┘
+                   │             │
+         CAN路径直达引擎ECU     DoIP路径到达网关后再进CAN
+</code></pre>
+<p>理解这个架构的关键点：<strong>DoIP网关是一台带有以太网PHY芯片和CAN控制器的ECU</strong>。诊断仪通过以太网把UDS请求发给网关，网关再把请求原封不动地转成CAN帧发到内部CAN总线上——目标ECU完全不知道这个请求是从以太网过来的。这叫“诊断路由“——网关充当了DoIP和CAN之间的协议翻译器。</p>
+<hr>
+<h3 id="doip的四大协议步骤从发现到对话的完整握手"><a class="header" href="#doip的四大协议步骤从发现到对话的完整握手">DoIP的四大协议步骤——从发现到对话的完整握手</a></h3>
+<h4 id="第一步vehicle-discovery车辆发现"><a class="header" href="#第一步vehicle-discovery车辆发现">第一步：Vehicle Discovery（车辆发现）</a></h4>
+<p>你插上网线后诊断仪发出的第一个动作不是一个UDS请求——而是一个UDP广播包。诊断仪还不知道这个以太网线后面连着几个ECU、每个ECU叫什么名字、逻辑地址是多少。</p>
+<pre><code>诊断仪 (IP: 192.168.1.100) → UDP广播 224.0.0.1:13400
+    Vehicle Identification Request
+    ┌────────────────────────────────┐
+    │ DoIP Header                    │
+    │  ProtocolVersion:    0x02      │
+    │  InverseProtocolVer: 0xFD      │
+    │  PayloadType:        0x0001    │ — Vehicle Identification Request
+    │  PayloadLength:      0x00000000│
+    └────────────────────────────────┘
+</code></pre>
+<p>所有在线DoIP节点监听到这个广播后，各自通过UDP单播回一个Vehicle Announcement：</p>
+<pre><code>ECU (IP: 192.168.1.10) → 诊断仪 (IP: 192.168.1.100):13400 (UDP单播)
+    Vehicle Announcement
+    ┌────────────────────────────────┐
+    │ DoIP Header                    │
+    │  ProtocolVersion:    0x02      │
+    │  InverseProtocolVer: 0xFD      │
+    │  PayloadType:        0x0004    │ — Vehicle Announcement
+    │  PayloadLength:      0x00000...│
+    ├────────────────────────────────┤
+    │  VIN:    W0L0TGF67G1000001     │ — 17字节ASCII，全球唯一车辆标识
+    │  Logical Address: 0x0E80       │ — 双字节，此ECU在UDS网络中的逻辑地址
+    │  EID:    02:00:00:00:00:01     │ — 6字节实体ID（MAC地址/硬件ID）
+    │  GID:    01:02:03:04:05:06     │ — 6字节组ID（同型ECU组标识）
+    │  Further Action: 0x0A          │ — 0x0A=No Further Action Required
+    │  VIN/GID Sync Status: 0x01     │ — 0x01=VIN/GID已同步
+    └────────────────────────────────┘
+</code></pre>
+<p>关键字段解释：</p>
+<ul>
+<li><strong>VIN</strong>：你看到的熟悉的车架号——它让诊断仪的UI可以直接显示“这是哪辆车“而不用用户手动输入。</li>
+<li><strong>EID (Entity ID)</strong>：通常在ECU出厂时烧录到芯片的OTP区域——是ECU个体的硬件指纹——用于路由激活时指定“我要连这个具体的ECU（不是别的同型号ECU）“。</li>
+<li><strong>GID (Group ID)</strong>：同型号ECU共享的组标识——在刷写时可以批处理“同组所有ECU都更新“。</li>
+<li><strong>Logical Address</strong>：这是最关键的一个字段——它就是UDS世界中此ECU在诊断网络里的地址（对应CAN诊断中的诊断CAN ID的源地址部分）。你后续发TCP上的UDS消息时，这个逻辑地址填在DoIP头部中——网关靠这个地址把消息路由到正确的内部CAN节点。</li>
+</ul>
+<h4 id="第二步routing-activation路由激活"><a class="header" href="#第二步routing-activation路由激活">第二步：Routing Activation（路由激活）</a></h4>
+<p>你从五个回复的ECU中选择了发动机控制器（逻辑地址0x0E80）。现在你需要在这条TCP连接上建立诊断通道——DoIP称这个过程为“路由激活“。</p>
+<pre><code>诊断仪 → ECU (TCP SYN, port 13400):
+    三次握手——建立可靠TCP连接
+
+诊断仪 → ECU (TCP data, port 13400):
+    Routing Activation Request
+    ┌────────────────────────────────┐
+    │ DoIP Header                    │
+    │  ProtocolVersion:    0x02      │
+    │  InverseProtocolVer: 0xFD      │
+    │  PayloadType:        0x0005    │ — Routing Activation Request
+    │  PayloadLength:      0x0000000B│ — 11字节
+    ├────────────────────────────────┤
+    │  Source Address (SA): 0x0E00   │ — 诊断仪的逻辑地址（双字节）
+    │  Activation Type:     0x00     │ — 0x00=Default (标准诊断路由激活)
+    │  Reserved:            0x00000000│ — ISO 13400保留字段
+    │  OEM Specific:   (可选字节...) │ — 整车厂自定义数据
+    └────────────────────────────────┘
+
+ECU → 诊断仪 (TCP):
+    Routing Activation Response
+    ┌────────────────────────────────┐
+    │ DoIP Header                    │
+    │  ProtocolVersion:    0x02      │
+    │  InverseProtocolVer: 0xFD      │
+    │  PayloadType:        0x0006    │ — Routing Activation Response
+    │  PayloadLength:      0x00000009│
+    ├────────────────────────────────┤
+    │  Tester Logical Address:0x0E00 │ — 回声诊断仪地址
+    │  Entity Logical Address:0x0E80 │ — 回声ECU地址
+    │  Activation Response Code:0x10 │ — 0x10=Routing Successfully Activated
+    │  Reserved OEM:      0x00000000 │
+    └────────────────────────────────┘
+</code></pre>
+<p>Response Code的关键值：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Code</th><th>含义</th><th>解释</th></tr>
+</thead>
+<tbody>
+<tr><td>0x10</td><td>路由激活成功</td><td>TCP连接现在是诊断通道——可以发任意UDS消息</td></tr>
+<tr><td>0x11</td><td>激活被拒绝——此时不需要</td><td>这个ECU已经被激活——不需要再激活</td></tr>
+<tr><td>0x00</td><td>激活被拒绝——未知的源地址</td><td>诊断仪的SA不在ECU的白名单中</td></tr>
+<tr><td>0x01</td><td>激活被拒绝——无可用Socket</td><td>ECU的TCP socket资源已耗尽</td></tr>
+<tr><td>0x04</td><td>激活被拒绝——认证失败</td><td>需要TLS/安全认证但未通过</td></tr>
+</tbody>
+</table>
+</div>
+<p>一旦收到0x10，这条TCP连接就变成了<strong>UDS运输管道</strong>——你后续在这条连接上发送的所有UDS报文，都会被ECU的Dcm栈正常接收、处理、返回正响应。</p>
+<h4 id="第三步diagnostic-message-exchange诊断消息交换"><a class="header" href="#第三步diagnostic-message-exchange诊断消息交换">第三步：Diagnostic Message Exchange（诊断消息交换）</a></h4>
+<p>激活后的诊断消息通过DoIP payload承载，头部如下：</p>
+<pre><code>DoIP Diagnostic Message 帧结构：
+┌──────────┬─────────────┬─────────────┬──────────────┬──────────────────┐
+│ Protocol │ Inverse     │ PayloadType │ PayloadLength│ UDS Message      │
+│ Version  │ ProtocolVer │ (2 bytes)   │ (4 bytes)    │ (变长)           │
+│ (1 byte) │ (1 byte)    │             │              │                  │
+├──────────┼─────────────┼─────────────┼──────────────┼──────────────────┤
+│  0x02    │   0xFD      │   0x8001    │ 0x0000000A   │ 源地址 目标地址  │
+│          │  = 0xFF-0x02│ Diagnostic  │ = 10字节     │ 源地址 目标地址  │
+│          │  版本校验   │ Message     │              │ [UDS请求]        │
+└──────────┴─────────────┴─────────────┴──────────────┴──────────────────┘
+
+PayloadType 枚举：
+  0x0000 = Generic DoIP Header NACK
+  0x0001 = Vehicle Identification Request
+  0x0004 = Vehicle Announcement
+  0x0005 = Routing Activation Request
+  0x0006 = Routing Activation Response
+  0x8001 = Diagnostic Message（负载中携带UDS请求/响应）
+  0x8002 = Diagnostic Message Positive ACK（肯定确认）
+  0x8003 = Diagnostic Message Negative ACK（否定确认——DoIP层错误，如未知目标地址）
+</code></pre>
+<p>ProtocolVersion和InverseProtocolVersion是一对校验搭档——InverseProtocolVersion必须是<code>0xFF - ProtocolVersion</code>。如果接收方收到这两个值不满足互补关系，直接丢弃——这是最简单的位翻转检测机制——防止一个比特位差错导致协议版本被错误识别。</p>
+<h4 id="第四步alive-check--entity-status"><a class="header" href="#第四步alive-check--entity-status">第四步：Alive Check / Entity Status</a></h4>
+<p>TCP连接建立后诊断仪不会永久占用——DoIP规定诊断仪必须周期性地通过UDP查询ECU状态以确认通道仍然存活。如果超过一定时间没有Alive Check，ECU可以主动关闭TCP连接——释放socket资源。</p>
+<pre><code>诊断仪 → ECU (UDP 单播):
+    DoIP Header
+    PayloadType = 0x0003  — Entity Status Request
+
+ECU → 诊断仪 (UDP 单播):
+    DoIP Header
+    PayloadType = 0x4003  — Entity Status Response
+    状态字节：当前Socket数、最大Socket数、激活的连接数...
+</code></pre>
+<hr>
+<h3 id="和iso-15765-2的正面对比为什么分段逻辑完全不同"><a class="header" href="#和iso-15765-2的正面对比为什么分段逻辑完全不同">和ISO 15765-2的正面对比——为什么分段逻辑完全不同</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>对比维度</th><th>ISO 15765-2 (CAN)</th><th>ISO 13400 (DoIP)</th></tr>
+</thead>
+<tbody>
+<tr><td>物理带宽</td><td>500 kbps 或 1 Mbps</td><td>100 Mbps (或1000 Mbps)</td></tr>
+<tr><td>帧格式</td><td>CAN 8字节帧，分SF/FF/FC/CF四种PCI格式</td><td>TCP/IP流，无帧长度限制</td></tr>
+<tr><td>数据段大小</td><td>单帧最多7字节有效数据，连续帧也如此</td><td>TCP段1460字节（常用MTU），携带完整UDS报文</td></tr>
+<tr><td>多帧机制</td><td>FF发长度→ECU回FC（BS+STmin）→诊断仪推CF块</td><td>不需要——TCP保证顺序到达、不丢包、不分段(在IP层完成)</td></tr>
+<tr><td>流控</td><td>基于FC帧的Block Size和Separation Time</td><td>基于TCP的窗口流量控制——由操作系统TCP栈自动管理</td></tr>
+<tr><td>最大消息长度</td><td>4095字节（FF的12位长度字段上限）</td><td>由PayloadLength字段的4字节限制=约4GB（实际受ECU RAM限制，通常设上限为几十MB）</td></tr>
+<tr><td>连接管理</td><td>不需要连接——CAN ID即连接（无连接协议）</td><td>需要TCP三次握手+路由激活+Alive Check（面向连接）</td></tr>
+<tr><td>诊断仪硬件</td><td>几十元的USB-CAN适配器</td><td>标准以太网口（任何笔记本自带）+ DoIP协议栈软件</td></tr>
+<tr><td>电磁干扰抗性</td><td>强——CAN的差分信号+位填充自带EMI鲁棒性</td><td>中等——以太网100BASE-T1(单对双绞线)在车载环境中已经证明可靠，但成本高于CAN收发器</td></tr>
+<tr><td>时间确定性</td><td>实时——CAN仲裁保证高优先级帧准时到达</td><td>较弱的实时性——TCP重传会引入不可预测的延迟</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>核心洞察</strong>：CAN和DoIP在分段机制上的差异，本质上是“无连接 vs 面向连接“两个世界的碰撞。CAN的无连接特性让你可以随时发一个单帧80ms完成一次对话（如0x22读取DID）——这是轻量级的优势。DoIP需要先建立TCP连接再路由激活，额外开销大约50~100ms——对于小诊断请求显然是过重的。但对于4MB固件刷写——CAN的7字节/帧的离散传输让你付出100秒的代价，而DoIP的连续TCP流用半秒完成。<strong>它们的关系不是“谁取代谁“——而是“轻型诊断走CAN，重型数据走DoIP“的天然分工</strong>。</p>
+</blockquote>
+<hr>
+<h3 id="uds报文在doip中的无摩擦旅行"><a class="header" href="#uds报文在doip中的无摩擦旅行">UDS报文在DoIP中的无摩擦旅行</a></h3>
+<p>DoIP和UDS的“分界“非常清晰——UDS消息在DoIP中是完整传递给ECU的，不需要做任何修改或转码：</p>
+<pre><code>UDS请求："读取DID 0xF190 (VIN)
+作为纯粹的字节数组： 0x22 0xF1 0x90
+
+在 CAN 上的打包（ISO 15765-2 单帧）：
+┌──────┬──────┬──────┬──────┬───┬───┬───┐
+│ PCI  │ 0x22 │ 0xF1 │ 0x90 │Pad│Pad│...│  需PCI头+填充
+└──────┴──────┴──────┴──────┴───┴───┴───┘
+ CAN ID: 0x7E0 (物理寻址)
+
+在 DoIP 上的打包（ISO 13400 Diagnostic Message）：
+┌──────────┬──────┬──────┬──────┐
+│ DoIP Hdr │ 0x22 │ 0xF1 │ 0x90 │  无填充，报文完整
+└──────────┴──────┴──────┴──────┘
+ 加上DoIP头部中的SA=0x0E00(诊断仪), TA=0x0E80(ECU)
+
+ECU的Dcm层看到的：无论是哪条路径进来的，都是完全相同的字节流：
+             0x22 0xF1 0x90
+</code></pre>
+<p>ECU内部的Dcm栈不需要写两个版本——CAN路径的<code>CanTp_RxIndication()</code>和DoIP路径的<code>SoAd_RxIndication()</code>是PDU Router下的两个不同入口，但它们最终都调用同一个<code>Dcm_ProcessRxMessage()</code>。这就是AUTOSAR分层的威力——UDS服务实现与传输通道是正交的。</p>
+<hr>
+<h3 id="历史溯源从kwp2000-on-k-line到uds-on-can到uds-on-doip"><a class="header" href="#历史溯源从kwp2000-on-k-line到uds-on-can到uds-on-doip">历史溯源：从KWP2000 on K-Line到UDS on CAN到UDS on DoIP</a></h3>
+<p>如果你回溯诊断通信的历史线：</p>
+<pre><code>1990s:  KWP2000 (ISO 14230) on K-Line — 10.4 kbps
+        → 刷写一块256KB ECU需要15分钟
+        → 诊断仪通过专用串口卡连接——设备笨重、速度慢
+
+2000s:  UDS (ISO 14229) on CAN (ISO 15765-2) — 500 kbps
+        → 刷写4MB ECU需要约90秒
+        → 引入了分段传输(FF/FC/CF)、流控、多帧重组
+        → 至今仍是最广泛部署的诊断通道
+
+2010s:  UDS on DoIP (ISO 13400:2011) — 100 Mbps
+        → 刷写4MB ECU超过100倍提速——不到1秒
+        → 2019年ISO 13400第2版发布——增加了TLS安全认证
+        → 车载以太网芯片成本下降——DoIP从高端车型走向大众市场
+
+2020s:  UDS on CAN FD (ISO 15765-2扩展) — 5~8 Mbps
+        → CAN FD帧支持64字节数据段——单帧效率大幅提高
+        → 和DoIP并存——CAN FD处理中等数据量场景（几KB到几百KB）
+        → DoIP处理巨量数据场景（几MB以上）
+</code></pre>
+<p>DoIP不是突然出现的——它是车载以太网整体架构在诊断领域的自然延伸。2010年以后，随着ADAS摄像头、激光雷达、以太网AVB音视频流等对带宽要求越来越高的应用进入汽车，车载以太网的交换机芯片和PHY收发器逐渐成熟——DoIP作为TCP/IP在诊断领域的复用方案应运而生。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>
+<p>DoIP (ISO 13400) 是TCP/IP之上的UDS传输协议——它把UDS从CAN的8字节分段限制中解放出来，以100Mbps车载以太网的速度为刷写和大数据读取提供了100倍以上的带宽提升。</p>
+</li>
+<li>
+<p>DoIP的四大协议步骤——Vehicle Discovery(UDP广播)→Routing Activation(TCP握手)→Diagnostic Message Exchange(TCP流)→Alive Check(UDP)构成了一套完整的面向连接架构，每一步有精确的PayloadType标识。</p>
+</li>
+<li>
+<p>Vehicle Announcement中的VIN/EID/GID/Logical Address四个关键字段共同完成“车辆身份识别→ECU个体定位→逻辑地址绑定“的完整的网络自描述，诊断仪在插入网线后0.5秒内即可获取全车DoIP拓扑。</p>
+</li>
+<li>
+<p>DoIP和CAN不是竞争关系——轻型诊断（如读取DID、查询DTC）走CAN通路（轻量、无连接开销），重型数据（刷写固件、读回完整存储器镜像）走DoIP通路（高带宽、面向连接）。</p>
+</li>
+<li>
+<p>UDS应用层与传输层完全解耦——同一份0x22/0x2E/0x31等UDS服务实现逻辑不需要任何修改，Dcm栈通过CanTp或SoAd接口接收完全相同的UDS字节流。</p>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：你现在有两条诊断通道：CAN（ISO 15765-2）和DoIP（ISO 13400）。一条轻快、一条高速；一条无连接随时能用、一条需要TCP先握手再激活。在一个真实的ECU上同时支持这两条通道，PDU Router怎么做仲裁？两路诊断请求同时到达怎么办？你面临的是真正的传输层对决——不是选谁赢，而是怎么协作共存。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/3.2-多帧传输实战-CAN上的完整对话.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/3.4-传输层对决-CAN与DoIP的共存.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/3.2-多帧传输实战-CAN上的完整对话.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/3.4-传输层对决-CAN与DoIP的共存.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

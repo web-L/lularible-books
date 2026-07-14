@@ -1,0 +1,719 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>让指挥家诞生 · BMCA算法详解 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="22-让指挥家诞生bmca算法详解"><a class="header" href="#22-让指挥家诞生bmca算法详解">2.2 让指挥家诞生：BMCA算法详解</a></h1>
+<h2 id="一个真实的故事谁当主时钟"><a class="header" href="#一个真实的故事谁当主时钟">一个真实的故事：谁当主时钟？</a></h2>
+<p>2019年，某电信运营商的5G基站网络出现了诡异的问题。</p>
+<p>网络中有12个核心交换机，每个都接了GPS天线，理论上都可以作为时间源。工程师们的想法是：这样很好啊，任何一个GPS坏了，其他设备还能接替，冗余设计，可靠性高。</p>
+<p>但现实是：网络运行一段时间后，某些基站的时间突然跳变，同步精度从亚微秒级突然跌到毫秒级。更诡异的是，这种跳变是随机的，没有规律。</p>
+<p>排查了两个月，最后发现问题出在<strong>主时钟选举</strong>上。</p>
+<p>这12个交换机都在发送Announce报文，都声称“我是主时钟“。下游的基站收到了多个Announce报文，不知道该听谁的。更糟糕的是，某些交换机在某些时刻认为“我更好“，于是切换状态；下一刻又发现“别人更好“，又切换回来。</p>
+<p>这就像交响乐团里，12个乐手都站起来说“我来指挥“，然后又相互推让。结果就是整个乐团乱成一团。</p>
+<p><strong>根本原因</strong>：BMCA（Best Master Clock Algorithm，最佳主时钟算法）配置不当。</p>
+<hr>
+<h2 id="bmca是什么一场没有选票的民主选举"><a class="header" href="#bmca是什么一场没有选票的民主选举">BMCA是什么？一场没有选票的“民主选举“</a></h2>
+<p>在PTP网络中，<strong>谁来当主时钟</strong>是一个核心问题。</p>
+<p>如果人工指定，有两个问题：</p>
+<ol>
+<li>网络拓扑变化时（比如主时钟故障），需要人工干预</li>
+<li>大规模网络中，人工配置不现实</li>
+</ol>
+<p>PTP的解决方案是：<strong>让设备自己选</strong>。</p>
+<p>这就是BMCA——一套自动选举主时钟的算法。它的特点是：</p>
+<ul>
+<li><strong>分布式</strong>：每个设备独立运行，不需要中央控制器</li>
+<li><strong>确定性</strong>：相同输入必然产生相同输出</li>
+<li><strong>自愈性</strong>：主时钟故障时，自动选举新主时钟</li>
+</ul>
+<p>BMCA的核心思想：<strong>每个设备都知道自己的“实力“，也通过Announce报文了解别人的“实力“。然后，大家都选择“实力最强“的设备作为主时钟。</strong></p>
+<p>这就像：</p>
+<ul>
+<li>每个乐手都知道自己的演奏水平</li>
+<li>每个乐手都能听到其他乐手的演奏</li>
+<li>大家自动选择水平最高的那个乐手作为指挥</li>
+</ul>
+<hr>
+<h2 id="主时钟的实力由什么决定"><a class="header" href="#主时钟的实力由什么决定">主时钟的“实力“由什么决定？</a></h2>
+<p>BMCA比较的不是“谁更受欢迎“，而是一组客观的<strong>时钟质量属性</strong>。</p>
+<h3 id="时钟质量属性主时钟的简历"><a class="header" href="#时钟质量属性主时钟的简历">时钟质量属性：主时钟的“简历“</a></h3>
+<p>当PTP设备发送Announce报文时，它会携带以下“简历信息“：</p>
+<h4 id="1-priority1第一优先级人工权重"><a class="header" href="#1-priority1第一优先级人工权重">1. priority1：第一优先级（人工权重）</a></h4>
+<ul>
+<li><strong>类型</strong>：UInteger8（0-255）</li>
+<li><strong>含义</strong>：管理员设置的人工优先级</li>
+<li><strong>规则</strong>：值越小，优先级越高</li>
+<li><strong>用途</strong>：让管理员可以人为干预主时钟选举</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<p>你有两个GPS时钟：时钟A和时钟B。时钟A连接的是高精度铷原子钟，时钟B连接的是普通GPS。你想让时钟A成为主时钟，时钟B作为备份。</p>
+<p>你可以设置：</p>
+<ul>
+<li>时钟A：priority1 = 10</li>
+<li>时钟B：priority1 = 20</li>
+</ul>
+<p>这样，BMCA会优先选择时钟A。当时钟A故障时，时钟B自动接替。</p>
+<p><strong>默认值</strong>：128（中间值，既不优先也不靠后）</p>
+<p><strong>配置建议</strong>：</p>
+<ul>
+<li>核心主时钟：10-50</li>
+<li>一级备份：51-100</li>
+<li>二级备份：101-150</li>
+<li>普通设备：128（默认）</li>
+<li>仅从时钟：200-255</li>
+</ul>
+<hr>
+<h4 id="2-clockclass时钟等级精度等级"><a class="header" href="#2-clockclass时钟等级精度等级">2. clockClass：时钟等级（精度等级）</a></h4>
+<ul>
+<li><strong>类型</strong>：UInteger8（0-255）</li>
+<li><strong>含义</strong>：时钟的精度等级和可溯源性</li>
+<li><strong>规则</strong>：值越小，等级越高</li>
+<li><strong>用途</strong>：标识时钟的时间质量和状态</li>
+</ul>
+<p><strong>关键值详解</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">值</th><th style="text-align: left">含义</th><th style="text-align: left">说明</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>6</strong></td><td style="text-align: left">主参考时钟，PTP时间尺度</td><td style="text-align: left">直接同步到GPS/原子钟，时间可溯源到国际标准，绝不会成为从时钟</td></tr>
+<tr><td style="text-align: left"><strong>7</strong></td><td style="text-align: left">原为class 6，失去同步，保持模式</td><td style="text-align: left">失去GPS信号，但本地原子钟还在保持时间，精度仍然很高</td></tr>
+<tr><td style="text-align: left"><strong>13</strong></td><td style="text-align: left">应用特定时间源，ARB时间尺度</td><td style="text-align: left">使用专用时间源（如实验室内部时钟），时间不可溯源</td></tr>
+<tr><td style="text-align: left"><strong>14</strong></td><td style="text-align: left">原为class 13，失去同步，保持模式</td><td style="text-align: left">失去外部信号，本地保持</td></tr>
+<tr><td style="text-align: left"><strong>52</strong></td><td style="text-align: left">降级替代A（class 7降级）</td><td style="text-align: left">原为class 7，但保持时间超出规范，不能再当主时钟</td></tr>
+<tr><td style="text-align: left"><strong>58</strong></td><td style="text-align: left">降级替代A（class 14降级）</td><td style="text-align: left">原为class 14，但保持时间超出规范，不能再当主时钟</td></tr>
+<tr><td style="text-align: left"><strong>187</strong></td><td style="text-align: left">降级替代B（class 7降级，可从）</td><td style="text-align: left">失去同步，可以成为从时钟</td></tr>
+<tr><td style="text-align: left"><strong>193</strong></td><td style="text-align: left">降级替代B（class 14降级，可从）</td><td style="text-align: left">失去同步，可以成为从时钟</td></tr>
+<tr><td style="text-align: left"><strong>248</strong></td><td style="text-align: left">默认值</td><td style="text-align: left">没有特别指定时的默认等级</td></tr>
+<tr><td style="text-align: left"><strong>255</strong></td><td style="text-align: left">仅从时钟</td><td style="text-align: left">这个设备永远不会成为主时钟</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>关键规则</strong>：</p>
+<p><strong>clockClass &lt; 128</strong>：该设备认为自己足够准，不应该成为从时钟。</p>
+<p><strong>clockClass ≥ 128</strong>：该设备可以成为从时钟，也可以成为主时钟（如果没更好的）。</p>
+<p><strong>应用场景</strong>：</p>
+<p><strong>场景一：核心机房</strong></p>
+<p>一个电信核心机房，有一台高精度时钟，接GPS和铷原子钟。</p>
+<p>正常状态：</p>
+<ul>
+<li>接收GPS信号，clockClass = 6</li>
+<li>优先级最高，成为主时钟</li>
+</ul>
+<p>GPS信号中断，但铷原子钟还在工作：</p>
+<ul>
+<li>clockClass 从 6 变为 7</li>
+<li>仍然可以做主时钟，但精度略有下降</li>
+</ul>
+<p>铷原子钟漂移超过规范：</p>
+<ul>
+<li>clockClass 从 7 变为 52</li>
+<li>不应该再做主时钟，让位给备份时钟</li>
+</ul>
+<p><strong>场景二：从时钟设备</strong></p>
+<p>一个5G基站，不需要提供时间给别人，只需要同步到上级时钟。</p>
+<p>设置：clockClass = 255，slaveOnly = TRUE</p>
+<p>这个基站永远不会成为主时钟。</p>
+<hr>
+<h4 id="3-clockaccuracy时钟精度"><a class="header" href="#3-clockaccuracy时钟精度">3. clockAccuracy：时钟精度</a></h4>
+<ul>
+<li><strong>类型</strong>：Enumeration8</li>
+<li><strong>含义</strong>：时钟作为主时钟时的预期精度</li>
+<li><strong>规则</strong>：值越小，精度越高</li>
+</ul>
+<p><strong>关键值</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">值（十六进制）</th><th style="text-align: left">精度范围</th><th style="text-align: left">典型设备</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>0x17</strong></td><td style="text-align: left">≤ 1 皮秒</td><td style="text-align: left">光钟、实验室设备</td></tr>
+<tr><td style="text-align: left"><strong>0x1B</strong></td><td style="text-align: left">≤ 100 皮秒</td><td style="text-align: left">高端科学仪器</td></tr>
+<tr><td style="text-align: left"><strong>0x1E</strong></td><td style="text-align: left">≤ 2.5 纳秒</td><td style="text-align: left">White Rabbit</td></tr>
+<tr><td style="text-align: left"><strong>0x20</strong></td><td style="text-align: left">≤ 25 纳秒</td><td style="text-align: left">电信级主时钟</td></tr>
+<tr><td style="text-align: left"><strong>0x22</strong></td><td style="text-align: left">≤ 250 纳秒</td><td style="text-align: left">工业级主时钟</td></tr>
+<tr><td style="text-align: left"><strong>0x23</strong></td><td style="text-align: left">≤ 1 微秒</td><td style="text-align: left">普通GPS时钟</td></tr>
+<tr><td style="text-align: left"><strong>0x24</strong></td><td style="text-align: left">≤ 2.5 微秒</td><td style="text-align: left">普通晶振（XO）</td></tr>
+<tr><td style="text-align: left"><strong>0x25</strong></td><td style="text-align: left">≤ 10 微秒</td><td style="text-align: left">恒温晶振（OCXO）</td></tr>
+<tr><td style="text-align: left"><strong>0x26</strong></td><td style="text-align: left">≤ 25 微秒</td><td style="text-align: left">标准晶振</td></tr>
+<tr><td style="text-align: left"><strong>0x27</strong></td><td style="text-align: left">≤ 100 微秒</td><td style="text-align: left">低端晶振</td></tr>
+<tr><td style="text-align: left"><strong>0x28</strong></td><td style="text-align: left">≤ 250 微秒</td><td style="text-align: left">未补偿晶振</td></tr>
+<tr><td style="text-align: left"><strong>0x29</strong></td><td style="text-align: left">≤ 1 毫秒</td><td style="text-align: left">内部振荡器</td></tr>
+<tr><td style="text-align: left"><strong>0x2A</strong></td><td style="text-align: left">≤ 2.5 毫秒</td><td style="text-align: left">内部振荡器</td></tr>
+<tr><td style="text-align: left"><strong>0x2B</strong></td><td style="text-align: left">≤ 10 毫秒</td><td style="text-align: left">内部振荡器</td></tr>
+<tr><td style="text-align: left"><strong>0x2C</strong></td><td style="text-align: left">&gt; 10 毫秒</td><td style="text-align: left">未知精度</td></tr>
+<tr><td style="text-align: left"><strong>0xFE</strong></td><td style="text-align: left">未知</td><td style="text-align: left">无法确定精度</td></tr>
+<tr><td style="text-align: left"><strong>0xFF</strong></td><td style="text-align: left">保留</td><td style="text-align: left">—</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>为什么精度范围这么宽？</strong></p>
+<p>因为PTP需要支持从“极致精密“到“够用就行“的各种应用场景。</p>
+<p><strong>科研场景</strong>：粒子加速器、射电望远镜，需要皮秒级同步。使用原子钟、光钟，clockAccuracy = 0x17。</p>
+<p><strong>电信场景</strong>：5G基站、核心网，需要纳秒级同步。使用GPS+铷钟，clockAccuracy = 0x20。</p>
+<p><strong>工业场景</strong>：工业自动化、机器人协作，需要微秒级同步。使用GPS+TCXO，clockAccuracy = 0x24。</p>
+<p><strong>物联网场景</strong>：传感器网络，毫秒级就够用。使用内部晶振，clockAccuracy = 0x29。</p>
+<hr>
+<h4 id="4-offsetscaledlogvariance时钟稳定性"><a class="header" href="#4-offsetscaledlogvariance时钟稳定性">4. offsetScaledLogVariance：时钟稳定性</a></h4>
+<ul>
+<li><strong>类型</strong>：UInteger16</li>
+<li><strong>含义</strong>：时钟频率稳定性的度量（基于Allan方差）</li>
+<li><strong>规则</strong>：值越小，稳定性越好</li>
+</ul>
+<p><strong>Allan方差简介</strong>：</p>
+<p>Allan方差是衡量振荡器频率稳定性的统计量。简单来说，它回答一个问题：<strong>如果我在两个不同时刻测量振荡器的频率，它们的差异有多大？</strong></p>
+<p>PTP使用对数缩放的Allan方差来表示稳定性：</p>
+<ol>
+<li>测量振荡器的Allan方差（单位：秒²）</li>
+<li>取以2为底的对数</li>
+<li>乘以256（缩放）</li>
+<li>加上0x8000（转换为无符号整数）</li>
+</ol>
+<p><strong>示例</strong>：</p>
+<p>一个典型石英晶振的Allan方差约为 10⁻¹⁸ 秒²（观测时间1秒）。</p>
+<p>log₂(10⁻¹⁸) ≈ -60</p>
+<p>缩放后：-60 × 256 = -15360</p>
+<p>转换为无符号：-15360 + 32768 = 17408（0x4400）</p>
+<p><strong>关键点</strong>：</p>
+<p>这个值不需要人工设置。设备会根据本地振荡器的规格，自动计算。</p>
+<p>对于大多数应用，工程师不需要深入理解Allan方差，只需要知道：<strong>这是一个客观的、数学上严格的稳定性度量</strong>。</p>
+<hr>
+<h4 id="5-priority2第二优先级决胜项"><a class="header" href="#5-priority2第二优先级决胜项">5. priority2：第二优先级（决胜项）</a></h4>
+<ul>
+<li><strong>类型</strong>：UInteger8（0-255）</li>
+<li><strong>含义</strong>：当所有其他属性都相同时，用于决胜</li>
+<li><strong>规则</strong>：值越小，优先级越高</li>
+</ul>
+<p><strong>用途</strong>：</p>
+<p>当两个设备的priority1、clockClass、clockAccuracy、offsetScaledLogVariance都相同时，用priority2决胜。</p>
+<p>如果priority2也相同，就用clockIdentity决胜。</p>
+<p><strong>应用场景</strong>：</p>
+<p>你有两个完全相同的GPS时钟，都接了相同的铷原子钟。它们的priority1、clockClass、clockAccuracy、offsetScaledLogVariance都相同。</p>
+<p>你希望时钟A优先成为主时钟，时钟B作为备份。</p>
+<p>设置：</p>
+<ul>
+<li>时钟A：priority1 = 10, priority2 = 10</li>
+<li>时钟B：priority1 = 10, priority2 = 20</li>
+</ul>
+<p>这样，时钟A会优先成为主时钟。当时钟A故障时，时钟B接替。</p>
+<hr>
+<h4 id="6-stepsremoved到主时钟的跳数"><a class="header" href="#6-stepsremoved到主时钟的跳数">6. stepsRemoved：到主时钟的跳数</a></h4>
+<ul>
+<li><strong>类型</strong>：UInteger16</li>
+<li><strong>含义</strong>：当前设备到Grandmaster的边界时钟跳数</li>
+<li><strong>规则</strong>：值越小，距离主时钟越近</li>
+</ul>
+<p><strong>工作原理</strong>：</p>
+<ul>
+<li>Grandmaster自己：stepsRemoved = 0</li>
+<li>直接连接Grandmaster的从时钟：stepsRemoved = 1</li>
+<li>再下一级：stepsRemoved = 2</li>
+<li>以此类推</li>
+</ul>
+<p><strong>用途</strong>：</p>
+<p>当两个设备的主时钟相同时（grandmasterIdentity相同），stepsRemoved用于判断谁离主时钟更近。离主时钟近的优先成为本地主时钟。</p>
+<p><strong>防止无限传播</strong>：</p>
+<p>stepsRemoved有一个上限：255。</p>
+<p>当一个设备收到Announce报文时，如果stepsRemoved ≥ 255，它会丢弃该报文。这是为了防止Announce报文在网络中无限传播（比如形成环路）。</p>
+<hr>
+<h2 id="bmca算法流程三步选出主时钟"><a class="header" href="#bmca算法流程三步选出主时钟">BMCA算法流程：三步选出主时钟</a></h2>
+<p>BMCA算法分为三个步骤：</p>
+<h3 id="第一步收集候选者信息数据集比较"><a class="header" href="#第一步收集候选者信息数据集比较">第一步：收集候选者信息（数据集比较）</a></h3>
+<p>每个PTP端口维护一个<strong>foreignMasterList</strong>（外部主时钟列表）。</p>
+<p>当端口收到Announce报文时：</p>
+<ol>
+<li>检查报文的有效性（不是自己发的、stepsRemoved &lt; 255等）</li>
+<li>将报文中的主时钟信息加入foreignMasterList</li>
+<li>在规定时间窗口内（默认4个announceInterval），至少收到2条来自同一主时钟的Announce，才认为该主时钟有效</li>
+</ol>
+<p><strong>为什么需要至少2条？</strong></p>
+<p>防止假性主时钟。如果某个设备故障，误发了错误的Announce报文，只收到1条就相信，可能导致主时钟频繁切换。收到2条以上，说明这个主时钟是稳定工作的。</p>
+<hr>
+<h3 id="第二步选出最佳主时钟ebest计算"><a class="header" href="#第二步选出最佳主时钟ebest计算">第二步：选出最佳主时钟（Ebest计算）</a></h3>
+<p>每个PTP端口会从foreignMasterList中选出<strong>本地最佳主时钟（Ebest）</strong>。</p>
+<p>选举规则：按照以下顺序比较，先胜出者获胜。</p>
+<p><strong>比较流程（数据集比较算法）</strong>：</p>
+<pre><code>比较 priority1
+  ↓
+比较 clockClass
+  ↓
+比较 clockAccuracy
+  ↓
+比较 offsetScaledLogVariance
+  ↓
+比较 priority2
+  ↓
+比较 stepsRemoved（仅当grandmasterIdentity相同时）
+  ↓
+比较 clockIdentity（决胜项）
+</code></pre>
+<p><strong>示例</strong>：</p>
+<p>设备A和设备B都发送Announce报文，比较它们的属性：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">属性</th><th style="text-align: left">设备A</th><th style="text-align: left">设备B</th><th style="text-align: left">比较结果</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">priority1</td><td style="text-align: left">10</td><td style="text-align: left">10</td><td style="text-align: left">平局</td></tr>
+<tr><td style="text-align: left">clockClass</td><td style="text-align: left">6</td><td style="text-align: left">7</td><td style="text-align: left"><strong>A胜出</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>结果：设备A成为Ebest。</p>
+<p><strong>注意</strong>：如果某个属性决定胜负，后续属性不再比较。</p>
+<hr>
+<h3 id="第三步决定端口状态状态决策"><a class="header" href="#第三步决定端口状态状态决策">第三步：决定端口状态（状态决策）</a></h3>
+<p>整个PTP实例（不是每个端口）会从所有端口的Ebest中，选出<strong>全局最佳主时钟</strong>。</p>
+<p>然后，根据这个全局最佳主时钟，决定每个端口的状态。</p>
+<p><strong>状态决策算法</strong>：</p>
+<pre><code>全局最佳主时钟（Ebest）是谁？
+  │
+  ├── 情况1：我自己（D0）是最好的
+  │     │
+  │     └── 我成为主时钟
+  │           所有端口进入 MASTER 状态
+  │
+  └── 情况2：别人（Ebest）比我好
+        │
+        └── 我不是主时钟
+              │
+              ├── 对每个端口：
+              │     Ebest == Ebest（端口级最佳）吗？
+              │       │
+              │       ├── 是：这个端口进入 SLAVE 状态
+              │       │     （从最佳主时钟同步）
+              │       │
+              │       └── 否：这个端口进入 PASSIVE 状态
+              │             （既不是主，也不是从，剪枝）
+              │
+              └── 特殊情况：clockClass &lt; 128 的设备
+                    即使别人更好，也可能强行当主时钟
+</code></pre>
+<p><strong>状态决策代码</strong>：</p>
+<p>PTP标准定义了6种状态决策代码（state decision codes）：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">代码</th><th style="text-align: left">含义</th><th style="text-align: left">说明</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>M1</strong></td><td style="text-align: left">成为MASTER</td><td style="text-align: left">clockClass 1-127，质量足够好</td></tr>
+<tr><td style="text-align: left"><strong>M2</strong></td><td style="text-align: left">成为MASTER</td><td style="text-align: left">clockClass ≥ 128，但没更好的设备</td></tr>
+<tr><td style="text-align: left"><strong>M3</strong></td><td style="text-align: left">成为MASTER</td><td style="text-align: left">非主时钟设备上的MASTER端口</td></tr>
+<tr><td style="text-align: left"><strong>S1</strong></td><td style="text-align: left">成为SLAVE</td><td style="text-align: left">从最佳主时钟同步</td></tr>
+<tr><td style="text-align: left"><strong>P1</strong></td><td style="text-align: left">成为PASSIVE</td><td style="text-align: left">clockClass 1-127上的被动端口（剪枝）</td></tr>
+<tr><td style="text-align: left"><strong>P2</strong></td><td style="text-align: left">成为PASSIVE</td><td style="text-align: left">clockClass ≥ 128上的被动端口（剪枝）</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="一个完整的bmca选举示例"><a class="header" href="#一个完整的bmca选举示例">一个完整的BMCA选举示例</a></h2>
+<p>让我们用一个完整的例子来演示BMCA的工作过程。</p>
+<p><strong>网络拓扑</strong>：</p>
+<pre><code>设备A (GPS+铷钟) ----+
+                      |
+设备B (GPS+铷钟) ----+---- 边界时钟C ---- 设备D (普通时钟)
+                      |
+设备E (普通时钟) -----+
+</code></pre>
+<p><strong>设备属性</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">设备</th><th style="text-align: left">priority1</th><th style="text-align: left">clockClass</th><th style="text-align: left">clockAccuracy</th><th style="text-align: left">priority2</th><th style="text-align: left">clockIdentity</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">A</td><td style="text-align: left">10</td><td style="text-align: left">6</td><td style="text-align: left">0x20</td><td style="text-align: left">10</td><td style="text-align: left">00-1B-19-00-00-00-00-01</td></tr>
+<tr><td style="text-align: left">B</td><td style="text-align: left">10</td><td style="text-align: left">6</td><td style="text-align: left">0x20</td><td style="text-align: left">20</td><td style="text-align: left">00-1B-19-00-00-00-00-02</td></tr>
+<tr><td style="text-align: left">C</td><td style="text-align: left">128</td><td style="text-align: left">248</td><td style="text-align: left">0xFE</td><td style="text-align: left">128</td><td style="text-align: left">00-1B-19-00-00-00-00-03</td></tr>
+<tr><td style="text-align: left">D</td><td style="text-align: left">128</td><td style="text-align: left">255</td><td style="text-align: left">0xFE</td><td style="text-align: left">128</td><td style="text-align: left">00-1B-19-00-00-00-00-04</td></tr>
+<tr><td style="text-align: left">E</td><td style="text-align: left">128</td><td style="text-align: left">248</td><td style="text-align: left">0xFE</td><td style="text-align: left">128</td><td style="text-align: left">00-1B-19-00-00-00-00-05</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>选举过程</strong>：</p>
+<p><strong>步骤1</strong>：边界时钟C收到设备A、B、E的Announce报文。</p>
+<p><strong>步骤2</strong>：比较A和B（两者clockClass都是6，priority1都是10）：</p>
+<ul>
+<li>priority1：平局</li>
+<li>clockClass：平局</li>
+<li>clockAccuracy：平局</li>
+<li>priority2：A是10，B是20 → <strong>A胜出</strong></li>
+</ul>
+<p><strong>步骤3</strong>：比较A和E：</p>
+<ul>
+<li>priority1：A是10，E是128 → <strong>A胜出</strong></li>
+</ul>
+<p><strong>步骤4</strong>：边界时钟C确定Ebest = 设备A。</p>
+<p><strong>步骤5</strong>：边界时钟C的端口状态：</p>
+<ul>
+<li>端口1（连接A/B/E）：Ebest = A，进入SLAVE状态</li>
+<li>端口2（连接D）：进入MASTER状态，成为设备D的主时钟</li>
+</ul>
+<p><strong>步骤6</strong>：设备D收到边界时钟C的Announce报文，确定C是最佳主时钟，进入SLAVE状态。</p>
+<p><strong>最终结果</strong>：</p>
+<ul>
+<li><strong>Grandmaster</strong>：设备A（GPS+铷钟，clockClass=6）</li>
+<li><strong>Master Clock（对设备D）</strong>：边界时钟C</li>
+<li><strong>从时钟</strong>：边界时钟C（从设备A同步）、设备D（从边界时钟C同步）、设备E（从设备A同步）</li>
+</ul>
+<p><strong>如果设备A故障会怎样？</strong></p>
+<ol>
+<li>边界时钟C不再收到设备A的Announce报文。</li>
+<li>超时后（announceReceiptTimeout × announceInterval），边界时钟C重新运行BMCA。</li>
+<li>此时候选者只有设备B和设备E。</li>
+<li>比较B和E：B的clockClass=6，E的clockClass=248 → <strong>B胜出</strong>。</li>
+<li>边界时钟C的端口1切换到SLAVE状态，从设备B同步。</li>
+<li>整个网络无感知切换到新的Grandmaster（设备B）。</li>
+</ol>
+<p><strong>切换时间有多快？</strong></p>
+<ul>
+<li>announceInterval默认：2秒（即logAnnounceInterval=1，间隔=2¹=2秒）</li>
+<li>announceReceiptTimeout默认：3</li>
+<li>超时时间：3 × 2 = 6秒</li>
+</ul>
+<p>也就是说，设备A故障后，最多6秒，网络就会切换到设备B。</p>
+<hr>
+<h2 id="bmca的关键设计原则"><a class="header" href="#bmca的关键设计原则">BMCA的关键设计原则</a></h2>
+<h3 id="1-原子性"><a class="header" href="#1-原子性">1. 原子性</a></h3>
+<p>所有端口的推荐状态计算完成后，<strong>原子性地</strong>更新所有端口状态。</p>
+<p>为什么需要原子性？</p>
+<p>如果端口1先更新到SLAVE，端口2还没更新到MASTER，这个瞬间，整个PTP实例处于不一致状态。</p>
+<p>PTP要求：计算所有端口的推荐状态 → 一次性更新所有端口状态 → 中间不允许被打断。</p>
+<h3 id="2-对称性"><a class="header" href="#2-对称性">2. 对称性</a></h3>
+<p>如果两个设备相互收到对方的Announce报文，它们会得出<strong>相同的主从关系</strong>。</p>
+<p>为什么？因为BMCA是确定性的。相同的输入，必然产生相同的输出。</p>
+<p><strong>示例</strong>：</p>
+<p>设备A和设备B相互发送Announce。它们都运行BMCA，都发现A更好。于是：</p>
+<ul>
+<li>A决定：我是MASTER</li>
+<li>B决定：我是SLAVE（从A同步）</li>
+</ul>
+<p>两边决策一致，不会出现“都认为自己是MASTER“的冲突。</p>
+<h3 id="3-快速收敛"><a class="header" href="#3-快速收敛">3. 快速收敛</a></h3>
+<p>BMCA设计为快速收敛。在稳定网络中，通常在一个announceInterval内就能完成主时钟选举。</p>
+<p><strong>收敛时间的影响因素</strong>：</p>
+<ul>
+<li>announceInterval（公告间隔）</li>
+<li>announceReceiptTimeout（超时倍数）</li>
+<li>网络规模（设备数量）</li>
+<li>网络拓扑（层级深度）</li>
+</ul>
+<p><strong>优化建议</strong>：</p>
+<p>对于需要快速切换的场景（如电信网络），可以：</p>
+<ul>
+<li>减小logAnnounceInterval（比如从0改为-1，间隔从1秒变为0.5秒）</li>
+<li>但不要设置得太小，否则会增加网络流量和CPU负载</li>
+</ul>
+<hr>
+<h2 id="bmca的陷阱与最佳实践"><a class="header" href="#bmca的陷阱与最佳实践">BMCA的陷阱与最佳实践</a></h2>
+<h3 id="陷阱1多个相同优先级的设备"><a class="header" href="#陷阱1多个相同优先级的设备">陷阱1：多个相同优先级的设备</a></h3>
+<p><strong>问题</strong>：</p>
+<p>网络中有10个设备，都使用默认配置：priority1=128, priority2=128。</p>
+<p>结果：BMCA会比较clockIdentity，clockIdentity最小的成为主时钟。这可能导致<strong>意想不到的设备</strong>成为主时钟。</p>
+<p><strong>解决方案</strong>：</p>
+<p>为核心主时钟设备设置更低的priority1（如10-50），明确指定主时钟优先级。</p>
+<hr>
+<h3 id="陷阱2忘记设置slaveonly"><a class="header" href="#陷阱2忘记设置slaveonly">陷阱2：忘记设置slaveOnly</a></h3>
+<p><strong>问题</strong>：</p>
+<p>一个终端设备（如工作站）不需要提供时间给别人，但忘记设置slaveOnly=TRUE或clockClass=255。</p>
+<p>结果：如果这个设备误以为自己是最好的（比如主时钟故障），它会切换到MASTER状态，向网络发送时间信号，可能干扰其他设备。</p>
+<p><strong>解决方案</strong>：</p>
+<p>对于纯从时钟设备，设置：</p>
+<ul>
+<li>slaveOnly = TRUE</li>
+<li>或 clockClass = 255</li>
+</ul>
+<hr>
+<h3 id="陷阱3透明时钟导致的路径不对称"><a class="header" href="#陷阱3透明时钟导致的路径不对称">陷阱3：透明时钟导致的路径不对称</a></h3>
+<p><strong>问题</strong>：</p>
+<p>BMCA假设Announce报文的传播路径是对称的。如果网络中存在大量透明时钟，且延迟不对称，可能导致BMCA决策不一致。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用边界时钟代替透明时钟（边界时钟会终结并再生Announce报文）</li>
+<li>或使用PATH_TRACE TLV（16.2选项），检测环路</li>
+</ul>
+<hr>
+<h3 id="陷阱4announce超时设置不合理"><a class="header" href="#陷阱4announce超时设置不合理">陷阱4：Announce超时设置不合理</a></h3>
+<p><strong>问题</strong>：</p>
+<ul>
+<li>超时设置太小（如announceReceiptTimeout=2）：正常丢包就会触发切换，主时钟频繁切换</li>
+<li>超时设置太大（如announceReceiptTimeout=10）：主时钟故障后，切换时间过长</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<p>根据网络可靠性选择合适的超时值：</p>
+<ul>
+<li>可靠网络（有线、专用）：2-3</li>
+<li>一般网络（有线、共享）：3-5</li>
+<li>不可靠网络（无线、干扰大）：5-10</li>
+</ul>
+<hr>
+<h2 id="小结bmca的核心要点"><a class="header" href="#小结bmca的核心要点">小结：BMCA的核心要点</a></h2>
+<p>BMCA是PTP协议中最精妙的算法之一。它通过一套优雅的规则，实现了：</p>
+<ul>
+<li><strong>自动选举</strong>：无需人工干预</li>
+<li><strong>快速收敛</strong>：秒级完成选举</li>
+<li><strong>自愈能力</strong>：主时钟故障时自动切换</li>
+<li><strong>确定性</strong>：相同输入产生相同输出</li>
+</ul>
+<p><strong>关键属性比较顺序</strong>：</p>
+<pre><code>priority1 → clockClass → clockAccuracy → offsetScaledLogVariance → priority2 → clockIdentity
+</code></pre>
+<p><strong>状态决策规则</strong>：</p>
+<ul>
+<li>我是最好的 → MASTER</li>
+<li>别人更好，且是端口最佳 → SLAVE</li>
+<li>别人更好，但不是端口最佳 → PASSIVE</li>
+</ul>
+<p><strong>最佳实践</strong>：</p>
+<ul>
+<li>为核心主时钟设置更低的priority1</li>
+<li>为纯从设备设置slaveOnly=TRUE</li>
+<li>合理设置announceReceiptTimeout</li>
+<li>使用边界时钟隔离网络区域</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>现在，我们知道了如何选出主时钟。</p>
+<p>但还有一个问题：主时钟的时间是从哪里来的？如果主时钟接了GPS，GPS的时间又是从哪里来的？时间有没有“根“？</p>
+<p>下一节，我们将深入讲解<strong>PTP域和时间尺度</strong>——时间的“护照“和“签证“。你会看到，PTP如何处理UTC、TAI、闰秒，以及如何让不同时间尺度共存。</p>
+<blockquote>
+<p><strong>【悬念留给2.3】</strong></p>
+<p>你可能听说过：GPS时间和UTC时间差了18秒（截至2026年）。那么，如果一个接GPS的主时钟和一个接NTP的主时钟在同一网络中，会发生什么？</p>
+<p>答案是：混乱。两个主时钟的时间基准不同，从时钟不知道该听谁的。</p>
+<p>PTP如何解决这个问题？答案是：时间尺度（timescale）和UTC偏移（currentUtcOffset）。</p>
+<p>下一节，我们详细解读。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.1-当指挥家走进音乐厅-认识PTP网络中的四种角色.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/2.3-时间护照与签证-PTP域和时间尺度.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.1-当指挥家走进音乐厅-认识PTP网络中的四种角色.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/2.3-时间护照与签证-PTP域和时间尺度.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

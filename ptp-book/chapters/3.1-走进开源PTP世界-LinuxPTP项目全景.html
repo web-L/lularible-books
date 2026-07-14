@@ -1,0 +1,876 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>走进开源PTP世界 · LinuxPTP项目全景 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="第三章-linuxptp源码深度解析"><a class="header" href="#第三章-linuxptp源码深度解析">第三章 LinuxPTP源码深度解析</a></h1>
+<h2 id="31-走进开源ptp世界linuxptp项目全景"><a class="header" href="#31-走进开源ptp世界linuxptp项目全景">3.1 走进开源PTP世界：LinuxPTP项目全景</a></h2>
+<h3 id="从协议到实现"><a class="header" href="#从协议到实现">从协议到实现</a></h3>
+<p>前两章，我们详细讲解了PTP协议的原理和机制。</p>
+<p>现在，让我们打开“黑盒“，看看PTP协议是如何被<strong>真正实现</strong>的。</p>
+<hr>
+<h2 id="源码信息"><a class="header" href="#源码信息">源码信息</a></h2>
+<p><strong>项目名称</strong>：LinuxPTP</p>
+<p><strong>源码版本</strong>：v4.4</p>
+<p><strong>项目主页</strong>：https://sourceforge.net/projects/linuxptp/</p>
+<p><strong>源码获取</strong>：</p>
+<pre><code class="language-bash">git clone git://git.code.sf.net/p/linuxptp/code linuxptp
+</code></pre>
+<p><strong>许可证</strong>：GNU General Public License v2</p>
+<hr>
+<h2 id="项目简介"><a class="header" href="#项目简介">项目简介</a></h2>
+<p>LinuxPTP是Richard Cochran开发的<strong>IEEE 1588 PTP协议开源实现</strong>，专为Linux系统设计。</p>
+<h3 id="核心特点"><a class="header" href="#核心特点">核心特点</a></h3>
+<pre><code>特性一：原生Linux支持
+- 使用Linux内核最新的时间戳API
+- 支持PTP硬件时钟（PHC）子系统
+- 利用SO_TIMESTAMPING套接字选项
+
+特性二：完整协议实现
+- 支持普通时钟（OC）
+- 支持边界时钟（BC）
+- 支持透明时钟（TC，包括E2E和P2P）
+
+特性三：多种传输方式
+- UDP/IPv4
+- UDP/IPv6
+- 原始以太网（IEEE 802.3）
+
+特性四：多种Profile支持
+- 默认1588 Profile
+- 电信Profile（G.8265.1、G.8275.1、G.8275.2）
+- 企业Profile
+- 汽车Profile
+
+特性五：高级功能
+- 单播操作
+- 安全认证（AUTHENTICATION TLV）
+- NetSync Monitor协议
+- IEEE 802.1AS支持（端站角色）
+</code></pre>
+<h3 id="系统要求"><a class="header" href="#系统要求">系统要求</a></h3>
+<pre><code>内核要求：Linux 3.0或更新版本
+
+检查网卡是否支持PTP硬件时间戳：
+$ ethtool -T eth0
+
+期望输出包含：
+  hardware-transmit     (SOF_TIMESTAMPING_TX_HARDWARE)
+  hardware-receive      (SOF_TIMESTAMPING_RX_HARDWARE)
+  hardware-raw-clock    (SOF_TIMESTAMPING_RAW_HARDWARE)
+  PTP Hardware Clock: 1
+</code></pre>
+<hr>
+<h2 id="项目结构总览"><a class="header" href="#项目结构总览">项目结构总览</a></h2>
+<h3 id="文件组织"><a class="header" href="#文件组织">文件组织</a></h3>
+<pre><code>linuxptp/
+├── ptp4l.c              # PTP守护进程主程序（269行）
+├── clock.c              # 时钟管理核心（2323行）
+├── clock.h              # 时钟接口定义（399行）
+├── port.c               # 端口管理核心（3816行）
+├── port.h               # 端口接口定义（369行）
+├── bmc.c                # BMCA算法（175行）
+├── fsm.c                # 有限状态机（337行）
+├── servo.c              # 伺服控制器接口（179行）
+├── pi.c                 # PI控制器实现（231行）
+├── msg.c                # 消息处理（634行）
+├── tlv.c                # TLV处理（1291行）
+├── config.c             # 配置解析（1252行）
+├── transport.c          # 传输接口（133行）
+├── udp.c / udp6.c       # UDP传输实现
+├── raw.c                # 以太网传输实现（526行）
+├── sk.c                 # 套接字操作（650行）
+├── phc.c                # PHC操作（139行）
+├── phc2sys.c            # PHC到系统时钟同步（1575行）
+├── pmc.c                # 管理客户端（940行）
+├── util.c               # 工具函数（896行）
+├── ds.h                 # 数据集定义（113行）
+├── makefile             # 构建文件
+├── configs/             # 配置文件示例
+└── *.8                  # 手册页
+</code></pre>
+<h3 id="代码规模"><a class="header" href="#代码规模">代码规模</a></h3>
+<pre><code>总代码行数：约38,500行C代码
+
+核心模块规模：
+- port.c：3816行（最大，端口状态机核心）
+- clock.c：2323行（时钟管理）
+- phc2sys.c：1575行（PHC同步）
+- tlv.c：1291行（TLV处理）
+- config.c：1252行（配置解析）
+- pmc_common.c：966行（管理协议）
+- util.c：896行（工具函数）
+</code></pre>
+<hr>
+<h2 id="核心架构解析"><a class="header" href="#核心架构解析">核心架构解析</a></h2>
+<h3 id="模块依赖关系"><a class="header" href="#模块依赖关系">模块依赖关系</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                        ptp4l (主程序)                        │
+│                         269行                               │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              │ 调用
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                       clock (时钟模块)                       │
+│                        2323行                               │
+│  - 创建时钟实例                                               │
+│  - 管理数据集（defaultDS, currentDS, parentDS等）              │
+│  - 伺服控制                                                   │
+│  - 主循环（clock_poll）                                       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              │ 管理
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                        port (端口模块)                       │
+│                        3816行                               │
+│  - 端口状态机                                                │
+│  - 消息收发                                                  │
+│  - 延迟测量                                                  │
+│  - 外部时钟管理                                               │
+└─────────────────────────────────────────────────────────────┘
+         │                    │                    │
+         │                    │                    │
+         ▼                    ▼                    ▼
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   bmc.c      │    │    fsm.c     │    │   msg.c      │
+│   175行      │    │    337行     │    │   634行       │
+│  BMCA算法    │    │  状态机逻辑    │    │  消息处理      │
+└──────────────┘    └──────────────┘    └──────────────┘
+</code></pre>
+<h3 id="核心数据流向"><a class="header" href="#核心数据流向">核心数据流向</a></h3>
+<pre><code>PTP报文流向：
+
+接收方向：
+网络 → transport → sk.c → msg.c → port.c → clock.c
+     (传输层)    (套接字) (消息解析) (端口处理) (时钟调整)
+                                              │
+                                              ▼
+                                          servo.c
+                                          (伺服控制)
+
+发送方向：
+clock.c → port.c → msg.c → transport → 网络
+(触发)    (组装)  (编码)   (传输)
+</code></pre>
+<hr>
+<h2 id="核心数据结构"><a class="header" href="#核心数据结构">核心数据结构</a></h2>
+<h3 id="时钟类型枚举"><a class="header" href="#时钟类型枚举">时钟类型枚举</a></h3>
+<pre><code class="language-c">/* clock.h, 第38-44行 */
+
+enum clock_type {
+    CLOCK_TYPE_ORDINARY   = 0x8000,  /* 普通时钟 */
+    CLOCK_TYPE_BOUNDARY   = 0x4000,  /* 边界时钟 */
+    CLOCK_TYPE_P2P        = 0x2000,  /* P2P透明时钟 */
+    CLOCK_TYPE_E2E        = 0x1000,  /* E2E透明时钟 */
+    CLOCK_TYPE_MANAGEMENT = 0x0800,  /* 管理节点 */
+};
+</code></pre>
+<p><strong>设计解读</strong>：</p>
+<pre><code>为什么使用位掩码？
+
+这些值设计为位掩码，便于快速判断时钟类型：
+
+if (type &amp; CLOCK_TYPE_ORDINARY) {
+    // 是普通时钟
+}
+
+if (type &amp; CLOCK_TYPE_P2P) {
+    // 是P2P透明时钟或边界时钟（如果支持P2P）
+}
+
+这种设计允许组合类型检查，提高代码效率。
+</code></pre>
+<h3 id="端口状态枚举"><a class="header" href="#端口状态枚举">端口状态枚举</a></h3>
+<pre><code class="language-c">/* fsm.h, 第24-35行 */
+
+enum port_state {
+    PS_INITIALIZING = 1,    /* 初始化 */
+    PS_FAULTY,              /* 故障 */
+    PS_DISABLED,            /* 禁用 */
+    PS_LISTENING,           /* 监听 */
+    PS_PRE_MASTER,          /* 预备主 */
+    PS_MASTER,              /* 主时钟 */
+    PS_PASSIVE,             /* 被动 */
+    PS_UNCALIBRATED,        /* 未校准 */
+    PS_SLAVE,               /* 从时钟 */
+    PS_GRAND_MASTER,        /* 主时钟（非标准扩展）*/
+};
+</code></pre>
+<p><strong>与IEEE 1588的对应关系</strong>：</p>
+<pre><code>IEEE 1588定义的9种状态：
+1. INITIALIZING      → PS_INITIALIZING
+2. FAULTY            → PS_FAULTY
+3. DISABLED          → PS_DISABLED
+4. LISTENING         → PS_LISTENING
+5. PRE_MASTER        → PS_PRE_MASTER
+6. MASTER            → PS_MASTER
+7. PASSIVE           → PS_PASSIVE
+8. UNCALIBRATED      → PS_UNCALIBRATED
+9. SLAVE             → PS_SLAVE
+
+LinuxPTP扩展：
+PS_GRAND_MASTER：表示该端口是整个网络的主时钟
+                   （比MASTER更明确的语义）
+</code></pre>
+<h3 id="伺服状态枚举"><a class="header" href="#伺服状态枚举">伺服状态枚举</a></h3>
+<pre><code class="language-c">/* servo.h, 第44-67行 */
+
+enum servo_state {
+    SERVO_UNLOCKED,     /* 未锁定：需要更多数据 */
+    SERVO_JUMP,         /* 跳变：需要大步调整 */
+    SERVO_LOCKED,       /* 锁定：正在跟踪 */
+    SERVO_LOCKED_STABLE,/* 稳定锁定：偏差在阈值内 */
+};
+</code></pre>
+<p><strong>状态转换逻辑</strong>：</p>
+<pre><code>状态转换流程：
+
+SERVO_UNLOCKED
+      │
+      │ 收到足够样本（至少2个）
+      │ 计算频率偏差
+      ▼
+SERVO_JUMP（如果偏差大）
+      │
+      │ 执行时钟跳变
+      ▼
+SERVO_LOCKED
+      │
+      │ 连续N个样本偏差小于阈值
+      ▼
+SERVO_LOCKED_STABLE
+
+如果偏差突然变大：
+SERVO_LOCKED_STABLE → SERVO_UNLOCKED
+</code></pre>
+<hr>
+<h2 id="主程序入口ptp4lc"><a class="header" href="#主程序入口ptp4lc">主程序入口：ptp4l.c</a></h2>
+<h3 id="整体结构"><a class="header" href="#整体结构">整体结构</a></h3>
+<pre><code class="language-c">/* ptp4l.c, 第72-269行 */
+
+int main(int argc, char *argv[])
+{
+    /* 步骤1：处理信号 */
+    if (handle_term_signals())
+        return -1;
+
+    /* 步骤2：创建配置对象 */
+    cfg = config_create();
+
+    /* 步骤3：解析命令行参数 */
+    while (EOF != (c = getopt_long(argc, argv, "..."))) {
+        switch (c) {
+            case 'A': /* 自动选择延迟机制 */
+            case 'E': /* E2E延迟机制 */
+            case 'P': /* P2P延迟机制 */
+            case '2': /* IEEE 802.3传输 */
+            case '4': /* UDP/IPv4传输 */
+            case '6': /* UDP/IPv6传输 */
+            case 'H': /* 硬件时间戳 */
+            case 'S': /* 软件时间戳 */
+            case 'f': /* 配置文件 */
+            case 'i': /* 网络接口 */
+            ...
+        }
+    }
+
+    /* 步骤4：读取配置文件 */
+    if (config &amp;&amp; (c = config_read(config, cfg))) {
+        return c;
+    }
+
+    /* 步骤5：确定时钟类型 */
+    type = config_get_int(cfg, NULL, "clock_type");
+    switch (type) {
+        case CLOCK_TYPE_ORDINARY:
+            if (cfg-&gt;n_interfaces &gt; 1)
+                type = CLOCK_TYPE_BOUNDARY;  /* 多接口自动变BC */
+            break;
+        case CLOCK_TYPE_BOUNDARY:
+            if (cfg-&gt;n_interfaces &lt; 2)
+                fprintf(stderr, "BC needs at least two interfaces\n");
+            break;
+        ...
+    }
+
+    /* 步骤6：创建时钟实例 */
+    clock = clock_create(type, cfg, req_phc);
+
+    /* 步骤7：主循环 */
+    while (is_running()) {
+        if (clock_poll(clock))
+            break;
+    }
+
+    /* 步骤8：清理资源 */
+    clock_destroy(clock);
+    config_destroy(cfg);
+
+    return err;
+}
+</code></pre>
+<h3 id="设计亮点"><a class="header" href="#设计亮点">设计亮点</a></h3>
+<p><strong>亮点一：简洁的主程序</strong></p>
+<pre><code>主程序只有269行，核心逻辑清晰：
+1. 解析配置（命令行 + 配置文件）
+2. 创建时钟
+3. 进入主循环
+4. 清理资源
+
+这种设计体现了良好的模块化：
+- 主程序只负责"胶水代码"
+- 核心逻辑封装在clock模块中
+</code></pre>
+<p><strong>亮点二：自动类型推断</strong></p>
+<pre><code class="language-c">/* ptp4l.c, 第217-219行 */
+
+case CLOCK_TYPE_ORDINARY:
+    if (cfg-&gt;n_interfaces &gt; 1) {
+        type = CLOCK_TYPE_BOUNDARY;  /* 自动升级为边界时钟 */
+    }
+    break;
+</code></pre>
+<pre><code>智能行为：
+- 用户指定普通时钟
+- 但配置了多个接口
+- 自动升级为边界时钟
+
+这符合IEEE 1588的定义：
+边界时钟 = 多端口的PTP实例
+</code></pre>
+<p><strong>亮点三：配置优先级</strong></p>
+<pre><code>配置来源优先级：
+
+1. 命令行参数（最高优先级）
+   ptp4l -i eth0 -P -H -s
+
+2. 配置文件
+   ptp4l -f /etc/ptp4l.conf
+
+3. 默认值（最低优先级）
+
+实现方式：
+- 先解析命令行
+- 再读取配置文件（可以覆盖未指定的参数）
+- 未指定的使用默认值
+</code></pre>
+<hr>
+<h2 id="时钟模块clockc"><a class="header" href="#时钟模块clockc">时钟模块：clock.c</a></h2>
+<h3 id="核心职责"><a class="header" href="#核心职责">核心职责</a></h3>
+<pre><code>clock.c负责：
+
+1. 时钟实例管理
+   - 创建/销毁时钟
+   - 管理所有端口
+   - 管理PHC设备
+
+2. 数据集维护
+   - defaultDS（默认数据集）
+   - currentDS（当前数据集）
+   - parentDS（父时钟数据集）
+   - timePropertiesDS（时间属性数据集）
+
+3. 伺服控制
+   - 创建伺服实例
+   - 调用伺服采样
+   - 应用频率调整
+
+4. 主循环
+   - poll所有文件描述符
+   - 分发事件到端口
+
+5. BMCA协调
+   - 收集所有端口的外部时钟信息
+   - 执行全局状态决策
+</code></pre>
+<h3 id="clock_create函数"><a class="header" href="#clock_create函数">clock_create函数</a></h3>
+<pre><code class="language-c">/* clock.c中的核心创建函数（简化版） */
+
+struct clock *clock_create(enum clock_type type, struct config *config,
+                           const char *phc_device)
+{
+    /* 步骤1：分配内存 */
+    c = calloc(1, sizeof(*c));
+
+    /* 步骤2：初始化数据集 */
+    c-&gt;dds = ...; /* 初始化defaultDS */
+    c-&gt;cur = ...; /* 初始化currentDS */
+    c-&gt;dad = ...; /* 初始化parentDS */
+
+    /* 步骤3：打开PHC设备 */
+    c-&gt;clkid = phc_open(phc_device);
+
+    /* 步骤4：创建伺服 */
+    c-&gt;servo = servo_create(config, type, fadj, max_ppb, sw_ts);
+
+    /* 步骤5：为每个接口创建端口 */
+    STAILQ_FOREACH(iface, &amp;config-&gt;interfaces, list) {
+        port = port_open(port_number, iface, c);
+        /* 将端口添加到时钟的端口列表 */
+    }
+
+    /* 步骤6：初始化文件描述符数组 */
+    clock_fda_changed(c);
+
+    return c;
+}
+</code></pre>
+<h3 id="clock_poll函数"><a class="header" href="#clock_poll函数">clock_poll函数</a></h3>
+<pre><code class="language-c">/* clock.c中的主循环函数（简化版） */
+
+int clock_poll(struct clock *c)
+{
+    /* 步骤1：调用poll等待事件 */
+    cnt = poll(c-&gt;pollfd, c-&gt;n_pollfd, -1);
+
+    /* 步骤2：处理每个就绪的文件描述符 */
+    for (i = 0; i &lt; cnt; i++) {
+        /* 确定是哪个端口 */
+        port = find_port_by_fd(c, c-&gt;pollfd[i].fd);
+
+        /* 让端口处理事件 */
+        event = port_event(port, fd_index);
+
+        /* 如果需要状态决策 */
+        if (event == EV_STATE_DECISION_EVENT) {
+            /* 执行BMCA */
+            port_dispatch(port, event, mdiff);
+        }
+    }
+
+    /* 步骤3：处理管理消息（如果有） */
+    ...
+
+    return 0;
+}
+</code></pre>
+<hr>
+<h2 id="端口模块portc"><a class="header" href="#端口模块portc">端口模块：port.c</a></h2>
+<h3 id="核心职责-1"><a class="header" href="#核心职责-1">核心职责</a></h3>
+<pre><code>port.c负责：
+
+1. 状态机管理
+   - 维护端口状态
+   - 处理状态转换
+   - 触发状态相关动作
+
+2. 消息处理
+   - 接收PTP报文
+   - 解析报文内容
+   - 发送PTP报文
+
+3. 外部时钟管理
+   - 维护foreign_clock列表
+   - 计算最佳外部时钟
+   - Announce超时处理
+
+4. 延迟测量
+   - E2E：处理Delay_Req/Delay_Resp
+   - P2P：处理Pdelay_Req/Pdelay_Resp
+
+5. 时间戳处理
+   - 接收时间戳
+   - 发送时间戳
+   - 传递给clock模块
+</code></pre>
+<h3 id="端口结构体简化"><a class="header" href="#端口结构体简化">端口结构体（简化）</a></h3>
+<pre><code class="language-c">/* port_private.h中的端口结构 */
+
+struct port {
+    /* 基本信息 */
+    struct PortIdentity port_identity;  /* 端口标识 */
+    enum port_state state;              /* 端口状态 */
+    char *name;                         /* 端口名称 */
+
+    /* 所属时钟 */
+    struct clock *clock;
+
+    /* 传输层 */
+    struct transport *transport;
+
+    /* 外部时钟管理 */
+    struct foreign_clock *best;         /* 最佳外部时钟 */
+    LIST_HEAD(foreign_clocks, foreign_clock) foreign; /* 外部时钟列表 */
+
+    /* 时间戳处理器 */
+    struct tsproc *tsproc;
+
+    /* 计时器 */
+    struct fsm_timer timers[...];
+
+    /* 文件描述符 */
+    int fd_event;    /* 事件消息套接字 */
+    int fd_general;  /* 通用消息套接字 */
+
+    /* 统计信息 */
+    struct stats *stats;
+};
+</code></pre>
+<hr>
+<h2 id="配置系统"><a class="header" href="#配置系统">配置系统</a></h2>
+<h3 id="配置文件示例"><a class="header" href="#配置文件示例">配置文件示例</a></h3>
+<pre><code class="language-ini"># /etc/linuxptp/ptp4l.conf
+
+[global]
+# 时钟类型
+clock_type      OC          # 普通时钟
+
+# 延迟机制
+delay_mechanism E2E         # E2E延迟机制
+
+# 传输方式
+network_transport UDP_IPV4  # UDP/IPv4
+
+# 时间戳模式
+time_stamping     hardware  # 硬件时间戳
+
+# 优先级
+priority1         128
+priority2         128
+
+# 时间间隔（log2秒）
+logAnnounceInterval    1    # 2秒
+logSyncInterval        0    # 1秒
+logMinDelayReqInterval 0    # 1秒
+
+# 超时
+announceReceiptTimeout 3
+
+# 伺服参数（PI控制器）
+pi_proportional_const  0.0
+pi_integral_const      0.0
+pi_proportional_scale  0.7
+pi_integral_scale      0.3
+
+# 其他选项
+slaveOnly          0       # 非仅从时钟
+twoStepFlag        1       # 使用two-step模式
+domainNumber       0       # PTP域0
+</code></pre>
+<h3 id="配置解析流程"><a class="header" href="#配置解析流程">配置解析流程</a></h3>
+<pre><code class="language-c">/* config.c中的配置解析 */
+
+int config_read(const char *path, struct config *cfg)
+{
+    FILE *fp = fopen(path, "r");
+    char line[MAX_LINE];
+
+    while (fgets(line, sizeof(line), fp)) {
+        /* 跳过注释和空行 */
+        if (line[0] == '#' || line[0] == '\n')
+            continue;
+
+        /* 解析配置项 */
+        if (parse_config_line(line, cfg))
+            return -1;
+    }
+
+    fclose(fp);
+    return 0;
+}
+</code></pre>
+<hr>
+<h2 id="构建和安装"><a class="header" href="#构建和安装">构建和安装</a></h2>
+<h3 id="编译"><a class="header" href="#编译">编译</a></h3>
+<pre><code class="language-bash"># 进入源码目录
+cd linuxptp
+
+# 编译（默认使用系统内核头文件）
+make
+
+# 如果使用自定义内核
+make KBUILD_OUTPUT=/path/to/kernel/build
+
+# 安装（默认安装到/usr/local）
+make install
+
+# 指定安装路径
+make prefix=/opt/ptp install
+</code></pre>
+<h3 id="运行"><a class="header" href="#运行">运行</a></h3>
+<pre><code class="language-bash"># 使用默认配置运行PTP普通时钟
+ptp4l -i eth0 -S -m
+
+# 参数说明：
+# -i eth0  : 使用eth0接口
+# -S       : 使用软件时间戳
+# -m       : 输出到stdout
+
+# 使用配置文件运行
+ptp4l -f /etc/ptp4l.conf
+
+# 运行边界时钟
+ptp4l -i eth0 -i eth1 -m
+
+# 使用硬件时间戳
+ptp4l -i eth0 -H -m
+</code></pre>
+<hr>
+<h2 id="小结linuxptp的设计哲学"><a class="header" href="#小结linuxptp的设计哲学">小结：LinuxPTP的设计哲学</a></h2>
+<p><strong>模块化设计</strong>：</p>
+<ul>
+<li>核心模块职责清晰</li>
+<li>接口定义简洁</li>
+<li>便于扩展和维护</li>
+</ul>
+<p><strong>原生Linux支持</strong>：</p>
+<ul>
+<li>充分利用内核API</li>
+<li>硬件时间戳原生支持</li>
+<li>PHC子系统深度集成</li>
+</ul>
+<p><strong>灵活配置</strong>：</p>
+<ul>
+<li>命令行 + 配置文件</li>
+<li>多Profile支持</li>
+<li>参数可调范围大</li>
+</ul>
+<p><strong>代码质量</strong>：</p>
+<ul>
+<li>核心代码约38,500行</li>
+<li>良好的注释和文档</li>
+<li>遵循Linux编码规范</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>本章概述了LinuxPTP项目的整体架构。</p>
+<p>下一节，我们将深入分析<strong>数据集实现</strong>——看看defaultDS、currentDS、parentDS是如何在代码中定义和使用的。</p>
+<blockquote>
+<p><strong>【悬念留给3.2】</strong></p>
+<p>数据集是PTP协议的核心数据结构。</p>
+<p>但在代码中，数据集的定义和协议规范略有不同。</p>
+<p>例如，defaultDS只有14个字段，而不是协议定义的完整形式。</p>
+<p>为什么？这是简化还是优化？</p>
+<p>下一节，我们详细解读。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.18-遵循规则的艺术-Profile与一致性要求深度解析.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/3.2-数据集与消息结构-PTP数据的编码艺术.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.18-遵循规则的艺术-Profile与一致性要求深度解析.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/3.2-数据集与消息结构-PTP数据的编码艺术.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

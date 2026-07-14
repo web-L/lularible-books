@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>认证服务0x29——刷脸验证 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="223-认证服务0x29刷脸验证"><a class="header" href="#223-认证服务0x29刷脸验证">2.23 认证服务(0x29)——刷脸验证</a></h1>
+<h3 id="一把钥匙复制了100万次"><a class="header" href="#一把钥匙复制了100万次">一把钥匙，复制了100万次</a></h3>
+<p>2023年，一家汽车媒体发布了一篇引爆行业的报道：他们从一个二手诊断仪中提取出了某德系车厂的SecurityAccess密钥算法。这把“钥匙“是XOR加固定查表——任何一个逆向工程师花一个下午就能反编译出来。</p>
+<p>问题不在于这个算法有多弱——问题在于体系结构：<strong>0x27 SecurityAccess是共享密钥体制</strong>。ECU里存着一份密钥算法，诊断仪里存着同样的算法。一旦这个算法从诊断仪端泄漏——无论是从被废弃的诊断仪、被逆向的固件、还是从离职的工程师——所有同一平台、同一密钥算法的ECU都向我们敞开了大门。</p>
+<p>这不是一个密码学问题——这是一个密钥分发问题。</p>
+<p>在物理完全隔离的时代（2006年），这个问题可以接受：诊断仪是昂贵而稀有的专业设备，锁在4S店的保险柜里。但在2026年——OTA远程升级已经把4S店的诊断端口变成了互联网上的一个端点——这个信任模型已经崩塌了。如果一个攻击者能通过互联网向你的网关发送正确的Seed/Key解锁序列并写入恶意固件——你需要的不再是一把更复杂的锁——你需要一个不依赖“共享秘密“的认证机制。</p>
+<p>这就是0x29 Authentication服务的存在理由。</p>
+<hr>
+<h3 id="为什么0x29是0x27的第二层对称与非对称的根本区别"><a class="header" href="#为什么0x29是0x27的第二层对称与非对称的根本区别">为什么0x29是“0x27的第二层“——对称与非对称的根本区别</a></h3>
+<p>0x27和0x29常被放在一起比较，但它们解决的是两个不同深度的问题：</p>
+<p><strong>0x27 SecurityAccess 回答的是：“你知道和我一样的秘密吗？”</strong></p>
+<p>Seed/Key是典型的Challenge-Response基于共享密钥——ECU生成一个随机种子，诊断仪用同样的算法算出应答。如果两个结果匹配，ECU相信诊断仪持有同样的密钥。这个机制的前提是：<strong>ECU和诊断仪都持有同一份秘密</strong>。</p>
+<p><strong>0x29 Authentication 回答的是：“你是谁？你属于我可以信任的组织吗？”</strong></p>
+<p>0x29使用基于非对称密码（PKI，公钥基础设施）的证书双向认证。ECU拥有一张由OEM（车厂）私钥签发的X.509证书，里面嵌入了ECU的唯一身份。诊断仪（Tester）同样拥有一张由OEM签发的证书。当两方建立连接时，它们互相交换证书、验证签名链、验证对方证书未被吊销——这是双向的TLS握手。</p>
+<p>关键差异：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th>0x27 SecurityAccess</th><th>0x29 Authentication</th></tr>
+</thead>
+<tbody>
+<tr><td>密码体制</td><td>对称（共享密钥）</td><td>非对称（公钥/私钥）</td></tr>
+<tr><td>密钥分布</td><td>每台ECU和所有诊断仪共用同一算法</td><td>每台ECU有唯一私钥，诊断仪有唯一私钥</td></tr>
+<tr><td>泄露后果</td><td>一旦算法提取→所有ECU沦陷</td><td>一台ECU的私钥泄露→只影响那一台ECU</td></tr>
+<tr><td>身份绑定</td><td>密钥级别（几级锁）</td><td>ECU和诊断仪都有唯一可验证的身份</td></tr>
+<tr><td>标准来源</td><td>ISO 14229-1:2006</td><td>ISO 14229-1:2020 引入</td></tr>
+<tr><td>法规合规</td><td>无明确对应</td><td>对应UN R155/R156（网络安全法规）的认证要求</td></tr>
+<tr><td>医院类比</td><td>出示工牌</td><td>虹膜扫描+数字证书验证</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>核心洞察</strong>：0x27和0x29的关系不是“升级替代“——它们是<strong>认证金字塔的两层</strong>。0x27是日常诊断的基础锁——快速、轻量、适合低风险操作。0x29是高价值操作的第二道保险——重量级、基于证书、满足法规要求。真正的生产级ECU不会只靠其中一个——它们在同一个诊断会话里分层协作：先用0x27解锁常规DID读写，再用0x29解锁固件签名密钥和ADAS标定区。</p>
+</blockquote>
+<hr>
+<h3 id="pki模型ecu的身份证是怎么发的"><a class="header" href="#pki模型ecu的身份证是怎么发的">PKI模型——ECU的“身份证“是怎么发的</a></h3>
+<p>理解0x29，必须先理解背后的PKI（公钥基础设施）模型。这不像0x27的“给个种子、算个密钥“那么直观——但它才是0x29安全性的根基。</p>
+<pre><code>PKI信任链：
+
+    OEM Root CA (根证书)
+    │  ┌─ 私钥被物理安全存储
+    │  └─ 签发下级证书
+    ▼
+    OEM Intermediate CA (中间CA)
+    │  ┌─ 按车型/平台分区签发
+    │  └─ 降低根CA泄露风险
+    ▼
+    ┌──────────────┬──────────────┐
+    │              │              │
+    ▼              ▼              ▼
+  ECU证书       Tester证书      Gateway证书
+  ┌─ 唯一ID     ┌─ 公司ID      ┌─ 设备ID
+  ├─ 公钥       ├─ 公钥        ├─ 公钥
+  ├─ 角色标识   ├─ 权限角色    ├─ 路由能力
+  └─ VIN绑定    └─ 有效期      └─ 诊断端口权限
+</code></pre>
+<p><strong>ECU证书的生产线注入</strong>：在ECU的EOL（生产线末端），OEM的密钥管理服务器为每一台ECU生成唯一的密钥对。私钥被写入ECU的安全存储区（HSM，Hardware Security Module，硬件安全模块的内嵌NvM）。公钥被打包成X.509证书并由OEM的Intermediate CA签发。这台ECU的终身身份就此绑定。</p>
+<p><strong>诊断仪证书的申请与授权</strong>：诊断仪制造商向OEM申请一张“诊断仪证书“。这张证书不仅包含了诊断仪的唯一标识符——还包含了OEM授予它的<strong>角色和权限范围</strong>。例如：一张“经销商诊断仪“证书可以读取故障信息但不能写固件；一张“工程开发诊断仪“证书可以有完全的读写权限。</p>
+<p><strong>双向验证流程</strong>（证书链校验）：</p>
+<pre><code>Step 1: Tester → ECU:  发送 Tester 证书链
+Step 2: ECU 内部:
+          a) 验证 Tester 证书的签发CA → 比对ECU内置的OEM Root CA公钥
+          b) 验证证书有效期 → 未过期、未吊销（CRL或OCSP查证书吊销列表）
+          c) 验证证书中的权限 → Tester是否被授权执行当前操作
+Step 3: ECU → Tester:  发送 ECU 证书链
+Step 4: Tester 内部:
+          a) 验证 ECU 证书的签发CA → 与Tester内置的OEM Root CA比对
+          b) 验证VIN绑定 → 这台ECU是否是我要诊断的目标
+          c) 建立信任 → 双方确认对方身份
+</code></pre>
+<p>这就像一个双向的边境检查：你要入境（诊断仪→ECU），我要出境让别人来（ECU→诊断仪）——双方都出示护照、双方都验证护照的真伪和有效期。</p>
+<hr>
+<h3 id="0x29的请求响应格式一次完整的证书握手"><a class="header" href="#0x29的请求响应格式一次完整的证书握手">0x29的请求/响应格式——一次完整的证书握手</a></h3>
+<p>0x29使用子功能码来区分不同的认证操作阶段。与0x27一样，子功能码编码了流程状态。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>子功能码</th><th>含义</th><th>阶段</th></tr>
+</thead>
+<tbody>
+<tr><td>0x01</td><td>deauthenticate</td><td>取消/终止认证状态</td></tr>
+<tr><td>0x02</td><td>verifyCertificateUnidirectional</td><td>单向验证：ECU→Tester发送ECU证书，Tester验证</td></tr>
+<tr><td>0x03</td><td>verifyCertificateBidirectional</td><td>双向验证：双方交换并验证证书</td></tr>
+<tr><td>0x04</td><td>proofOfPossession</td><td>拥有性证明：证明拥有与证书中公钥对应的私钥</td></tr>
+<tr><td>0x05</td><td>transmitCertificate</td><td>传输证书数据（当证书超过单帧MTU时传送后续分片）</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>完整双向认证流程示例</strong>：</p>
+<pre><code>Step 1: ECU身份验证
+──────────────────
+Tester → ECU:   0x29 0x01 [ECU certificate request parameters]
+                     SID   单向验证(请求ECU证书)
+
+ECU内部:
+  - 从HSM读取自己的私钥和证书
+  - 构建包含完整证书链的正响应
+
+ECU → Tester:   0x69 0x01 [证书数据...]
+                     SID+0x40
+
+Tester内部:
+  - 用内置OEM Root CA公钥验证ECU证书签名链
+  - 验证证书中的ECU身份、VIN绑定
+  - 如果验证失败 → 停止后续诊断操作
+  - 如果验证成功 → 进入下一步
+
+
+Step 2: 诊断仪身份验证
+─────────────────────
+Tester → ECU:   0x29 0x02 [Tester certificate chain]
+                     SID   双向验证(发送Tester证书)
+
+ECU内部:
+  - 用内置OEM Root CA验证Tester证书签名链
+  - 验证Tester权限（读写等级、服务白名单）
+  - 如果验证失败 → NRC（拒绝，权限不足）
+  - 如果验证成功 → 进入拥有性证明阶段
+
+ECU → Tester:   0x69 0x02
+                     SID+0x40  (证书验证通过)
+
+
+Step 3: 拥有性证明 (Proof of Possession)
+────────────────────────────────────────
+Tester → ECU:   0x29 0x03 [PoP challenge data]
+                     SID   拥有性证明
+
+ECU内部:
+  - 生成一个随机挑战值(challenge)
+  - 要求Tester用其私钥对challenge签名
+  - 用Tester证书中的公钥验证签名
+  - 签名验证通过 → 确认Tester拥有私钥
+
+ECU → Tester:   0x69 0x03 [PoP结果]
+                     SID+0x40  (私钥持有验证通过)
+</code></pre>
+<p>拥有性证明（Proof of Possession）是0x29机制中最关键的安全创新。验证证书只能证明证书本身没被篡改——但它不能证明持有证书的人是否就是证书所标识的那个实体。PoP填补了这个漏洞：你不仅要出示证书，还要用证书对应的私钥对随机挑战值签名——证明你真的持有那个私钥。</p>
+<p><strong>常见NRC</strong>：</p>
+<ul>
+<li>0x31 (RequestOutOfRange) — 认证配置不存在</li>
+<li>0x33 (SecurityAccessDenied) — 证书验证失败（签名不可信、证书已过期）</li>
+<li>0x22 (ConditionsNotCorrect) — ECU状态不符合认证条件</li>
+<li>0x10 (GeneralReject) — 认证过程中的一般性错误</li>
+</ul>
+<hr>
+<h3 id="0x29在un-r155r156中的角色从技术选配到法规强制"><a class="header" href="#0x29在un-r155r156中的角色从技术选配到法规强制">0x29在UN R155/R156中的角色——从技术选配到法规强制</a></h3>
+<p>2022年，UNECE（联合国欧洲经济委员会）正式实施了两项改变汽车行业的法规：</p>
+<p><strong>UN R155（网络安全）</strong>：要求车辆制造商建立ISMS（网络安全管理系统），并为车辆设计中的每种攻击面制定防护措施。诊断接口的未授权访问被明确列为必须防护的攻击面。</p>
+<p><strong>UN R156（软件更新）</strong>：要求车辆制造商为OTA软件更新建立安全流程。更新包的来源验证和完整性保护是强制性的——而0x29正是ECU端验证“这个更新包是否来自授权OEM“的核心机制。</p>
+<p>在这两项法规之下，0x29不再是一个“建议项“——它是满足法规合规的必要技术组件。</p>
+<p>具体来说，0x29在法规合规中的角色：</p>
+<ol>
+<li><strong>OTA更新身份认证</strong>：在OTA服务器向ECU推送固件之前，OTA客户端（通常集成在网关里）必须通过0x29验证ECU身份——防止固件被刷入仿冒ECU或错误的目标。</li>
+<li><strong>诊断访问授权审计</strong>：0x29的每一次证书验证都会在ECU内部产生可追溯的审计日志——哪个诊断仪（由证书唯一ID标识）、什么时间、请求了什么操作、结果如何。这满足了R155对“可追溯安全事件“的要求。</li>
+<li><strong>权限细粒度控制</strong>：OEM可以通过证书中的权限字段控制每个诊断仪类型能执行的操作范围——而不是像0x27那样只有几个安全等级。</li>
+</ol>
+<hr>
+<h3 id="医院映射从工牌出示到刷脸执照验证"><a class="header" href="#医院映射从工牌出示到刷脸执照验证">医院映射——从“工牌出示“到“刷脸+执照验证</a></h3>
+<p>0x27 SecurityAccess就像你去医院看病时，在挂号处出示你的医保卡。工作人员扫一下卡——“这是个合法的患者/医生，可以通过。“但医保卡可以被伪造、可以被盗用、可以被捡到。</p>
+<p>0x29 Authentication就是升级版的验证流程：</p>
+<p><strong>单向验证(0x29 0x01)</strong> = 你看医生的执业证书。“这位医生的执照是真的——卫健委签的章——没有过期。“你验证了医院（ECU）的身份吗？还没有——这只是单向的。</p>
+<p><strong>双向验证(0x29 0x02)</strong> = 同时验证。“我出示了我的医师执业证书——你也出示了你的医院执业许可证。“双方确认对方身份——双向信任建立。</p>
+<p><strong>拥有性证明(0x29 0x03)</strong> = 指纹+虹膜+动态活体检测。“证书是你的——但你真的是证书上的那个人吗？请看着摄像头——请按指纹——好了，脸部识别匹配，指纹匹配，活体检测通过——你就是你。</p>
+<p>在医院的最高安全区域——例如手术室血库、管制药品柜——你不会只用一张工牌。你需要密码、需要生物识别、需要主管医师的双签。0x29就是ECU安全体系中的“双签+生物识别“——它不是为了日常方便而设计——它是为了最高风险的操作而设计。</p>
+<hr>
+<blockquote>
+<p><strong>核心洞察</strong>：0x27 SecurityAccess和0x29 Authentication是认证的两层维度——前者是“你是否持有正确密钥“（what you know），后者是“你是否就是你所声称的那个实体、并且持有无法被复制的私钥证明“（who you are + what you have）。在联网汽车时代，0x29不是0x27的替代品——它是0x27之上额外的防护层。任何只靠0x27的ECU安全设计在法规合规和实际安全需求面前都是不完整的。</p>
+</blockquote>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>0x29 Authentication 使用基于PKI的证书体系进行双向身份验证——每台ECU和诊断仪都拥有由OEM CA签发的唯一X.509证书和私钥。</li>
+<li>0x27(对称共享密钥)和0x29(非对称证书)是认证金字塔的两层——前者用于日常低风险操作，后者用于高价值、高风险操作，二者在同一诊断会话中分层协作。</li>
+<li>双向证书验证 + 拥有性证明(PoP)的完整流程确保了：对方证书可信、对方身份准确、对方确实持有对应私钥——三个安全属性缺一不可。</li>
+<li>0x29是满足UN R155（网络安全）和UN R156（软件更新）法规合规的必要技术组件——它将诊断接口安全从“技术选配“提升到了“法规强制“。</li>
+<li>证书中的权限字段使OEM可以实现细粒度的访问控制——按诊断仪类型、操作范围、有效期等多维度管控——超越了0x27安全等级的一维锁定。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：22个核心SID全部走完了（另有5个低频SID在2.1节已做说明）。现在，是时候把UDS从应用层放到物理载体上看了。CAN总线上8字节一帧怎么装下几十字节的诊断请求？当一帧装不下时，ISO 15765-2的多帧传输如何协同？而在百兆以太网铺进汽车的今天，DoIP又如何让UDS在TCP/IP上跑起来？传输层的故事，即将展开。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/2.22-文件传输0x38——病历归档.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/3.1-ISO-15765-2-CAN上的UDS.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/2.22-文件传输0x38——病历归档.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/3.1-ISO-15765-2-CAN上的UDS.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

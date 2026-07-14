@@ -1,0 +1,595 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CTZ · Skip · List——文件数据的COW结构 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="44-ctz-skip-list文件数据的cow结构"><a class="header" href="#44-ctz-skip-list文件数据的cow结构">4.4 CTZ Skip-List——文件数据的COW结构</a></h2>
+<h3 id="一个链表的四次进化"><a class="header" href="#一个链表的四次进化">一个链表的四次进化</a></h3>
+<p>你现在要设计一个存储文件数据的盘上结构。你有这些约束：</p>
+<ul>
+<li>必须支持COW（Copy-On-Write）——因为需要掉电安全</li>
+<li>追加写入必须是O(1)——因为嵌入式最常见的用例是日志追加</li>
+<li>随机读取必须比O(n)快——因为用户有时候需要跳转到文件中间</li>
+<li>内存使用必须是O(1)——不能像btrfs那样构建整棵B树到内存</li>
+<li>元数据开销要小——不能每个数据块都配一个独立的inode</li>
+</ul>
+<p>让我们依次看看你有哪些选项，以及为什么每一个都被否决了。</p>
+<p><strong>第一代：单向链表。</strong></p>
+<pre><code>单向链表：数据块按顺序链接
+=========================================
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│ data 0  │─&gt;│ data 1  │─&gt;│ data 2  │─&gt;│ data 4  │─&gt;│ data 5  │
+│         │  │         │  │         │  │         │  │         │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘
+</code></pre>
+<p>追加一个块 → 需要更新倒数第二个块的指针 → 触发COW → 需要更新倒数第三个块的指针 → 一直传播到第一个块。这是O(n)的追加操作——对于日志文件是灾难。</p>
+<p><strong>第二代：反向链表。</strong></p>
+<pre><code>反向链表：从现在往回指
+=========================================
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│ data 0  │&lt;─│ data 1  │&lt;─│ data 2  │&lt;─│ data 4  │&lt;─│ data 5  │
+│         │  │         │  │         │  │         │  │         │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘
+</code></pre>
+<p>追加一个块→只需要创建新块，让新块指向旧尾块。O(1)！完美。</p>
+<p>但读取呢？如果要读data 0，你得从data 5开始，沿着反向指针一路走回data 0——O(n)的读取。你可以从head开始正着读，但head只知道最后一个块——你需要反向遍历才能找到第一个块。<strong>O(n²)的读取操作不可接受。</strong></p>
+<p><strong>第三代：反向跳表（Skip-List）。</strong></p>
+<p>跳表的经典定义是：在链表的某些节点上增加额外的指针，跳过若干个中间节点，让查找可以“跳跃前进“。LittleFS把它倒过来用——指针是反向的，但跳跃的逻辑相同。</p>
+<pre><code>CTZ 反向跳表
+=========================================
+┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
+│ data 0  │&lt;─│ data 1  │&lt;─│ data 2  │&lt;─│ data 3  │&lt;─│ data 4  │&lt;─│ data 5  │
+│         │&lt;─│         │──│         │&lt;─│         │──│         │  │         │
+│         │&lt;─│         │──│         │──│         │──│         │  │         │
+└─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘
+</code></pre>
+<p>从block 5到block 1的路程：block 5 → 跳过block 4直接跳到block 3 → 跳过block 2跳到block 1。两次跳跃。</p>
+<p>从block 5到block 0的路程：block 5 → 跳过block 4、3、2直接跳到block 1 → 从block 1跳到block 0。也是两次跳跃。</p>
+<p><strong>这个跳表的关键问题是：每个块应该有多少个指针？指针各自跳多远？</strong></p>
+<p>一种方案是“随机的“（经典跳表），但在无动态内存分配的环境下不可行。另一种方案是“固定步长的“，但那样会退化到O(√n)的查询复杂度。</p>
+<p><strong>LittleFS的方案——也是这个数据结构的核心创新——是用“Count Trailing Zeros（CTZ）“指令来决定每个块的指针数目和跳跃步长。</strong></p>
+<hr>
+<h3 id="ctz指令与跳表的邂逅"><a class="header" href="#ctz指令与跳表的邂逅">CTZ指令与跳表的邂逅</a></h3>
+<p>Count Trailing Zeros（CTZ）是一个CPU指令，功能是：<strong>返回一个整数的二进制表示中，末尾连续0的个数。</strong></p>
+<pre><code>CTZ 示例：
+  ctz(1)    = ctz(0b0001) = 0
+  ctz(2)    = ctz(0b0010) = 1
+  ctz(3)    = ctz(0b0011) = 0
+  ctz(4)    = ctz(0b0100) = 2
+  ctz(5)    = ctz(0b0101) = 0
+  ctz(6)    = ctz(0b0110) = 1
+  ctz(7)    = ctz(0b0111) = 0
+  ctz(8)    = ctz(0b1000) = 3
+</code></pre>
+<p>CTZ跳表的规则极其简单：<strong>对于第n个数据块（n从0开始），它包含 ctz(n) + 1 个指向前面的块的指针。这 ctz(n)+1 个指针分别跳过 2^0, 2^1, 2^2, …, 2^ctz(n) 个块。</strong></p>
+<p>让我们把它画出来（以6个数据块为例）：</p>
+<pre><code>n=0: ctz(0)=0 → 1个指针 → 没有前面的块可指 → 数据块0的特殊情况
+n=1: ctz(1)=0 → 1个指针 → 跳过2^0=1个块 → 指向块0          长度=1
+n=2: ctz(2)=1 → 2个指针 → 跳过2^0=1 指向块1               长度=1
+                         → 跳过2^1=2 指向块0             长度=2
+n=3: ctz(3)=0 → 1个指针 → 跳过2^0=1 指向块2               长度=1
+n=4: ctz(4)=2 → 3个指针 → 跳过2^0=1 指向块3               长度=1
+                         → 跳过2^1=2 指向块2             长度=2
+                         → 跳过2^2=4 指向块0             长度=4
+n=5: ctz(5)=0 → 1个指针 → 跳过2^0=1 指向块4               长度=1
+
+完整结构：
+┌────────┬────────┬────────┬────────┬────────┬────────┐
+│ block0 │ block1 │ block2 │ block3 │ block4 │ block5 │
+│        │──&gt;b0 1 │──&gt;b1 1 │──&gt;b2 1 │──&gt;b3 1 │──&gt;b4 1 │
+│        │        │──&gt;b0 2 │        │──&gt;b2 2 │        │
+│        │        │        │        │──&gt;b0 4 │        │
+└────────┴────────┴────────┴────────┴────────┴────────┘
+
+解读：block2有两个指针——跳过1个块到b1，跳过2个块到b0
+      block4有三个指针——跳过1个到b3，跳过2个到b2，跳过4个到b0
+</code></pre>
+<p>这个结构的优雅之处在于：<strong>每个块的指针数量恰好在平均值上是2。</strong> 推导：在所有n个块中，CTZ值 = 0的有n/2个，CTZ值 = 1的有n/4个，CTZ值 = 2的有n/8个……无穷级数求和：</p>
+<pre><code>平均指针数 = lim(n→∞) (1/n) × Σ(ctz(i)+1) = Σ(1/2^i) = 2
+</code></pre>
+<p><strong>每个数据块平均只多占用8字节（2个32位指针）的元数据空间。</strong> 对于一个4KB的块，开销是0.2%——几乎可以忽略。</p>
+<hr>
+<h3 id="从size反推位置一个oeis巧合"><a class="header" href="#从size反推位置一个oeis巧合">从size反推位置：一个OEIS巧合</a></h3>
+<p>CTZ跳表还有一个隐藏的杀手特性：<strong>给定一个文件大小，你可以用O(1)的时间算出最后一个数据块的索引和偏移。</strong> 这意味着在目录中存储一个文件时，你只需要两个数值：head（最后一个块的地址）和size（文件总大小）——而不需要存储“最后一个块的索引“和“块内偏移“这两个冗余信息。</p>
+<p>推导过程：</p>
+<p>每个数据块n的有效数据容量是：<code>block_size - 4×(ctz(n)+1)</code> ——因为块中的ctz(n)+1个指针占用了前置空间。</p>
+<p>那么大小为N的文件占用了从0到某个n_max的块：</p>
+<pre><code>N = Σ(i=0→n) [B - (w/8)×(ctz(i)+1)]
+
+其中：
+  B = block_size（块大小，字节）
+  w = 字宽（32位）
+</code></pre>
+<p>这个累加可以在O(n)内计算。但LittleFS的作者在OEIS（Online Encyclopedia of Integer Sequences）上发现了一个惊人的巧合：</p>
+<pre><code>Σ(i=0→n) (ctz(i)+1) = 2n - popcount(n)
+</code></pre>
+<p>其中<code>popcount(n)</code>是n的二进制表示中1的个数。</p>
+<p>验证几个值：</p>
+<ul>
+<li>n=0: Σctz+1 = 0, 2×0-popcount(0) = 0-0 = 0 ✓</li>
+<li>n=3: Σctz+1 = 1+2+1 = 4, 2×3-popcount(3=0b11)=6-2=4 ✓</li>
+<li>n=5: Σctz+1 = 1+2+1+3+1 = 8, 2×5-popcount(5=0b101)=10-2=8 ✓</li>
+</ul>
+<p>将这个等式代入文件大小公式：</p>
+<pre><code>N = B×n - (w/8)×(2n - popcount(n))
+  = B×n - (w/8)×2n + (w/8)×popcount(n)
+  = (B - w/4)×n + (w/8)×popcount(n)
+</code></pre>
+<p>从中解出n：</p>
+<pre><code>n = floor((N - (w/8)×popcount(N/(B-w/4))) / (B - w/4))
+</code></pre>
+<p>这是一个<strong>不需要循环、不需要查表的纯公式计算。</strong> 在LittleFS的32位环境中（w=32），它非常快。</p>
+<p><strong>这就是lfs_ctz_index的实现：</strong></p>
+<pre><code class="language-c">// lfs.c:2873-2884 — 从文件偏移算出block索引
+static int lfs_ctz_index(lfs_t *lfs, lfs_off_t *off) {
+    lfs_off_t size = *off;
+    lfs_off_t b = lfs-&gt;cfg-&gt;block_size - 2*4;   // B - w/4 = B - 8
+    lfs_off_t i = size / b;                       // 近似索引
+    if (i == 0) {
+        return 0;
+    }
+
+    i = (size - 4*(lfs_popc(i-1)+2)) / b;        // 精确索引公式
+    *off = size - b*i - 4*lfs_popc(i);           // 块内偏移
+    return i;                                     // 返回block索引
+}
+</code></pre>
+<p>这个函数接收一个文件偏移量，返回该偏移所在的block索引，同时把<code>*off</code>修改为块内偏移。整个过程只有几个整数运算——<strong>O(1)时间。</strong></p>
+<hr>
+<h3 id="lfs_ctz_find沿着跳表快速定位"><a class="header" href="#lfs_ctz_find沿着跳表快速定位">lfs_ctz_find：沿着跳表快速定位</a></h3>
+<p>有了<code>lfs_ctz_index</code>，从一个文件中的任意位置读取数据就很简单了。<code>lfs_ctz_find</code>从head开始，利用CTZ跳表的跳跃能力，贪婪地选择能覆盖最大距离而不越过目标的指针。</p>
+<pre><code class="language-c">// lfs.c:2886-2918 — 在CTZ跳表中找到目标偏移所在的block
+static int lfs_ctz_find(lfs_t *lfs,
+        const lfs_cache_t *pcache, lfs_cache_t *rcache,
+        lfs_block_t head, lfs_size_t size,
+        lfs_size_t pos, lfs_block_t *block, lfs_off_t *off) {
+    if (size == 0) {
+        *block = LFS_BLOCK_NULL;
+        *off = 0;
+        return 0;
+    }
+
+    lfs_off_t current = lfs_ctz_index(lfs, &amp;(lfs_off_t){size-1});
+    lfs_off_t target = lfs_ctz_index(lfs, &amp;pos);
+
+    while (current &gt; target) {
+        lfs_size_t skip = lfs_min(
+                lfs_npw2(current-target+1) - 1,
+                lfs_ctz(current));
+
+        int err = lfs_bd_read(lfs,
+                pcache, rcache, sizeof(head),
+                head, 4*skip, &amp;head, sizeof(head));
+        head = lfs_fromle32(head);
+        if (err) {
+            return err;
+        }
+
+        current -= 1 &lt;&lt; skip;
+    }
+
+    *block = head;
+    *off = pos;
+    return 0;
+}
+</code></pre>
+<p>核心逻辑：从最后一个块开始，每次选择能跳越的最大步数（不超过目标），读取那个指针，跳到更前面的块。因为每次跳跃至少把到目标的距离减半（类似于二分搜索），<strong>最坏情况下的跳数是O(log n)。</strong> 结合每次跳跃需要从Flash读取（O(1)），总读取复杂度是O(log n)。</p>
+<hr>
+<h3 id="lfs_ctz_extendcow追加"><a class="header" href="#lfs_ctz_extendcow追加">lfs_ctz_extend：COW追加</a></h3>
+<p>文件写入的另一个关键操作是追加。在CTZ跳表中，追加一个新块的流程是：</p>
+<pre><code class="language-c">// lfs.c:2921-3017 — lfs_ctz_extend（简化版）
+static int lfs_ctz_extend(lfs_t *lfs,
+        lfs_cache_t *pcache, lfs_cache_t *rcache,
+        lfs_block_t head, lfs_size_t size,
+        lfs_block_t *block, lfs_off_t *off) {
+    while (true) {
+        // 1. 分配一个新块
+        lfs_block_t nblock;
+        int err = lfs_alloc(lfs, &amp;nblock);
+        if (err) return err;
+
+        // 2. 擦除新块
+        err = lfs_bd_erase(lfs, nblock);
+        if (err) {
+            if (err == LFS_ERR_CORRUPT) goto relocate;
+            return err;
+        }
+
+        if (size == 0) {
+            // 文件为空：新块就是第一个块
+            *block = nblock;
+            *off = 0;
+            return 0;
+        }
+
+        lfs_size_t noff = size - 1;
+        lfs_off_t index = lfs_ctz_index(lfs, &amp;noff);
+        noff = noff + 1;
+
+        // 3. 如果上一个块不满（非整块），复制数据到新块
+        if (noff != lfs-&gt;cfg-&gt;block_size) {
+            for (lfs_off_t i = 0; i &lt; noff; i++) {
+                uint8_t data;
+                err = lfs_bd_read(lfs, NULL, rcache, noff-i,
+                        head, i, &amp;data, 1);
+                // 写入新块
+                err = lfs_bd_prog(lfs, pcache, rcache, true,
+                        nblock, i, &amp;data, 1);
+            }
+            *block = nblock;
+            *off = noff;
+            return 0;
+        }
+
+        // 4. 上一个块满了：创建新块，写入跳表指针
+        index += 1;
+        lfs_size_t skips = lfs_ctz(index) + 1;
+        lfs_block_t nhead = head;
+        for (lfs_off_t i = 0; i &lt; skips; i++) {
+            // 写入第i个指针（指向2^i个block之前）
+            nhead = lfs_tole32(nhead);
+            err = lfs_bd_prog(lfs, pcache, rcache, true,
+                    nblock, 4*i, &amp;nhead, 4);
+            nhead = lfs_fromle32(nhead);
+
+            if (i != skips-1) {
+                // 读取下一个要写入的指针值
+                err = lfs_bd_read(lfs, NULL, rcache, sizeof(nhead),
+                        nhead, 4*i, &amp;nhead, sizeof(nhead));
+                nhead = lfs_fromle32(nhead);
+            }
+        }
+
+        *block = nblock;
+        *off = 4*skips;    // 数据从指针区后面开始
+        return 0;
+
+    relocate:
+        LFS_DEBUG("Bad block at 0x%"PRIx32, nblock);
+        lfs_cache_drop(lfs, pcache);  // 重试
+    }
+}
+</code></pre>
+<p>关键步骤：</p>
+<ol>
+<li>分配一个新块（通过块分配器）</li>
+<li>如果上一个块没有完全填满（比如文件在非块边界结束），把数据从旧块coalesce（合并）到新块</li>
+<li>写入ctz(n)+1个跳表指针</li>
+<li>数据区域从指针区域之后开始</li>
+</ol>
+<p><strong>追加是O(1)的：</strong> 分配块、擦除块、写入指针、返回。与之前的块无关——不需要修改任何旧数据。</p>
+<hr>
+<h3 id="cow的写入安全"><a class="header" href="#cow的写入安全">COW的写入安全</a></h3>
+<p>CTZ跳表实现了真正的Copy-On-Write文件数据存储。修改文件中途数据的过程如下：</p>
+<pre><code>CTZ跳表的COW写入流程
+=========================================
+
+原始状态：
+                                     ┌──────────┐
+                                    ┌│metadata  │
+                                    ││          │
+                                    ││          │
+                                    │└──────────┘
+                                    │     │
+                                    │     v
+┌────────┐ ┌────────┐ ┌────────┐ ┌───────┐
+│ data 0 │&lt;│ data 1 │&lt;│ data 2 │&lt;│data 3 │
+│        │&lt;│        │─│        │  │       │
+│        │ │        │ │        │  │       │
+└────────┘ └────────┘ └────────┘ └───────┘
+
+写入新数据到文件末尾：
+                                    ┌──────────┐
+                                   ┌│metadata  │  ← 还没有更新
+                                   ││          │
+                                   ││          │
+                                   │└──────────┘
+                                   │     │
+                                   │     v
+┌────────┐ ┌────────┐ ┌────────┐ ┌───────┐
+│ data 0 │&lt;│ data 1 │&lt;│ data 2 │&lt;│data 3 │  ← 旧数据还在
+│        │&lt;│        │─│        │  │       │
+│        │ │        │ │        │  │       │
+└────────┘ └────────┘ └────────┘ └───────┘
+     ^ ^           ^
+     │ │           │    ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
+     │ │           └────│ new    │&lt;│ new    │&lt;│ new    │&lt;│ new    │
+     │ └────────────────│data 2  │&lt;│data 3  │─│data 4  │ │data 5  │
+     └──────────────────│        │─│        │─│        │ │        │
+                        └────────┘ └────────┘ └────────┘ └────────┘
+
+提交到metadata pair：
+                                                            ┌──────────┐
+                                                           ┌│new       │
+                                                           ││metadata  │
+                                                           ││          │
+                                                           │└──────────┘
+                                                           │     │
+                                                           │     │
+                                                           │     v
+                              ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
+                              │ new    │&lt;│ new    │&lt;│ new    │&lt;│ new    │
+                              │data 2  │&lt;│data 3  │─│data 4  │ │data 5  │
+                              │        │─│        │─│        │ │        │
+                              └────────┘ └────────┘ └────────┘ └────────┘
+</code></pre>
+<ol>
+<li>创建新的数据块链（COW）——旧数据块原封不动。</li>
+<li>更新metadata pair中的文件记录——指向新的head块。</li>
+<li>旧数据块变成垃圾——等待后续compaction回收。</li>
+</ol>
+<p><strong>如果在任何一步掉电：旧metadata pair（指向旧数据块链）仍然完好。挂载后恢复到写入前状态。这就是COW+Metadata Pair的组合威力。</strong></p>
+<hr>
+<h3 id="与knotfs的对比"><a class="header" href="#与knotfs的对比">与KnotFS的对比</a></h3>
+<p>KnotFS（第三章）的文件数据管理采用的是更简单直接的方案：<strong>每个文件有一个固定大小的indirect block（4KB），内嵌一个块地址数组——最多8个块地址。</strong> 文件大小上限为8×4KB = 32KB。</p>
+<pre><code>KnotFS Indirect Block  vs  LittleFS CTZ Skip-List
+=============================================================
+特性                KnotFS                    LittleFS
+─────────────────────────────────────────────────────────────
+数据块索引          直接的块地址数组           CTZ跳表
+块数上限            8（固定）                 无限制（理论2^32）
+随机访问            O(1)（直接数组索引）      O(log n)
+追加写入            O(1)（写入新块+更新FT）   O(1)
+随机写入（修改中途） 需要COW整个indirect block O(n)（需要重建后续链）
+元数据大小           每个文件4KB（整个         每个文件无额外block
+                    indirect block）          （信息存在目录项中）
+─────────────────────────────────────────────────────────────
+</code></pre>
+<p>KnotFS的设计假设“文件很小且数量有限“（8个文件 × 每个最多32KB = 256KB 总数据量）。在这个约束下，固定数组是最优选择——简单、快速、内存占用确定。</p>
+<p>LittleFS的设计假设“文件和设备大小都不确定“。它需要支持从512KB到GB级的设备，需要支持从几个字节到几百MB的文件。CTZ跳表是这种伸缩性需求下的最优解。</p>
+<hr>
+<h3 id="文件系统的收缩与内联优化"><a class="header" href="#文件系统的收缩与内联优化">文件系统的收缩与内联优化</a></h3>
+<p>LittleFS的CTZ跳表还有一个灵活的变体：<strong>小文件内联（inline）。</strong> 当一个文件小于block_size/4时（对于4KB块，小于1KB），LittleFS直接把文件内容存在目录的metadata pair中，不创建CTZ跳表。</p>
+<pre><code>内联文件存储
+=========================================
+┌──────────────────────┐
+│      revision        │
+│──────────────────────│
+│   file.txt 名字      │
+│   file.txt 数据      │  ← 直接存在metadata pair中
+│     (≤1KB)           │     不需要CTZ跳表
+│──────────────────────│
+│      CRC             │
+└──────────────────────┘
+</code></pre>
+<pre><code>文件存储成本对比：
+  内联文件（≤1KB）：        ~16 bytes（名字+数据+tag）
+  小文件（&gt;1KB, 1个块）：   ~4KB（一个CTZ数据块）
+  大文件（n个块）：         ~n × 4KB（每个块有平均2个指针的开销）
+</code></pre>
+<p>这确保了一个文件的存储开销永远不会超过4x实际大小——随文件增长，开销从100%（1byte的文件占用4KB块）下降到接近0%（大文件下指针开销几乎忽略）。</p>
+<p>这是LittleFS又一次展示了“有界思想“的力量：<strong>不仅RAM增长有界，存储开销增长也有界。</strong></p>
+<p>KnotFS 的 CoW 走了一条更简单的路：没有 CTZ 跳表，没有反向块号映射——每个文件最多 8 个直接块，直接存在文件条目里的 <code>blocks[8]</code> 数组中。这样做的好处是代码量极低（不需要 CTZ 公式和跳表导航），代价是文件最大只能到 32KB。LittleFS 的 CTZ 是为了“支持任意大文件且不牺牲读性能“而设计的；KnotFS 的简化版 CoW 是为了“在 64KB 总空间中管理最多 8 个文件“而设计的。同样叫 CoW，约束不同，实现的复杂度量级可以差出两个数量级。</p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>CTZ跳表让我们能高效地存储和读取文件数据——但每一次分配数据块，都依赖于块分配器告诉你“下一个空闲块在哪里“。在128个块的小设备上，扫描一遍全盘只需要毫秒。但在1024块甚至更多的设备上，全盘扫描是不可接受的。LittleFS用一个固定大小的lookahead缓冲区解决了这个问题——它就像一个移动的窗口，在空闲块的空间上滑动，找到一批、用光一批、再找一批。而在这个看似简单的分配过程中，悄然实现了动态磨损均衡。</p>
+<p><strong>悬念留给：为什么LittleFS的块分配器在每次上电时需要一个随机数？这个随机数又是从哪来的——从文件系统自己的CRC异或出来的。</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/4.3-Metadata-Pair——两页互为备份的原子提交.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/4.5-Block-Allocator——lookahead与磨损均衡.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/4.3-Metadata-Pair——两页互为备份的原子提交.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/4.5-Block-Allocator——lookahead与磨损均衡.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

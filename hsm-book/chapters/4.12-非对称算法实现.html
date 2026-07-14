@@ -1,0 +1,1033 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>非对称算法实现 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="412-非对称算法实现rsa与ecdsa的密码引擎"><a class="header" href="#412-非对称算法实现rsa与ecdsa的密码引擎">4.12 非对称算法实现：RSA与ECDSA的密码引擎</a></h2>
+<h3 id="非对称算法家族"><a class="header" href="#非对称算法家族">非对称算法家族</a></h3>
+<p>SoftHSM2支持的非对称算法：</p>
+<pre><code>非对称算法家族：
+
+AsymmetricAlgorithm（抽象基类）
+│
+├── RSA
+│   ├── BotanRSA  (Botan实现)
+│   └── OSSLRSA   (OpenSSL实现)
+│   └── 支持机制：PKCS, OAEP, PSS
+│   └── 密钥长度：1024-4096位
+│
+├── DSA
+│   ├── BotanDSA  (Botan实现)
+│   └── OSSLDSA   (OpenSSL实现)
+│   └── 支持机制：DSA签名
+│   └── 密钥长度：1024-3072位
+│
+├── ECDSA
+│   ├── BotanECDSA (Botan实现)
+│   └── OSSLECDSA  (OpenSSL实现)
+│   └── 支持曲线：P-256, P-384, P-521
+│   └── 密钥长度：曲线决定
+│
+├── ECDH
+│   ├── BotanECDH (Botan实现)
+│   └── OSSLECDH  (OpenSSL实现)
+│   └── 密钥派生：ECDH
+│
+├── EdDSA
+│   ├── BotanEDDSA
+│   └── OSSLEDDSA
+│   └── 支持曲线：Ed25519, Ed448
+│
+└── DH
+    ├── BotanDH
+    └── OSSLDH
+    └── 密钥长度：1024-8192位
+</code></pre>
+<hr>
+<h3 id="asymmetricalgorithm抽象类"><a class="header" href="#asymmetricalgorithm抽象类">AsymmetricAlgorithm抽象类</a></h3>
+<p>AsymmetricAlgorithm定义了非对称加密的通用接口：</p>
+<pre><code class="language-cpp">struct AsymAlgo
+{
+    enum Type
+    {
+        Unknown,
+        RSA,
+        DSA,
+        DH,
+        ECDH,
+        ECDSA,
+        GOST,
+        EDDSA,
+        MLDSA
+    };
+};
+
+struct AsymMech
+{
+    enum Type
+    {
+        Unknown,
+        RSA,
+        RSA_MD5_PKCS,
+        RSA_PKCS,
+        RSA_PKCS_OAEP,
+        RSA_SHA1_PKCS,
+        RSA_SHA224_PKCS,
+        RSA_SHA256_PKCS,
+        RSA_SHA384_PKCS,
+        RSA_SHA512_PKCS,
+        RSA_PKCS_PSS,
+        RSA_SHA1_PKCS_PSS,
+        RSA_SHA224_PKCS_PSS,
+        RSA_SHA256_PKCS_PSS,
+        RSA_SHA384_PKCS_PSS,
+        RSA_SHA512_PKCS_PSS,
+        RSA_SSL,
+        DSA,
+        DSA_SHA1,
+        ECDSA,
+        ECDSA_SHA1,
+        ECDSA_SHA224,
+        ECDSA_SHA256,
+        ECDSA_SHA384,
+        ECDSA_SHA512,
+        EDDSA,
+        MLDSA
+    };
+};
+
+class AsymmetricAlgorithm
+{
+public:
+    AsymmetricAlgorithm();
+    virtual ~AsymmetricAlgorithm() { }
+    
+    // 签名函数
+    virtual bool sign(PrivateKey* privateKey, 
+                       const ByteString&amp; dataToSign, 
+                       ByteString&amp; signature, 
+                       const AsymMech::Type mechanism,
+                       const void* param = NULL,
+                       const size_t paramLen = 0);
+    
+    virtual bool signInit(PrivateKey* privateKey, 
+                          const AsymMech::Type mechanism,
+                          const void* param = NULL,
+                          const size_t paramLen = 0);
+    
+    virtual bool signUpdate(const ByteString&amp; dataToSign);
+    virtual bool signFinal(ByteString&amp; signature);
+    
+    // 验证函数
+    virtual bool verify(PublicKey* publicKey, 
+                        const ByteString&amp; originalData, 
+                        const ByteString&amp; signature, 
+                        const AsymMech::Type mechanism,
+                        const void* param = NULL,
+                        const size_t paramLen = 0);
+    
+    virtual bool verifyInit(PublicKey* publicKey, 
+                            const AsymMech::Type mechanism,
+                            const void* param = NULL,
+                            const size_t paramLen = 0);
+    
+    virtual bool verifyUpdate(const ByteString&amp; originalData);
+    virtual bool verifyFinal(const ByteString&amp; signature);
+    
+    // 加密函数
+    virtual bool encrypt(PublicKey* publicKey, 
+                         const ByteString&amp; data, 
+                         ByteString&amp; encryptedData, 
+                         const AsymMech::Type padding) = 0;
+    
+    // 解密函数
+    virtual bool decrypt(PrivateKey* privateKey, 
+                         const ByteString&amp; encryptedData, 
+                         ByteString&amp; data, 
+                         const AsymMech::Type padding) = 0;
+    
+    // 密钥生成
+    virtual bool generateKeyPair(AsymmetricKeyPair** ppKeyPair, 
+                                  AsymmetricParameters* parameters, 
+                                  RNG* rng = NULL) = 0;
+    
+    // 密钥派生（ECDH）
+    virtual bool deriveKey(SymmetricKey **ppSymmetricKey, 
+                           PublicKey* publicKey, 
+                           PrivateKey* privateKey);
+    
+    // 密钥重构
+    virtual bool reconstructKeyPair(AsymmetricKeyPair** ppKeyPair, 
+                                     ByteString&amp; serialisedData) = 0;
+    virtual bool reconstructPublicKey(PublicKey** ppPublicKey, 
+                                      ByteString&amp; serialisedData) = 0;
+    virtual bool reconstructPrivateKey(PrivateKey** ppPrivateKey, 
+                                       ByteString&amp; serialisedData) = 0;
+    
+    // 密钥工厂
+    virtual PublicKey* newPublicKey() = 0;
+    virtual PrivateKey* newPrivateKey() = 0;
+    
+protected:
+    PublicKey* currentPublicKey;
+    PrivateKey* currentPrivateKey;
+    AsymMech::Type currentMechanism;
+};
+</code></pre>
+<hr>
+<h3 id="rsa机制详解"><a class="header" href="#rsa机制详解">RSA机制详解</a></h3>
+<p><strong>RSA签名机制</strong>：</p>
+<pre><code>RSA签名机制：
+
+RSA_PKCS（裸RSA签名）
+┌─────────────────────────────────────┐
+│ PKCS#1 v1.5 签名                    │
+│                                     │
+│ 数据 → 填充 → RSA私钥运算 → 签名    │
+│                                     │
+│ 填充格式：                          │
+│ 0x00 0x01 [0xFF...] 0x00 [数据]     │
+└─────────────────────────────────────┘
+
+RSA_SHA256_PKCS（带Hash的签名）
+┌─────────────────────────────────────┐
+│                                     │
+│ 数据 → SHA256 Hash → PKCS#1 填充    │
+│     → RSA私钥运算 → 签名           │
+│                                     │
+│ 签名格式：                          │
+│ 0x00 0x01 [0xFF...] 0x00           │
+│ [SHA256 AlgorithmID] [Hash值]       │
+└─────────────────────────────────────┘
+
+RSA_PKCS_PSS（PSS签名）
+┌─────────────────────────────────────┐
+│                                     │
+│ 数据 → Hash → MGF1填充              │
+│     → RSA私钥运算 → 签名           │
+│                                     │
+│ 需要参数：                          │
+│ ├── hashAlg: Hash算法               │
+│ ├── mgf: MGF函数                    │
+│ └── sLen: Salt长度                  │
+└─────────────────────────────────────┘
+</code></pre>
+<p><strong>RSA加密机制</strong>：</p>
+<pre><code>RSA加密机制：
+
+RSA_PKCS（PKCS#1 v1.5加密）
+┌─────────────────────────────────────┐
+│                                     │
+│ 数据 → PKCS#1填充 → RSA公钥运算     │
+│     → 密文                          │
+│                                     │
+│ 填充格式：                          │
+│ 0x00 0x02 [随机字节...] 0x00 [数据] │
+└─────────────────────────────────────┘
+
+RSA_PKCS_OAEP（OAEP加密）
+┌─────────────────────────────────────┐
+│                                     │
+│ 数据 → OAEP填充 → RSA公钥运算       │
+│     → 密文                          │
+│                                     │
+│ OAEP填充：                          │
+│ ├── MGF1掩码                        │
+│ ├── Hash算法                        │
+│ ├── 可选Label                       │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="rsapublickey与rsaprivatekey"><a class="header" href="#rsapublickey与rsaprivatekey">RSAPublicKey与RSAPrivateKey</a></h3>
+<p>RSA密钥的组成：</p>
+<pre><code class="language-cpp">class RSAPublicKey : public PublicKey
+{
+public:
+    static const char* type;
+    
+    virtual bool isOfType(const char* inType);
+    virtual unsigned long getBitLength() const;
+    virtual unsigned long getOutputLength() const;
+    
+    virtual void setN(const ByteString&amp; inN);  // 模数
+    virtual void setE(const ByteString&amp; inE);  // 公钥指数
+    
+    virtual const ByteString&amp; getN() const;
+    virtual const ByteString&amp; getE() const;
+    
+    virtual ByteString serialise() const;
+    virtual bool deserialise(ByteString&amp; serialised);
+
+protected:
+    ByteString n;  // 模数 N
+    ByteString e;  // 公钥指数 E（通常为65537）
+};
+
+class RSAPrivateKey : public PrivateKey
+{
+public:
+    static const char* type;
+    
+    virtual bool isOfType(const char* inType);
+    virtual unsigned long getBitLength() const;
+    virtual unsigned long getOutputLength() const;
+    
+    // CRT参数
+    virtual void setP(const ByteString&amp; inP);   // 素数P
+    virtual void setQ(const ByteString&amp; inQ);   // 素数Q
+    virtual void setPQ(const ByteString&amp; inPQ); // CRT系数 qInv = q⁻¹ mod p
+    virtual void setDP1(const ByteString&amp; inDP1); // D mod P-1
+    virtual void setDQ1(const ByteString&amp; inDQ1); // D mod Q-1
+    
+    // 基本参数
+    virtual void setD(const ByteString&amp; inD);   // 私钥指数D
+    virtual void setN(const ByteString&amp; inN);   // 模数N
+    virtual void setE(const ByteString&amp; inE);   // 公钥指数E
+    
+    virtual const ByteString&amp; getP() const;
+    virtual const ByteString&amp; getQ() const;
+    virtual const ByteString&amp; getPQ() const;
+    virtual const ByteString&amp; getDP1() const;
+    virtual const ByteString&amp; getDQ1() const;
+    virtual const ByteString&amp; getD() const;
+    virtual const ByteString&amp; getN() const;
+    virtual const ByteString&amp; getE() const;
+    
+    virtual ByteString PKCS8Encode();
+    virtual bool PKCS8Decode(const ByteString&amp; ber);
+
+protected:
+    ByteString p, q, pq, dp1, dq1, d;  // 私钥组件
+    ByteString n, e;                    // 公钥组件
+};
+</code></pre>
+<p><strong>RSA密钥结构</strong>：</p>
+<pre><code>RSA密钥数学关系：
+
+公钥：
+├── N = P * Q（模数）
+├── E = 公钥指数（通常65537）
+│
+私钥（基本形式）：
+├── D = E^(-1) mod (P-1)(Q-1)
+│
+私钥（CRT加速形式）：
+├── P, Q（素数）
+├── dP = D mod (P-1)
+├── dQ = D mod (Q-1)
+├── qInv = Q^(-1) mod P
+│
+签名计算：
+├── 基本形式：S = M^D mod N
+├── CRT加速：
+│   ├── S1 = M^dP mod P
+│   ├── S2 = M^dQ mod Q
+│   ├── S = S2 + qInv*(S1-S2) mod N
+</code></pre>
+<hr>
+<h3 id="osslrsa实现"><a class="header" href="#osslrsa实现">OSSLRSA实现</a></h3>
+<p>OSSLRSA使用OpenSSL EVP API：</p>
+<pre><code class="language-cpp">class OSSLRSA : public AsymmetricAlgorithm
+{
+public:
+    OSSLRSA();
+    virtual ~OSSLRSA();
+    
+    virtual bool sign(PrivateKey* privateKey, 
+                       const ByteString&amp; dataToSign, 
+                       ByteString&amp; signature, 
+                       const AsymMech::Type mechanism,
+                       const void* param = NULL,
+                       const size_t paramLen = 0);
+    
+    virtual bool encrypt(PublicKey* publicKey, 
+                         const ByteString&amp; data, 
+                         ByteString&amp; encryptedData, 
+                         const AsymMech::Type padding);
+    
+    virtual bool decrypt(PrivateKey* privateKey, 
+                         const ByteString&amp; encryptedData, 
+                         ByteString&amp; data, 
+                         const AsymMech::Type padding);
+    
+    virtual bool generateKeyPair(AsymmetricKeyPair** ppKeyPair, 
+                                  AsymmetricParameters* parameters, 
+                                  RNG* rng = NULL);
+    
+    virtual PublicKey* newPublicKey();
+    virtual PrivateKey* newPrivateKey();
+
+private:
+    HashAlgorithm* pCurrentHash;
+    HashAlgorithm* pSecondHash;
+    size_t sLen;  // PSS Salt长度
+};
+
+bool OSSLRSA::sign(PrivateKey* privateKey, 
+                    const ByteString&amp; dataToSign, 
+                    ByteString&amp; signature, 
+                    const AsymMech::Type mechanism,
+                    const void* param,
+                    const size_t paramLen)
+{
+    // 创建RSA密钥对象
+    RSA* rsa = RSA_new();
+    
+    RSAPrivateKey* rsaKey = (RSAPrivateKey*)privateKey;
+    
+    // 设置密钥参数
+    BIGNUM* n = BN_bin2bn(rsaKey-&gt;getN().byte_str(), rsaKey-&gt;getN().size(), NULL);
+    BIGNUM* e = BN_bin2bn(rsaKey-&gt;getE().byte_str(), rsaKey-&gt;getE().size(), NULL);
+    BIGNUM* d = BN_bin2bn(rsaKey-&gt;getD().byte_str(), rsaKey-&gt;getD().size(), NULL);
+    
+    RSA_set0_key(rsa, n, e, d);
+    
+    // 设置CRT参数（如果可用）
+    if (rsaKey-&gt;getP().size() &gt; 0) {
+        BIGNUM* p = BN_bin2bn(rsaKey-&gt;getP().byte_str(), rsaKey-&gt;getP().size(), NULL);
+        BIGNUM* q = BN_bin2bn(rsaKey-&gt;getQ().byte_str(), rsaKey-&gt;getQ().size(), NULL);
+        RSA_set0_factors(rsa, p, q);
+        
+        BIGNUM* dp = BN_bin2bn(rsaKey-&gt;getDP1().byte_str(), rsaKey-&gt;getDP1().size(), NULL);
+        BIGNUM* dq = BN_bin2bn(rsaKey-&gt;getDQ1().byte_str(), rsaKey-&gt;getDQ1().size(), NULL);
+        BIGNUM* qInv = BN_bin2bn(rsaKey-&gt;getPQ().byte_str(), rsaKey-&gt;getPQ().size(), NULL);
+        
+        RSA_set0_crt_params(rsa, dp, dq, qInv);
+    }
+    
+    // 根据机制选择签名方式
+    switch (mechanism) {
+        case AsymMech::RSA_PKCS:
+        {
+            int sigLen = RSA_size(rsa);
+            unsigned char* sigBuf = new unsigned char[sigLen];
+            int ret = RSA_private_encrypt(dataToSign.size(), dataToSign.byte_str(),
+                                          sigBuf, rsa, RSA_PKCS1_PADDING);
+            if (ret &gt; 0) {
+                signature = ByteString(sigBuf, ret);
+            }
+            delete[] sigBuf;
+            RSA_free(rsa);
+            return (ret &gt; 0);
+        }
+            
+        case AsymMech::RSA_SHA256_PKCS:
+        {
+            ByteString hash;
+            computeHash(dataToSign, hash, EVP_sha256());
+            int sigLen = RSA_size(rsa);
+            unsigned char* sigBuf = new unsigned char[sigLen];
+            int ret = RSA_sign(NID_sha256WithRSAEncryption,
+                               hash.byte_str(), hash.size(),
+                               sigBuf, &amp;sigLen, rsa);
+            if (ret == 1) {
+                signature = ByteString(sigBuf, sigLen);
+            }
+            delete[] sigBuf;
+            RSA_free(rsa);
+            return (ret == 1);
+        }
+            
+        case AsymMech::RSA_SHA256_PKCS_PSS:
+        {
+            int sigLen = RSA_size(rsa);
+            unsigned char* sigBuf = new unsigned char[sigLen];
+            ByteString hash;
+            computeHash(dataToSign, hash, EVP_sha256());
+            RSA_padding_add_PKCS1_PSS(rsa, sigBuf, hash.byte_str(), EVP_sha256(), -1);
+            int ret = RSA_private_encrypt(RSA_size(rsa), sigBuf, sigBuf, rsa, RSA_NO_PADDING);
+            if (ret &gt; 0) {
+                signature = ByteString(sigBuf, ret);
+            }
+            delete[] sigBuf;
+            RSA_free(rsa);
+            return (ret &gt; 0);
+        }
+            
+        default:
+            RSA_free(rsa);
+            return false;
+    }
+
+```cpp
+bool OSSLRSA::generateKeyPair(AsymmetricKeyPair** ppKeyPair, 
+                               AsymmetricParameters* parameters, 
+                               RNG* rng)
+{
+    RSAParameters* rsaParams = (RSAParameters*)parameters;
+    size_t bits = rsaParams-&gt;getBitLength();
+    
+    // 生成RSA密钥
+    RSA* rsa = RSA_new();
+    BIGNUM* e = BN_new();
+    BN_set_word(e, RSA_F4);  // 65537
+    
+    int ret = RSA_generate_key_ex(rsa, bits, e, NULL);
+    
+    if (ret != 1) {
+        RSA_free(rsa);
+        BN_free(e);
+        return false;
+    }
+    
+    // 提取公钥参数
+    const BIGNUM* n, *e_out;
+    RSA_get0_key(rsa, &amp;n, &amp;e_out, NULL);
+    
+    RSAPublicKey* publicKey = new RSAPublicKey();
+    ByteString nBytes(BN_num_bytes(n));
+    BN_bn2bin(n, nBytes.byte_str());
+    publicKey-&gt;setN(nBytes);
+    
+    ByteString eBytes(BN_num_bytes(e_out));
+    BN_bn2bin(e_out, eBytes.byte_str());
+    publicKey-&gt;setE(eBytes);
+    
+    // 提取私钥参数
+    const BIGNUM* d, *p, *q, *dp, *dq, *pq;
+    RSA_get0_key(rsa, NULL, NULL, &amp;d);
+    RSA_get0_crt_params(rsa, &amp;dp, &amp;dq, &amp;pq);
+    RSA_get0_factors(rsa, &amp;p, &amp;q);
+    
+    RSAPrivateKey* privateKey = new RSAPrivateKey();
+    
+    ByteString dBytes(BN_num_bytes(d));
+    BN_bn2bin(d, dBytes.byte_str());
+    privateKey-&gt;setD(dBytes);
+    
+    // ... 设置其他CRT参数
+    
+    privateKey-&gt;setN(nBytes);
+    privateKey-&gt;setE(eBytes);
+    
+    // 创建密钥对
+    *ppKeyPair = new RSAKeyPair(publicKey, privateKey);
+    
+    RSA_free(rsa);
+    BN_free(e);
+    
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="ecdsa实现"><a class="header" href="#ecdsa实现">ECDSA实现</a></h3>
+<p>ECDSA使用椭圆曲线签名：</p>
+<pre><code class="language-cpp">class ECPublicKey : public PublicKey
+{
+public:
+    virtual void setEC(const ByteString&amp; inEC);   // 曲线参数
+    virtual void setQ(const ByteString&amp; inQ);     // 公钥点Q
+    
+    virtual const ByteString&amp; getEC() const;
+    virtual const ByteString&amp; getQ() const;
+
+protected:
+    ByteString ec;  // 曲线OID或参数
+    ByteString q;   // 公钥点（压缩或非压缩格式）
+};
+
+class ECPrivateKey : public PrivateKey
+{
+public:
+    virtual void setEC(const ByteString&amp; inEC);   // 曲线参数
+    virtual void setD(const ByteString&amp; inD);     // 私钥值d
+    
+    virtual const ByteString&amp; getEC() const;
+    virtual const ByteString&amp; getD() const;
+
+protected:
+    ByteString ec;  // 曲线OID
+    ByteString d;   // 私钥值（大整数）
+};
+</code></pre>
+<p><strong>ECDSA签名结构</strong>：</p>
+<pre><code>ECDSA签名结构：
+
+签名 (r, s)：
+├── r = x坐标 mod n
+├── s = k^(-1)(z + r*d) mod n
+│
+其中：
+├── k：随机数
+├── z：消息Hash值
+├── d：私钥
+├── n：曲线阶数
+│
+签名格式（DER编码）：
+0x30 [长度]
+  0x02 [长度] [r]
+  0x02 [长度] [s]
+</code></pre>
+<hr>
+<h3 id="botanrsa实现"><a class="header" href="#botanrsa实现">BotanRSA实现</a></h3>
+<p>BotanRSA使用Botan C++ API：</p>
+<pre><code class="language-cpp">class BotanRSA : public AsymmetricAlgorithm
+{
+public:
+    virtual bool sign(PrivateKey* privateKey, 
+                       const ByteString&amp; dataToSign, 
+                       ByteString&amp; signature, 
+                       const AsymMech::Type mechanism);
+    
+    virtual bool generateKeyPair(AsymmetricKeyPair** ppKeyPair, 
+                                  AsymmetricParameters* parameters, 
+                                  RNG* rng);
+};
+
+bool BotanRSA::sign(PrivateKey* privateKey, 
+                     const ByteString&amp; dataToSign, 
+                     ByteString&amp; signature, 
+                     const AsymMech::Type mechanism)
+{
+    // 创建Botan RSA私钥
+    RSAPrivateKey* rsaKey = (RSAPrivateKey*)privateKey;
+    
+    Botan::BigInt n(rsaKey-&gt;getN().byte_str(), rsaKey-&gt;getN().size());
+    Botan::BigInt e(rsaKey-&gt;getE().byte_str(), rsaKey-&gt;getE().size());
+    Botan::BigInt d(rsaKey-&gt;getD().byte_str(), rsaKey-&gt;getD().size());
+    
+    Botan::RSA_PrivateKey botanKey(n, e, d);
+    
+    // 根据机制选择签名方式
+    std::string padding;
+    
+    switch (mechanism) {
+        case AsymMech::RSA_SHA256_PKCS:
+            padding = "PKCS1v15(SHA-256)";
+            break;
+            
+        case AsymMech::RSA_SHA256_PKCS_PSS:
+            padding = "PSSR(SHA-256,MGF1,32)";
+            break;
+            
+        default:
+            return false;
+    }
+    
+    // 创建签名对象
+    Botan::PK_Signer signer(botanKey, padding, Botan::IEEE_1363);
+    
+    // 执行签名
+    Botan::SecureVector&lt;Botan::byte&gt; sig = signer.sign_message(
+        dataToSign.byte_str(), 
+        dataToSign.size(), 
+        *rng);
+    
+    signature = ByteString(sig.begin(), sig.size());
+    
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="ecdh密钥派生"><a class="header" href="#ecdh密钥派生">ECDH密钥派生</a></h3>
+<p>ECDH用于密钥协商：</p>
+<pre><code class="language-cpp">bool BotanECDH::deriveKey(SymmetricKey** ppSymmetricKey, 
+                           PublicKey* publicKey, 
+                           PrivateKey* privateKey)
+{
+    ECPublicKey* ecPub = (ECPublicKey*)publicKey;
+    ECPrivateKey* ecPriv = (ECPrivateKey*)privateKey;
+    
+    // 创建Botan ECDH密钥
+    Botan::ECDH_PrivateKey privKey;
+    // ... 从ecPriv初始化
+    
+    Botan::ECDH_PublicKey pubKey;
+    // ... 从ecPub初始化
+    
+    // 执行密钥派生
+    Botan::PK_Key_Agreement ka(privKey, "Raw");
+    
+    Botan::SecureVector&lt;Botan::byte&gt; sharedKey = ka.derive_key(
+        32,  // 密钥长度
+        pubKey.public_value());
+    
+    // 创建对称密钥
+    SymmetricKey* symKey = new AESKey(256);
+    symKey-&gt;setKeyBits(ByteString(sharedKey.begin(), sharedKey.size()));
+    
+    *ppSymmetricKey = symKey;
+    
+    return true;
+}
+</code></pre>
+<p><strong>ECDH密钥派生流程</strong>：</p>
+<pre><code>ECDH密钥派生流程：
+
+Alice                              Bob
+│                                   │
+│ 私钥 d_A                          │ 私钥 d_B
+│ 公钥 Q_A = d_A * G                │ 公钥 Q_B = d_B * G
+│                                   │
+│ 发送 Q_A ────────────────────────→│
+│                                   │
+│←───────────────────────────────── Q_B
+│                                   │
+│ 计算：                            │ 计算：
+│ K_A = d_A * Q_B                   │ K_B = d_B * Q_A
+│   = d_A * d_B * G                 │   = d_B * d_A * G
+│                                   │
+│ K_A == K_B（共享密钥）
+│
+│ KDF(K_A) → AES密钥
+</code></pre>
+<hr>
+<h3 id="非对称加密完整流程"><a class="header" href="#非对称加密完整流程">非对称加密完整流程</a></h3>
+<pre><code>非对称加密完整流程：
+
+C_GenerateKeyPair
+    │
+    │ CryptoFactory::i()-&gt;getAsymmetricAlgorithm(AsymAlgo::RSA)
+    │ algo-&gt;generateKeyPair(&amp;keyPair, params, rng)
+    ▼
+密钥对创建（RSAKeyPair对象）
+    │
+    │ C_SignInit
+    │ CryptoFactory::i()-&gt;getAsymmetricAlgorithm(AsymAlgo::RSA)
+    │ algo-&gt;signInit(privateKey, mechanism)
+    ▼
+签名初始化
+    │
+    │ C_Sign
+    │ algo-&gt;sign(privateKey, data, signature, mechanism)
+    ▼
+签名完成
+    │
+    │ CryptoFactory::i()-&gt;recycleAsymmetricAlgorithm(algo)
+    ▼
+回收算法实例
+
+C_Encrypt
+    │
+    │ algo-&gt;encrypt(publicKey, data, encrypted, padding)
+    ▼
+加密完成
+</code></pre>
+<hr>
+<h3 id="一个类比保险箱的物理钥匙"><a class="header" href="#一个类比保险箱的物理钥匙">一个类比：保险箱的物理钥匙</a></h3>
+<pre><code>保险箱物理钥匙类比：
+
+RSA密钥（物理钥匙）
+│
+├── 公钥（锁的图纸）
+│   ├── N：锁芯规格
+│   ├── E：开锁规则
+│   │
+│   ├── 可公开分发
+│   ├── 用于验证签名（检查锁）
+│   └── 用于加密（设计新锁）
+│
+├── 私钥（物理钥匙）
+│   ├── P, Q：钥匙齿形状
+│   ├── D：钥匙转动角度
+│   │
+│   ├── 保密存储
+│   ├── 用于签名（盖章）
+│   └── 用于解密（开锁）
+│
+├── 签名机制（盖章方式）
+│   │
+│   ├── PKCS#1 v1.5（普通盖章）
+│   │   ├── 盖章后附上数据
+│   │   ├── 固定格式
+│   │
+│   ├── RSA-PSS（防伪盖章）
+│   │   ├── 加随机Salt
+│   │   ├── 防伪造攻击
+│   │   ├── 更安全
+│
+└── 加密机制（锁设计）
+    │
+    ├── PKCS#1 v1.5（普通锁）
+    │   ├── 随机填充
+    │   ├── 可能被攻击
+    │
+    ├── RSA-OAEP（防破解锁）
+    │   ├── MGF掩码
+    │   ├── Hash校验
+    │   ├── 更安全
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们分析了SoftHSM2的非对称算法实现。</p>
+<p><strong>AsymmetricAlgorithm抽象类</strong>：</p>
+<ul>
+<li>sign/verify：签名验证</li>
+<li>encrypt/decrypt：加密解密</li>
+<li>generateKeyPair：密钥生成</li>
+<li>deriveKey：密钥派生</li>
+</ul>
+<p><strong>RSA机制</strong>：</p>
+<ul>
+<li>RSA_PKCS：裸RSA签名</li>
+<li>RSA_SHA256_PKCS：带Hash签名</li>
+<li>RSA_PKCS_PSS：PSS签名</li>
+<li>RSA_PKCS_OAEP：OAEP加密</li>
+</ul>
+<p><strong>RSA密钥</strong>：</p>
+<ul>
+<li>公钥：N（模数）、E（公钥指数）</li>
+<li>私钥：P、Q、D、CRT参数</li>
+</ul>
+<p><strong>ECDSA</strong>：</p>
+<ul>
+<li>公钥：曲线EC、公钥点Q</li>
+<li>私钥：曲线EC、私钥值D</li>
+<li>签名：(r, s) DER编码</li>
+</ul>
+<p><strong>ECDH</strong>：</p>
+<ul>
+<li>交换公钥</li>
+<li>计算共享密钥</li>
+<li>KDF派生对称密钥</li>
+</ul>
+<p><strong>OpenSSL实现</strong>：</p>
+<ul>
+<li>RSA_sign/RSA_verify</li>
+<li>EVP_PKEY API</li>
+<li>BIGNUM处理大整数</li>
+</ul>
+<p><strong>Botan实现</strong>：</p>
+<ul>
+<li>PK_Signer/PK_Verifier</li>
+<li>C++原生API</li>
+<li>BigInt类</li>
+</ul>
+<p>下一节，我们将分析哈希与MAC实现——SHA-256、HMAC如何工作。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>哈希算法如何实现？</p>
+<p>SHA-256计算过程？</p>
+<p>HMAC如何使用密钥？</p>
+<p>CMAC如何工作？</p>
+<p>下一节，哈希与MAC实现。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/4.11-对称算法实现.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/4.13-哈希与MAC实现.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/4.11-对称算法实现.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/4.13-哈希与MAC实现.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

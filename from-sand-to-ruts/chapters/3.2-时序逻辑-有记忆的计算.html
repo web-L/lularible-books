@@ -1,0 +1,413 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>时序逻辑 · 有记忆的计算 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="32-时序逻辑有记忆的计算"><a class="header" href="#32-时序逻辑有记忆的计算">3.2 时序逻辑：有记忆的计算</a></h1>
+<h2 id="在时钟边沿把-bit-存下来"><a class="header" href="#在时钟边沿把-bit-存下来">在时钟边沿，把 bit 存下来</a></h2>
+<p>你盯着示波器的屏幕。</p>
+<p>通道 1 上是一个漂亮的矩形波——100MHz，周期 10ns。通道 2 上是数据信号——一堆 0 和 1 在疯狂翻转。你对着信号说了句话：</p>
+<p>“在下一个时钟上升沿，把这个 bit 存下来。”</p>
+<p><strong>这一刻，你在要求电路拥有“记忆“。</strong></p>
+<p>上一节我们讲了组合逻辑——输出永远等于当前输入的函数。但这句话意味着：输出不再只是当前输入的函数了。输出取决于<strong>时钟边沿到来那一刻</strong>输入是什么——并且这个值会被保持，直到下一个边沿。</p>
+<p>这需要一个全新的元件。</p>
+<h2 id="d-触发器1-bit-的记忆"><a class="header" href="#d-触发器1-bit-的记忆">D 触发器：1 bit 的记忆</a></h2>
+<p>记忆的最基本单元，叫做 <strong>D 触发器</strong>（D Flip-Flop，FF）。</p>
+<p>它只有一个数据输入（D）、一个数据输出（Q）、一个时钟输入（CLK）。行为简单到可以用一句话描述：</p>
+<pre><code>在每个 CLK 的上升沿：Q ← D
+其余时间：Q 保持不变
+</code></pre>
+<pre><code>CLK:  _|¯|_|¯|_|¯|_|¯|_|¯|_
+D  :  ___ ¯¯¯¯¯¯ _______ ¯¯¯¯
+Q  :  _________ ¯¯¯¯¯¯ ______
+              ↑       ↑
+         第一个上升沿  第二个上升沿
+</code></pre>
+<p>一个 D 触发器存储了 <strong>1 bit</strong> 的信息。它是怎么做到“保持“的？内部结构其实很优雅——用两个锁存器（latch）级联，每个锁存器用透明/锁存两种模式交替工作。CLK=0 时主锁存器透明、从锁存器锁存；CLK=1 时反过来。数据在 CLK 上升沿那一个瞬间从 D 被“拍“进 Q，然后被锁死。</p>
+<p>把 N 个 D 触发器放在一起、用同一个 CLK——这就是一个 <strong>N 位寄存器</strong>。</p>
+<p>你的 ARM Cortex-M4 有 16 个通用寄存器（R0-R15），每个 32 位。本质上是 16 × 32 = 512 个 D 触发器，被同一个 CLK 驱动。加上 PC、SP、LR、PSR——总共几百个 FF，构成了 CPU 的寄存器文件（register file）。</p>
+<h3 id="用-c-模拟-d-触发器"><a class="header" href="#用-c-模拟-d-触发器">用 C 模拟 D 触发器</a></h3>
+<p>让我们在软件里模拟一个 D 触发器，包含建立时间和保持时间的检查：</p>
+<pre><code class="language-c">#include &lt;stdint.h&gt;
+#include &lt;stdio.h&gt;
+
+typedef struct {
+    int q;                  // 当前输出
+    double t_setup;         // 建立时间 (ps)
+    double t_hold;          // 保持时间 (ps)
+    double t_cq;            // Clock-to-Q 延迟 (ps)
+    int metastable;         // 亚稳态标志
+} D_FlipFlop;
+
+void dff_clock(D_FlipFlop *ff, int d, double d_change_time,
+               double clk_edge_time) {
+    // 检查建立时间：数据必须在时钟边沿之前 t_setup 稳定
+    if (clk_edge_time - d_change_time &lt; ff-&gt;t_setup) {
+        ff-&gt;metastable = 1;
+        ff-&gt;q = -1;   // 不确定值
+        return;
+    }
+
+    // 检查保持时间：数据在时钟边沿之后 t_hold 内不能变
+    //（在完整模拟中需要 scheduler 支持，这里简化）
+
+    ff-&gt;metastable = 0;
+    ff-&gt;q = d;   // 正常采样
+}
+
+void demo_dff() {
+    D_FlipFlop ff = {0, 50.0, 20.0, 100.0, 0};
+
+    // 正常采样：数据在边沿前 80ps 已稳定（&gt;50ps 建立时间）
+    dff_clock(&amp;ff, 1, 100.0, 180.0);
+    printf("Q = %d (正常)\n", ff.q);  // Q = 1
+
+    // 建立时间违例：数据在边沿前 30ps 才变（&lt;50ps 建立时间）
+    dff_clock(&amp;ff, 0, 250.0, 280.0);
+    printf("Q = %d, metastable = %d (亚稳态!)\n",
+           ff.q, ff.metastable);  // Q = 不确定
+}
+</code></pre>
+<p>这个模拟抓住了关键：<strong>D 触发器的行为不是“即时“的。数据不能在时钟边沿附近变化——它需要一段安静时间。</strong> 违反这个要求，触发器就进入亚稳态。</p>
+<h2 id="同步时序电路组合逻辑--寄存器"><a class="header" href="#同步时序电路组合逻辑--寄存器">同步时序电路：组合逻辑 + 寄存器</a></h2>
+<p>当你把组合逻辑和寄存器组合起来，就得到了<strong>同步时序电路</strong>：</p>
+<pre><code>  +--------+     +--------+     +--------+
+  | 寄存器 |────&gt;| 组合   |────&gt;| 寄存器 |────&gt; ...
+  | (FFs)  |     | 逻辑   |     | (FFs)  |
+  +--------+     +--------+     +--------+
+       ↑                          ↑
+      CLK                        CLK
+</code></pre>
+<p>每一个时钟周期：</p>
+<ol>
+<li>前级寄存器输出稳定数据。</li>
+<li>组合逻辑用这一拍的时间来传播和计算。</li>
+<li>结果在下一个上升沿被“拍“进后级寄存器。</li>
+</ol>
+<p><strong>这就是所有同步数字电路的基本架构。</strong> 从最简单的计数器到最复杂的多核 SoC，都是这个架构的递归嵌套——寄存器、云、寄存器、云、寄存器……一层套一层。</p>
+<h3 id="一个-4-位计数器时序逻辑的最简实例"><a class="header" href="#一个-4-位计数器时序逻辑的最简实例">一个 4 位计数器：时序逻辑的最简实例</a></h3>
+<pre><code class="language-c">#include &lt;stdint.h&gt;
+
+typedef struct {
+    uint8_t value;     // 4-bit 计数值
+    uint8_t enable;    // 使能
+    uint8_t reset;     // 同步复位
+} Counter4Bit;
+
+void counter_clock(Counter4Bit *ctr) {
+    // 同步复位（在时钟上升沿采样）
+    if (ctr-&gt;reset) {
+        ctr-&gt;value = 0;
+        return;
+    }
+
+    if (ctr-&gt;enable) {
+        // 用上一节定义的全加器逻辑：加 1
+        int a[4] = {ctr-&gt;value &amp; 1, (ctr-&gt;value&gt;&gt;1)&amp;1,
+                    (ctr-&gt;value&gt;&gt;2)&amp;1, (ctr-&gt;value&gt;&gt;3)&amp;1};
+        int one[4] = {1, 0, 0, 0};
+        int sum[4], c_out;
+        ripple_carry_adder(a, one, 0, sum, &amp;c_out);
+
+        // 4-bit 环绕：忽略 c_out
+        ctr-&gt;value = sum[0] | (sum[1]&lt;&lt;1) | (sum[2]&lt;&lt;2) | (sum[3]&lt;&lt;3);
+    }
+    // 无使能：保持原值
+}
+</code></pre>
+<p>这个 4 位计数器——enabled 时在 CLK 上升沿加 1，reset 时归零。它只有 4 个 D 触发器和一个 4 位加法器。但把它放大到 64 位，加上一个起始值，再用一个捕获信号——你就得到了 PTP 硬件时钟（PHC）的核心。PTP 从时钟内部就是一个巨大的计数器从 0 开始昼夜不停地数——数的是本地振荡器的周期。PTP 报文到达时，硬件把那个瞬间的计数值锁存下来，这就是硬件时间戳。全部由一串 D 触发器和加法器完成。</p>
+<h3 id="移位寄存器"><a class="header" href="#移位寄存器">移位寄存器</a></h3>
+<p>把 N 个 D 触发器串联——前一个的 Q 接到后一个的 D——就得到一个<strong>移位寄存器</strong>。每个时钟周期，数据向右移动一位。</p>
+<pre><code>CLK:     _|¯|_|¯|_|¯|_|¯|_|¯|_|¯|_
+D_in:    ___ ¯¯¯¯ _____ ______________
+Q0:      ______ ¯¯¯¯ _____ __________
+Q1:      _________ ¯¯¯¯ _____ _______
+Q2:      ____________ ¯¯¯¯ _____ ____
+</code></pre>
+<p>移位寄存器是串并转换（SPI 的数据接收）和并串转换（SPI 的数据发送）的物理基础。UART 的发送端也是一个移位寄存器——并行数据加载进去，每个波特率时钟移出一位到 TX 线。</p>
+<h2 id="三个关键时序参数"><a class="header" href="#三个关键时序参数">三个关键时序参数</a></h2>
+<p>但“拍“这个动作不是魔法。D 触发器对时序有严格的要求。</p>
+<ul>
+<li><strong>Setup time（建立时间）</strong>：数据必须在时钟边沿<strong>之前</strong>稳定下来的最短时间。如果数据在建立时间窗口内还在变，FF 抓到的可能是 0 也可能是 1——甚至是一个中间电平。这叫<strong>亚稳态</strong>（metastability）。</li>
+<li><strong>Hold time（保持时间）</strong>：数据必须在时钟边沿<strong>之后</strong>继续保持稳定一段时间。</li>
+<li><strong>Clock-to-Q delay</strong>：时钟边沿之后，Q 端新数据稳定输出所花的时间。</li>
+</ul>
+<p>想象地铁车门。你必须在门开始关闭之前踏进车厢——这就是Setup Time。门关到一半的时候，你不能又伸一只脚进去——这就是Hold Time。如果违反了Setup——你被门夹住了（亚稳态）。如果违反了Hold——你的脚被夹断（数据丢失）。D触发器的时钟边沿就是那扇正在关闭的门。</p>
+<p>整个数字电路的最大频率由这个公式决定：</p>
+<p><strong>f_max = 1 / (T_cq + T_comb + T_setup + T_skew)</strong></p>
+<p>其中 T_comb 是两级寄存器之间的组合逻辑最大路径延迟，T_skew 是时钟偏差——同一个 CLK 到达不同 FF 的时间差异。</p>
+<p>在典型工艺下，两级寄存器之间放十几级逻辑门，每级约几十皮秒。T_cq、T_setup、T_skew 都在几十皮秒到上百皮秒级别。一个 15 级逻辑深度的路径，总延迟约几百皮秒，f_max 在 1-2 GHz 范围内。</p>
+<p>但如果切换到最差工艺角（慢 NMOS、慢 PMOS）、高温、低压的条件，每级门延迟可能增加 50% 以上，T_cq 也会显著增加。<strong>同一个设计，在不同工艺角下最高频率可以差 50%。</strong> 这就是为什么芯片要标“工作频率范围“而不是“固定频率“——它不是不想稳定，是物理做不到稳定。</p>
+<p><strong>这也是为什么 IC 内部能跑 GHz、而分立芯片方案只有 MHz 的原因。</strong> IC 内部的走线极短、时钟 skew 可控、门延迟极小。PCB 上走线长、电容大、电磁干扰多——T_comb 和 T_skew 都大得多。</p>
+<h2 id="亚稳态当触发器犹豫不决"><a class="header" href="#亚稳态当触发器犹豫不决">亚稳态：当触发器“犹豫不决“</a></h2>
+<p>上面提到了亚稳态。这是一个值得专门讨论的概念——因为它是所有跨时钟域（CDC）设计的核心问题。</p>
+<p>D 触发器的内部有一个正反馈环——两个反相器首尾相连。正常工作状态下，这个反馈环被强制拉到 0 或 1。但如果数据在建立时间窗口内变化，输入锁存器捕获到的可能是一个介于 V_IL 和 V_IH 之间的电压——既不是干净的 0，也不是干净的 1。</p>
+<p>这时反馈环内的两个反相器会进入线性区——它们像一个放大器，试图把输入放大到满摆幅。但如果输入电压恰好是反馈环的亚稳态点（约 VDD/2），两个反相器的增益恰好让输出等于输入——整个环停留在中间电压上。</p>
+<p>它不会永远停在中间——热噪声最终会打破平衡，让它跌落到 0 或 1。但这个过程需要的时间是<strong>不确定的</strong>——可能是一个时钟周期，也可能是几百个时钟周期。在这段时间内，后续的逻辑电路可能看到一个 0，可能看到一个 1，可能看到振荡——这意味着<strong>计算结果是不可重复的</strong>。</p>
+<p>这就是为什么跨时钟域时必须放同步器——两级或三级 D 触发器串联，给第一个触发器足够的“平均故障间隔时间“（MTBF）从亚稳态恢复。两级同步器的 MTBF 通常在几十年以上（对于 200MHz 时钟域），但对于 ASIL-D 系统，通常还是需要三级同步器或异步 FIFO。</p>
+<p><strong>亚稳态不是设计错误，是物理规律。你无法消除它，只能把它发生的概率降到可接受的范围。</strong></p>
+<h2 id="ptp-硬件时间戳触发器的终极应用"><a class="header" href="#ptp-硬件时间戳触发器的终极应用">PTP 硬件时间戳：触发器的终极应用</a></h2>
+<p>现在回过头来看 PTP。</p>
+<p>PTP 从时钟需要记录报文<strong>到达 MAC 层的精确时刻</strong>，精度要求在纳秒级。怎么做到的？</p>
+<p>现代支持 PTP 的以太网 MAC（比如 TI DP83640）的做法：</p>
+<ol>
+<li>在 MII/RMII 接口上监测 RX_DV（接收数据有效）信号的跳变。</li>
+<li>RX_DV 变为高电平的瞬间，硬件电路产生一个<strong>捕获信号</strong>。</li>
+<li>这个捕获信号触发一组<strong>寄存器（即 D 触发器阵列）</strong>，锁存当前 PTP 硬件时钟（PHC）的计数值。</li>
+</ol>
+<p>整个过程在物理层完成，延迟只有几个纳秒，抖动在亚纳秒级别。没有中断响应时间，没有软件处理延时，没有操作系统的调度不确定性——因为全部是<strong>触发器和组合逻辑</strong>在干活。</p>
+<p>PTP 的纳秒精度怎么来的？<strong>回答是：它把“记录时间“这件事，完全交给了一条以固定频率运转的计数器 + 一个边沿触发锁存的 D 触发器组。这是纯硬件，没有任何软件的不确定性。</strong></p>
+<p>而在 PTP 的 PI 伺服控制器中，频率校正值写入 PHC 的频率调整寄存器——本质上是一个加法器，每个时钟周期把频率校正值累加到一个相位累加器中，溢出时产生一个时钟 tick。这也是纯时序逻辑。整个 PTP 协议的精髓不在软件——在硬件。在那些昼夜不停翻转着的触发器上。</p>
+<p>软件时间戳做不到这个精度，因为软件只有轮询或中断——即使在 RTOS 上，响应延迟也有微秒级。<strong>差了三个数量级。</strong></p>
+<p>你在数电课上学过的 D 触发器——这个看起来最基础的单元——是 PTP 硬件时间戳的物理基础。</p>
+<h2 id="从死物到活物"><a class="header" href="#从死物到活物">从“死物“到“活物“</a></h2>
+<p>组合逻辑是“瞬间的真理“——输出永远是当前输入的函数。</p>
+<p>时序逻辑是“历史的记忆“——输出不只是当前输入的函数，还带着<strong>过去</strong>的痕迹。</p>
+<p>这一“记忆“能力，把电路从“死物“变成了“活物“。你在设计的任何系统，本质上都是在“计算“和“记忆“之间找平衡：</p>
+<p>你在ECU里写CAN诊断状态机的时候，每一次状态转移——从“默认会话“到“扩展会话“——都是一组D触发器在时钟边沿更新自己的值。PTP的PI伺服控制器累计历史偏移用于频率校正——那个“积分项“的每个增量，都锁存在一个寄存器里，等待下一个Sync周期被读出来。记忆——就是电路学会等。</p>
+<p><strong>你的 ECU 不是“在计算“——它是在用记忆辅助计算，用计算保护记忆。</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解了时序逻辑——D触发器给了电路“记忆“，让它不再只是当前输入的函数。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>D触发器是1 bit记忆</strong>：在每个时钟上升沿Q←D，其余时间保持不变——N个串联就是寄存器，寄存器+组合逻辑就是所有同步数字电路的基本架构。</li>
+<li><strong>三个时序参数决定芯片能跑多快</strong>：T_cq + T_comb + T_setup + T_skew 共同限制最大频率，工艺角变化能让f_max差50%。</li>
+<li><strong>亚稳态不是设计错误，是物理规律</strong>：你无法消除它，只能把概率降到可接受范围——跨时钟域必须放同步器。</li>
+</ol>
+<p>下一节，数据通路与控制器的双人舞——把加法器、寄存器、ALU编排成能执行程序的处理器。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>你现在手里有加法器、多路器、寄存器文件、ALU、程序计数器——都是前两节造出来的积木块。它们摊在桌面上，每个都能用。但从桌面上，你得不到一个能执行程序的处理器。</p>
+<p>你需要一个<strong>指挥</strong>。一个能把“取指→译码→执行→写回“这四个动作编排成一支舞的东西。</p>
+<p>下一节，数据通路与控制器的双人舞。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/3.1-组合逻辑-没有记忆的计算.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/3.3-数据通路与控制器的双人舞.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/3.1-组合逻辑-没有记忆的计算.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/3.3-数据通路与控制器的双人舞.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

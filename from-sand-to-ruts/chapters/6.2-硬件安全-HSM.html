@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>硬件安全 · HSM - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="62-硬件安全hsm"><a class="header" href="#62-硬件安全hsm">6.2 硬件安全：HSM</a></h1>
+<h3 id="高速路上的远程劫持"><a class="header" href="#高速路上的远程劫持">高速路上的远程劫持</a></h3>
+<p>2015年7月。圣路易斯高速公路。一辆Jeep Cherokee以110km/h的速度行驶在车流中。</p>
+<p>驾驶员的手在方向盘上，脚在油门上。一切正常。</p>
+<p>然后——空调风量跳到最大。收音机音量炸裂。雨刷在没有下雨的晴天开始疯狂摆动。接着，变速箱被远程切到空档。油门踏板失效。最后，方向盘锁死在当前位置。</p>
+<p>驾驶员在高速公路上，对方向盘、油门、刹车——全部失去控制。</p>
+<p>这不是电影。这是安全研究员Charlie Miller和Chris Valasek对FCA（菲亚特克莱斯勒）做的一次公开安全演示。</p>
+<p>他们的攻击不是魔法。每一步都是系统性的。</p>
+<p><strong>第一步：外部入口。</strong> Uconnect 信息娱乐系统通过 Sprint 蜂窝网络保持互联网连接。攻击者扫描蜂窝网络的 IP 地址段，发现 Uconnect 头部单元开放了端口 6667（D-Bus 调试接口）。没有防火墙。没有认证。</p>
+<p><strong>第二步：横向移动。</strong> 信息娱乐系统的 OMAP 处理器通过内部的 SPI 总线与 V850 网关控制器通信。攻击者利用 D-Bus 接口获得了 OMAP 上的 root shell，重新刷写了 V850 的固件。V850 现在变成了攻击者的傀儡——它可以向 CAN 总线发送任意报文。</p>
+<p><strong>第三步：CAN 注入。</strong> CAN 协议没有任何认证机制。任何能接触 CAN 总线的节点都可以发出任意 CAN ID 的任意数据。攻击者从 V850 向 CAN-C（底盘 CAN）发送了“刹车释放““变速箱切空档”“方向盘角度偏移“的 CAN 帧。刹车 ECU 分不清“来自制动踏板的减速指令“和“来自攻击者的减速指令”。方向盘 ECU 分不清“来自驾驶员转角传感器的转角信号“和“攻击者注入的转角信号“。</p>
+<p>FCA 召回 140 万辆车。汽车行业第一次集体意识到：<strong>车不再是一个封闭的机械系统。它是一个连接到互联网的、多网络接口的、可以被远程攻击的计算节点。</strong></p>
+<hr>
+<h3 id="为什么必须是硬件"><a class="header" href="#为什么必须是硬件">为什么必须是硬件？</a></h3>
+<p>一个自然的疑问：为什么不靠软件？写好代码、做好代码审计、加防火墙——软件安全一样可以防攻击？</p>
+<p>答案残酷但真实：<strong>代码永远有 bug。</strong></p>
+<p>Linux 内核截至 2024 年统计的公开缺陷超过三千个。AUTOSAR CP 的完整基础软件栈超过十万行 C 代码。任何非平凡的软件系统都不存在无漏洞的保证。</p>
+<p>Jeep 那次攻击，如果 Uconnect 的信息娱乐系统代码写得完美无缺、防火墙配置毫无疏漏，那次攻击就不会发生。但要求任何复杂软件“完美无缺“是一个无法兑现的承诺。攻击者只需要找到一个漏洞。防御者必须堵上所有漏洞。攻防双方的成本不对称。</p>
+<p>所以需要另一层保障——不依赖代码质量的保障。</p>
+<p>这层保障就是<strong>物理隔离 + 密码学</strong>。</p>
+<p>物理隔离意味着：即使主 CPU 的全部代码都被攻破、攻击者拿到了主 CPU 的完整执行权限——攻击者也读不到密钥。因为密钥不在主 CPU 的地址空间里。</p>
+<p>密码学意味着：攻击者要伪造一条合法的安全 CAN 报文，需要知道密钥。不知道密钥，再怎么修改主 CPU 代码也伪造不出合法签名。</p>
+<p>两者合在一起，构成了<strong>不依赖代码质量的信任根基</strong>。</p>
+<hr>
+<h3 id="hsm硅晶片内部的独立王国"><a class="header" href="#hsm硅晶片内部的独立王国">HSM：硅晶片内部的独立王国</a></h3>
+<p>HSM（Hardware Security Module）是一个嵌入在 MCU 芯片 die 内部的独立安全处理器。</p>
+<p>“独立“不是修辞。HSM 有自己的 CPU 核（通常是 ARM Cortex-M0 或专用安全核），有自己独立封装的 Flash 和 RAM。这些存储单元在主 CPU 的地址映射中不存在——物理走线根本没有连接到主 CPU 的交叉总线上。即使攻击者把 JTAG 调试器插在芯片的调试口上、dump 了全部主 Flash 的全部内容——他读不到 HSM 内部的一个 bit。</p>
+<p>HSM 只做三件事。只做三件，但每一件都是信任的基石。</p>
+<hr>
+<h3 id="第一支柱密钥存储"><a class="header" href="#第一支柱密钥存储">第一支柱：密钥存储</a></h3>
+<p>ECU 需要的所有加密密钥——安全通信的 AES 密钥、固件签名的公钥、唯一设备标识的私钥——全部存储在 HSM 内部。主 CPU 不知道密钥的值。主 CPU 只能对 HSM 说“请用 slot 3 的密钥加密这段数据“或者“请用 slot 5 的密钥验证这个 CMAC 值“。HSM 内部执行加密运算，把结果返回给主 CPU。密钥在运算过程中经过 HSM 内部的加密引擎，从未出现在主 CPU 的总线上。</p>
+<p>这是 CSEc（Cypress Security Extension / SHE-compliant Crypto Engine）的典型 API 用法——主 CPU 通过共享内存和命令寄存器与 HSM 交互：</p>
+<pre><code class="language-c">/* CSEc_API.c — 主CPU调用HSM加密服务的接口（SHE规范简化版） */
+
+#define HSM_CMD_ENC_ECB     0x01  /* AES-128 ECB 加密 */
+#define HSM_CMD_DEC_ECB     0x02  /* AES-128 ECB 解密 */
+#define HSM_CMD_GENERATE_MAC 0x03 /* AES-CMAC 生成 */
+#define HSM_CMD_VERIFY_MAC  0x04 /* AES-CMAC 验证 */
+#define HSM_CMD_LOAD_KEY    0x05 /* 从HSM内部ROM/OTP加载密钥到slot */
+#define HSM_CMD_RND         0x06 /* 真随机数生成 */
+
+/* HSM 命令接口——通过共享内存和状态寄存器通信 */
+typedef struct {
+    volatile uint32_t CMD;        /* 命令寄存器 */
+    volatile uint32_t STATUS;     /* 状态: 0=空闲, 1=忙, 2=完成, 3=错误 */
+    volatile uint32_t KEY_SLOT;   /* 密钥槽: 0-9 */
+    uint8_t           INPUT[16];  /* 输入数据(明文/密文/消息) */
+    uint8_t           OUTPUT[16]; /* 输出数据(密文/明文/MAC) */
+} HSM_Interface_t;
+
+static HSM_Interface_t *const hsm = (HSM_Interface_t *)HSM_BASE_ADDR;
+
+/* 使用HSM slot 3的密钥对16字节明文进行AES-128加密 */
+int HSM_AES_Encrypt(uint8_t key_slot, const uint8_t *plaintext,
+                     uint8_t *ciphertext)
+{
+    /* 1. 把明文拷贝到HSM输入缓冲区 */
+    memcpy((void *)hsm-&gt;INPUT, plaintext, 16);
+
+    /* 2. 选择密钥槽 */
+    hsm-&gt;KEY_SLOT = key_slot;
+
+    /* 3. 发送加密命令 */
+    hsm-&gt;CMD = HSM_CMD_ENC_ECB;
+
+    /* 4. 轮询等待——HSM在自己的核上执行AES */
+    while (hsm-&gt;STATUS == HSM_STATUS_BUSY) {
+        /* 在100μs控制周期内，这样等待不可接受——实际代码
+         * 会使用中断+回调。这里展示最原始的同步接口。 */
+    }
+
+    if (hsm-&gt;STATUS != HSM_STATUS_DONE) {
+        return -1;  /* HSM报告错误 */
+    }
+
+    /* 5. 从HSM输出缓冲区读取密文 */
+    memcpy(ciphertext, (void *)hsm-&gt;OUTPUT, 16);
+    return 0;
+}
+
+/* 使用HSM slot 5的密钥验证AES-CMAC */
+int HSM_Verify_CMAC(uint8_t key_slot, const uint8_t *message,
+                     uint8_t msg_len, const uint8_t *expected_mac)
+{
+    /* 把消息拷贝到共享内存 */
+    memcpy((void *)hsm-&gt;INPUT, message, msg_len);
+
+    hsm-&gt;KEY_SLOT = key_slot;
+    hsm-&gt;CMD = HSM_CMD_VERIFY_MAC;
+
+    while (hsm-&gt;STATUS == HSM_STATUS_BUSY);
+
+    if (hsm-&gt;STATUS != HSM_STATUS_DONE) {
+        return -1;
+    }
+
+    /* HSM的验证结果在 OUTPUT[0]：
+     * 0x00 = CMAC不匹配
+     * 0x01 = CMAC匹配 */
+    return (hsm-&gt;OUTPUT[0] == 0x01) ? 0 : -1;
+}
+
+/* 从HSM的真随机数发生器获取随机数（用于SecurityAccess seed） */
+int HSM_GetRandom(uint8_t *random_bytes, uint8_t len)
+{
+    for (uint8_t i = 0; i &lt; len; i += 16) {
+        hsm-&gt;CMD = HSM_CMD_RND;
+        while (hsm-&gt;STATUS == HSM_STATUS_BUSY);
+        memcpy(random_bytes + i, (void *)hsm-&gt;OUTPUT,
+               (len - i &gt; 16) ? 16 : len - i);
+    }
+    return 0;
+}
+</code></pre>
+<p>关键点：<code>plaintext</code> 明文在 <code>memcpy</code> 到 <code>hsm-&gt;INPUT</code> 之后进入了主 CPU 无法访问的总线域——HSM 的 INPUT 寄存器映射在 HSM 专有的地址空间里，由 HSM 内部总线连接，主 CPU 通过桥接器（bridge）访问——但桥接器只暴露 INPUT/OUTPUT 和命令寄存器。密钥、中间轮密钥、S-Box 查找表——这些全部在 HSM 内部。主 CPU 总线上的任何逻辑分析仪、任何调试器、任何被攻破的内核代码——都看不到。</p>
+<hr>
+<h3 id="第二支柱安全启动secure-boot"><a class="header" href="#第二支柱安全启动secure-boot">第二支柱：安全启动（Secure Boot）</a></h3>
+<p>MCU 上电。HSM 先于主 CPU 启动——它有自己独立的时钟和复位逻辑，不依赖主 CPU。</p>
+<p>安全启动的完整流程：</p>
+<pre><code>上电
+  │
+  ▼
+电压爬升 → HSM 内部 RC 振荡器起振 → HSM 复位释放
+  │
+  ▼
+HSM 从内部 ROM 加载 HSM 固件（小，~4KB）
+  │
+  ▼
+HSM 固件自检：验证 HSM Flash 中固件签名的完整性
+  │  (HSM 的 OTP 中烧有 HSM 固件公钥的哈希)
+  │
+  ├── 签名无效 → HSM 停止，主 CPU 永远不启动（变砖保护）
+  │
+  ▼ 签名有效
+HSM 从外部 Flash 读取主 CPU 固件映像（新分区）
+  │
+  ▼
+HSM 计算固件映像的 SHA-256 哈希
+  │
+  ▼
+HSM 用公钥验证固件映像末尾的数字签名（RSA-2048 或 ECC P256）
+  │
+  ├── 签名无效 → HSM 拒绝释放复位线
+  │      尝试启动旧分区（A/B回退逻辑）
+  │      ├── 旧分区签名有效 → 释放复位线，跑旧固件
+  │      └── 旧分区签名无效 → 永远不启动（没有可信任的固件）
+  │
+  ▼ 签名有效
+HSM 释放主 CPU 的复位线
+  │
+  ▼
+主 CPU 从固件起始地址开始运行
+此时主 CPU 已经确信：它即将执行的每一行代码，都是从 OEM 的签名服务器出来的。
+没有被改过一个 bit。
+</code></pre>
+<p>在 <code>main()</code> 执行之前——在主 CPU 的第一个全局变量被初始化之前——信任已经被建立。这个信任不是从代码推导出来的——代码本身是被验证的对象。信任的锚点在更底层。</p>
+<hr>
+<h3 id="穿透信任的物理锚点熔丝"><a class="header" href="#穿透信任的物理锚点熔丝">穿透：信任的物理锚点——熔丝</a></h3>
+<p><strong>HSM 内部的 OTP（一次性可编程）存储是由熔丝（fuse）阵列组成的。</strong></p>
+<p>在芯片制造的最后阶段——或在 ECU 产线的安全编程站中——编程器向选定的熔丝施加一个高电压脉冲。这个脉冲的电流密度（约 10^6 A/cm²）在金属连线中产生焦耳热和电迁移——金属原子被物理地推离原位，连线的电阻从接近零跳到接近无穷大。一根熔丝从“导通“变成了“断开“。</p>
+<p>一断，永断。热力学第二定律决定这条连线的原子不可能自发地回到原位。你不需要任何软件来保护这个状态——宇宙的物理定律在保护它。</p>
+<p>安全启动的公钥哈希就烧在这些熔丝里。OTP 上电之后立刻可读——不需要任何软件初始化。上游的固件验证逻辑用这个哈希验校签名块中的公钥，用公钥验证固件签名，用签名确认固件未被篡改。</p>
+<p>链条的起点是用来烧断熔丝的那个高压脉冲。<strong>信任不是推导出来的——信任是锚定在物理现实中的。</strong> 在芯片的 die 上，在二氧化硅和铝互连层下面，在一组被电迁移永远切断的金属连线阵列里——信任就在这里。</p>
+<p>这就是**信任根（Root of Trust）**的含义：信任链的最终锚点不在软件中——在物理中。</p>
+<hr>
+<h3 id="第三支柱加密加速"><a class="header" href="#第三支柱加密加速">第三支柱：加密加速</a></h3>
+<p>HSM 内置了硬件加密引擎——AES-128/256、SHA-256、RSA-2048、ECC P256/P384、TRNG 真随机数发生器。</p>
+<p>一套 AES-128 加密在 HSM 的硬件引擎中只需要 11 个时钟周期（pipelined AES core）。如果让主 CPU 的软件库算——即使高度优化的 T-table 查表实现也要约 200 周期。在 100μs 控制周期的实时系统里，省下的 189 个周期可能是“能在截止时间前发完那帧安全 CAN 报文“和“来不及“之间的差别。</p>
+<p>对于非对称加密（RSA-2048 签名验证），硬件加速的差距是碾压级的。软件 RSA-2048 验证一次签名约需 50-100ms。HSM 的硬件加速器：&lt; 5ms。在安全启动中——你只有几十毫秒的启动时间预算——软件 RSA 根本不可行。</p>
+<hr>
+<h3 id="secoc给-can-报文穿上签名"><a class="header" href="#secoc给-can-报文穿上签名">SecOC：给 CAN 报文穿上签名</a></h3>
+<p>安全启动保启动。但主 CPU 在运行时发出的每一帧 CAN 报文——它们在总线上裸奔，攻击者能不能伪造？</p>
+<p>Jeep 被黑的核心漏洞之一，正是 CAN 没有认证。任何节点都可以发送任意 CAN ID，接收方无法分辨真假。</p>
+<p>SecOC（Secure Onboard Communication）是 AUTOSAR 定义的车内安全通信机制。</p>
+<p>ECU A 和 ECU B 共享一个 AES 对称密钥（存储在各自 HSM 的 slot 中）。</p>
+<p><strong>发送方（ECU A）：</strong></p>
+<ol>
+<li>构造 CAN 帧的数据部分（8 字节——比如方向盘转角信号）。</li>
+<li>从 HSM 获取当前的 Freshness Value（FV = 单调递增计数器）。</li>
+<li>把 FV（4 字节）+ CAN 数据（8 字节）拼接成 12 字节的消息。</li>
+<li>发送 HSM 命令：“用 slot 3 的密钥对这个 12 字节消息计算 AES-CMAC”。</li>
+<li>HSM 返回 16 字节的 CMAC——截取前 4-8 字节作为“Authenticator“。</li>
+<li>把 Authenticator 附加在 CAN 帧的数据域尾部，发送到总线上。</li>
+<li>FV++（写入 NVM 以防止断电后重放）。</li>
+</ol>
+<p><strong>接收方（ECU B）：</strong></p>
+<ol>
+<li>收到 CAN 帧，提取数据部分和 Authenticator。</li>
+<li>从 HSM 获取自己记录的 FV（应该 ≥ 发送方的 FV）。</li>
+<li>检查接收的 FV 是否 &gt; 上次接收的 FV。如果 ≤ 上次值——这是重放攻击，丢弃。</li>
+<li>用 FV + CAN 数据重新计算 CMAC，与收到的 Authenticator 比对。</li>
+<li>匹配——数据未被篡改，处理。不匹配——发送方的密钥不对，报文是伪造的，丢弃。</li>
+</ol>
+<p><strong>Freshness Value 是 SecOC 最巧妙的设计。</strong> 它是一个单调递增的计数器，每发一帧 +1。攻击者在总线上录下了一帧合法报文，想稍后重放——接收方检查 FV，发现这个值 ≤ 上次收到的值——“这是旧消息，你在重放。“丢弃。</p>
+<p>不需要 GPS 同步时钟。不需要毫秒级时间精度。只需要一个单调递增的数字。重放攻击被彻底防死。</p>
+<p><strong>攻击者不知道密钥（无法伪造 CMAC），不能重用旧报文（FV 过时），无法篡改内容（CMAC 不匹配）。</strong> 三重防护，全部来自一个存在于 HSM 内部的、主 CPU 永远看不到的对称密钥。</p>
+<hr>
+<h3 id="穿透从方向盘到硅晶片"><a class="header" href="#穿透从方向盘到硅晶片">穿透：从方向盘到硅晶片</a></h3>
+<p>我们做一次安全穿透。</p>
+<p>你向左打方向盘。EPS 控制器收到指令，驱动转向电机。</p>
+<p>如果存在攻击者：攻击者通过 OBD 口向 CAN 总线注入“方向盘右转“的报文。EPS 控制器分不清真假——CAN 协议没有认证。</p>
+<p>如果启用了 SecOC：EPS 控制器收到“方向盘右转“的报文后，HSM 验证附加的 CMAC。不匹配——发送方的密钥不对。丢弃。转向电机不动。攻击失败。</p>
+<p>往下穿透一层：这个 CMAC 验证在 HSM 的硬件加密引擎中完成——AES-128 运算，11 个时钟周期。</p>
+<p>再往下：验证用的 AES 密钥存储在 HSM 的 key slot 3 中——主 CPU 读不到。HSM 内部总线和主 CPU AHB 总线之间的桥接器不暴露任何密钥寄存器。</p>
+<p>再往下：HSM 自身在上电时经过安全启动自检——HSM 固件未被篡改。这个自检使用 HSM OTP 中烧入的公钥哈希，从 OTP 到签名验证——整条信任链横跨了熔丝阵列、HSM 内部 ROM、外部 Flash。</p>
+<p>再往下：熔丝阵列。高压脉冲。金属原子电迁移。0 变 1，1 变 0。断电后不丢失。20 年数据保持。存储在宇宙的物理定律中。</p>
+<p><strong>从方向盘的物理转动，到硅晶片 OTP 中一段被电迁移永久切断的金属连线。</strong> 安全的链条贯穿了这整条路径。链条的任何一环断裂，整条信任崩塌。</p>
+<hr>
+<h3 id="安全是社会契约"><a class="header" href="#安全是社会契约">安全是社会契约</a></h3>
+<p>你坐进一辆车，系上安全带，点火，上高速。</p>
+<p>你对这辆车有一个基本假设：<strong>方向盘会响应你的手，刹车会响应你的脚。没有人能远程抢走这个控制权。</strong></p>
+<p>这个假设如此基本，以至于你从不有意识地怀疑它。但它不是天然成立的——它是被工程保障的。</p>
+<p>汽车制造商对每一个驾驶员有一个承诺：“我们交付给你的车，控制权永远属于你。” 这个承诺的法律形式是产品责任。技术形式是 HSM、安全启动、SecOC、安全编程流程——整套硬件安全架构。</p>
+<p>每当有人质疑“在 ECU 里加 HSM 芯片多花两美元值不值得“——回答是：<strong>这不是成本核算。这是信任的物理基础。</strong></p>
+<p>驾驶员把命交给你。你用什么保证？</p>
+<p>但安全启动验证的是“固件的签名是否合法“。一个更根本的问题是：固件本身怎么到达车里？新版本的固件怎么安全、完整、不出错地写入每一片 Flash？</p>
+<p>100 万辆分布全球的 ECU。200MB 的新固件。不可靠的蜂窝网络。零容错——一次失败也不能有。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解安全的根基不在任何一行代码中——而在硅晶片内一段被高压脉冲物理烧断的金属连线里。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>安全的信任根不在软件中——在硅的物理定律中</strong>：HSM的OTP熔丝阵列中，高压脉冲通过电迁移物理切断金属连线。这是热力学保证——不是数学保证。断电不丢，20年数据保持。</li>
+<li><strong>安全启动验证的不是“代码写得对不对“——而是“代码有没有被篡改“</strong>：启动时HSM先于主CPU验签固件。信任链从OTP→HSM内部ROM→bootloader→app——环环相扣，任何一环断裂则整条信任崩塌。</li>
+<li><strong>安全是对驾驶员的社会契约</strong>：你坐进车里，默认方向盘会响应你的手、刹车会响应你的脚。这个基本假设不是天然成立的——它是被HSM、安全启动、SecOC这套硬件安全架构保障的。</li>
+</ol>
+<p>下一节，固件本身怎么安全到达车里？Part 6最后一节——软件升级与存储。OTA是你对一百万永远不会被物理接触的ECU的最终承诺。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>你写的安全启动代码保护了 Flash 里的每一行固件。但固件会老——有 bug 需要修，有功能需要升级。你需要在不拆车、不召回、不中断行驶的前提下，把 200MB 的新固件推送到全球 100 万辆车上。</p>
+<p>OTA 是汽车电子工程的终极考验。它调用了你学过的所有知识：通信、存储、安全、时序、状态机。所有知识在一个“不可逆转地修改物理上永远无法接触的设备“的场景下汇聚。</p>
+<p>下载固件的主体是一个 A/B 分区的状态机——A 区运行当前固件，B 区接收新固件。如果 B 区升级失败，A 区完好如初。但 A/B 分区的本质不只是一个软件设计模式——它的根源是 Flash 的物理铁律：擦除必须整个扇区进行，写入只能把 1 翻成 0，擦除比编程慢一千倍。</p>
+<p>下一节——Part 6 最后一节。软件升级与存储。这是你对一百万永远不会被物理接触的 ECU 的最终责任。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/6.1-诊断的世界-UDS.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/6.3-软件升级与存储.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/6.1-诊断的世界-UDS.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/6.3-软件升级与存储.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

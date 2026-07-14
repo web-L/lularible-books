@@ -1,0 +1,731 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>逐链路精准测量 · P2P延迟测量机制 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="28-逐链路精准测量p2p延迟测量机制"><a class="header" href="#28-逐链路精准测量p2p延迟测量机制">2.8 逐链路精准测量：P2P延迟测量机制</a></h1>
+<h2 id="如果每一段路都有测速仪"><a class="header" href="#如果每一段路都有测速仪">如果每一段路都有“测速仪“</a></h2>
+<p>想象你在高速公路上开车，想知道从北京到上海需要多长时间。</p>
+<p><strong>方法一：记录起点和终点时间</strong></p>
+<p>你从北京出发时看表：8:00
+你到上海时看表：16:00
+总时间：8小时</p>
+<p>但这个时间包含了：</p>
+<ul>
+<li>真正的行驶时间</li>
+<li>服务区休息时间</li>
+<li>堵车等待时间</li>
+<li>吃饭时间</li>
+</ul>
+<p>你不知道哪一段路花了多久。</p>
+<p><strong>方法二：每段路都有测速仪</strong></p>
+<p>高速公路在每个路段都安装了测速仪，记录你进入和离开每段路的时间：</p>
+<ul>
+<li>北京-天津段：1小时</li>
+<li>天津-济南段：2小时</li>
+<li>济南-南京段：2.5小时</li>
+<li>南京-上海段：2.5小时</li>
+</ul>
+<p>你可以精确知道每一段的时间，也更容易发现问题（比如济南-南京段为什么这么慢？）。</p>
+<p><strong>PTP的两种延迟测量机制，就像这两种方法</strong>：</p>
+<ul>
+<li><strong>E2E机制</strong>：测量整个路径的总延迟</li>
+<li><strong>P2P机制</strong>：逐链路测量延迟</li>
+</ul>
+<hr>
+<h2 id="p2p机制的基本原理"><a class="header" href="#p2p机制的基本原理">P2P机制的基本原理</a></h2>
+<h3 id="核心思想"><a class="header" href="#核心思想">核心思想</a></h3>
+<p>P2P（Peer-to-Peer，对等）机制的核心思想：<strong>让每两个相邻端口之间相互测量链路延迟</strong>。</p>
+<p>不像E2E那样由从时钟测量到主时钟的整个路径，P2P让每个链路两端的设备各自测量自己之间的延迟。</p>
+<h3 id="消息交换过程"><a class="header" href="#消息交换过程">消息交换过程</a></h3>
+<p>P2P机制涉及三类报文：</p>
+<ol>
+<li><strong>Pdelay_Req</strong>：请求者发送，请求测量链路延迟</li>
+<li><strong>Pdelay_Resp</strong>：响应者回复，携带接收时间戳</li>
+<li><strong>Pdelay_Resp_Follow_Up</strong>（可选）：响应者发送，携带发送时间戳</li>
+</ol>
+<p><strong>消息交换时序</strong>：</p>
+<pre><code>请求者（A）                               响应者（B）
+    |                                         |
+    |------ Pdelay_Req (t1) ---------------&gt;| (t2)
+    |                                         |
+    |&lt;----- Pdelay_Resp (t4) ----------------| (t3)
+    |                                         |
+    |&lt;----- Pdelay_Resp_Follow_Up (可选) ----|
+    |                                         |
+</code></pre>
+<p><strong>四个时间戳</strong>：</p>
+<ul>
+<li><strong>t1</strong>：请求者发送Pdelay_Req的时间</li>
+<li><strong>t2</strong>：响应者接收Pdelay_Req的时间</li>
+<li><strong>t3</strong>：响应者发送Pdelay_Resp的时间</li>
+<li><strong>t4</strong>：请求者接收Pdelay_Resp的时间</li>
+</ul>
+<h3 id="与e2e的关键区别"><a class="header" href="#与e2e的关键区别">与E2E的关键区别</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">特性</th><th style="text-align: left">E2E机制</th><th style="text-align: left">P2P机制</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>谁发起测量</strong></td><td style="text-align: left">从时钟</td><td style="text-align: left">每个端口（无论主从）</td></tr>
+<tr><td style="text-align: left"><strong>测量对象</strong></td><td style="text-align: left">主时钟到从时钟的整个路径</td><td style="text-align: left">两个相邻端口之间的链路</td></tr>
+<tr><td style="text-align: left"><strong>报文类型</strong></td><td style="text-align: left">Sync + Delay_Req + Delay_Resp</td><td style="text-align: left">Pdelay_Req + Pdelay_Resp + Pdelay_Resp_Follow_Up</td></tr>
+<tr><td style="text-align: left"><strong>透明时钟处理</strong></td><td style="text-align: left">E2E TC转发Delay_Req/Resp</td><td style="text-align: left">P2P TC丢弃Delay_Req/Resp，响应Pdelay_Req</td></tr>
+<tr><td style="text-align: left"><strong>适用场景</strong></td><td style="text-align: left">通用</td><td style="text-align: left">需要逐链路测量，或P2P TC网络</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="p2p机制的数学推导"><a class="header" href="#p2p机制的数学推导">P2P机制的数学推导</a></h2>
+<h3 id="基本公式"><a class="header" href="#基本公式">基本公式</a></h3>
+<p>与E2E类似，P2P也使用四个时间戳计算延迟：</p>
+<pre><code>meanLinkDelay = [(t2 - t1) + (t4 - t3)] / 2
+</code></pre>
+<p><strong>但有一个关键区别</strong>：t1、t2、t3、t4来自<strong>两个相邻的端口</strong>，而不是主时钟和从时钟。</p>
+<p>这意味着：</p>
+<ul>
+<li>t1和t4在请求者记录</li>
+<li>t2和t3在响应者记录</li>
+</ul>
+<h3 id="one-step模式"><a class="header" href="#one-step模式">one-step模式</a></h3>
+<p>在one-step模式下，Pdelay_Resp报文直接携带时间信息。</p>
+<p><strong>响应者的处理</strong>：</p>
+<p>响应者收到Pdelay_Req时记录t2，发送Pdelay_Resp时记录t3。</p>
+<p>Pdelay_Resp.correctionField携带：(t3 - t2)，即响应者的<strong>周转时间</strong>。</p>
+<p><strong>请求者的计算</strong>：</p>
+<pre><code>meanLinkDelay = [(t4 - t1) - Pdelay_Resp.correctionField] / 2
+              = [(t4 - t1) - (t3 - t2)] / 2
+              = [(t2 - t1) + (t4 - t3)] / 2
+</code></pre>
+<h3 id="two-step模式"><a class="header" href="#two-step模式">two-step模式</a></h3>
+<p>在two-step模式下，Pdelay_Resp后跟Pdelay_Resp_Follow_Up。</p>
+<p><strong>响应者的处理</strong>：</p>
+<p>响应者收到Pdelay_Req时记录t2，发送Pdelay_Resp时记录t3。</p>
+<p>Pdelay_Resp携带t2（requestReceiptTimestamp）。</p>
+<p>Pdelay_Resp_Follow_Up携带t3（responseOriginTimestamp）。</p>
+<p><strong>请求者的计算</strong>：</p>
+<pre><code>meanLinkDelay = [(t4 - t1) - (responseOriginTimestamp - requestReceiptTimestamp)] / 2
+              = [(t4 - t1) - (t3 - t2)] / 2
+</code></pre>
+<h3 id="为什么有两种模式"><a class="header" href="#为什么有两种模式">为什么有两种模式？</a></h3>
+<p><strong>one-step模式</strong>：</p>
+<ul>
+<li>优点：只需要两个报文，效率高</li>
+<li>缺点：需要在发送Pdelay_Resp时精确测量t3，硬件要求高</li>
+</ul>
+<p><strong>two-step模式</strong>：</p>
+<ul>
+<li>优点：可以在发送Pdelay_Resp_Follow_Up时携带精确的t3，实现简单</li>
+<li>缺点：需要三个报文，开销大</li>
+</ul>
+<p>大多数商业设备使用two-step模式，因为实现更简单。</p>
+<hr>
+<h2 id="一个完整的p2p测量示例"><a class="header" href="#一个完整的p2p测量示例">一个完整的P2P测量示例</a></h2>
+<h3 id="场景"><a class="header" href="#场景">场景</a></h3>
+<pre><code>端口A ---- 链路 ---- 端口B
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li>真实链路延迟：100ns（对称）</li>
+<li>端口A的时间：正常</li>
+<li>端口B的时间：正常（假设已经同步）</li>
+</ul>
+<h3 id="消息交换"><a class="header" href="#消息交换">消息交换</a></h3>
+<p><strong>步骤1：端口A发送Pdelay_Req</strong></p>
+<ul>
+<li>发送时间：t1 = 1000.000000000秒</li>
+</ul>
+<p><strong>步骤2：端口B接收Pdelay_Req</strong></p>
+<ul>
+<li>接收时间：t2 = 1000.000000100秒（100ns后）</li>
+</ul>
+<p><strong>步骤3：端口B发送Pdelay_Resp</strong></p>
+<ul>
+<li>发送时间：t3 = 1000.000001000秒（假设处理延迟900ns）</li>
+</ul>
+<p><strong>步骤4：端口A接收Pdelay_Resp</strong></p>
+<ul>
+<li>接收时间：t4 = 1000.000001100秒（t3 + 100ns）</li>
+</ul>
+<h3 id="计算"><a class="header" href="#计算">计算</a></h3>
+<p><strong>四个时间戳</strong>：</p>
+<ul>
+<li>t1 = 1000.000000000秒</li>
+<li>t2 = 1000.000000100秒</li>
+<li>t3 = 1000.000001000秒</li>
+<li>t4 = 1000.000001100秒</li>
+</ul>
+<p><strong>计算meanLinkDelay</strong>：</p>
+<pre><code>meanLinkDelay = [(t2 - t1) + (t4 - t3)] / 2
+              = [(100ns) + (100ns)] / 2
+              = 100ns
+</code></pre>
+<p><strong>正确！</strong></p>
+<p><strong>注意</strong>：响应者的周转时间（t3 - t2 = 900ns）不影响测量结果，因为被减掉了。</p>
+<hr>
+<h2 id="p2p机制与透明时钟"><a class="header" href="#p2p机制与透明时钟">P2P机制与透明时钟</a></h2>
+<h3 id="p2p透明时钟的特殊处理"><a class="header" href="#p2p透明时钟的特殊处理">P2P透明时钟的特殊处理</a></h3>
+<p>P2P透明时钟（P2P TC）不仅要测量驻留时间，还要：</p>
+<ol>
+<li><strong>测量链路延迟</strong>：对每个端口，使用P2P机制测量与对端的链路延迟</li>
+<li><strong>累加到correctionField</strong>：转发Sync时，把驻留时间 + 入口链路延迟累加</li>
+</ol>
+<h3 id="p2p-tc的工作流程"><a class="header" href="#p2p-tc的工作流程">P2P TC的工作流程</a></h3>
+<p><strong>场景</strong>：</p>
+<pre><code>主时钟 ---- TC_B ---- 从时钟
+</code></pre>
+<p><strong>TC_B的端口1（连接主时钟）</strong>：</p>
+<ol>
+<li>定期发送Pdelay_Req给主时钟</li>
+<li>收到Pdelay_Resp，计算meanLinkDelay_1</li>
+<li>监听主时钟的Sync报文</li>
+</ol>
+<p><strong>TC_B的端口2（连接从时钟）</strong>：</p>
+<ol>
+<li>定期发送Pdelay_Req给从时钟</li>
+<li>收到Pdelay_Resp，计算meanLinkDelay_2</li>
+<li>向从时钟转发Sync报文</li>
+</ol>
+<p><strong>转发Sync的处理</strong>：</p>
+<p>当Sync报文从端口1进入，从端口2离开：</p>
+<pre><code>Sync.correctionField（出口） = Sync.correctionField（入口） 
+                              + residenceTime 
+                              + meanLinkDelay_1
+                              + ingressDelayAsymmetry
+</code></pre>
+<p><strong>关键</strong>：meanLinkDelay_1是<strong>入口链路的延迟</strong>（主时钟→TC_B）。</p>
+<hr>
+<h2 id="p2p-vs-e2e深度对比"><a class="header" href="#p2p-vs-e2e深度对比">P2P vs E2E：深度对比</a></h2>
+<h3 id="测量粒度"><a class="header" href="#测量粒度">测量粒度</a></h3>
+<p><strong>E2E</strong>：</p>
+<ul>
+<li>测量<strong>整个路径</strong>的延迟</li>
+<li>包含所有链路延迟 + 所有透明时钟驻留时间</li>
+<li>无法区分哪一段贡献了多少延迟</li>
+</ul>
+<p><strong>P2P</strong>：</p>
+<ul>
+<li>测量<strong>每个链路</strong>的延迟</li>
+<li>可以精确知道每段链路的延迟</li>
+<li>便于诊断和优化</li>
+</ul>
+<h3 id="不对称处理"><a class="header" href="#不对称处理">不对称处理</a></h3>
+<p><strong>E2E</strong>：</p>
+<ul>
+<li>整个路径的不对称会影响offsetFromMaster</li>
+<li>难以分别处理各段不对称</li>
+<li>依赖配置的delayAsymmetry值</li>
+</ul>
+<p><strong>P2P</strong>：</p>
+<ul>
+<li>每段链路的不对称独立处理</li>
+<li>可以分别配置各段的不对称</li>
+<li>更精细的控制</li>
+</ul>
+<h3 id="网络规模影响"><a class="header" href="#网络规模影响">网络规模影响</a></h3>
+<p><strong>E2E</strong>：</p>
+<ul>
+<li>从时钟数量增加，Delay_Req报文数量线性增加</li>
+<li>主时钟负载重</li>
+<li>可能成为瓶颈</li>
+</ul>
+<p><strong>P2P</strong>：</p>
+<ul>
+<li>每个端口独立测量，负载分散</li>
+<li>不存在中心瓶颈</li>
+<li>更适合大规模网络</li>
+</ul>
+<h3 id="收敛速度"><a class="header" href="#收敛速度">收敛速度</a></h3>
+<p><strong>E2E</strong>：</p>
+<ul>
+<li>新设备加入时，需要完整的消息交换</li>
+<li>收敛速度取决于Sync和Delay_Req的间隔</li>
+<li>典型收敛时间：几秒到几十秒</li>
+</ul>
+<p><strong>P2P</strong>：</p>
+<ul>
+<li>新设备加入时，立即开始P2P测量</li>
+<li>测量完成后再转发Sync</li>
+<li>收敛速度更快</li>
+</ul>
+<h3 id="网络拓扑要求"><a class="header" href="#网络拓扑要求">网络拓扑要求</a></h3>
+<p><strong>E2E</strong>：</p>
+<ul>
+<li>对拓扑无特殊要求</li>
+<li>可以有普通交换机（非PTP设备）在中间</li>
+<li>兼容性好</li>
+</ul>
+<p><strong>P2P</strong>：</p>
+<ul>
+<li>要求所有设备支持P2P机制</li>
+<li>中间不能有普通交换机</li>
+<li>要求更严格</li>
+</ul>
+<h3 id="报文数量"><a class="header" href="#报文数量">报文数量</a></h3>
+<p><strong>E2E</strong>：</p>
+<ul>
+<li>每个从时钟：1个Delay_Req + 1个Delay_Resp</li>
+<li>报文数量 = 2 × 从时钟数量</li>
+</ul>
+<p><strong>P2P</strong>：</p>
+<ul>
+<li>每个链路：1个Pdelay_Req + 1个Pdelay_Resp（+ 1个Pdelay_Resp_Follow_Up可选）</li>
+<li>报文数量 = 2（或3）× 链路数量</li>
+</ul>
+<p><strong>对比</strong>：</p>
+<p>假设：</p>
+<ul>
+<li>网络有100个设备，形成树状拓扑</li>
+<li>从时钟数量：99个</li>
+<li>链路数量：99条</li>
+</ul>
+<p><strong>E2E报文数量</strong>：2 × 99 = 198个</p>
+<p><strong>P2P报文数量</strong>：2 × 99 = 198个（one-step）或 3 × 99 = 297个（two-step）</p>
+<p>看起来差不多？但实际上：</p>
+<p><strong>E2E的报文由从时钟发送</strong>，所有Delay_Req都发往主时钟，主时钟负载重。</p>
+<p><strong>P2P的报文由每个端口发送</strong>，负载分散到整个网络。</p>
+<hr>
+<h2 id="p2p机制的典型应用场景"><a class="header" href="#p2p机制的典型应用场景">P2P机制的典型应用场景</a></h2>
+<h3 id="场景一tsn网络时间敏感网络"><a class="header" href="#场景一tsn网络时间敏感网络">场景一：TSN网络（时间敏感网络）</a></h3>
+<p>TSN（Time-Sensitive Networking）是IEEE 802.1定义的一组标准，用于在以太网上提供实时性保障。</p>
+<p>TSN使用<strong>IEEE 802.1AS</strong> Profile，基于PTP，但要求：</p>
+<ul>
+<li>所有设备支持P2P机制</li>
+<li>使用P2P透明时钟</li>
+<li>实现亚微秒级同步</li>
+</ul>
+<p><strong>为什么TSN选择P2P？</strong></p>
+<p>TSN网络通常用于工业自动化、汽车电子等场景，要求：</p>
+<ul>
+<li>快速收敛（设备加入后快速同步）</li>
+<li>确定性延迟（每段链路延迟已知）</li>
+<li>高可靠性（故障快速切换）</li>
+</ul>
+<p>P2P机制可以满足这些要求。</p>
+<h3 id="场景二电信网络"><a class="header" href="#场景二电信网络">场景二：电信网络</a></h3>
+<p>ITU-T定义了G.8275.1和G.8275.2 Profile，用于电信网络的时间同步。</p>
+<p>这些Profile也倾向于使用P2P机制，原因：</p>
+<ul>
+<li>电信网络规模大，需要负载分散</li>
+<li>需要快速收敛，支持设备热插拔</li>
+<li>需要精细的不对称控制</li>
+</ul>
+<h3 id="场景三white-rabbit"><a class="header" href="#场景三white-rabbit">场景三：White Rabbit</a></h3>
+<p>White Rabbit是一个开源的超高精度同步方案，基于PTP + SyncE（同步以太网）。</p>
+<p>White Rabbit使用P2P机制，并扩展了：</p>
+<ul>
+<li>精确的链路延迟测量（使用DDMTD相位检测器）</li>
+<li>频率同步（通过SyncE）</li>
+<li>不对称校准（硬件测量光纤不对称）</li>
+</ul>
+<p>可以实现<strong>亚纳秒级同步</strong>。</p>
+<hr>
+<h2 id="p2p机制的实现挑战"><a class="header" href="#p2p机制的实现挑战">P2P机制的实现挑战</a></h2>
+<h3 id="挑战一所有设备必须支持p2p"><a class="header" href="#挑战一所有设备必须支持p2p">挑战一：所有设备必须支持P2P</a></h3>
+<p>P2P机制要求网络中<strong>所有设备</strong>都支持P2P。</p>
+<p>如果中间有普通交换机（不支持P2P），会发生什么？</p>
+<p><strong>问题</strong>：</p>
+<p>普通交换机不会响应Pdelay_Req，P2P测量失败。</p>
+<p>如果多个设备连接到同一个普通交换机，一个Pdelay_Req可能被多个设备接收，违反P2P的“一对一“假设。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>网络规划时，确保所有设备支持P2P</li>
+<li>或使用边界时钟隔离不支持P2P的区域</li>
+</ul>
+<h3 id="挑战二频繁的p2p测量"><a class="header" href="#挑战二频繁的p2p测量">挑战二：频繁的P2P测量</a></h3>
+<p>P2P机制要求每个端口定期发送Pdelay_Req，可能增加CPU和网络负载。</p>
+<p><strong>建议</strong>：</p>
+<ul>
+<li>根据网络稳定性调整Pdelay_Req间隔</li>
+<li>稳定网络可以用较大间隔（如1秒）</li>
+<li>不稳定网络可以用较小间隔（如100毫秒）</li>
+</ul>
+<h3 id="挑战三多端口设备的资源管理"><a class="header" href="#挑战三多端口设备的资源管理">挑战三：多端口设备的资源管理</a></h3>
+<p>边界时钟和P2P透明时钟有多个端口，每个端口都需要：</p>
+<ul>
+<li>独立的P2P状态机</li>
+<li>独立的meanLinkDelay存储</li>
+<li>独立的Pdelay报文发送/接收</li>
+</ul>
+<p><strong>资源消耗</strong>：</p>
+<ul>
+<li>每端口：~几KB内存</li>
+<li>每端口：独立的定时器</li>
+<li>报文处理：每秒几到几十个Pdelay报文</li>
+</ul>
+<p>对于64端口交换机，这些资源累加起来也是可观的。</p>
+<hr>
+<h2 id="一个完整的p2p网络示例"><a class="header" href="#一个完整的p2p网络示例">一个完整的P2P网络示例</a></h2>
+<h3 id="网络拓扑"><a class="header" href="#网络拓扑">网络拓扑</a></h3>
+<pre><code>主时钟A ---- P2P_TC_B ---- P2P_TC_C ---- 从时钟D
+</code></pre>
+<h3 id="初始化阶段"><a class="header" href="#初始化阶段">初始化阶段</a></h3>
+<p><strong>P2P_TC_B的端口1与主时钟A建立P2P测量</strong>：</p>
+<ol>
+<li>P2P_TC_B端口1发送Pdelay_Req</li>
+<li>主时钟A回复Pdelay_Resp</li>
+<li>P2P_TC_B端口1计算meanLinkDelay_AB = 100ns</li>
+</ol>
+<p><strong>P2P_TC_B的端口2与P2P_TC_C端口1建立P2P测量</strong>：</p>
+<ol>
+<li>P2P_TC_B端口2发送Pdelay_Req</li>
+<li>P2P_TC_C端口1回复Pdelay_Resp</li>
+<li>P2P_TC_B端口2计算meanLinkDelay_BC = 150ns</li>
+</ol>
+<p><strong>P2P_TC_C的端口2与从时钟D建立P2P测量</strong>：</p>
+<ol>
+<li>P2P_TC_C端口2发送Pdelay_Req</li>
+<li>从时钟D回复Pdelay_Resp</li>
+<li>P2P_TC_C端口2计算meanLinkDelay_CD = 120ns</li>
+</ol>
+<h3 id="同步阶段"><a class="header" href="#同步阶段">同步阶段</a></h3>
+<p><strong>主时钟A发送Sync</strong>：</p>
+<ul>
+<li>originTimestamp = 1000.000000000秒</li>
+<li>correctionField = 0</li>
+</ul>
+<p><strong>P2P_TC_B处理Sync</strong>：</p>
+<p>收到Sync（端口1）：</p>
+<ul>
+<li>记录ingress时间戳</li>
+<li>originTimestamp = 1000.000000000秒</li>
+<li>correctionField = 0</li>
+</ul>
+<p>转发Sync（端口2）：</p>
+<ul>
+<li>计算驻留时间：residenceTime_B = 5μs</li>
+<li>meanLinkDelay_AB = 100ns</li>
+<li>ingressAsymmetry = 0</li>
+</ul>
+<p>更新correctionField：</p>
+<pre><code>correctionField = 0 + 5μs + 100ns + 0 = 5.1μs
+</code></pre>
+<p><strong>P2P_TC_C处理Sync</strong>：</p>
+<p>收到Sync（端口1）：</p>
+<ul>
+<li>correctionField = 5.1μs</li>
+</ul>
+<p>转发Sync（端口2）：</p>
+<ul>
+<li>计算驻留时间：residenceTime_C = 3μs</li>
+<li>meanLinkDelay_BC = 150ns</li>
+<li>ingressAsymmetry = 0</li>
+</ul>
+<p>更新correctionField：</p>
+<pre><code>correctionField = 5.1μs + 3μs + 150ns + 0 = 8.25μs
+</code></pre>
+<p><strong>从时钟D接收Sync</strong>：</p>
+<ul>
+<li>originTimestamp = 1000.000000000秒</li>
+<li>correctionField = 8.25μs</li>
+<li>meanLinkDelay_CD = 120ns（已通过P2P测量）</li>
+</ul>
+<p><strong>计算主时钟真实发送时间</strong>：</p>
+<pre><code>主时钟发送时间（校正后） = originTimestamp + correctionField
+                        = 1000.000000000 + 0.00000825
+                        = 1000.000008250秒
+
+路径延迟 = meanLinkDelay_CD = 120ns
+
+主时钟真实发送时间（在从时钟接收时刻） = 1000.000008250 + 0.000000120
+                                       = 1000.000008370秒
+</code></pre>
+<p>从时钟可以根据这个时间调整自己的时钟。</p>
+<p><strong>关键点</strong>：从时钟<strong>不需要发送Delay_Req</strong>，因为路径延迟已经被P2P TC累加到correctionField中了。</p>
+<hr>
+<h2 id="小结p2p机制的核心要点"><a class="header" href="#小结p2p机制的核心要点">小结：P2P机制的核心要点</a></h2>
+<p><strong>核心思想</strong>：</p>
+<ul>
+<li>逐链路测量延迟</li>
+<li>每个端口独立测量与对端的链路延迟</li>
+<li>P2P TC累加链路延迟到correctionField</li>
+</ul>
+<p><strong>消息交换</strong>：</p>
+<ul>
+<li>Pdelay_Req：请求者发送</li>
+<li>Pdelay_Resp：响应者回复</li>
+<li>Pdelay_Resp_Follow_Up：可选，携带精确时间戳</li>
+</ul>
+<p><strong>核心公式</strong>：</p>
+<pre><code>meanLinkDelay = [(t2 - t1) + (t4 - t3)] / 2
+</code></pre>
+<p><strong>P2P TC的处理</strong>：</p>
+<pre><code>Sync.correctionField += residenceTime + meanLinkDelay + ingressAsymmetry
+</code></pre>
+<p><strong>与E2E的对比</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">特性</th><th style="text-align: left">E2E</th><th style="text-align: left">P2P</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">测量对象</td><td style="text-align: left">整个路径</td><td style="text-align: left">每个链路</td></tr>
+<tr><td style="text-align: left">报文数量</td><td style="text-align: left">2×从时钟数</td><td style="text-align: left">2-3×链路数</td></tr>
+<tr><td style="text-align: left">负载分布</td><td style="text-align: left">主时钟集中</td><td style="text-align: left">全网分散</td></tr>
+<tr><td style="text-align: left">网络要求</td><td style="text-align: left">无特殊要求</td><td style="text-align: left">所有设备支持P2P</td></tr>
+<tr><td style="text-align: left">收敛速度</td><td style="text-align: left">较慢</td><td style="text-align: left">较快</td></tr>
+<tr><td style="text-align: left">不对称处理</td><td style="text-align: left">粗粒度</td><td style="text-align: left">细粒度</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>TSN网络</li>
+<li>电信网络</li>
+<li>White Rabbit</li>
+<li>大规模、高精度要求网络</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>现在，我们知道了如何测量路径延迟（E2E）和链路延迟（P2P）。</p>
+<p>但我们还有一个关键问题没有深入讨论：<strong>从时钟如何根据测量结果调整自己的时钟？</strong></p>
+<p>知道了offsetFromMaster = +50ns，从时钟应该怎么做？</p>
+<ul>
+<li>直接跳变？还是渐进调整？</li>
+<li>如何避免时钟倒退？</li>
+<li>如何同时调整相位和频率？</li>
+</ul>
+<p>下一节，我们将深入讲解<strong>时钟调整的数学和工程实现</strong>——从时间戳到时钟调整。</p>
+<blockquote>
+<p><strong>【悬念留给2.9】</strong></p>
+<p>你可能觉得：知道offset了，直接加上或减去不就行了吗？</p>
+<p>但事情没那么简单。如果从时钟直接跳变，可能导致：</p>
+<ul>
+<li>时间戳不连续</li>
+<li>日志时间倒退</li>
+<li>应用程序崩溃</li>
+</ul>
+<p>更重要的是：offset不是恒定的。每次测量，offset都不同。如何从一系列offset值中，提取出“真正的“时间偏差和频率偏差？</p>
+<p>这就涉及到<strong>时钟伺服算法</strong>——一个控制理论在PTP中的应用。</p>
+<p>下一节，我们详细解读。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.7-四个时间戳的魔法-E2E延迟测量机制.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/2.9-偏移计算的数学-从时间戳到时钟调整.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.7-四个时间戳的魔法-E2E延迟测量机制.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/2.9-偏移计算的数学-从时间戳到时钟调整.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

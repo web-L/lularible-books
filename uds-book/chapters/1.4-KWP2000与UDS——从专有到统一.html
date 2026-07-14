@@ -1,0 +1,380 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>KWP2000与UDS——从专有到统一 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="14-kwp2000与uds从专有到统一"><a class="header" href="#14-kwp2000与uds从专有到统一">1.4 KWP2000与UDS——从专有到统一</a></h1>
+<h3 id="obd-ii走后真空谁来填"><a class="header" href="#obd-ii走后真空谁来填">OBD-II走后，真空谁来填</a></h3>
+<p>1996年，OBD-II在美国全面实施。排放系统的诊断有了统一标准——但ABS控制器坏了怎么查？安全气囊灯亮了怎么读故障码？空调面板上的LED在闪烁什么密码？自动变速箱在4档升5档的时候顿挫——是电磁阀卡滞还是TCM需要重新标定？</p>
+<p>OBD-II一个字都不管。</p>
+<p>于是每家车厂各干各的。大众集团开发了KWP1281（Keyword Protocol 1281），博世在K-Line上铺设一套高效的UART协议——诊断仪和ECU之间通过“5 Baud Init“的方式唤醒——诊断仪把K-Line拉到地5 baud（发送一个特定的唤醒字节），ECU检测到后回发一串同步字节（通常是0x55），双方波特率从初始的5切换到10400 Bd，正式开始通信。</p>
+<p>福特用的是基于J1850 PWM的私有诊断扩展；通用汽车在GMLAN架构上用私有CAN ID和私有服务；丰田保留了23针DLC上的多路模式。一辆车上有三四种不同的诊断协议并行运转——对ECU供应商来说，每个OEM客户都要适配一套不同的诊断栈，维护成本打着滚往上涨。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：碎片化的诊断协议伤害的不只是维修站——它反噬<strong>上游供应商</strong>。博世给大众开发ECU要适配KWP1281，给通用开发ECU要适配GMLAN，给福特开发ECU要适配SCP——同样的DID读取逻辑要写三套不同的通信包装。统一诊断协议最大的受益者不是维修技师——是<strong>零部件供应商</strong>。这解释了为什么最终推动UDS标准化的不是车厂单方面的努力，而是整个供应链的协同。</p>
+</blockquote>
+<hr>
+<h3 id="kwp2000博世的诊断基因注入"><a class="header" href="#kwp2000博世的诊断基因注入">KWP2000：博世的诊断基因注入</a></h3>
+<p>2000年，ISO发布了<strong>KWP2000（Keyword Protocol 2000，ISO 14230）</strong>。KWP2000的设计核心是一套应用层服务——它在OSI模型的第七层定义了诊断请求/响应的<strong>服务标识符（SID）</strong>、<strong>子功能码</strong>、<strong>正响应码（SID+0x40）</strong>、<strong>负响应码（NRC）</strong> 的通用格式。这些概念不是凭空发明的——它们从KWP1281、VAG的诊断文化、以及OBD-II的Mode体系中被提炼和抽象。</p>
+<p>KWP2000物理层支持K-Line和L-Line（ISO 9141的衍生产物），传输层采用简单的头部消息长度指示。一个KWP2000请求消息长这样：</p>
+<pre><code>┌──────────┬──────────┬──────────┬─────────────┐
+│ 帧头Fmt   │ 目标地址  │ 源地址    │ SID + 数据   │
+│ (1 byte) │ (1 byte) │ (1 byte) │ (N bytes)   │
+└──────────┴──────────┴──────────┴─────────────┘
+</code></pre>
+<blockquote>
+<p><strong>Fmt字段</strong>：帧头第一个字节，指示消息长度和是否包含扩展地址。KWP2000用这个字段告诉接收方“后面跟了多少字节的数据“。</p>
+</blockquote>
+<p>KWP2000定义的SID分为两大类——例如物理寻址用的请求（C0-FF）和功能寻址用的请求（80-BF），但很快发现这种双区间管理模式在跨平台统一时产生了浪费。UDS后来废除这个双区间设计，统一使用0x10~0x3E范围。</p>
+<p>在服务定义上，KWP2000和后续的UDS高度重合：</p>
+<ul>
+<li><code>startDiagnosticSession</code> = 后来的UDS 0x10</li>
+<li><code>ecuReset</code> = 后来的UDS 0x11</li>
+<li><code>readEcuIdentification</code> → 被UDS替换为DID读取（0x22）</li>
+<li><code>securityAccess</code> = 后来的UDS 0x27</li>
+<li><code>readDataByLocalIdentifier</code> / <code>writeDataByLocalIdentifier</code> → 被UDS统一为read/writeDataByIdentifier（0x22/0x2E）</li>
+<li><code>inputOutputControlByLocalIdentifier</code> / <code>readMemoryByAddress</code> / <code>writeMemoryByAddress</code> → 被UDS继承</li>
+<li><code>stopDiagnosticSession</code> → 被UDS取消——会话切换本身就有终止前一会话的语义</li>
+<li><code>clearDiagnosticInformation</code> → 被UDS继承</li>
+</ul>
+<blockquote>
+<p><strong>核心洞察</strong>：KWP2000给UDS的遗产可以浓缩成两个概念：(1) SID+0x40的正响应编码——把请求和响应用一个简单的数学偏移绑定；(2) 负响应码(NRC)把沉默的“不行“变成自解释的“不行+原因“。这两个设计决策看似微不足道——但它们是诊断协议从<strong>单一车厂的内部语言</strong>进化到<strong>跨车厂的通用语言</strong>的关键转折点。</p>
+</blockquote>
+<hr>
+<h3 id="kwp2000的致命缺陷它出生在k-line时代"><a class="header" href="#kwp2000的致命缺陷它出生在k-line时代">KWP2000的致命缺陷：它出生在K-Line时代</a></h3>
+<p>KWP2000在K-Line上跑得很漂亮。单主单从——诊断仪和ECU之间点对点通信，不需要考虑多节点共享总线、不需要考虑仲裁、不需要考虑功能性寻址同时发往多个ECU时谁回复、不需要考虑帧长度不超过物理层的MTU限制。</p>
+<p>但从1990年代末开始，一个不可逆转的变化发生了：<strong>CAN总线正在吃掉K-Line。</strong></p>
+<p>CAN是共享总线——一条总线可以挂几十个ECU。诊断仪发一个功能寻址请求，总线上30个ECU都会收到——哪个回复？哪个不回复？同时回复会不会撞帧？</p>
+<p>CAN帧只有8字节数据。一个KWP2000的诊断请求常常超过50字节——怎么把50字节塞进8字节的信封里？分段——但分段之后怎么保证每一个段都顺序正确、不丢、不重复？接收方怎么知道已经收到了多少段、还剩多少段？</p>
+<p>K-Line没有这些问题——它不是共享资源，8字节MTU是CAN的特性。</p>
+<p>博世/ISO对这个问题的回答是<strong>ISO 15765-2：CAN传输层</strong>——四种CAN诊断帧类型：Single Frame (SF)、First Frame (FF)、Consecutive Frame (CF)、Flow Control (FC)。这个传输层设计的精妙之处在于——<strong>它把上层UDS/诊断数据的MTU从8字节虚拟扩大到4096字节，完全在CAN的物理帧限制之内运作，无需改动CAN控制器硬件。</strong></p>
+<blockquote>
+<p><strong>核心洞察</strong>：KWP2000的伟大和KWP2000的虚弱来自同一个根源——它是一个为K-Line设计的协议。当物理层从UART点对点升级到CAN共享总线时，KWP2000不需要重写应用层逻辑——但传输层必须重写。而ISO 15765-2承担这个改造任务时给出的方案之精巧，直接催生了后续UDS over CAN的完整技术基础——<strong>但不是KWP2000做的，是ISO在吸取了KWP2000教训后做出的重构。</strong></p>
+</blockquote>
+<p>除了CAN适配的缺陷外，KWP2000自身还有四个更本质的问题，是CAN总线暴露出来的：</p>
+<ul>
+<li><strong>SID范围分配不方便</strong>——双区间地址编码浪费了很大的编码空间，不同ECU供应商实现有歧义</li>
+<li><strong>只有一种数据读取方式</strong>——只支持LocalIdentifier，而OBD-II的PID概念后来证明更易于工具端自动解析——工具端被迫维护两套代码</li>
+<li><strong>缺少生产级功能</strong>——ResponseOnEvent（事件触发主动上报）、DynamicallyDefineDID（动态定义DID指向）、例行程序控制等实际必需的功能都没有</li>
+<li><strong>定时参数不可协商</strong>——P2server、P2*server、S3server这些值在KWP2000里不是由会话控制响应中协商的，多会话场景下定时行为不一致</li>
+</ul>
+<p>你可能会问：为什么不在KWP2000上面直接打补丁，而是另起炉灶做UDS？——因为KWP2000的应用层定义和传输层（K-Line）耦合太深，打补丁相当于在石拱桥上焊钢架。ISO的选择是：保留KWP2000定义的服务语义，但<strong>把传输层抽出来做成可插拔的</strong>——这就是UDS。</p>
+<hr>
+<h3 id="2006年uds诞生"><a class="header" href="#2006年uds诞生">2006年：UDS诞生</a></h3>
+<p>KWP2000运行了六年。在这六年里，ISO的技术委员会逐步收集了整个行业的反馈：</p>
+<p>2006年，ISO 14229-1第一版正式发布。<strong>Unified Diagnostic Services</strong>——“统一“这个词不是修饰语，是这份标准的全部使命。</p>
+<p>UDS的设计者在KWP2000的骨架上进行了三个最关键的改动：</p>
+<p><strong>1. 正响应SID统一偏移 +0x40</strong></p>
+<p>把KWP2000里分散在不同区间的SID全部搬到0x10~0x3E的精简范围——每增加0x40即为该SID的正响应码。所有的SID都符合 <code>(SID &amp; 0x40) == 0</code> 是请求、<code>(SID &amp; 0x40) != 0</code> 是正响应——这个规律在编程上比KWP2000的双区间划分清晰太多：</p>
+<pre><code>请求: 0x10  0x11  0x14  0x19  0x22  0x27  ...  0x3E
+响应: 0x50  0x51  0x54  0x59  0x62  0x67  ...  0x7E
+掩码:  +0x40 +0x40 +0x40 +0x40 +0x40 +0x40        +0x40
+</code></pre>
+<p><strong>2. 负响应码(NRC)的精简与统一</strong></p>
+<p>KWP2000定义了各种NRC，但系统整间没有整理——有些代码在各个OEM实现里语义有差异。UDS把所有NRC统一为一张分级表——通信级(0x10-0x7F)和条件级(0x80-0xFF)，实现清晰的分层诊断：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>NRC</th><th>含义</th><th>诊断仪下一步该做什么</th></tr>
+</thead>
+<tbody>
+<tr><td>0x11</td><td>不支持此SID</td><td>换一个命令</td></tr>
+<tr><td>0x12</td><td>不支持此子功能</td><td>换子功能或SID</td></tr>
+<tr><td>0x22</td><td>条件不满足</td><td>先改变ECU状态再试</td></tr>
+<tr><td>0x7F</td><td>此SID不在当前会话中支持</td><td>先切换会话</td></tr>
+<tr><td>0x33</td><td>安全访问被拒（未解锁）</td><td>先执行0x27</td></tr>
+<tr><td>0x78</td><td>请求已收到，正在处理中</td><td>再等一段时间</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>3. DID取代LocalIdentifier和PID的混乱局面</strong></p>
+<p>在OBD-II的世界里读参数叫PID（1字节标识符），在KWP2000的世界里读参数叫LocalIdentifier（1字节），而且两套编码体系互不认识。UDS：所有“按标识符读数据“统一称DID（DataIdentifier），2字节，覆盖0x0000-0xFFFF全范围——OBD的PID自动映射到0x00xx范围的历史兼容区，不给老工具造成断裂。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：UDS不是KWP2000的简单重命名——它是一次<strong>抽象层级</strong>的升级。KWP2000是对KWP1281/私有诊断协议的抽象，但保留了很多特定物理层的假设。UDS是把诊断服务的定义和传输层彻底解耦——一套UDS服务定义可以在CAN上跑(ISO 15765-3)、在以太网上跑(ISO 13400 DoIP)、在FlexRay上跑——传输层变成可插拔的适配器，而不是和诊断服务的语义纠缠在一起。这才是“统一“这个词的真正含义。</p>
+</blockquote>
+<hr>
+<h3 id="uds发展史上的关键时间线"><a class="header" href="#uds发展史上的关键时间线">UDS发展史上的关键时间线</a></h3>
+<pre><code>1965    底特律技师花两周时间拆引擎找漏气——这是"无诊断时代"的最高峰
+1980s   第一代ECU内建简单的传感器开路/短路检测——最早的DTC诞生
+1988    CARB推动OBD-I——第一个法规强制的排放自诊断
+1994-1996 OBD-II——物理接口+故障码格式+通信协议三级标准化
+1999-2000 ISO 14230 (KWP2000) 发布——第一个通用非排放诊断协议
+2000-2005 KWP2000 on CAN (ISO 15765) 把诊断服务搬到CAN总线
+2006    ISO 14229-1 第1版发布——UDS正式诞生
+2013    ISO 14229-1 第2版——增加更多子功能、更详细的时序定义
+2020    ISO 14229-5: UDSonIP (Diagnostics over Internet Protocol)
+继续... ISO 14229系列在持续进化——新的安全机制、新的车联网场景
+</code></pre>
+<hr>
+<h3 id="开一个思想实验如果没有uds会怎样"><a class="header" href="#开一个思想实验如果没有uds会怎样">开一个思想实验：如果没有UDS会怎样</a></h3>
+<p>设想现在是2026年，但UDS从来没有被发明。OBD-II只覆盖排放相关ECU。其他几十个ECU的诊断全靠各车厂私有协议。一辆二手宝马被送到独立维修站——技师连上诊断仪，发现“气囊灯亮“——需要联上宝马的总部服务器认证才读取故障码。法律争端变成了“访问车辆诊断数据的权利“——维修权（Right to Repair）运动的参与者数量在今天的三倍以上。</p>
+<p>而且不止是诊断——固件更新（FOTA）、远程诊断、车辆数据共享——这些现代车的核心技术，基础层全是统一的诊断协议。没有UDS，就没有标准化读取DID，就没有标准化的OTA刷写流程——每一家车厂自己开发私有方案，结果要么更贵要么更容易留下安全漏洞。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：UDS不是技术进步的巅峰——它是标准化在大规模分布式工程体系中的<strong>最小公分母</strong>。它不保证最快的通信、不保证最高的安全强度——但它保证<strong>可互操作的</strong>通信和<strong>可审计的</strong>安全。分布式系统的升级路径不是靠单个车厂能催化的——它必须依赖一个大家都接受的共同基础。</p>
+</blockquote>
+<hr>
+<h3 id="uds协议的四大功能单元"><a class="header" href="#uds协议的四大功能单元">UDS协议的四大功能单元</a></h3>
+<p>ISO 14229-1:2013把全部26种诊断服务(含子功能)归类为六大功能单元，但在诊断仪-ECU的交互视角下，可以分成四个层次：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│           第四层：诊断和通信管理                                │
+│  0x10 诊断会话控制   0x11 ECU复位                              │
+│  0x27 安全访问        0x28 通信控制                            │
+│  0x3E 诊断仪保活      0x85 控制DTC设置             (高频)       │
+│  0x83 访问时序参数    0x84 安全数据传输                         │
+│  0x86 事件响应        0x87 链路控制                            │
+├─────────────────────────────────────────────────────────────┤
+│           第三层：数据传输                                     │
+│  0x22 按ID读数据      0x2E 按ID写数据             (高频)        │
+│  0x23 按地址读内存    0x3D 按地址写内存           (低频)         │
+│  0x2A 周期读取        0x2C 动态定义DID            (低频)        │
+├─────────────────────────────────────────────────────────────┤
+│           第二层：存储的数据传输                                │
+│  0x19 读DTC信息       0x14 清除DTC信息            (高频)       │
+├─────────────────────────────────────────────────────────────┤
+│           第一层：控制与上传下载                                │
+│  0x2F IO控制          0x31 例行控制                (中频)      │
+│  0x34 请求下载        0x35 请求上传                            │
+│  0x36 传输数据        0x37 传输终止                (低频)       │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>从底向上，第一层是“对ECU做手术“（下载固件、控制执行器），第二层是“查看病历“（故障码），第三层是“开化验单“（读取运行参数），第四层是“挂号和身份验证“（建立和维持会话）。在后续第二章中，我们会逐层深入，把每一个服务都拆到报文级的细节。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>KWP2000是UDS的直系前身——它定义了SID+0x40正响应规则、NRC负响应码、Session/SecurityAccess等核心概念。但它的设计耦合了K-Line的物理层假设，不能直接适配CAN和以太网。</li>
+<li>CAN的8字节MTU限制催生了ISO 15765-2传输层——SF/FF/CF/FC四种帧类型。这层传输协议是UDS over CAN能够工作的关键基础设施。</li>
+<li>UDS（ISO 14229）的“统一“不是修辞——它做了三件事：(1) 统一正响应SID编码规则为+0x40；(2) 将诊断服务与传输层解耦；(3) 用2字节DID代替OBD的1字节PID和KWP2000的1字节LocalIdentifier。</li>
+<li>UDS不是由车厂市场部门推动的——是由整个供应链的协同（零部件供应商、工具厂商、标准化组织、法规机构）共同推动的。标准化的核心动力不是“谁做出来“，而是“谁有能力让人坐下来遵守“。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：协议细节我们留给第二章——但在这之前，我得先带你去’挂一次号’。诊断仪接上OBD口、建立会话、解锁安全访问、读DTC、读取DID、执行例行控制、最后刷入新固件——全程用医院问诊的视角，给你完整走一遍真实的诊断工作流。你马上就会看到——UDS不是一堆SID的随机罗列。这是一条完整的、可重复的、设计精密的临床流程。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/1.3-OBD-I到OBD-II——语言的第一次统一.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/1.5-思想实验-给一个ECU挂一次号.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/1.3-OBD-I到OBD-II——语言的第一次统一.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/1.5-思想实验-给一个ECU挂一次号.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

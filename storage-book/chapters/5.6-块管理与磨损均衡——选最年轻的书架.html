@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>块管理与磨损均衡——选最年轻的书架 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="56-块管理与磨损均衡选最年轻的书架"><a class="header" href="#56-块管理与磨损均衡选最年轻的书架">5.6 块管理与磨损均衡——选最年轻的书架</a></h2>
+<h3 id="选格子算法pick_lowest_wear"><a class="header" href="#选格子算法pick_lowest_wear">选格子算法：pick_lowest_wear</a></h3>
+<p>第三章已经讲了磨损均衡的原理。这里直接看代码：KnotFS采用动态磨损均衡——只在分配新块时选择磨损最少的空闲块。</p>
+<pre><code class="language-c">// knotfs.c — 选择磨损最少的空闲块
+static uint32_t pick_lowest_wear(void) {
+  uint32_t best = KNOTFS_BLOCK_COUNT;
+  uint32_t best_w = 0xFFFFFFFFU;
+
+  for (uint32_t i = KNOTFS_DATA_START; i &lt; KNOTFS_BLOCK_COUNT; i++) {
+    if (!(sb.free_map &amp; (1U &lt;&lt; i)) &amp;&amp; sb.wear[i] &lt; best_w) {
+      best_w = sb.wear[i];
+      best = i;
+    }
+  }
+  return best;
+}
+</code></pre>
+<p>算法步骤：</p>
+<ol>
+<li>只扫描数据块区域（块2到块15）</li>
+<li>跳过已使用的块（<code>free_map</code>中bit=1的块）</li>
+<li>在空闲块中，选一个<code>wear</code>计数最小的</li>
+<li>如果所有空闲块都相同（第一次使用前都是0），返回第一个扫描到的块（这里自然返回块2）</li>
+</ol>
+<p>如果返回值是<code>KNOTFS_BLOCK_COUNT</code>（即16），说明没有空闲块了。调用者应该报错：</p>
+<pre><code class="language-c">// knotfs.c — write操作中检查无空闲块
+uint32_t blk = pick_lowest_wear();
+if (blk &gt;= KNOTFS_BLOCK_COUNT) {
+  cur.result = ERR_NO_BLK;
+  cur.st = ST_ERR;
+  return;
+}
+</code></pre>
+<p><strong>这个算法的核心哲学是：永远选“最年轻“（被清空次数最少）的书架格子。</strong></p>
+<p>第一次使用：所有14个数据格的<code>wear</code>都是0 → 选格2。</p>
+<p>下一次分配：格2的<code>wear</code>变成了1，格3~15的<code>wear</code>还是0 → 选格3。</p>
+<p>再下一次：格2和格3的<code>wear</code>都是1，格4~15的<code>wear</code>还是0 → 选格4。</p>
+<p>以此类推。使用的磨损从格2到格15均匀推进，像一把梳子从一端梳到另一端。到格15被用过之后，格2~15的<code>wear</code>都是1了——下一个分配又从格2开始（因为所有人的wear相等时，第一个被扫描到的格子优先）。</p>
+<p><strong>最终效果：所有14个数据格的清空次数偏差不超过1。</strong></p>
+<hr>
+<h3 id="free_map一张16位的目录速查表"><a class="header" href="#free_map一张16位的目录速查表">free_map：一张16位的目录速查表</a></h3>
+<p><code>free_map</code>是一个<code>uint32_t</code>，但KnotFS只用到了它的低16位——每个bit对应一个块：</p>
+<pre><code>free_map 位图对照表
+====================
+
+bit  15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+块号 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+
+bit=1 → 块已被占用
+bit=0 → 块空闲可用
+</code></pre>
+<p>三个操作函数：</p>
+<pre><code class="language-c">// knotfs.c
+static void mark_free(uint32_t b) { sb.free_map &amp;= ~(1U &lt;&lt; b); }
+static void mark_used(uint32_t b) { sb.free_map |= (1U &lt;&lt; b); }
+static bool is_free(uint32_t b) { return !(sb.free_map &amp; (1U &lt;&lt; b)); }
+</code></pre>
+<p><code>mark_free</code>用位清除操作：<code>&amp;= ~(1U &lt;&lt; b)</code>。例如释放块5：<code>free_map &amp;= ~(1U &lt;&lt; 5)</code> = <code>free_map &amp;= ~0x20</code> → bit 5清零。</p>
+<p><code>mark_used</code>用位设置操作：<code>|= (1U &lt;&lt; b)</code>。例如占用块5：<code>free_map |= 0x20</code> → bit 5置1。</p>
+<p><code>is_free</code>用位测试操作：如果<code>free_map &amp; (1U &lt;&lt; b)</code>为0则空闲。</p>
+<p>这些操作在分配块时被调用：</p>
+<pre><code class="language-c">// knotfs.c — write操作分配块后标记为已用
+uint32_t blk = pick_lowest_wear();
+if (blk &gt;= KNOTFS_BLOCK_COUNT) {
+  cur.result = ERR_NO_BLK;
+  cur.st = ST_ERR;
+  return;
+}
+mark_used(blk);
+sb.wear[blk]++;
+nd-&gt;blocks[subst] = blk;
+</code></pre>
+<p>注意这三步的顺序：先选块（<code>pick_lowest_wear</code>）、再标记已用（<code>mark_used</code>）、再增加磨损（<code>wear[blk]++</code>）、最后记录到文件条目。这个顺序不是随意的——如果先记录到文件条目再标记已用，那么在掉电后replay Log时，可能会因为Log中只记录了标记而已用但没有记录块号，造成块号丢失。先标记后记录文件条目，确保了两个操作在Log中的记录是原子可见的。</p>
+<p>在释放旧块时（文件覆盖或删除）调用<code>mark_free</code>，同时记录一条LT_BITMAP Log：</p>
+<pre><code class="language-c">// knotfs.c — write操作中释放旧块
+for (i = 0; i &lt; oldcnt &amp;&amp; i &lt; KNOTFS_DIRECT_BLKS; i++) {
+  uint32_t blk = scratch[SCR_OLD_BLK(i)];
+  if (blk &lt; KNOTFS_BLOCK_COUNT) {
+    log_push(LT_BITMAP, (uint8_t)blk, 0);
+    mark_free(blk);
+  }
+}
+</code></pre>
+<p>这里<code>blk &lt; KNOTFS_BLOCK_COUNT</code>的检查看起来多余——块号怎么可能超出范围？这是一个防御性编程。如果SB被损坏、文件条目中的块号字段出现了一个非法值（例如0xFFFFFFFF），不加检查地mark_free会导致free_map被破坏。</p>
+<hr>
+<h3 id="wear每个书架格子的体检报告"><a class="header" href="#wear每个书架格子的体检报告">wear[]：每个书架格子的体检报告</a></h3>
+<p><code>wear</code>数组有16个元素，每个是一个<code>uint32_t</code>，记录对应块的累计清空次数：</p>
+<pre><code class="language-c">uint32_t wear[KNOTFS_BLOCK_COUNT];  // 16 × 4字节 = 64字节
+</code></pre>
+<p>每次分配一个块时，wear+1。在<code>pick_lowest_wear</code>返回后立即执行：</p>
+<pre><code class="language-c">sb.wear[blk]++;
+</code></pre>
+<p><strong>关键问题：wear计数何时持久化到Flash？</strong></p>
+<p>KnotFS的答案是：<strong>只在compact时。</strong> wear数组是<code>knot_sb_t</code>的一部分（第7个字段），在compact时随整个超级块一起写入Flash：</p>
+<pre><code class="language-c">// knotfs.c — compact_write中复制当前SB（包含wear）
+static void compact_write(void) {
+  memcpy(&amp;compact_buf, &amp;sb, sizeof(knot_sb_t));
+  compact_buf.sequence = sb.sequence + 1;
+  compact_buf.log_offset = SB_HEADER_SZ;
+  compact_buf.log_count = 0;
+  compact_buf.crc32 = sb_checksum(&amp;compact_buf);
+
+  uint32_t tgt = inactive_sb_slot();
+  fdev_write(tgt, &amp;compact_buf, 0, sizeof(knot_sb_t));
+}
+</code></pre>
+<p>mount时，wear计数随SB一起被读回。<code>replay_log</code>中的Log回放会重新执行块分配（<code>mark_used</code>），但不会恢复wear计数——因为LT_BITMAP Log中没有wear增量信息。这意味着如果在compact后掉了电，那些在掉电前被分配但未被compact持久化的块的wear增量会丢失。</p>
+<p>对于教学场景（总共几十次操作），这不是问题。KnotFS的12个测试用例总共产生不到50次分配，即使全部wear增量丢失，对磨损均衡的影响微乎其微。</p>
+<hr>
+<blockquote>
+<p>⚠️ <strong>教学简化提示</strong>：KnotFS的wear计数只在compact时持久化到Flash。这意味着如果在两次compact之间掉电，最近几次分配操作对应的wear增量会丢失。对于教学场景（总共几十次操作），这不是问题。但在更健壮的设计中，可以考虑Wear Log机制——每次擦除一个块时，在SB Log中追加一条LT_WEAR记录，持久化该块的磨损增量。这避免了短运行场景下的磨损数据丢失。</p>
+</blockquote>
+<hr>
+<h3 id="磨损均衡的边界情况冷数据的盲区"><a class="header" href="#磨损均衡的边界情况冷数据的盲区">磨损均衡的边界情况：冷数据的盲区</a></h3>
+<p>上一节的悬念问到了关键：<code>pick_lowest_wear</code> 能解决冷数据占坑的问题吗？</p>
+<p><strong>不能。</strong></p>
+<p><code>pick_lowest_wear</code> 只在分配新块时做决策——它从 free_map 中标记为“空闲“的块里选 wear 最小的。但如果有一个块从写入后文件就再也没被修改过，它在 free_map 中永远是“已占用“状态，<code>pick_lowest_wear</code> 永远不会考虑它。</p>
+<p>比如：你有一个配置文件 “factory_calib.bin”，出厂时写进去之后永远不动。它占了块 2，wear 停在 3。同时，日志文件 “run.log” 每 5 秒 append 一次，每次 append 触发 CoW 分配新块、释放旧块。块 3、4、5……反复分配→擦除→分配→擦除。最终，日志涉及的块擦到了 8 万次，而块 2 还是 3 次。</p>
+<pre><code>动态磨损均衡的盲区
+=======================
+
+块2 (冷数据):  █  wear=3    ← "永远年轻"，但被占用，无法参与均衡
+块3 (热数据):  ████████████████████  wear=80000
+块4 (热数据):  ███████████████████   wear=75000
+块5 (热数据):  ████████████████████  wear=82000
+...
+</code></pre>
+<p>这不是 <code>pick_lowest_wear</code> 的 bug——这是动态磨损均衡的天花板。它只能保证“每次分配新块时选最公平的那一个“，但无法把冷数据从低磨损块上搬走，释放它让它参与轮换。</p>
+<p>要解决这个问题，需要<strong>静态磨损均衡</strong>：主动检测 wear 差异，把冷数据强制迁移到高磨损块，把低磨损块释放给热数据。这需要 GC（垃圾回收）模块——而 KnotFS 没有 GC。</p>
+<p>对于 16 块、100K 擦写寿命的教学场景，冷数据问题不构成实际威胁——整个系统的写入总量远达不到寿命上限。但当你把系统扩展到真实车载 ECU 时（15 年寿命、数百万次日志写入），这就是绕不开的问题。3.7 节已经讨论了静态磨损均衡的理论基础——主动检测 wear 差异、搬迁冷数据、释放低磨损块。至于如何在生产级版本中落地，那是留给读者（和未来的你）的思考题。</p>
+<hr>
+<h3 id="图书馆隐喻选最年轻的书架格子"><a class="header" href="#图书馆隐喻选最年轻的书架格子">图书馆隐喻：选最年轻的书架格子</a></h3>
+<p>罗马的图书馆管理员在编目古希腊的卷轴时，面临一个问题：书架格子都是天然的，有的来自新砍的橡木，有的来自已经用了百年的老木头。哪种更耐用？</p>
+<p>答案是：新木头。它们的结构还没有被温度和湿气侵蚀。用了百年的老木头虽然表面光滑好看，内部可能已经干裂了。</p>
+<p>Flash的磨损就像木头老化。被清空过很多次的格子，其浮栅晶体管保持电荷的能力会下降——数据保存时间变短，出错概率上升。</p>
+<p><code>pick_lowest_wear</code>做的是同一件事：挑被“使用磨耗“最少的格子来存放新书。你把它用了一次之后，它的“年龄“增加1（wear++），下次就会优先选它的邻居——直到所有邻居都和它一样“老“。</p>
+<p>这排书架（14个数据格），一起慢慢变老。</p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>你写了文件、分配了块、标记了状态。但这一切只是在你内存中的<code>sb</code>结构体里发生了。直到compact——重写整个超级块到Flash——你做的所有修改才真正“落盘“。</p>
+<p>compact是什么？它像图书管理员的一个工作日：把过去几周所有的借阅登记变更整理成一份新的馆藏总目录，然后注销旧总目录。</p>
+<p>下一节，我们走进compact的缓慢而庄严的仪式——从擦除目标块，到写出新SB，再到最后的“剪彩“。</p>
+<p><strong>悬念留给：compact不是免费的。每次compact烧掉一条Flash块的一次擦写寿命。KnotFS的compact触发得太频繁——这是教学级的缺陷，还是有意为之的“代价展示“？</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/5.5-SB-Log——只追加的借阅记录簿.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/5.7-Compact——重新誊写目录.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/5.5-SB-Log——只追加的借阅记录簿.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/5.7-Compact——重新誊写目录.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

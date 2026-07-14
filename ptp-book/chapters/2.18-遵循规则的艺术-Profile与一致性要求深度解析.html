@@ -1,0 +1,1034 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>遵循规则的艺术 · Profile与一致性要求深度解析 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="218-遵循规则的艺术profile与一致性要求深度解析"><a class="header" href="#218-遵循规则的艺术profile与一致性要求深度解析">2.18 遵循规则的艺术：Profile与一致性要求深度解析</a></h1>
+<h2 id="如果没有规则书"><a class="header" href="#如果没有规则书">如果没有“规则书“</a></h2>
+<p>想象一场国际足球比赛，但没有统一的规则书。</p>
+<p><strong>场景</strong>：</p>
+<pre><code>裁判A（来自欧洲）：越位规则按欧足联标准
+裁判B（来自南美）：越位规则按南美足联标准
+球员C（来自亚洲）：认为可以用手触球（他习惯踢沙滩足球）
+球员D（来自非洲）：认为比赛时长应该是120分钟
+
+结果是什么？
+- 争议不断
+- 无法判断输赢
+- 比赛无法进行
+</code></pre>
+<p>PTP协议也面临同样的问题。</p>
+<pre><code>设备A（华为）：使用P2P延迟机制，Sync间隔125ms
+设备B（思科）：使用E2E延迟机制，Sync间隔1000ms
+设备C（中兴）：要求必须支持L1Sync
+设备D（诺基亚）：要求必须使用单播
+
+如果这些设备连接在一起：
+- A和B无法互通（延迟机制不同）
+- C认为网络有问题（没有L1Sync）
+- D发不出报文（对方期望组播）
+
+结果：网络瘫痪。
+</code></pre>
+<p>这就是PTP需要**Profile（配置文件）**的原因。</p>
+<p>Profile就是PTP网络的“规则书“——所有设备必须遵循同一份规则，才能正常工作。</p>
+<hr>
+<h2 id="profile是什么"><a class="header" href="#profile是什么">Profile是什么？</a></h2>
+<h3 id="定义"><a class="header" href="#定义">定义</a></h3>
+<p><strong>Profile（配置文件）</strong>：由某个标准组织根据IEEE 1588-2019编写的文档，指定适用于特定应用场景的PTP特性集和属性值。</p>
+<h3 id="核心作用"><a class="header" href="#核心作用">核心作用</a></h3>
+<p><strong>作用一：约束选项</strong></p>
+<p>PTP有数百个可选参数和几十个可选功能。Profile规定哪些是必须的，哪些是可选的，哪些是禁止的。</p>
+<pre><code>示例：ITU-T G.8275.1 Profile规定
+
+必须：
+- 延迟机制：P2P
+- SyncE：必须支持
+- 时钟类型：普通时钟、边界时钟
+
+可选：
+- 单播协商：可选
+- 安全机制：可选
+
+禁止：
+- E2E延迟机制：禁止
+- 透明时钟：禁止（在电信接入网）
+</code></pre>
+<p><strong>作用二：指定默认值</strong></p>
+<p>Profile规定各种参数的默认值和允许范围。</p>
+<pre><code>示例：默认Profile规定
+
+logSyncInterval：
+  默认值：0（1秒）
+  允许范围：-1到+1
+
+logAnnounceInterval：
+  默认值：1（2秒）
+  允许范围：0到4
+
+priority1：
+  默认值：128
+  不允许配置
+</code></pre>
+<p><strong>作用三：确保互操作性</strong></p>
+<p>所有遵循同一Profile的设备，可以相互通信和同步。</p>
+<pre><code>互操作性保证：
+
+设备A（厂商X，遵循Profile P） + 设备B（厂商Y，遵循Profile P）
+→ 可以互通！
+
+设备A（遵循Profile P1） + 设备B（遵循Profile P2）
+→ 可能不兼容！
+</code></pre>
+<h3 id="profile包含的内容"><a class="header" href="#profile包含的内容">Profile包含的内容</a></h3>
+<p>一个完整的Profile应该定义：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">项目</th><th style="text-align: left">说明</th><th style="text-align: left">示例</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>BMCA选项</strong></td><td style="text-align: left">使用哪个BMCA版本</td><td style="text-align: left">默认BMCA（9.3.1）</td></tr>
+<tr><td style="text-align: left"><strong>配置管理机制</strong></td><td style="text-align: left">如何配置设备</td><td style="text-align: left">管理协议或外部配置</td></tr>
+<tr><td style="text-align: left"><strong>路径延迟机制</strong></td><td style="text-align: left">E2E还是P2P</td><td style="text-align: left">P2P</td></tr>
+<tr><td style="text-align: left"><strong>可配置属性范围</strong></td><td style="text-align: left">每个参数的允许范围</td><td style="text-align: left">logSyncInterval: -1到+1</td></tr>
+<tr><td style="text-align: left"><strong>传输机制</strong></td><td style="text-align: left">使用哪种传输</td><td style="text-align: left">UDP/IPv4、IEEE 802.3</td></tr>
+<tr><td style="text-align: left"><strong>PTP实例类型</strong></td><td style="text-align: left">允许哪些时钟类型</td><td style="text-align: left">仅OC和BC</td></tr>
+<tr><td style="text-align: left"><strong>选项要求</strong></td><td style="text-align: left">强制、可选、禁止</td><td style="text-align: left">L1Sync：可选</td></tr>
+<tr><td style="text-align: left"><strong>溯源性不确定度</strong></td><td style="text-align: left">时间精度要求</td><td style="text-align: left">±1.5μs</td></tr>
+<tr><td style="text-align: left"><strong>观测间隔τ</strong></td><td style="text-align: left">性能测量间隔</td><td style="text-align: left">100秒</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="主要profile详解"><a class="header" href="#主要profile详解">主要Profile详解</a></h2>
+<h3 id="ieee-8021as时间敏感网络tsn"><a class="header" href="#ieee-8021as时间敏感网络tsn">IEEE 802.1AS：时间敏感网络（TSN）</a></h3>
+<p><strong>组织</strong>：IEEE 802.1工作组</p>
+<p><strong>应用场景</strong>：音视频桥接、工业自动化、汽车网络</p>
+<p><strong>核心特点</strong>：</p>
+<pre><code>必须：
+- 延迟机制：P2P
+- 频率同步：SyncE
+- BMCA：自定义BMCA
+- 时间尺度：PTP timescale
+
+特点：
+- 快速收敛（几毫秒）
+- 支持冗余
+- 亚微秒精度
+</code></pre>
+<p><strong>Profile标识符</strong>：00-80-C2-00-00-01</p>
+<p><strong>技术细节</strong>：</p>
+<pre><code>802.1AS与标准PTP的主要区别：
+
+1. 自定义BMCA：
+   不使用标准BMCA
+   使用"Grand Master"概念
+   支持热备用
+
+2. SyncE集成：
+   频率同步从物理层获取
+   不依赖PTP报文
+
+3. 快速收敛：
+   使用"pDelay"而不是"delay"
+   更快的测量间隔
+
+4. 支持多种传输：
+   IEEE 802.3（以太网）
+   IEEE 802.11（Wi-Fi）
+   AVB（音视频桥接）
+</code></pre>
+<p><strong>适用场景</strong>：</p>
+<pre><code>- 专业音视频制作
+- 汽车以太网
+- 工业自动化（高精度要求）
+- 数据中心网络
+</code></pre>
+<h3 id="itu-t-g82751电信时间同步"><a class="header" href="#itu-t-g82751电信时间同步">ITU-T G.8275.1：电信时间同步</a></h3>
+<p><strong>组织</strong>：ITU-T（国际电信联盟）</p>
+<p><strong>应用场景</strong>：电信网络、5G基站、移动回传</p>
+<p><strong>核心特点</strong>：</p>
+<pre><code>必须：
+- 延迟机制：P2P
+- SyncE：必须支持
+- 时间尺度：PTP timescale
+- 精度：±1.5μs（端到端）
+
+时钟类型：
+- 普通时钟（OC）
+- 边界时钟（BC）
+- 电信时钟（ Telecom Grandmaster）
+
+Profile标识符：00-19-A6-00-00-01
+</code></pre>
+<p><strong>时钟等级定义</strong>：</p>
+<pre><code>ITU-T G.8275.1定义的时钟等级：
+
+PRTC（Primary Reference Time Clock）：
+- 精度：±100ns（相对于UTC）
+- 通过GNSS接收器获取时间
+- 是网络的顶级时钟
+
+T-GM（Telecom Grandmaster）：
+- 符合PRTC要求
+- 可以直接连接GNSS
+- 或从PRTC同步
+
+T-BC（Telecom Boundary Clock）：
+- 从上游T-GM或T-BC同步
+- 向下游设备分发时间
+- 需要支持SyncE
+
+T-TSC（Telecom Slave Clock）：
+- 从时钟
+- 用于基站等终端设备
+</code></pre>
+<p><strong>架构示例</strong>：</p>
+<pre><code>典型电信时间同步架构：
+
+GNSS卫星
+   │
+   ▼
+PRTC/T-GM（核心机房）
+   │
+   │ SyncE + PTP
+   ▼
+T-BC（汇聚机房）
+   │
+   │ SyncE + PTP
+   ▼
+T-BC（接入机房）
+   │
+   │ SyncE + PTP
+   ▼
+T-TSC（基站）
+
+精度保证：
+PRTC: ±100ns
+T-BC每跳累积误差：约50ns
+5跳后：100ns + 5×50ns = 350ns
+余量：满足±1.5μs要求
+</code></pre>
+<p><strong>适用场景</strong>：</p>
+<pre><code>- 5G基站同步（TDD需要高精度）
+- 移动回传网络
+- 电信核心网
+</code></pre>
+<h3 id="itu-t-g82752电信时间同步ip层"><a class="header" href="#itu-t-g82752电信时间同步ip层">ITU-T G.8275.2：电信时间同步（IP层）</a></h3>
+<p>与G.8275.1的区别：</p>
+<pre><code>G.8275.1：
+- L2层（以太网层）
+- 必须支持SyncE
+- 边界时钟模式
+
+G.8275.2：
+- L3层（IP层）
+- 不要求SyncE
+- 支持透明时钟
+- 可以跨路由器
+
+适用场景：
+G.8275.1：同一运营商内部网络
+G.8275.2：跨运营商、跨域场景
+</code></pre>
+<h3 id="iec-62439-3工业网络冗余"><a class="header" href="#iec-62439-3工业网络冗余">IEC 62439-3：工业网络冗余</a></h3>
+<p><strong>组织</strong>：IEC（国际电工委员会）</p>
+<p><strong>应用场景</strong>：工业自动化、过程控制</p>
+<p><strong>核心特点</strong>：</p>
+<pre><code>特点：
+- 支持冗余（PRP、HSR）
+- 精度：微秒级
+- 高可用性
+- 支持E2E和P2P
+
+Profile标识符：由具体实现定义
+</code></pre>
+<p><strong>冗余机制</strong>：</p>
+<pre><code>PRP（Parallel Redundancy Protocol）：
+- 双网络并行
+- 零切换时间
+- 设备双接口
+
+HSR（High-availability Seamless Redundancy）：
+- 环形网络
+- 零切换时间
+- 适合变电站
+
+与PTP的关系：
+- PTP报文在冗余网络上传输
+- 需要特殊处理避免重复
+</code></pre>
+<h3 id="ieee-1588默认profile"><a class="header" href="#ieee-1588默认profile">IEEE 1588默认Profile</a></h3>
+<p>IEEE 1588-2019附录I定义了三个默认Profile。</p>
+<p><strong>I.3：E2E默认Profile</strong></p>
+<pre><code>特点：
+- 延迟机制：E2E
+- 传输：UDP/IPv4或IEEE 802.3
+- 适用于通用场景
+
+配置：
+domainNumber: 0
+logAnnounceInterval: 1（2秒）
+logSyncInterval: 0（1秒）
+priority1: 128
+priority2: 128
+
+Profile标识符：00-1B-19-01-01-00
+</code></pre>
+<p><strong>I.4：P2P默认Profile</strong></p>
+<pre><code>特点：
+- 延迟机制：P2P
+- 其他与I.3相同
+
+Profile标识符：00-1B-19-02-01-00
+</code></pre>
+<p><strong>I.5：高精度E2E默认Profile</strong></p>
+<pre><code>特点：
+- 必须支持L1同步增强（附录L）
+- 必须支持外部配置机制（17.6）
+- 必须支持时间戳校正（16.7）
+- 必须支持不对称校正（16.8）
+- 频率精度：≤4.6ppm
+
+Profile标识符：00-1B-19-03-01-00
+
+适用场景：
+- 高精度应用
+- White Rabbit兼容
+- 科学实验
+</code></pre>
+<hr>
+<h2 id="profile标识符详解"><a class="header" href="#profile标识符详解">Profile标识符详解</a></h2>
+<h3 id="结构"><a class="header" href="#结构">结构</a></h3>
+<p>Profile标识符是一个6字节值：</p>
+<pre><code>┌────────────────────────────────────────────────────┐
+│ OUI/CID (3字节) │ profileNumber (1字节) │ profileVersion (2字节) │
+└────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>OUI/CID</strong>：</p>
+<ul>
+<li>3字节</li>
+<li>组织唯一标识符</li>
+<li>由IEEE RA分配</li>
+<li>确保不同组织的Profile不会冲突</li>
+</ul>
+<p><strong>profileNumber</strong>：</p>
+<ul>
+<li>1字节</li>
+<li>组织内的Profile编号</li>
+<li>0-255，由组织自行分配</li>
+</ul>
+<p><strong>profileVersion</strong>：</p>
+<ul>
+<li>2字节</li>
+<li>Profile的版本号</li>
+<li>primaryVersion（主版本）+ revisionNumber（修订版本）</li>
+</ul>
+<h3 id="示例"><a class="header" href="#示例">示例</a></h3>
+<p><strong>IEEE 802.1AS</strong>：</p>
+<pre><code>OUI: 00-80-C2（IEEE 802.1工作组）
+profileNumber: 00
+profileVersion: 00-01
+
+完整标识符：00-80-C2-00-00-01
+</code></pre>
+<p><strong>ITU-T G.8275.1</strong>：</p>
+<pre><code>OUI: 00-19-A6（ITU-T）
+profileNumber: 00
+profileVersion: 00-01
+
+完整标识符：00-19-A6-00-00-01
+</code></pre>
+<p><strong>默认Profile</strong>：</p>
+<pre><code>OUI: 00-1B-19（IEEE 1588工作组）
+profileNumber: 01/02/03
+profileVersion: 01-00
+
+E2E默认Profile：00-1B-19-01-01-00
+P2P默认Profile：00-1B-19-02-01-00
+高精度Profile：00-1B-19-03-01-00
+</code></pre>
+<h3 id="profile标识符的使用"><a class="header" href="#profile标识符的使用">Profile标识符的使用</a></h3>
+<p><strong>Announce报文中的profileIdentifier</strong>：</p>
+<pre><code>Announce报文可以携带profileIdentifier
+告诉接收方：我遵循哪个Profile
+
+接收方行为：
+如果profileIdentifier与自己相同 → 正常处理
+如果profileIdentifier与自己不同 → 可能忽略（取决于实现）
+</code></pre>
+<p><strong>管理协议中的profileIdentifier</strong>：</p>
+<pre><code>CLOCK_DESCRIPTION返回profileIdentifier
+管理员可以远程查询设备遵循的Profile
+</code></pre>
+<hr>
+<h2 id="一致性要求详解"><a class="header" href="#一致性要求详解">一致性要求详解</a></h2>
+<h3 id="一致性的层次"><a class="header" href="#一致性的层次">一致性的层次</a></h3>
+<pre><code>一致性层次：
+
+层次一：协议一致性
+- 必须符合IEEE 1588-2019所有强制性条款
+- 可选条款如果实现，必须符合规范
+
+层次二：传输一致性
+- 如果使用标准定义的传输（如UDP/IPv4）
+- 必须符合该传输的规范
+
+层次三：Profile一致性
+- 必须符合所声明的Profile的所有要求
+- Profile未指定的，使用默认值
+</code></pre>
+<h3 id="一致性声明"><a class="header" href="#一致性声明">一致性声明</a></h3>
+<p>设备厂商需要声明其产品遵循哪个Profile。</p>
+<pre><code>一致性声明示例：
+
+"本设备符合IEEE 1588-2019标准，遵循ITU-T G.8275.1 Profile（电信时间同步）。"
+
+具体要求：
+- 实现了Profile要求的所有功能
+- 参数范围符合Profile规定
+- 与其他遵循同一Profile的设备互操作
+</code></pre>
+<h3 id="一致性测试"><a class="header" href="#一致性测试">一致性测试</a></h3>
+<p>一致性测试验证设备是否符合声明。</p>
+<p><strong>测试类型</strong>：</p>
+<pre><code>类型一：功能测试
+- 验证设备实现了必需的功能
+- 验证可选功能的实现正确性
+
+类型二：性能测试
+- 验证同步精度是否符合要求
+- 验证收敛时间是否符合要求
+
+类型三：互操作性测试
+- 验证与不同厂商设备的互操作
+- 验证在真实网络中的表现
+</code></pre>
+<p><strong>测试机构</strong>：</p>
+<pre><code>UNH-IOL（University of New Hampshire InterOperability Laboratory）：
+- 提供PTP一致性测试服务
+- 颁发一致性证书
+
+其他机构：
+- 各国认证机构
+- 行业联盟
+</code></pre>
+<h3 id="不一致的情况"><a class="header" href="#不一致的情况">不一致的情况</a></h3>
+<p><strong>场景一：不同Profile混用</strong></p>
+<pre><code>问题：
+设备A遵循G.8275.1（P2P）
+设备B遵循默认Profile（E2E）
+
+结果：
+无法互通
+延迟机制不兼容
+</code></pre>
+<p><strong>场景二：参数不匹配</strong></p>
+<pre><code>问题：
+设备A：logSyncInterval = 0（1秒）
+设备B：期望logSyncInterval = -3（125ms）
+
+结果：
+设备B收到的Sync太慢
+同步精度下降
+</code></pre>
+<p><strong>场景三：选项不支持</strong></p>
+<pre><code>问题：
+Profile要求支持L1Sync
+设备不支持L1Sync
+
+结果：
+不符合Profile要求
+可能无法正常工作
+</code></pre>
+<hr>
+<h2 id="qsdo与sdoid"><a class="header" href="#qsdo与sdoid">QSDO与sdoId</a></h2>
+<h3 id="qsdo定义"><a class="header" href="#qsdo定义">QSDO定义</a></h3>
+<p><strong>QSDO（Qualified Standards Development Organization）</strong>：合格标准制定组织。</p>
+<p><strong>资格条件</strong>：</p>
+<pre><code>条件一：多方参与
+成员来自多家公司或学术/政府实体
+
+条件二：非主导
+不被单一实体主导
+
+条件三：正式程序
+Profile需通过成员投票或正常操作程序批准
+</code></pre>
+<h3 id="qsdo示例"><a class="header" href="#qsdo示例">QSDO示例</a></h3>
+<pre><code>公认QSDO：
+- IEEE（电气电子工程师学会）
+- IEC（国际电工委员会）
+- ITU-T（国际电信联盟电信标准化部门）
+- IETF（互联网工程任务组）
+- ANSI（美国国家标准学会）
+
+行业协会（可能符合QSDO条件）：
+- 行业联盟
+- 标准化组织
+</code></pre>
+<h3 id="sdoid分配"><a class="header" href="#sdoid分配">sdoId分配</a></h3>
+<p><strong>作用</strong>：隔离不同标准组织的Profile。</p>
+<pre><code>sdoId范围分配：
+
+0x000：非QSDO
+- 未获得QSDO资格的组织
+- 使用默认值
+
+0x001-0x0FF：保留
+- IEEE RA保留
+
+0x100：IEEE 802.1
+- 时间敏感网络
+
+0xFFF：IEEE 1588
+- PTP工作组
+
+0x300-0xFFC：QSDO
+- 分配给合格标准组织
+</code></pre>
+<p><strong>sdoId的使用</strong>：</p>
+<pre><code>PTP报文头部的sdoId：
+
+domainNumber (1字节) + majorSdoId (高4位) + minorSdoId (1字节)
+
+共同构成完整的域标识
+
+不同sdoId的设备即使domainNumber相同也不会互通
+实现Profile级别的隔离
+</code></pre>
+<h3 id="申请sdoid"><a class="header" href="#申请sdoid">申请sdoId</a></h3>
+<pre><code>申请流程：
+
+步骤一：确认QSDO资格
+- 准备组织章程
+- 证明多方参与
+- 证明正式程序
+
+步骤二：向IEEE RA申请
+- 提交申请材料
+- 等待审核
+
+步骤三：获得分配
+- IEEE RA分配唯一的sdoId
+- 在Profile中使用
+</code></pre>
+<hr>
+<h2 id="如何选择profile"><a class="header" href="#如何选择profile">如何选择Profile？</a></h2>
+<h3 id="决策因素"><a class="header" href="#决策因素">决策因素</a></h3>
+<p><strong>因素一：应用场景</strong></p>
+<pre><code>场景对照表：
+
+电信网络（5G基站）：
+→ ITU-T G.8275.1（L2）或 G.8275.2（L3）
+
+工业自动化（高精度）：
+→ IEEE 802.1AS或IEC 62439-3
+
+音视频桥接：
+→ IEEE 802.1AS
+
+科学实验（亚纳秒）：
+→ 高精度默认Profile或White Rabbit
+
+通用场景：
+→ 默认Profile（E2E或P2P）
+</code></pre>
+<p><strong>因素二：精度要求</strong></p>
+<pre><code>精度要求对照表：
+
+±100ns：
+→ 需要高精度Profile + 硬件支持
+
+±1μs：
+→ IEEE 802.1AS或ITU-T G.8275.1
+
+±10μs：
+→ 默认Profile + 硬件时间戳
+
+±1ms：
+→ 默认Profile + 软件时间戳可接受
+</code></pre>
+<p><strong>因素三：网络条件</strong></p>
+<pre><code>网络条件对照表：
+
+支持SyncE：
+→ ITU-T G.8275.1、IEEE 802.1AS
+
+不支持SyncE：
+→ 默认Profile、ITU-T G.8275.2
+
+支持组播：
+→ 默认组播模式
+
+不支持组播：
+→ 单播Profile或单播协商
+
+跨路由器：
+→ ITU-T G.8275.2（L3）
+</code></pre>
+<p><strong>因素四：设备能力</strong></p>
+<pre><code>设备能力对照表：
+
+支持P2P：
+→ P2P Profile
+
+仅支持E2E：
+→ E2E Profile
+
+支持L1Sync：
+→ 高精度Profile
+
+不支持L1Sync：
+→ 标准Profile
+</code></pre>
+<h3 id="选择流程"><a class="header" href="#选择流程">选择流程</a></h3>
+<pre><code>Profile选择决策树：
+
+开始
+  │
+  ├─ 是否为电信网络？
+  │     │
+  │     ├─ 是 → 是否支持SyncE？
+  │     │         │
+  │     │         ├─ 是 → ITU-T G.8275.1
+  │     │         │
+  │     │         └─ 否 → ITU-T G.8275.2
+  │     │
+  │     └─ 否
+  │           │
+  │           ├─ 是否为工业/音视频？
+  │           │     │
+  │           │     ├─ 是 → IEEE 802.1AS
+  │           │     │
+  │           │     └─ 否
+  │           │           │
+  │           │           ├─ 是否需要高精度（亚纳秒）？
+  │           │           │     │
+  │           │           │     ├─ 是 → 高精度Profile
+  │           │           │     │
+  │           │           │     └─ 否 → 默认Profile
+  │           │           │
+  │           │           └─ 选择E2E还是P2P？
+  │           │                 │
+  │           │                 ├─ 有透明时钟 → P2P
+  │           │                 │
+  │           │                 └─ 无透明时钟 → E2E
+</code></pre>
+<hr>
+<h2 id="版本兼容性"><a class="header" href="#版本兼容性">版本兼容性</a></h2>
+<h3 id="ieee-1588版本演进"><a class="header" href="#ieee-1588版本演进">IEEE 1588版本演进</a></h3>
+<pre><code>版本历史：
+
+IEEE 1588-2002：
+- 第一版
+- versionPTP = 1
+- 与后续版本不兼容
+
+IEEE 1588-2008：
+- 第二版
+- versionPTP = 2
+- 重大改进
+
+IEEE 1588-2019：
+- 第三版
+- versionPTP = 2
+- minorVersionPTP = 1
+- 与2008版本大部分兼容
+</code></pre>
+<h3 id="2008与2019兼容性"><a class="header" href="#2008与2019兼容性">2008与2019兼容性</a></h3>
+<p><strong>兼容的情况</strong>：</p>
+<pre><code>大多数选项兼容：
+- 单播协商：兼容
+- 路径追踪：兼容
+- 替代时间尺度：兼容
+- 时间戳校正：兼容
+- 不对称计算：兼容
+</code></pre>
+<p><strong>不兼容的情况</strong>：</p>
+<pre><code>不兼容选项：
+
+1. 累积频率传输（16.10）：
+   - 2019新增CUMULATIVE_RATE_RATIO TLV
+   - 2008设备不识别
+   - 混用会导致同步错误
+
+2. PTP集成安全（16.14）：
+   - 2019新增AUTHENTICATION TLV
+   - 使用该TLV会中断不使用的设备
+   - 网络拓扑和安全策略组合可能导致问题
+</code></pre>
+<p><strong>需要注意的情况</strong>：</p>
+<pre><code>警告场景：
+
+1. 可接受主时钟表：
+   - 存在透明时钟时，2008设备可能工作不正常
+   - 原因：透明时钟修改源地址，2008用协议地址匹配
+
+2. CMLDS（公共平均链路延迟服务）：
+   - 新旧设备混用可能失败
+   - 原因：2008设备不支持该功能
+
+3. L1同步增强：
+   - 存在2008设备时性能次优
+   - 原因：2008设备不支持L1Sync
+</code></pre>
+<h3 id="兼容性最佳实践"><a class="header" href="#兼容性最佳实践">兼容性最佳实践</a></h3>
+<pre><code>混用2008和2019设备的建议：
+
+1. 避免使用不兼容选项：
+   - 不使用累积频率传输
+   - 不使用PTP集成安全
+
+2. 统一配置：
+   - 所有设备使用相同的Profile
+   - 相同的参数值
+
+3. 测试验证：
+   - 在实验室测试混用场景
+   - 验证同步精度
+
+4. 文档记录：
+   - 记录设备版本
+   - 记录使用的选项
+</code></pre>
+<hr>
+<h2 id="第二章完结总结"><a class="header" href="#第二章完结总结">第二章完结总结</a></h2>
+<p>恭喜！我们已经完成了PTP协议深度解析的全部18节内容。</p>
+<h3 id="章节回顾"><a class="header" href="#章节回顾">章节回顾</a></h3>
+<p><strong>第一部分：PTP网络架构</strong>（3节）</p>
+<ul>
+<li>2.1：PTP实体与角色——普通时钟、边界时钟、透明时钟</li>
+<li>2.2：BMCA算法详解——主时钟选举机制</li>
+<li>2.3：PTP域和时间尺度——隔离与时间基准</li>
+</ul>
+<p><strong>第二部分：数据与状态</strong>（3节）</p>
+<ul>
+<li>2.4：PTP数据集全解析——配置和状态数据</li>
+<li>2.5：端口状态机详解——9种状态及其转换</li>
+<li>2.6：透明时钟如何工作——E2E TC和P2P TC</li>
+</ul>
+<p><strong>第三部分：延迟测量</strong>（2节）</p>
+<ul>
+<li>2.7：E2E延迟测量机制——四时间戳计算</li>
+<li>2.8：P2P延迟测量机制——逐链路测量</li>
+</ul>
+<p><strong>第四部分：同步实现</strong>（3节）</p>
+<ul>
+<li>2.9：偏移计算的数学——从原理到实现</li>
+<li>2.10：频率同步的秘密——相位与频率</li>
+<li>2.11：硬件时间戳的奥秘——纳秒精度来源</li>
+</ul>
+<p><strong>第五部分：报文与扩展</strong>（3节）</p>
+<ul>
+<li>2.12：PTP报文格式全解析——十种报文详解</li>
+<li>2.13：TLV扩展机制——PTP的插件系统</li>
+<li>2.14：管理协议详解——远程监控与配置</li>
+</ul>
+<p><strong>第六部分：高级主题</strong>（4节）</p>
+<ul>
+<li>2.15：单播协商与路径追踪——跨域通信与环路检测</li>
+<li>2.16：PTP安全机制——五层防护体系</li>
+<li>2.17：高精度选项与White Rabbit——亚纳秒同步</li>
+<li>2.18：Profile与一致性要求——规则书与互操作</li>
+</ul>
+<h3 id="关键收获"><a class="header" href="#关键收获">关键收获</a></h3>
+<p>通过这18节内容，你应该已经掌握了：</p>
+<p><strong>架构层面</strong>：</p>
+<ol>
+<li>PTP网络的组成：普通时钟、边界时钟、透明时钟</li>
+<li>主时钟选举：BMCA算法的原理和实现</li>
+<li>网络隔离：域和时间尺度的作用</li>
+</ol>
+<p><strong>协议层面</strong>：
+4. 数据结构：各种数据集的含义和用法
+5. 状态机：端口状态及其转换规则
+6. 延迟测量：E2E和P2P两种机制</p>
+<p><strong>同步层面</strong>：
+7. 时间测量：四时间戳计算原理
+8. 时钟调整：相位同步和频率同步
+9. 精度保障：硬件时间戳和伺服算法</p>
+<p><strong>扩展层面</strong>：
+10. 协议细节：报文格式、TLV扩展、管理协议
+11. 高级应用：安全、高精度、Profile</p>
+<h3 id="深度与广度"><a class="header" href="#深度与广度">深度与广度</a></h3>
+<pre><code>知识层次：
+
+入门级：
+- 了解PTP是什么
+- 能够配置基本的PTP网络
+
+进阶级：
+- 理解PTP协议细节
+- 能够诊断和排查问题
+
+专家级：
+- 掌握PTP所有选项
+- 能够设计和优化PTP网络
+- 能够实现PTP协议栈
+
+通过这18节，你已经达到进阶级水平
+第三章将帮助你向专家级迈进
+</code></pre>
+<h3 id="下一步"><a class="header" href="#下一步">下一步</a></h3>
+<p>第三章，我们将进入<strong>实践篇</strong>：</p>
+<p><strong>LinuxPTP源码分析</strong>：</p>
+<ul>
+<li>项目架构与核心数据结构</li>
+<li>端口状态机实现</li>
+<li>BMCA算法实现</li>
+<li>延迟测量机制实现</li>
+<li>伺服控制器实现</li>
+<li>硬件时间戳接口</li>
+<li>配置文件解析</li>
+<li>日志与诊断系统</li>
+</ul>
+<p><strong>从理论到实践</strong>：</p>
+<ul>
+<li>部署一个真实的PTP网络</li>
+<li>配置主时钟和从时钟</li>
+<li>诊断同步问题</li>
+<li>优化网络性能</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>【第三章预告】</strong></p>
+<p>理论已经足够扎实，现在让我们动手实践。</p>
+<p>第三章将带你深入LinuxPTP源码，理解PTP协议的真实实现。你会看到：</p>
+<ul>
+<li>代码如何实现协议规范</li>
+<li>工程实践中的权衡和取舍</li>
+<li>如何调试和优化PTP网络</li>
+</ul>
+<p>准备好了吗？从协议读者到协议实现者，这是成为专家的必经之路。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.17-追踪光速的脚步-White-Rabbit与亚纳秒同步.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/3.1-走进开源PTP世界-LinuxPTP项目全景.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.17-追踪光速的脚步-White-Rabbit与亚纳秒同步.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/3.1-走进开源PTP世界-LinuxPTP项目全景.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

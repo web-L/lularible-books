@@ -1,0 +1,458 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>LittleFS设计哲学——最小的元数据 · 最大的可靠性 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="第四章-littlefs一个为嵌入式而生的文件系统"><a class="header" href="#第四章-littlefs一个为嵌入式而生的文件系统">第四章 LittleFS——一个为嵌入式而生的文件系统</a></h1>
+<h2 id="41-littlefs设计哲学最小的元数据最大的可靠性"><a class="header" href="#41-littlefs设计哲学最小的元数据最大的可靠性">4.1 LittleFS设计哲学——最小的元数据，最大的可靠性</a></h2>
+<h3 id="你在一个32kb内存的芯片上写文件"><a class="header" href="#你在一个32kb内存的芯片上写文件">你在一个32KB内存的芯片上写文件</a></h3>
+<p>想象一个场景：你面前是一块Cortex-M4微控制器，32KB RAM，512KB ROM。它挂着一颗4MB的SPI NOR Flash，通过四条线（MISO/MOSI/SCK/CS）与主控通信。你的任务是——在这个设备上提供一个完整的、支持目录结构的、掉电不丢数据的文件系统。</p>
+<p>你脑子里的第一反应大概率是：这怎么可能？</p>
+<p>操作系统课上学过的ext4，内核代码量以十万行计，内存占用以MB计。FAT系列虽然简单，但它的FAT表需要在内存中维护——你的32KB RAM连一个4MB空间的FAT表都装不下。SPIFFS是为嵌入式设计的，但它对NOR Flash的写入特性做了过于乐观的假设——它依赖NOR Flash支持按字节累写的特性来做metadata更新，换个Flash型号就可能出问题。YAFFS是为NAND设计的，它的大页假设和OOB（Out-Of-Band）区域概念在NOR上完全不适用。</p>
+<p><strong>在嵌入式存储领域，文件系统的设计不是“哪个最好“的问题，而是“哪个约束最少地折磨你“的问题。</strong></p>
+<p>在第三章我们建立了文件系统设计的理论基础——块设备抽象、FAT 的教训、LFS 的日志哲学、元数据的三重保护、磨损均衡、掉电安全。在第五章我们将亲手实现 KnotFS——一个将这些理论付诸代码的教学级文件系统。</p>
+<p>而夹在这之间的第四章是一个“对比实验室“。我们研读 LittleFS——不是因为它比 KnotFS“更好“（它们是两个不同约束下的产物），而是因为 LittleFS 是目前最成功的嵌入式文件系统开源实现之一。它的 Metadata Pair、CTZ Skip-List、lookahead 分配器——每一个数据结构都是对第三章理论的工业级回应。<strong>读懂 LittleFS 的设计决策，你在第五章写 KnotFS 时就知道：哪些地方我照抄工业答案、哪些地方我的约束不同要另辟蹊径、哪些地方工业级的复杂度是我的教学版刻意砍掉的。</strong></p>
+<p>这就是LittleFS诞生的背景。2017年，ARM Mbed团队（现归属Linaro社区维护）面对着一个经典的嵌入式困境：他们需要一个文件系统，但它必须同时满足三个几乎互相矛盾的需求。</p>
+<hr>
+<h3 id="三个互相掐架的需求"><a class="header" href="#三个互相掐架的需求">三个互相掐架的需求</a></h3>
+<p>让我们把这三个需求摊在桌面上：</p>
+<p><strong>第一：掉电安全（Power-Loss Resilience）。</strong></p>
+<p>嵌入式设备没有关机流程。你的冰箱控制板、无人机飞控、工业传感器、智能穿戴设备——它们可能在任何一个指令周期被拉断电源。如果在断电的瞬间，文件系统正在写入元数据——比如正在把某个文件的“目录项“从旧位置复制到新位置——那结果可能是灾难性的：目录结构损坏、文件孤儿化、甚至整个文件系统无法挂载。</p>
+<p>这不是概率问题。如果设备设计寿命是10年，每天断电1次，那就是3650次写入-断电竞态。只要有一次撞上元数据更新的“窗口期“，设备就废了。</p>
+<pre><code>写入元数据的危险窗口
+============================
+
+[擦除旧块] [写入新数据] [更新指针] [写入校验和]
+    ^                                        ^
+    |                                        |
+    └──── 断电窗口 ———— 在这个区间内断电， ─────┘
+         旧数据已擦除，新数据未完成，文件系统损坏
+</code></pre>
+<p>而在嵌入式系统中，你无法通过“加一个UPS“来解决这个问题。你必须保证——在任何时刻断电，文件系统要么回到上一个完整状态，要么到达下一个完整状态，绝不停留在中间态。</p>
+<p><strong>第二：磨损均衡（Wear Leveling）。</strong></p>
+<p>NOR Flash的每个擦除块（通常是4KB）有擦除寿命限制。消费级芯片大约10万次擦除，工业级可能更少。如果一个文件系统反复写同一个块——比如FAT文件系统每次更新文件时都重写FAT表所在的扇区——那这个块的寿命就是整个设备的寿命。</p>
+<p>更隐蔽的问题在于：磨损不是均匀的。元数据块（superblock、FAT表、inode表、目录区）的更新频率远高于数据块。一个根目录的目录块可能每分钟被更新一次，而一个日志文件的数据块可能一天才写一次。这意味着——<strong>元数据区会比数据区早几十倍磨损殆尽</strong>。</p>
+<pre><code>磨损不均匀的可怕真相
+=========================================
+
+元数据块（superblock）：     ████████████████████  每分钟都在写
+元数据块（目录）：           ████████████████████  每小时写几十次
+数据块（日志文件）：         ████                  每天写几次
+数据块（配置文件）：         ██                    几乎不写
+
+              元数据块死的时候，设备就死了。
+              哪怕99%的数据块还完好如新。
+</code></pre>
+<p><strong>第三：有界RAM/ROM（Bounded RAM/ROM）。</strong></p>
+<p>这是最狠的一条。你的RAM只有32KB。你不能像ext4那样在内存中维护一个inode缓存池，不能像btrfs那样构建一棵B树来索引空闲块，不能用“先扫描一遍全盘“的方式来初始化——因为扫描意味着遍历所有数据，遍历意味着缓存，缓存意味着RAM。</p>
+<p>而且，RAM的使用量<strong>必须在运行时保持恒定</strong>——不管文件系统上有1个文件还是10000个文件，不管空闲空间是99%还是1%，你占用的RAM必须是一样的。这个要求把所有“分配一个动态数组来缓存什么什么东西“的方案都毙了。</p>
+<hr>
+<h3 id="littlefs的核心答案把日志和cow焊在一起"><a class="header" href="#littlefs的核心答案把日志和cow焊在一起">LittleFS的核心答案：把日志和COW焊在一起</a></h3>
+<p>面对这三个需求，LittleFS的设计者做了一个非常聪明的观察——</p>
+<p>先看两类极端的设计：</p>
+<p><strong>纯日志文件系统（SPIFFS, JFFS2, YAFFS）：</strong></p>
+<p>日志文件系统把整个存储空间当作一个环形缓冲区。每次写操作都是在这个缓冲区的末尾追加一条新记录。因为从不原地覆盖，掉电安全天然保证——断电时最多丢掉最后一条没写完的追加记录，而之前的状态完整保留。同时，因为数据在环形缓冲区里不停地“流动“，磨损天然均匀。</p>
+<p>但日志文件系统的致命弱点是性能。读一个文件需要从日志头遍历到日志尾——你相当于在读取“这个文件从创建到现在的全部历史“。SPIFFS尝试用NOR Flash的可累写特性来优化这一点，但代价是绑定了特定物理介质。YAFFS用RAM缓存来加速，但代价是O(n)的内存增长。<strong>纯日志文件系统的运行时要么是O(n²)，要么需要O(n)的RAM——两者在嵌入式环境都是不可接受的。</strong></p>
+<pre><code>纯日志文件系统
+=========================================
+
+设备：
+┌──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┐
+│  C   │ newB │ newA │      │  A   │  B   │      │      │
+│      │      │      │  →   │      │      │      │      │
+└──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘
+                              ↑
+                        写入方向（环形）
+
+要读文件A？需要从最新的"newA"记录一路回溯到最初的"A"记录
+</code></pre>
+<p><strong>COW（Copy-On-Write）文件系统（btrfs, ZFS）：</strong></p>
+<p>COW文件系统的核心原则是“永远不原地修改“。当你需要更新一个数据块时，你把它复制到一个新块上，在新块上做修改，然后更新指向它的指针——但指针也被存在块里，所以指针的修改也触发了一次复制……这个过程一直向上传播，直到到达根节点。</p>
+<p>COW的性能很好——因为读取路径和普通文件系统一样是O(log n)。但问题在于：（1）一次写入可能触发一连串的逐级复制，放大了写入量；（2）写入向上传播会把磨损集中到树的上层——根节点块的磨损会比叶子节点严重得多。</p>
+<pre><code>COW文件系统
+=========================================
+
+               ┌──────┐                     ┌──────────┐
+               │ root │      写入文件       │ new root │
+               │      │        ==&gt;          │          │
+               └──────┘                     └──────────┘
+              ┌─┘    └─┐                    ┌─┘         │
+             │          │                   │    ┌───────┘
+             v          v                   │    v
+          ┌──────┐  ┌──────┐             │  ┌──────────┐
+          │  A   │  │  B   │             │  │  new B   │  ← 复制了B
+          │      │  │      │             │  │          │
+          └──────┘  └──────┘             │  └──────────┘
+          ┌─┘       ┌─┘    └─┐            │  ┌─┘         │
+         │         │          │           │  │    ┌───────┘
+         v         v          v           │  v    v
+      ┌──────┐ ┌──────┐  ┌──────┐      │ ┌──────────┐
+      │  C   │ │  D   │  │  E   │      │ │  new D   │  ← 复制了D
+      │      │ │      │  │      │      │ │          │
+      └──────┘ └──────┘  └──────┘      │ └──────────┘
+
+  D被修改了 → B被复制了 → root被复制了 → 磨损集中在root
+</code></pre>
+<hr>
+<p>LittleFS的洞察是：<strong>这两者的弱点互为解药。</strong></p>
+<p>日志的弱点是运行时效率差——但如果把日志的大小限制在两块（metadata pair），那日志的操作就变成了O(1)（因为输入有界）。</p>
+<p>COW的弱点是磨损向上传播——但如果把“写一次就复制“改成“写N次才复制“（Copy-on-Bounded-Writes, CObW），那磨损传播在每一层上都被除以N。当N足够大（大于分支因子）时，上层不再比下层磨损更快。</p>
+<p>而两者的结合创造了奇迹：metadata pair（小日志）提供了任意位置的原子更新能力；CObW树提供了紧凑的数据存储和读性能。<strong>两者分别解决了对方的问题，合在一起形成了一个完整的、优雅的解决方案。</strong></p>
+<pre><code>LittleFS = 日志 + COW 的焊接
+=========================================
+
+                    root  ← 这是一个metadata pair（两块的日志）
+                   ┌──────────┬──────────┐
+                   │  A'│ B' │          │
+                   │    │    │  →       │
+                   └──────────┴──────────┘
+                ┌────┘            └─────────.
+       A        v                  B         v
+      ┌──────────┬──────────┐  ┌──────────┬──────────┐
+      │  C'│ D' │          │  │  E'│new  │          │
+      │    │    │  →       │  │    │  E' │  →       │
+      └──────────┴──────────┘  └──────────┴──────────┘
+      ┌─┘  └─┐                 ┌─┘         └──────────.
+     v         v               │                       v
+┌────────┐ ┌────────┐       ┌─┘                  ┌────────┐
+│   C    │ │   D    │       v                    │ new E  │ ← COW数据块
+└────────┘ └────────┘  ┌────────┐               └────────┘
+                       │   E    │
+                       └────────┘
+</code></pre>
+<p>这就是LittleFS的核心设计哲学：<strong>Metadata Pair（两页互为备份的日志）负责原子元数据提交，CTZ Skip-List（COW跳表）提供紧凑数据存储，而Lookahead Buffer（固定大小的预搜索缓冲区）则把块分配限制在有界内存中。</strong></p>
+<hr>
+<h3 id="strong-guaranteelittlefs的可靠性哲学"><a class="header" href="#strong-guaranteelittlefs的可靠性哲学">“Strong Guarantee”——LittleFS的可靠性哲学</a></h3>
+<p>在DESIGN.md的开篇，LittleFS的设计者写了一段话，可以被视为这个文件系统的“宪法“：</p>
+<blockquote>
+<p>“The question was: How would you build a filesystem that is resilient to power-loss and flash wear without using unbounded memory?”</p>
+</blockquote>
+<p>翻译过来就是：<strong>“如何在不用无限内存的前提下，构建一个既抗掉电又抗磨损的文件系统？”</strong></p>
+<p>这个问题定义了LittleFS的全部设计决策。它不是一个“我要做个性能最好的文件系统“，也不是“我要做个功能最多的文件系统“。它的目标极其聚焦：<strong>在最恶劣的嵌入式环境下，保证数据的完整性。</strong></p>
+<p>让我们看看LittleFS提供的“强保证“具体是什么：</p>
+<p><strong>1. 原子目录提交。</strong> LittleFS不是“尽量原子“——它保证目录操作的原子性。一次目录提交（创建文件、删除文件、重命名文件……）要么完整发生，要么完全不发生。这是通过metadata pair的两块交替机制实现的：提交写到非活跃块，写完后翻转活跃状态。在任何时刻断电，总有一块是完整的。</p>
+<p><strong>2. 有界RAM。</strong> LittleFS的RAM使用量与文件系统的大小、文件数量、文件大小——通通无关。无论你有1GB还是1MB的存储空间，LittleFS占用的RAM是固定的，由编译时配置决定。这一条的达成非常不易——它意味着你不能缓存文件列表、不能缓存inode、不能缓存空闲块位图……每一种常见的优化手段都被禁止了。</p>
+<p><strong>3. 动态磨损均衡。</strong> LittleFS不维护每个块的精确擦除计数（那需要额外内存），而是通过统计分布来实现磨损均衡。块分配器在分配空闲块时总是从上次停止的位置继续向前扫描，形成一个环绕设备的均匀分配模式。同时在每次挂载时，用一个基于磁盘CRC的随机种子来确定分配的起始偏移——保证每次上电后分配模式都不同。</p>
+<p><strong>4. 坏块检测与恢复。</strong> 每次写入后，LittleFS立即把写进去的数据读回来比对。如果不一致，标记坏块，分配新块，重写数据。这是通过CObW结构的天然能力实现的——任何块都可以在COW操作中无损替换。</p>
+<p>这四条保证构成了LittleFS的可靠性底线。<strong>它不承诺最快的速度，不承诺最少的写入放大，但它承诺——在任何掉电场景下，你的数据要么是完整的，要么是可恢复的。</strong></p>
+<hr>
+<h3 id="与fatspiffsyaffs的正面对比"><a class="header" href="#与fatspiffsyaffs的正面对比">与FAT、SPIFFS、YAFFS的正面对比</a></h3>
+<p>一张表胜过千言万语：</p>
+<pre><code>文件系统对比
+======================================================
+              LittleFS    FAT32     SPIFFS    YAFFS2
+------------------------------------------------------
+掉电安全       ✅ 原子      ❌ 危险    ✅ 日志    ✅ 日志
+磨损均衡       ✅ 动态      ❌ 无      ✅ 完美    ✅ 完美
+有界RAM        ✅ 是       ⚠️ 可配   ❌ 否     ❌ 否
+代码量         ~7K 行      ~3K 行    ~4K 行    ~15K 行
+目标介质       NOR/NAND    磁盘      NOR        NAND
+动态坏块管理   ✅ 是       ❌ 无      ❌ 无      ✅ 是
+目录结构       树+链表      树        扁平       树
+文件名长度     最多255      8+3/255   最多255    最多255
+文件大小上限   2GB         4GB       不限制     不限制
+需要闭操作     ✅ sync     ✅ 是      ✅ 是      ✅ 是  
+======================================================
+</code></pre>
+<p>FAT是一个“意外成为嵌入式标准的文件系统“。它简单、被广泛支持，但它的FAT表是单点故障——FAT表损坏就意味着整个文件系统的目录结构丢失。而且FAT没有任何掉电保护，原地修改FAT表时断电等于自杀。</p>
+<p>SPIFFS是专门为SPI NOR Flash设计的，它利用了NOR Flash的一个特性：将1变成0不需要擦除（只需要编程），所以它可以在一个已擦除的页上渐进地累写数据。这让SPIFFS可以做到无RAM消耗的日志文件系统。但这一策略绑定了物理特性——不能用在NAND上，也不能用在某些不保证“累写不变“的NOR芯片上。而且SPIFFS的垃圾回收需要O(n²)时间，在大文件系统上性能退化严重。</p>
+<p>YAFFS是NAND世界的经典，它利用NAND的OOB（备用区）存储元数据标签，实现了高度优化的日志结构。但它的设计深度绑定NAND页结构（2KB数据+64B OOB），在NOR Flash上完全无法工作。</p>
+<p><strong>LittleFS选择了一条不同的路：它不绑定任何物理介质的特殊性质。它只用read、prog、erase三个回调——这是所有Flash都支持的三个基础操作。这个极简的抽象让它可以在NOR、NAND、eMMC、SD卡、甚至RAM盘上运行。而它的可靠性是通过纯软件算法（metadata pair + CRC + 原子提交）实现的，不依赖硬件的任何特殊能力。</strong></p>
+<hr>
+<h3 id="数据结构全景从superblock到ctz-skip-list"><a class="header" href="#数据结构全景从superblock到ctz-skip-list">数据结构全景：从Superblock到CTZ Skip-List</a></h3>
+<p>LittleFS的盘上数据结构形成了一套层次分明、各司其职的体系：</p>
+<pre><code>LittleFS数据结构总览
+=========================================
+
+                    ┌──────────────────────┐
+                    │     lfs_t (RAM)       │ ← 运行时状态
+                    │  root[2], 缓存,       │
+                    │  全局状态, lookahead   │
+                    └──────────┬───────────┘
+                               │
+                    ┌──────────┴───────────┐
+                    │   Superblock Pair     │ ← 两块，block 0 和 block 1
+                    │  (内嵌在root目录中)    │    存储版本号、块大小、块数等
+                    └──────────┬───────────┘
+                               │
+                    ┌──────────┴───────────┐
+                    │   Metadata Pair       │ ← 每个目录一个
+                    │  (两个block交替)       │    原子提交的日志
+                    │  revision + tag + data │
+                    └──────────┬───────────┘
+                               │
+               ┌───────────────┼───────────────┐
+               │               │               │
+        ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
+        │  File Entry │ │  File Entry │ │  Dir Entry  │ ← 目录项
+        │   name+CTZ  │ │   name+CTZ  │ │   name+pair │
+        └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
+               │               │               │
+        ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
+        │ CTZ Skip-   │ │   Inline    │ │   子目录的   │
+        │ List (COW)  │ │   小文件    │ │  Metadata    │
+        │             │ │ (直接存目录)│ │   Pair       │
+        └─────────────┘ └─────────────┘ └─────────────┘
+</code></pre>
+<p>核心概念拆解：</p>
+<p><strong>Superblock：</strong> LittleFS的超级块不是独立的两个块，而是“嵌入在根目录的metadata pair中的一个特殊entry“。它的内容很简单——文件系统版本号、块大小、块数量、名字最大长度、文件最大大小、属性最大大小——总共6个字段，24字节。这体现了LittleFS“元数据最小化“的原则。</p>
+<pre><code class="language-c">// lfs.h 中的 superblock 结构体
+typedef struct lfs_superblock {
+    uint32_t version;
+    lfs_size_t block_size;
+    lfs_size_t block_count;
+    lfs_size_t name_max;
+    lfs_size_t file_max;
+    lfs_size_t attr_max;
+} lfs_superblock_t;
+</code></pre>
+<p>是的，就这么多。没有魔数、没有挂载计数、没有最后检查时间、没有卷标——没有任何冗余信息。教学级实现（第三章的KnotFS）的superblock相比之下“臃肿“得多（包含了版本号、块大小、卷标、挂载状态等），但二者的设计上下文不同——KnotFS的superblock是独立的两个块，而LittleFS的superblock只是根目录中的一个条目，根目录本身的metadata pair已经提供了CRC校验和revision保护。</p>
+<p><strong>Metadata Pair：</strong> 这是LittleFS最核心的发明。每个目录（包括根目录）都关联一个metadata pair——两个物理块，一个活跃、一个备用。所有对该目录的修改（创建文件、删除文件、更新文件大小……）都以“追加条目“的方式写入活跃块，当活跃块满时触发compaction（紧凑化），把仍然有效的条目复制到备用块上，然后翻转备用块为新的活跃块，擦除旧块。</p>
+<p>这个过程天然保证了原子性：在compaction的最后一步——写入CRC校验和之前——如果掉电，旧块上的数据仍然完好无损。写入CRC之后，新块变成活跃块，旧块的内容虽然还完整但不再是“最新版本“——而这是安全的状态：你只有“旧数据“和“新数据“两种选择，不存在第三种“部分写入“的损坏状态。</p>
+<p><strong>CTZ Skip-List：</strong> 这是一个纯COW的数据结构，专门为文件的追加写入和随机读取而设计。块之间以“后向跳表“的形式链接——每个块包含若干指向前面的块的指针，指针数量由该块的索引的二进制尾零（CTZ, Count Trailing Zeros）决定。这让追加操作是O(1)的（只需要新建最后一个块），随机读取是O(log n)的（通过跳表快速跳过不相关的块）。</p>
+<p>CTZ跳表还有一个精妙的设计：<strong>只需要一个指针（head）和一个大小（size）就能唯一确定整个跳表。</strong> 因为给定block index，你就能通过CTZ公式算出它应该有多少个指针，进而推算出每个字节的位置。这让元数据的存储开销降到了最低——在目录中存储一个文件，只需要记录它的名字、类型、以及(ctz_head, ctz_size)两个值。</p>
+<hr>
+<h3 id="你必须接受的那些权衡"><a class="header" href="#你必须接受的那些权衡">你必须接受的那些权衡</a></h3>
+<p>任何设计都是权衡。LittleFS的设计哲学是“要可靠、要省内存、要抗磨损“，这三个目标排序明显高于“要快“和“要省存储空间“。但你必须清楚这些权衡对你意味着什么：</p>
+<p><strong>1. 存储利用率。</strong> Metadata pair的两块结构意味着——在最好的情况下（不分裂），你的元数据空间利用率是50%（一块活跃、一块备用）。再加上compaction的50%阈值（到达50%就开始分裂而不是等100%），实际元数据利用率大约是25%。这意味着如果你有128个4KB的块，根目录的metadata pair至少占用8KB，而实际能存的元数据大约只有2KB——够存几十个目录项。</p>
+<p><strong>2. 追加性能。</strong> CTZ跳表的追加是O(1)的——但每次追加一个新块，需要分配块、擦除块、在新块中写入跳表指针、把旧块的部分数据复制过来。与原地修改（如FAT）相比，写入放大因子是1.5-2倍。</p>
+<p><strong>3. 随机写入的代价。</strong> 如果你在文件中间修改一块数据，CTZ跳表需要从那一点开始重新创建整条链——每个后续块都要复制。随机写入是O(n)的。这反映了LittleFS对“文件主要是追加写入的“这一假设——对于日志文件、配置文件、数据采集场景，假设成立；对于数据库文件、频繁修改的二进制文件，你需要心理准备。</p>
+<p><strong>4. 孤儿遍历的初始化开销。</strong> 挂载时，LittleFS会遍历整个目录链表来检查是否有孤儿目录。这个操作的时间复杂度是O(n²)——因为它需要对每个目录对和每个目录项做交叉比较。对于有大量目录的文件系统，挂载时间可能很长。好在LittleFS设计了global state机制来避免大多数情况下的全量检查。</p>
+<hr>
+<h3 id="从设计文档到6500行c代码"><a class="header" href="#从设计文档到6500行c代码">从设计文档到6500行C代码</a></h3>
+<p>LittleFS的DESIGN.md堪称嵌入式软件设计文档的典范——它不告诉你“代码怎么写的“，而是告诉你“为什么这么写“。从“为什么metadata pair是两块而不是三块“，到“CTZ公式的OEIS数学推导“，到“随机数种子的xorshift熵源选择“，每一处设计决策都有清晰的理由。</p>
+<p>而这6500行的lfs.c，则是设计文档的忠实执行——几乎所有的核心逻辑都在一个文件中，没有任何动态内存分配的“魔法“，每一个函数都小而清晰，每一个数据结构都有着明确的盘上格式。</p>
+<p><strong>在接下来四节中，我们将一层一层剥开LittleFS的设计：单文件代码结构（4.2）、Metadata Pair的原子提交机制（4.3）、CTZ跳表的COW数学（4.4）、以及Lookahead块分配器的磨损均衡策略（4.5）。</strong></p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>LittleFS把6500行代码塞进一个lfs.c，不是偷懒——是一种工程上的深思熟虑。为什么要把块设备抽象、元数据管理、文件操作、CTZ跳表、块分配器全写在一个文件里？这种“单文件设计“为嵌入式编译带来了什么好处？下一节，我们从lfs.c的第一行走到最后一行，看看这个文件如何用精巧的分层结构，把一个复杂的文件系统组织得井井有条。</p>
+<p><strong>悬念留给：6500 行全是 static 函数——这意味着没有外部头文件暴露实现细节。好处是什么？坏处呢？4.2 从一个编译单元的内部切割开始，看看 LittleFS 怎么用 <code>LFS_*_TRACE</code> 宏在一个文件中做出清晰的分层。</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/3.8-掉电安全——在黑暗中重建秩序.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/4.2-lfs.c全貌——单文件设计的工程智慧.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/3.8-掉电安全——在黑暗中重建秩序.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/4.2-lfs.c全貌——单文件设计的工程智慧.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

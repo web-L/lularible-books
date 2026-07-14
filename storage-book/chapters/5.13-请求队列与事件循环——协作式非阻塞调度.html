@@ -1,0 +1,489 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>请求队列与事件循环——协作式非阻塞调度 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="513-请求队列与事件循环协作式非阻塞调度"><a class="header" href="#513-请求队列与事件循环协作式非阻塞调度">5.13 请求队列与事件循环——协作式非阻塞调度</a></h2>
+<h3 id="你只有一个管理员但有两百个操作要处理"><a class="header" href="#你只有一个管理员但有两百个操作要处理">你只有一个管理员，但有两百个操作要处理</a></h3>
+<p>你没有多线程。你没有一个<code>pthread_create</code>。没有FreeRTOS的<code>xTaskCreate</code>。你只有一个<code>main</code>函数里的<code>while</code>循环。</p>
+<p>但你需要同时处理：用户在命令行敲下write命令、Flash模拟器在跑读写延迟、compact流程在异步擦写SB、log缓冲区在等待被flush……这些“同时发生“的事情，怎么在一个O(n)的单线程循环里搞定？</p>
+<p>答案是<strong>事件循环（event loop）</strong>。KnotFS的<code>knotfs_run()</code>就是一个微型的调度器——每次被调用时，它推进一小步：让Flash模拟器走一个tick、检查compact是否完成、从请求队列pop一个请求、推进当前请求的状态机一步。全部非阻塞，全部协作式。</p>
+<pre><code>knotfs_run() 的"心跳脉搏"：
+
+  ┌─────────────────────────────────────────────────┐
+  │ 1. fdev_tick()         ← 推进Flash模拟器1步      │
+  │ 2. 检查compact完成     ← 擦写SB的异步等待        │
+  │ 3. 如果Flash忙，return ← 等设备空闲              │
+  │ 4. 当前请求完成？出队下一个 ← 队列调度           │
+  │ 5. 推进当前请求的状态机 → 1步                   │
+  │ 6. return true/false   ← 还有事做吗？            │
+  └─────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="请求队列最多4个等待者"><a class="header" href="#请求队列最多4个等待者">请求队列：最多4个等待者</a></h3>
+<p>KnotFS用一个固定大小的环形缓冲区（circular buffer）实现请求队列：</p>
+<pre><code class="language-c">/* knotfs.c: 全局队列 */
+#define Q_CAPACITY (4U)
+
+static kreq_t q[Q_CAPACITY];
+static int q_hd, q_tl, q_cnt;
+</code></pre>
+<p>队列容量只有4——这是故意的小容量。因为KnotFS的设计假设是“请求生产和消费的速度大致匹配“，没有积压大量请求的场景。如果队列满了（<code>q_cnt &gt;= Q_CAPACITY</code>），<code>q_push</code>返回-1，调用者需要稍后重试。</p>
+<pre><code class="language-c">static bool q_empty(void) { return q_cnt == 0; }
+static bool q_full(void) { return (uint32_t)q_cnt &gt;= Q_CAPACITY; }
+
+static int q_push(kreq_t *r) {
+  if (q_full())
+    return ERR_Q_FULL;
+  memcpy(&amp;q[q_tl], r, sizeof(kreq_t));
+  q_tl = (q_tl + 1) % Q_CAPACITY;
+  q_cnt++;
+  return 0;
+}
+
+static void q_pop(kreq_t *r) {
+  if (q_empty()) {
+    memset(r, 0, sizeof(*r));
+    return;
+  }
+  memcpy(r, &amp;q[q_hd], sizeof(kreq_t));
+  q_hd = (q_hd + 1) % Q_CAPACITY;
+  q_cnt--;
+}
+</code></pre>
+<p>入队时写到<code>q_tl</code>，然后<code>q_tl = (q_tl + 1) % Q_CAPACITY</code>。出队时从<code>q_hd</code>取，然后<code>q_hd = (q_hd + 1) % Q_CAPACITY</code>。这是最基础的环形队列操作，时间复杂度O(1)，不需要malloc。</p>
+<p>但你可能会发现一个问题：<code>q_cnt</code>是全局的，但没有任何锁保护。在KnotFS里这不是问题——因为在事件循环模型中，<strong>所有的操作都发生在同一个调用栈里</strong>。用户调用<code>knotfs_write</code>来入队，这时事件循环不在运行。然后用户调用<code>while(knotfs_run())</code>来消费队列，这时不会有其他线程在入队。单线程协作式调度的好处就在这里：你不需要锁。</p>
+<hr>
+<h3 id="kreq_t一个请求就是一张任务单"><a class="header" href="#kreq_t一个请求就是一张任务单">kreq_t：一个请求就是一张任务单</a></h3>
+<pre><code class="language-c">typedef struct {
+  knot_op_t op;
+  knot_st_t st;
+  int result;
+  char name[KNOTFS_NAME_LEN];
+  const void *w_buf;
+  uint32_t w_sz;
+  void *r_buf;
+  uint32_t r_sz;
+  uint32_t r_off;
+  uint32_t *r_out;
+  const void *a_buf;
+  uint32_t a_sz;
+  knotfs_entry_t *ls_ents;
+  uint32_t *ls_cnt;
+  uint32_t *st_tot;
+  uint32_t *st_free;
+} kreq_t;
+</code></pre>
+<p>这个结构体用了一个不太优雅的设计——<strong>所有操作的参数共用一个union-less struct</strong>。写操作使用<code>w_buf/w_sz</code>，读操作使用<code>r_buf/r_sz/r_off/r_out</code>，追加操作使用<code>a_buf/a_sz</code>，列表操作使用<code>ls_ents/ls_cnt</code>，统计操作使用<code>st_tot/st_free</code>。在任何一个时刻，只有一种操作在运行，所以这些字段不会冲突。</p>
+<p>这在嵌入式编程中是常见模式——节省内存的代价是类型安全。更规范的做法是用<code>union</code>加tag，但union在MISRA C里需要小心处理，有些编码规范禁止在union中混用指针和非指针类型。KnotFS选择了简单。</p>
+<pre><code class="language-c">/* 以 knotfs_write 为例看入队过程 */
+int knotfs_write(const char *name, const void *buf, uint32_t size) {
+  if (!name || !buf || !size || size &gt; KNOTFS_FILE_LIMIT)
+    return ERR_BAD_PARAM;
+  if (!q_empty() || cur.op != OP_NONE)
+    return ERR_Q_FULL;
+  kreq_t r;
+  memset(&amp;r, 0, sizeof(r));
+  r.op = OP_WRT;
+  r.st = ST_WRT_INIT;
+  strncpy(r.name, name, KNOTFS_NAME_LEN - 1);
+  r.w_buf = buf;
+  r.w_sz = size;
+  return q_push(&amp;r);
+}
+</code></pre>
+<p>注意<code>if (!q_empty() || cur.op != OP_NONE) return -1</code>——如果你在请求被处理完之前尝试提交新请求，它直接拒绝。<strong>KnotFS不支持请求堆积</strong>。调用者负责等待文件系统空闲（<code>knotfs_is_idle()</code>）后再提交新请求。</p>
+<hr>
+<h3 id="事件循环knotfs_run-的完整走读"><a class="header" href="#事件循环knotfs_run-的完整走读">事件循环：knotfs_run() 的完整走读</a></h3>
+<pre><code class="language-c">bool knotfs_run(void) {
+  fdev_tick();
+
+  /* handle compact completion */
+  if (comp_wait &amp;&amp; fdev_idle()) {
+    comp_wait = false;
+  }
+
+  if (!fdev_idle())
+    return true;
+
+  /* if current request done, dequeue next */
+  if (cur.op != OP_NONE &amp;&amp; (cur.st == ST_OK || cur.st == ST_ERR)) {
+    if (!q_empty())
+      q_pop(&amp;cur);
+    else
+      cur.op = OP_NONE;
+  }
+
+  /* dequeue if idle */
+  if (cur.op == OP_NONE &amp;&amp; !q_empty()) {
+    q_pop(&amp;cur);
+    prog = 0;
+    subst = 0;
+    memset(scratch, 0, sizeof(scratch));
+  }
+
+  /* advance state machine */
+  if (cur.op != OP_NONE &amp;&amp; cur.st != ST_OK &amp;&amp; cur.st != ST_ERR) {
+    switch (cur.op) {
+    case OP_FMT: do_format(); break;
+    case OP_MNT: do_mount();  break;
+    case OP_WRT: do_write();  break;
+    case OP_RD:  do_read();   break;
+    case OP_APP: do_append(); break;
+    case OP_DEL: do_delete(); break;
+    case OP_LS:  do_list();   break;
+    case OP_ST:  do_stats();  break;
+    default: break;
+    }
+  }
+
+  return !knotfs_is_idle();
+}
+</code></pre>
+<p>让我们逐段拆解：</p>
+<p><strong>第1步：<code>fdev_tick()</code></strong> —— Flash模拟器的时钟推进。每个tick递减<code>fdev.ticks_left</code>，当降到0时，真正执行memcpy（读/写）或memset（擦除）。这是事件循环的物理层。</p>
+<p><strong>第2步：compact完成检测</strong> —— <code>comp_wait &amp;&amp; fdev_idle()</code>。如果compact正在进行（<code>comp_wait=true</code>）且Flash设备空闲（说明擦除/写入操作已经完成），就清除<code>comp_wait</code>标志。compact的finish操作是在状态机中完成的（ST_WRT_COMPACT/ST_APP_COMPACT/ST_DEL_COMPACT），事件循环只负责检测异步I/O的完成。</p>
+<p><strong>第3步：设备忙时提前返回</strong> —— <code>if (!fdev_idle()) return true</code>。如果Flash正在做读写操作，整个状态机都不推进——因为状态机里的每一步都依赖Flash操作完成后的结果。这是事件循环中最关键的<strong>阻塞点</strong>。</p>
+<p><strong>第4步：当前请求完成，出队下一个</strong> —— 如果<code>cur</code>的state是ST_OK或ST_ERR，说明当前请求已经处理完毕。从队列中pop下一个请求。如果没有新请求，<code>cur.op = OP_NONE</code>。</p>
+<p><strong>第5步：空闲时主动出队</strong> —— 如果没有任何请求在处理（<code>cur.op == OP_NONE</code>）且队列不空，pop一个请求开始处理。同时重置<code>prog</code>、<code>subst</code>和<code>scratch[]</code>。</p>
+<p><strong>第6步：推进状态机</strong> —— 核心调度。根据<code>cur.op</code>的值，dispatch到对应的<code>do_xxx()</code>函数。每个<code>do_xxx()</code>函数执行一小步（一个case分支），然后return。下一次<code>knotfs_run()</code>时会再次进入这个switch，处理同一个op的下一个状态。</p>
+<p><strong>第7步：<code>return !knotfs_is_idle()</code></strong> —— 如果还有事情做（有请求在处理或Flash在忙），返回true；否则返回false。调用者用这个返回值做轮询：<code>while(knotfs_run());</code>。</p>
+<hr>
+<h3 id="串行化的力量与代价"><a class="header" href="#串行化的力量与代价">串行化的力量与代价</a></h3>
+<p>KnotFS的设计保证了：<strong>同一时间，只有一个请求在执行。</strong> 这不是多线程的互斥保护，而是更根本的——事件循环本身就不允许并发。</p>
+<p>这意味着什么？</p>
+<pre><code>串行化的好处：
+  ✓ 不需要互斥锁(mutex) —— 没有竞争条件
+  ✓ 不需要原子操作 —— 所有共享变量访问都是安全的
+  ✓ 不需要考虑死锁(deadlock) —— 只有一个执行流
+  ✓ 状态机的中间状态是私有的 —— 不存在"另一个线程读到半完成状态"
+  ✓ 可预测性 —— 你知道每一步在做什么
+
+串行化的代价：
+  ✗ 没有真正的I/O并发 —— 读取不能和写入并行
+  ✗ 请求延迟是累积的 —— 如果队列里有3个请求，第3个要等前2个完成
+  ✗ 无法利用多核 —— CPU利用率低
+  ✗ 长时间操作阻塞整个系统 —— 比如format要擦除16个块，必须全部等你
+</code></pre>
+<p>对于KnotFS的教学场景和嵌入式NOR Flash的实际情况来说，串行化是完全可接受的。Flash设备本身就不是多通道并行的——一次只能做一个操作（读或写或擦除）。真正的并发发生在另一层：网络任务（终端的TCP服务）、Flash I/O任务、文件系统状态机任务——这三者可以运行在不同的FreeRTOS任务上。但那是生产级方案要处理的问题。</p>
+<hr>
+<h3 id="调度的时间线一次完整的write--read"><a class="header" href="#调度的时间线一次完整的write--read">调度的时间线：一次完整的“write + read“</a></h3>
+<p>让我们把调度过程的tick拆开来看：</p>
+<pre><code>tick 0: 用户调用 knotfs_write("hello.txt", "Hello!", 6)
+        → q_push, 队列中有1个请求
+        → knotfs_write 返回 0
+
+tick 1: knotfs_run()
+        → fdev_tick() (空闲)
+        → cur.op == OP_NONE, q_pop(&amp;cur) — cur现在是 OP_WRT, ST_WRT_INIT
+        → 推进状态机: do_write() → ST_WRT_INIT
+          → alloc_node, 计算need=1, scratch[9]=1
+          → cur.st = ST_WRT_ALLOC, return
+
+tick 2: knotfs_run()
+        → fdev_tick() (空闲)
+        → cur.st != ST_OK/ST_ERR, 推进状态机: ST_WRT_ALLOC
+          → pick_lowest_wear() → 块2, mark_used
+          → subst++=1, cur.st = ST_WRT_DATA (subst&gt;=need), return
+
+tick 3: knotfs_run()
+        → fdev_tick() (空闲)
+        → 推进状态机: ST_WRT_DATA
+          → fdev_write(块2, tmp, 0, 4096) — ticks_left=2
+          → subst++=2, return
+
+tick 4: knotfs_run()
+        → fdev_tick() — ticks_left=2→1, 设备忙
+        → !fdev_idle(), return true
+
+tick 5: knotfs_run()
+        → fdev_tick() — ticks_left=1→0, memcpy完成
+        → fdev_idle()
+        → cur.st=ST_WRT_DATA, 推进: subst(2)&gt;=need(1) → cur.st=ST_WRT_META, return
+        → cur.st是ST_WRT_META不是OK/ERR, 不换请求
+
+tick 6: knotfs_run()
+        → fdev_tick() (空闲)
+        → 推进状态机: ST_WRT_META
+          → log_push, compact_erase, comp_wait=true
+          → cur.st = ST_WRT_META_FLUSH, return
+
+tick 7~9: compact erase (3 ticks异步等待)
+
+tick 10: knotfs_run()
+         → fdev_idle, comp_wait=false
+         → 推进状态机: ST_WRT_META_FLUSH
+           → compact_write, cur.st = ST_WRT_COMPACT
+
+tick 11~12: compact write (2 ticks)
+
+tick 13: knotfs_run()
+         → fdev_idle
+         → 推进状态机: ST_WRT_COMPACT
+           → compact_finish, log_commit, cur.st = ST_OK
+
+tick 14: knotfs_run()
+         → cur.st == ST_OK, q_pop → 队空, cur.op = OP_NONE
+         → knotfs_is_idle() == true → return false
+</code></pre>
+<p>13个tick，完成一个6字节的写操作。物理上Flash只需要大约1微秒来做写入——但这里的13个tick是状态机调度引入的延迟。在真实硬件上，Flash的擦除（50ms）和写入（100μs）比状态机调度慢得多，所以状态机开销可以忽略不计。</p>
+<hr>
+<h3 id="队列满时的拒绝策略让调用者重试"><a class="header" href="#队列满时的拒绝策略让调用者重试">队列满时的拒绝策略：让调用者重试</a></h3>
+<pre><code class="language-c">if (!q_empty() || cur.op != OP_NONE)
+  return ERR_Q_FULL;
+</code></pre>
+<p>KnotFS的API在队列忙时直接返回-1。<strong>没有阻塞等待、没有自旋锁、没有信号量。</strong> 这是因为KnotFS API的设计目标是从FreeRTOS的同步包装层调用——调用者所在的线程可以<code>vTaskDelay(10)</code>然后重试。</p>
+<p>在<code>knotfs_test.c</code>中，测试代码不需要重试——因为每次测试调用API后都会立即调用<code>drive()</code>（即<code>while(knotfs_run())</code>），在下一个API调用之前队列已经空了：</p>
+<pre><code class="language-c">static int drive(void) {
+  int t = 0;
+  while (knotfs_run()) {
+    if (++t % 15 == 0)
+      printf("    tick %d...\n", t);
+  }
+  if (t &gt; 0 &amp;&amp; t % 15 != 0)
+    printf("    tick %d... done\n", t);
+  return knotfs_get_result();
+}
+</code></pre>
+<p><code>drive()</code>是测试程序的同步阻塞包装——一个用轮询实现的“wait until idle“。在生产级部署中，这个轮询会被替换为FreeRTOS的<code>xTaskNotifyWait</code>——任务在没有事件时挂起，事件发生时被唤醒。</p>
+<blockquote>
+<p>⚠️ <strong>教学简化提示</strong>：这里KnotFS的请求队列有容量4但没有超时检测。生产级方案的请求队列有<strong>超时检测机制</strong>——每种操作有独立的超时时间，超时后请求被标记为失败，任务被通知。</p>
+</blockquote>
+<hr>
+<h3 id="如果你来设计"><a class="header" href="#如果你来设计">如果你来设计</a></h3>
+<p>试着回答：如果把KnotFS搬到一个“每次只能做一件事“的真实NOR Flash上，事件循环需要改什么？</p>
+<p>答案：只需要换掉<code>fdev_tick()</code>的实现。把RAM模拟器换成真实的Flash HAL调用——比如<code>callback_on_complete</code>模式。事件循环的结构不需要任何改变——它已经假设“Flash是异步的、每次只能做一件事“。</p>
+<p>具体来说：<code>fdev_tick()</code>不再递减<code>ticks_left</code>，而是检查硬件状态寄存器（SR）看操作是否完成。<code>fdev_read/write/erase</code>不再设置<code>ticks_left</code>，而是向Flash控制寄存器写入命令并启动操作。事件循环的<code>if (!fdev_idle()) return true</code>等价于“等Flash操作完成再推进状态机“。</p>
+<p>这就是KnotFS教学设计的核心价值——<strong>事件循环和硬件抽象层是完全解耦的</strong>。</p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>写了这么多代码，讲了这么多原理，你怎么知道它真的能跑？你怎么知道CoW断电恢复真的有效？你怎么知道CRC校验真的能发现问题？KnotFS附带了一套12个测试用例的自测试程序——format、write、read、append、delete、power-loss recovery……每一步都有代码。<strong>下一节，也是本章的最后一节，我们把所有状态机串起来跑一遍，看12个测试用例如何验证我们前面讲过的每一个设计决策。</strong> <code>./knotfs_test</code>，~474 行测试代码，18 个测试点——<strong>全过，是对你这一章所有思考的最好的回答。</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/5.12-CRC32——信任但要验证.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/5.14-自测试程序——跑一遍全部操作.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/5.12-CRC32——信任但要验证.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/5.14-自测试程序——跑一遍全部操作.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

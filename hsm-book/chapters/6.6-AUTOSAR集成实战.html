@@ -1,0 +1,603 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>AUTOSAR集成实战 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="66-autosar集成实战uds服务的实现"><a class="header" href="#66-autosar集成实战uds服务的实现">6.6 AUTOSAR集成实战：UDS服务的实现</a></h2>
+<h3 id="一个场景客户要求你的产品支持uds诊断协议特别是安全访问服务service-0x27按照汽车行业标准诊断仪需要先通过种子-密钥挑战才能解锁安全等级然后才能执行敏感操作密钥计算需要用到hsm中存储的秘密数据"><a class="header" href="#一个场景客户要求你的产品支持uds诊断协议特别是安全访问服务service-0x27按照汽车行业标准诊断仪需要先通过种子-密钥挑战才能解锁安全等级然后才能执行敏感操作密钥计算需要用到hsm中存储的秘密数据">一个场景：客户要求你的产品支持UDS诊断协议，特别是安全访问服务（Service 0x27）。按照汽车行业标准，诊断仪需要先通过种子-密钥挑战才能解锁安全等级，然后才能执行敏感操作。密钥计算需要用到HSM中存储的秘密数据。</a></h3>
+<p>一个问题浮出水面：AUTOSAR的UDS服务是异步回调模式，而HSM的API调用也需要时间。如何将它们结合起来？状态机设计需要注意什么？</p>
+<p>一个隐喻：这像接力赛跑——UDS模块接到诊断仪的请求，把接力棒（seed请求）传给HSM模块，HSM跑完一圈（获取随机数、计算密钥），再把接力棒传回UDS，最终交给诊断仪。每个环节都不能掉棒。</p>
+<h2 id="uds安全访问服务概述"><a class="header" href="#uds安全访问服务概述">UDS安全访问服务概述</a></h2>
+<h3 id="什么是uds-service-0x27"><a class="header" href="#什么是uds-service-0x27">什么是UDS Service 0x27？</a></h3>
+<p>UDS（Unified Diagnostic Services）是汽车诊断标准协议。Service 0x27（SecurityAccess）用于实现诊断仪对ECU的安全访问。</p>
+<pre><code>UDS 27服务流程
+
+诊断仪                        ECU
+   │                           │
+   │──── 27 01（请求种子）────│
+   │                           │
+   │←─── 67 01 + seed ────────│
+   │                           │
+   │  计算key                  │
+   │                           │
+   │──── 27 02 + key ─────────│
+   │                           │
+   │←─── 67 02（验证成功）───│
+   │        或                 │
+    │←─── 7F 27 35（验证失败，密钥无效）──│
+</code></pre>
+<p>服务流程：</p>
+<ol>
+<li>诊断仪发送<code>27 01</code>（子功能0x01），请求种子（seed）</li>
+<li>ECU生成随机数作为种子，返回<code>67 01 + seed</code></li>
+<li>诊断仪用预定义算法计算key</li>
+<li>诊断仪发送<code>27 02 + key</code>，提交密钥</li>
+<li>ECU验证key，返回成功或失败响应</li>
+</ol>
+<h3 id="安全等级"><a class="header" href="#安全等级">安全等级</a></h3>
+<p>不同的安全等级对应不同的操作权限：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>安全等级</th><th>子功能</th><th>权限</th></tr>
+</thead>
+<tbody>
+<tr><td>Level 1</td><td>0x01/0x02</td><td>扩展诊断模式</td></tr>
+<tr><td>Level 2</td><td>0x11/0x12</td><td>编程模式</td></tr>
+<tr><td>Level 3</td><td>0x21/0x22</td><td>工厂配置</td></tr>
+</tbody>
+</table>
+</div>
+<p>每个等级使用不同的种子-密钥算法和秘密数据。</p>
+<h2 id="hsm在uds-27中的角色"><a class="header" href="#hsm在uds-27中的角色">HSM在UDS 27中的角色</a></h2>
+<p>HSM在UDS 27服务中承担两个关键任务：</p>
+<ol>
+<li><strong>提供安全的随机数（种子）</strong>：调用<code>hsm_get_random</code>生成不可预测的seed</li>
+<li><strong>存储密钥计算的秘密数据（mask）</strong>：HSM中存储的mask用于key计算算法</li>
+</ol>
+<pre><code>HSM参与UDS 27流程
+
+诊断仪          ECU/UDS         HSM
+   │              │              │
+   │─ 27 01 ──────│              │
+   │              │─ hsm_get_random ─│
+   │              │              │
+   │              │←─ 随机数 ────│
+   │              │              │
+   │←─ 67 01 + seed ─│            │
+   │              │              │
+   │  计算key     │              │
+   │              │              │
+   │─ 27 02 + key ─│              │
+   │              │─ hsm_read_file ─│
+   │              │              │←─ mask
+   │              │              │
+   │              │  计算key      │
+   │              │  比对验证     │
+   │              │              │
+   │←─ 67 02 或 7F 27 ─│          │
+</code></pre>
+<h2 id="autosar异步回调模式"><a class="header" href="#autosar异步回调模式">AUTOSAR异步回调模式</a></h2>
+<h3 id="autosar-dcm的回调机制"><a class="header" href="#autosar-dcm的回调机制">AUTOSAR DCM的回调机制</a></h3>
+<p>AUTOSAR的DCM（Diagnostic Communication Manager）模块采用异步回调模式处理UDS服务。当收到诊断请求时，DCM会调用用户注册的回调函数，回调函数返回<code>DCM_E_PENDING</code>表示处理未完成，DCM会持续调用直到返回最终结果。</p>
+<pre><code class="language-c">// DCM回调函数原型
+Std_ReturnType SecurityAccess_Callback(
+    uint8_t* Key, 
+    uint8_t* seed, 
+    Dcm_NegativeResponseCodeType* ErrorCode
+);
+</code></pre>
+<p>返回值：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>返回值</th><th>含义</th></tr>
+</thead>
+<tbody>
+<tr><td>E_OK / RTE_E_OK</td><td>处理成功</td></tr>
+<tr><td>E_NOT_OK</td><td>处理失败，返回否定响应</td></tr>
+<tr><td>DCM_E_PENDING</td><td>处理进行中，DCM会再次调用</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="为什么需要异步模式"><a class="header" href="#为什么需要异步模式">为什么需要异步模式？</a></h3>
+<p>HSM操作不是即时完成的：</p>
+<ol>
+<li>I2C/SPI通信需要时间</li>
+<li>HSM内部处理需要时间</li>
+<li>多步骤操作（PIN验证→选择文件→读取）需要多次调用</li>
+</ol>
+<p>同步模式会阻塞整个系统，而异步模式允许其他任务继续运行。</p>
+<h2 id="状态机设计"><a class="header" href="#状态机设计">状态机设计</a></h2>
+<h3 id="状态机结构"><a class="header" href="#状态机结构">状态机结构</a></h3>
+<p>将UDS 27的HSM操作设计为状态机：</p>
+<pre><code>状态机流程
+
+STEP_INITIAL（初始状态）
+    ↓ hsm_verify_pin
+STEP_PIN_VERIFIED（PIN已验证）
+    ↓ hsm_select_device_file
+STEP_FILE_SELECTED（文件已选择）
+    ↓ hsm_read_file
+STEP_KEY_PROCESSED（密钥已处理）
+    ↓ 计算key、比对验证
+返回结果
+</code></pre>
+<h3 id="状态机代码实现"><a class="header" href="#状态机代码实现">状态机代码实现</a></h3>
+<pre><code class="language-c">typedef enum {
+    STEP_INITIAL,
+    STEP_PIN_VERIFIED,
+    STEP_FILE_SELECTED,
+    STEP_KEY_PROCESSED
+} SecurityAccess_StepType;
+
+Std_ReturnType SecurityAccess_AuthenticationProcess(
+    uint8_t* Key,           // 上位机发送的key
+    uint8_t* seed,          // 随机数seed
+    Dcm_NegativeResponseCodeType* ErrorCode,
+    uint32_t hsm_file_id    // HSM文件ID（存储mask）
+) {
+    static SecurityAccess_StepType step = STEP_INITIAL;
+    static uint8_t long_key[16] = {0};  // 从HSM读取的mask
+    static uint32_t long_key_len = 0;
+    
+    se_error_t result;
+    
+    switch (step) {
+        case STEP_INITIAL:
+        {
+            // 步骤1：验证PIN
+            pin_t pin;
+            uint8_t admin_pin_key[16] = HSM_PIN_KEY;
+            
+            memcpy(pin.pin_value, admin_pin_key, 16);
+            pin.owner = ADMIN_PIN;
+            pin.pin_len = 16;
+            
+            result = hsm_verify_pin(&amp;pin);
+            
+            if (result == HSM_OK) {
+                step = STEP_PIN_VERIFIED;
+                return DCM_E_PENDING;  // 继续处理
+            } 
+            else if (result == HSM_ERR_PENDING) {
+                return DCM_E_PENDING;  // HSM仍在处理
+            } 
+            else {
+                step = STEP_INITIAL;  // 失败，重置状态
+                *ErrorCode = DCM_E_REQUESTSEQUENCEERROR;
+                return E_NOT_OK;
+            }
+        }
+        break;
+        
+        case STEP_PIN_VERIFIED:
+        {
+            // 步骤2：选择文件
+            result = hsm_select_device_file(hsm_file_id);
+            
+            if (result == HSM_OK) {
+                step = STEP_FILE_SELECTED;
+                return DCM_E_PENDING;
+            } 
+            else if (result == HSM_ERR_PENDING) {
+                return DCM_E_PENDING;
+            } 
+            else {
+                step = STEP_INITIAL;
+                *ErrorCode = DCM_E_REQUESTSEQUENCEERROR;
+                return E_NOT_OK;
+            }
+        }
+        break;
+        
+        case STEP_FILE_SELECTED:
+        {
+            // 步骤3：读取mask
+            result = hsm_read_file(0, 16, long_key, &amp;long_key_len);
+            
+            if (result == HSM_OK) {
+                step = STEP_KEY_PROCESSED;
+                return DCM_E_PENDING;
+            } 
+            else if (result == HSM_ERR_PENDING) {
+                return DCM_E_PENDING;
+            } 
+            else {
+                step = STEP_INITIAL;
+                *ErrorCode = DCM_E_REQUESTSEQUENCEERROR;
+                return E_NOT_OK;
+            }
+        }
+        break;
+        
+        case STEP_KEY_PROCESSED:
+        {
+            // 步骤4：计算并验证key
+            uint8_t key_result[4] = {0};
+            seed_to_key(seed, long_key, key_result);  // 客户特定的算法
+            
+            step = STEP_INITIAL;  // 重置状态
+            
+            if (compare_arrays(key_result, Key, 4)) {
+                *ErrorCode = 0;
+                return RTE_E_OK;  // 验证成功
+            } 
+            else {
+                *ErrorCode = DCM_E_INVALIDKEY;
+                return E_NOT_OK;  // 验证失败
+            }
+        }
+        break;
+        
+        default:
+            step = STEP_INITIAL;
+            *ErrorCode = DCM_E_REQUESTSEQUENCEERROR;
+            return E_NOT_OK;
+    }
+    
+    *ErrorCode = DCM_E_REQUESTSEQUENCEERROR;
+    return E_NOT_OK;
+}
+</code></pre>
+<h3 id="状态机的关键点"><a class="header" href="#状态机的关键点">状态机的关键点</a></h3>
+<ol>
+<li><strong>静态变量保存状态</strong>：<code>static SecurityAccess_StepType step</code>保存当前状态，跨多次调用保持</li>
+<li><strong>静态变量保存数据</strong>：<code>static uint8_t long_key[16]</code>保存从HSM读取的mask</li>
+<li><strong>返回DCM_E_PENDING</strong>：处理未完成时返回pending，DCM会再次调用</li>
+<li><strong>失败时重置状态</strong>：任何步骤失败，将状态重置为<code>STEP_INITIAL</code></li>
+<li><strong>成功时重置状态</strong>：最终步骤完成后，重置状态准备下次请求</li>
+</ol>
+<h3 id="为什么使用static变量"><a class="header" href="#为什么使用static变量">为什么使用static变量？</a></h3>
+<p>AUTOSAR回调函数会被DCM模块反复调用，每次调用都是独立的函数执行。非静态变量会在每次调用时重新初始化，无法保存进度。静态变量在函数多次调用之间保持值，适合状态机场景。</p>
+<h2 id="密钥计算函数"><a class="header" href="#密钥计算函数">密钥计算函数</a></h2>
+<p><code>seed_to_key</code>函数根据客户需求实现特定的密钥计算算法：</p>
+<pre><code class="language-c">uint8_t* seed_to_key(
+    const uint8_t* in_seed,    // 随机数seed
+    uint8_t* in_long_key,      // HSM中的mask
+    uint8_t* verify_key        // 计算结果
+) {
+    // 客户定义的算法
+    // 例如：将seed和mask按特定规则组合运算
+    
+    for (int i = 0; i &lt; 4; i++) {
+        verify_key[i] = in_seed[i] ^ in_long_key[i];
+        verify_key[i] = (verify_key[i] + in_long_key[i+4]) &amp; 0xFF;
+    }
+    
+    return verify_key;
+}
+</code></pre>
+<p>不同客户有不同的算法，具体实现需要根据客户需求文档。</p>
+<h2 id="集成测试"><a class="header" href="#集成测试">集成测试</a></h2>
+<h3 id="测试流程"><a class="header" href="#测试流程">测试流程</a></h3>
+<p>使用诊断仪工具测试UDS 27服务：</p>
+<pre><code>测试步骤
+
+1. 切换到扩展模式
+   发送：10 03
+   响应：50 03
+
+2. 请求种子
+   发送：27 01
+   响应：67 01 XX XX XX XX（4字节seed）
+
+3. 计算key（本地计算）
+   使用seed和预知的mask，按算法计算key
+
+4. 提交key
+   发送：27 02 YY YY YY YY（4字节key）
+   响应：67 02（成功）或 7F 27（失败）
+
+5. 切换到编程模式
+   发送：10 02
+   响应：50 02
+
+6. 请求Level 2种子
+   发送：27 11
+   响应：67 11 XX XX XX XX
+
+7. 提交Level 2 key
+   发送：27 12 YY YY YY YY
+   响应：67 12（成功）或 7F 27（失败）
+</code></pre>
+<h3 id="逻辑分析仪验证"><a class="header" href="#逻辑分析仪验证">逻辑分析仪验证</a></h3>
+<p>用逻辑分析仪抓取SPI通信数据，验证HSM交互：</p>
+<pre><code>SPI波形分析
+
+27 01请求时的SPI通信：
+帧1：获取随机数请求 → 20 00 05 00 84 00 00 08 CRC
+帧2：随机数响应 → 20 00 0A [8字节随机数] 90 00 CRC
+
+27 02请求时的SPI通信：
+帧1：PIN验证请求 → ...
+帧2：选择文件请求 → ...
+帧3：读取mask请求 → ...
+</code></pre>
+<p>验证每个步骤的数据是否符合预期。</p>
+<h2 id="设计注意事项"><a class="header" href="#设计注意事项">设计注意事项</a></h2>
+<h3 id="状态重置时机"><a class="header" href="#状态重置时机">状态重置时机</a></h3>
+<p>状态必须在以下时机重置：</p>
+<ol>
+<li>处理失败时：重置状态，准备接受新请求</li>
+<li>处理成功时：重置状态，准备接受新请求</li>
+<li>超时时：AUTOSAR可能有超时机制，状态需要重置</li>
+</ol>
+<p>不要在处理中途重置状态，会导致数据丢失。</p>
+<h3 id="错误码选择"><a class="header" href="#错误码选择">错误码选择</a></h3>
+<p>AUTOSAR定义了多种否定响应码：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>错误码</th><th>含义</th><th>适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td>0x24</td><td>requestSequenceError</td><td>请求序列错误</td></tr>
+<tr><td>0x35</td><td>invalidKey</td><td>密钥无效</td></tr>
+<tr><td>0x26</td><td>conditionsNotCorrect</td><td>条件不满足</td></tr>
+<tr><td>0x36</td><td>securityAccessDenied</td><td>安全访问被拒绝</td></tr>
+</tbody>
+</table>
+</div>
+<p>选择合适的错误码，便于诊断仪理解失败原因。</p>
+<h3 id="多安全等级处理"><a class="header" href="#多安全等级处理">多安全等级处理</a></h3>
+<p>不同安全等级使用不同的HSM文件ID：</p>
+<pre><code class="language-c">// 配置映射
+typedef struct {
+    uint8_t level;       // 安全等级（0x01, 0x11, 0x21...）
+    uint32_t file_id;    // HSM文件ID
+} SecurityLevelConfig;
+
+SecurityLevelConfig config[] = {
+    {0x01, 0x0006},  // Level 1使用文件6的mask
+    {0x11, 0x0007},  // Level 2使用文件7的mask
+    {0x21, 0x0008},  // Level 3使用文件8的mask
+};
+</code></pre>
+<p>根据请求的子功能选择对应的配置。</p>
+<h2 id="小结"><a class="header" href="#小结">小结</a></h2>
+<p>AUTOSAR集成像搭建桥梁——一边是异步回调模式的UDS服务，一边是耗时操作的HSM API。状态机设计就是桥梁的结构，保证两边的数据流动顺畅。</p>
+<p>关键设计点：</p>
+<ul>
+<li>状态机管理多步骤流程</li>
+<li>静态变量保存跨调用数据</li>
+<li>返回DCM_E_PENDING让DCM持续调用</li>
+<li>失败和成功都要重置状态</li>
+</ul>
+<p>下一节，我们将介绍TCP命令接口——看开发调试的便捷方案。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>开发阶段怎么快速操作HSM？</p>
+<p>TCP命令怎么设计？状态机怎么触发？</p>
+<p>上位机怎么写入数据？</p>
+<p>下一节，TCP命令接口。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/6.5-安全机制实现.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/6.7-TCP命令接口.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/6.5-安全机制实现.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/6.7-TCP命令接口.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

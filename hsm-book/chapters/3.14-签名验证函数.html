@@ -1,0 +1,641 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>签名验证函数 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="314-签名验证函数密码世界的签名盖章"><a class="header" href="#314-签名验证函数密码世界的签名盖章">3.14 签名验证函数：密码世界的“签名盖章“</a></h2>
+<h3 id="为什么需要签名"><a class="header" href="#为什么需要签名">为什么需要签名？</a></h3>
+<p>在现实生活中，签名是什么？</p>
+<p><strong>签名的本质</strong>：</p>
+<ul>
+<li>证明“是我签署的“（身份认证）</li>
+<li>证明“内容未被篡改“（完整性）</li>
+<li>证明“我已同意此内容“（不可否认）</li>
+</ul>
+<p>在数字世界，数字签名实现了同样的功能：</p>
+<ul>
+<li><strong>身份认证</strong>：签名证明了消息来自哪个密钥持有者</li>
+<li><strong>完整性</strong>：签名证明了消息未被篡改</li>
+<li><strong>不可否认</strong>：签名者无法否认曾签署此消息</li>
+</ul>
+<hr>
+<h3 id="签名的基本流程"><a class="header" href="#签名的基本流程">签名的基本流程</a></h3>
+<p>数字签名有两个操作：</p>
+<pre><code>签名流程：
+
+签名者（私钥持有者）：
+┌─────────────────────────────────────┐
+│                                     │
+│  消息 → 哈希 → 用私钥签名 → 签名值   │
+│                                     │
+└─────────────────────────────────────┘
+                │
+                │ 发送：消息 + 签名值 + 公钥
+                ▼
+验证者（公钥持有者）：
+┌─────────────────────────────────────┐
+│                                     │
+│  消息 + 签名值 + 公钥 → 验证签名     │
+│                                     │
+│  结果：有效 or 无效                  │
+│                                     │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="pkcs11的签名函数"><a class="header" href="#pkcs11的签名函数">PKCS#11的签名函数</a></h3>
+<p>PKCS#11规范第5.13节定义了签名函数：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">函数</th><th style="text-align: left">描述</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>C_SignInit</strong></td><td style="text-align: left">初始化签名操作</td></tr>
+<tr><td style="text-align: left"><strong>C_Sign</strong></td><td style="text-align: left">单步签名（消息较短）</td></tr>
+<tr><td style="text-align: left"><strong>C_SignUpdate</strong></td><td style="text-align: left">多步签名，添加更多数据</td></tr>
+<tr><td style="text-align: left"><strong>C_SignFinal</strong></td><td style="text-align: left">多步签名，完成签名</td></tr>
+<tr><td style="text-align: left"><strong>C_SignRecoverInit</strong></td><td style="text-align: left">初始化可恢复签名</td></tr>
+<tr><td style="text-align: left"><strong>C_SignRecover</strong></td><td style="text-align: left">可恢复签名（签名包含消息）</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="c_signinit准备签名"><a class="header" href="#c_signinit准备签名">C_SignInit：准备签名</a></h3>
+<p><strong>功能</strong>：初始化签名操作，指定签名密钥和签名机制。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_SignInit(CK_SESSION_HANDLE hSession,
+                  CK_MECHANISM_PTR pMechanism,
+                  CK_OBJECT_HANDLE hKey);
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>hSession</code>：Session句柄</li>
+<li><code>pMechanism</code>：签名机制（如CKM_RSA_PKCS）</li>
+<li><code>hKey</code>：私钥句柄</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_MECHANISM mechanism = {CKM_RSA_PKCS, NULL_PTR, 0};
+CK_OBJECT_HANDLE hPrivateKey;
+CK_RV rv;
+
+// 查找私钥
+// ...
+
+// 初始化签名
+rv = C_SignInit(hSession, &amp;mechanism, hPrivateKey);
+if (rv != CKR_OK) {
+    printf("签名初始化失败：%08x\n", rv);
+    return rv;
+}
+</code></pre>
+<p><strong>注意事项</strong>：</p>
+<ul>
+<li>必须使用私钥（CKO_PRIVATE_KEY）</li>
+<li>必须在已登录Session中（私钥通常是CKA_PRIVATE = TRUE）</li>
+<li>一个Session只能有一个活跃的签名操作</li>
+</ul>
+<hr>
+<h3 id="c_sign单步签名"><a class="header" href="#c_sign单步签名">C_Sign：单步签名</a></h3>
+<p><strong>功能</strong>：一次性签名整个消息。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_Sign(CK_SESSION_HANDLE hSession,
+              CK_BYTE_PTR pData,
+              CK_ULONG ulDataLen,
+              CK_BYTE_PTR pSignature,
+              CK_ULONG_PTR pulSignatureLen);
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>hSession</code>：Session句柄</li>
+<li><code>pData</code>：待签名数据</li>
+<li><code>ulDataLen</code>：数据长度</li>
+<li><code>pSignature</code>：签名值输出缓冲区</li>
+<li><code>pulSignatureLen</code>：签名值长度</li>
+</ul>
+<p><strong>两步调用模式</strong>：</p>
+<pre><code class="language-c">CK_BYTE data[] = "Hello, PKCS#11!";
+CK_BYTE signature[256];
+CK_ULONG signatureLen = 256;
+CK_RV rv;
+
+// 第一步：获取签名长度
+rv = C_Sign(hSession, data, sizeof(data)-1, NULL_PTR, &amp;signatureLen);
+if (rv != CKR_OK) {
+    printf("获取签名长度失败：%08x\n", rv);
+    return rv;
+}
+
+// 第二步：执行签名
+rv = C_Sign(hSession, data, sizeof(data)-1, signature, &amp;signatureLen);
+if (rv == CKR_OK) {
+    printf("签名成功，长度：%lu字节\n", signatureLen);
+    // 打印签名值（十六进制）
+    for (CK_ULONG i = 0; i &lt; signatureLen; i++) {
+        printf("%02x", signature[i]);
+    }
+    printf("\n");
+}
+</code></pre>
+<hr>
+<h3 id="c_signupdate--c_signfinal多步签名"><a class="header" href="#c_signupdate--c_signfinal多步签名">C_SignUpdate + C_SignFinal：多步签名</a></h3>
+<p><strong>功能</strong>：分批签名大数据。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>文件签名（文件可能很大）</li>
+<li>流式数据签名（数据持续到达）</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_BYTE chunk1[] = "First chunk of data...";
+CK_BYTE chunk2[] = "Second chunk of data...";
+CK_BYTE chunk3[] = "Third chunk of data...";
+CK_BYTE signature[256];
+CK_ULONG signatureLen = 256;
+CK_RV rv;
+
+// 初始化签名
+rv = C_SignInit(hSession, &amp;mechanism, hPrivateKey);
+
+// 分批添加数据
+rv = C_SignUpdate(hSession, chunk1, sizeof(chunk1)-1);
+rv = C_SignUpdate(hSession, chunk2, sizeof(chunk2)-1);
+rv = C_SignUpdate(hSession, chunk3, sizeof(chunk3)-1);
+
+// 完成签名
+rv = C_SignFinal(hSession, signature, &amp;signatureLen);
+if (rv == CKR_OK) {
+    printf("多步签名成功\n");
+}
+</code></pre>
+<hr>
+<h3 id="签名机制的选择"><a class="header" href="#签名机制的选择">签名机制的选择</a></h3>
+<p>PKCS#11支持多种签名机制（规范第6章）：</p>
+<p><strong>RSA签名机制</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">机制</th><th style="text-align: left">描述</th><th style="text-align: left">特点</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKM_RSA_PKCS</strong></td><td style="text-align: left">PKCS#1 v1.5签名</td><td style="text-align: left">最常用，兼容性好</td></tr>
+<tr><td style="text-align: left"><strong>CKM_RSA_PKCS_PSS</strong></td><td style="text-align: left">RSASSA-PSS签名</td><td style="text-align: left">更安全，抗选择明文攻击</td></tr>
+<tr><td style="text-align: left"><strong>CKM_RSA_X_509</strong></td><td style="text-align: left">X.509原始签名</td><td style="text-align: left">无填充，不推荐</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>ECDSA签名机制</strong>：</p>
+<p>| 机制 | 描述 |
+|:—|:—|:—|
+| <strong>CKM_ECDSA</strong> | ECDSA签名 |
+| <strong>CKM_ECDSA_SHA1</strong> | SHA-1哈希后ECDSA签名 |
+| <strong>CKM_ECDSA_SHA256</strong> | SHA-256哈希后ECDSA签名 |</p>
+<p><strong>使用示例</strong>：</p>
+<pre><code class="language-c">/* RSA PKCS#1 v1.5签名 */
+CK_MECHANISM rsaPkcsMech = {CKM_RSA_PKCS, NULL_PTR, 0};
+
+/* RSA PSS签名（需要参数） */
+CK_RSA_PKCS_PSS_PARAMS pssParams = {CKM_SHA256, CKG_MGF1_SHA256, 32};
+CK_MECHANISM rsaPssMech = {CKM_RSA_PKCS_PSS, &amp;pssParams, sizeof(pssParams)};
+
+/* ECDSA签名 */
+CK_MECHANISM ecdsaMech = {CKM_ECDSA, NULL_PTR, 0};
+
+/* ECDSA with SHA256 */
+CK_MECHANISM ecdsaSha256Mech = {CKM_ECDSA_SHA256, NULL_PTR, 0};
+</code></pre>
+<hr>
+<h3 id="验证函数"><a class="header" href="#验证函数">验证函数</a></h3>
+<p>PKCS#11规范第5.15节定义了验证函数：</p>
+<p>| 函数 | 描述 |
+|:—|:—|:—|
+| <strong>C_VerifyInit</strong> | 初始化验证操作 |
+| <strong>C_Verify</strong> | 单步验证 |
+| <strong>C_VerifyUpdate</strong> | 多步验证，添加更多数据 |
+| <strong>C_VerifyFinal</strong> | 多步验证，完成验证 |
+| <strong>C_VerifyRecoverInit</strong> | 初始化可恢复验证 |
+| <strong>C_VerifyRecover</strong> | 可恢复验证 |</p>
+<hr>
+<h3 id="c_verify验证签名"><a class="header" href="#c_verify验证签名">C_Verify：验证签名</a></h3>
+<p><strong>功能</strong>：验证签名是否有效。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_Verify(CK_SESSION_HANDLE hSession,
+                CK_BYTE_PTR pData,
+                CK_ULONG ulDataLen,
+                CK_BYTE_PTR pSignature,
+                CK_ULONG ulSignatureLen);
+</code></pre>
+<p><strong>返回值</strong>：</p>
+<ul>
+<li>CKR_OK：签名有效</li>
+<li>CKR_SIGNATURE_INVALID：签名无效</li>
+<li>CKR_SIGNATURE_LEN_RANGE：签名长度错误</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_BYTE data[] = "Hello, PKCS#11!";
+CK_BYTE signature[256];
+CK_ULONG signatureLen;
+CK_OBJECT_HANDLE hPublicKey;
+CK_MECHANISM mechanism = {CKM_RSA_PKCS, NULL_PTR, 0};
+CK_RV rv;
+
+// 查找公钥
+// ...
+
+// 初始化验证
+rv = C_VerifyInit(hSession, &amp;mechanism, hPublicKey);
+if (rv != CKR_OK) {
+    printf("验证初始化失败\n");
+    return rv;
+}
+
+// 执行验证
+rv = C_Verify(hSession, data, sizeof(data)-1, signature, signatureLen);
+if (rv == CKR_OK) {
+    printf("签名验证成功：签名有效\n");
+} else if (rv == CKR_SIGNATURE_INVALID) {
+    printf("签名验证失败：签名无效\n");
+} else {
+    printf("签名验证错误：%08x\n", rv);
+}
+</code></pre>
+<hr>
+<h3 id="完整的签名验证流程示例"><a class="header" href="#完整的签名验证流程示例">完整的签名验证流程示例</a></h3>
+<pre><code class="language-c">CK_RV perform_sign_verify_demo(CK_SESSION_HANDLE hSession) {
+    CK_RV rv;
+    CK_MECHANISM mechanism = {CKM_RSA_PKCS, NULL_PTR, 0};
+    CK_BYTE message[] = "Test message for signing";
+    CK_BYTE signature[256];
+    CK_ULONG signatureLen = 256;
+    
+    // 1. 查找私钥
+    CK_OBJECT_CLASS privKeyClass = CKO_PRIVATE_KEY;
+    CK_KEY_TYPE rsaKeyType = CKK_RSA;
+    CK_ATTRIBUTE findTemplate[] = {
+        {CKA_CLASS, &amp;privKeyClass, sizeof(privKeyClass)},
+        {CKA_KEY_TYPE, &amp;rsaKeyType, sizeof(rsaKeyType)},
+    };
+    
+    CK_OBJECT_HANDLE hPrivateKey, hPublicKey;
+    CK_ULONG ulCount;
+    
+    rv = C_FindObjectsInit(hSession, findTemplate, 2);
+    rv = C_FindObjects(hSession, &amp;hPrivateKey, 1, &amp;ulCount);
+    rv = C_FindObjectsFinal(hSession);
+    
+    if (ulCount == 0) {
+        printf("未找到私钥\n");
+        return CKR_KEY_HANDLE_INVALID;
+    }
+    
+    // 2. 初始化签名
+    rv = C_SignInit(hSession, &amp;mechanism, hPrivateKey);
+    if (rv != CKR_OK) {
+        printf("签名初始化失败：%08x\n", rv);
+        return rv;
+    }
+    
+    // 3. 执行签名
+    rv = C_Sign(hSession, message, sizeof(message)-1, signature, &amp;signatureLen);
+    if (rv != CKR_OK) {
+        printf("签名失败：%08x\n", rv);
+        return rv;
+    }
+    
+    printf("签名成功，长度：%lu字节\n", signatureLen);
+    
+    // 4. 查找公钥
+    CK_OBJECT_CLASS pubKeyClass = CKO_PUBLIC_KEY;
+    CK_ATTRIBUTE pubFindTemplate[] = {
+        {CKA_CLASS, &amp;pubKeyClass, sizeof(pubKeyClass)},
+        {CKA_KEY_TYPE, &amp;rsaKeyType, sizeof(rsaKeyType)},
+    };
+    
+    rv = C_FindObjectsInit(hSession, pubFindTemplate, 2);
+    rv = C_FindObjects(hSession, &amp;hPublicKey, 1, &amp;ulCount);
+    rv = C_FindObjectsFinal(hSession);
+    
+    if (ulCount == 0) {
+        printf("未找到公钥\n");
+        return CKR_KEY_HANDLE_INVALID;
+    }
+    
+    // 5. 初始化验证
+    rv = C_VerifyInit(hSession, &amp;mechanism, hPublicKey);
+    if (rv != CKR_OK) {
+        printf("验证初始化失败：%08x\n", rv);
+        return rv;
+    }
+    
+    // 6. 执行验证
+    rv = C_Verify(hSession, message, sizeof(message)-1, signature, signatureLen);
+    if (rv == CKR_OK) {
+        printf("验证成功：签名有效\n");
+    } else if (rv == CKR_SIGNATURE_INVALID) {
+        printf("验证失败：签名无效\n");
+    } else {
+        printf("验证错误：%08x\n", rv);
+    }
+    
+    return rv;
+}
+</code></pre>
+<hr>
+<h3 id="消息签名模式pkcs11-v30新增"><a class="header" href="#消息签名模式pkcs11-v30新增">消息签名模式（PKCS#11 v3.0新增）</a></h3>
+<p>PKCS#11 v3.0新增了“消息签名“模式（规范第5.14节）：</p>
+<p>| 函数 | 描述 |
+|:—|:—|:—|
+| <strong>C_MessageSignInit</strong> | 初始化消息签名 |
+| <strong>C_SignMessage</strong> | 一次性消息签名 |
+| <strong>C_SignMessageBegin</strong> | 开始消息签名 |
+| <strong>C_SignMessageNext</strong> | 添加数据并可选签名 |
+| <strong>C_MessageSignFinal</strong> | 完成消息签名 |</p>
+<p>消息签名模式与传统签名的区别：</p>
+<ul>
+<li>传统签名：先Init，再Sign，需要两个函数</li>
+<li>消息签名：SignMessage一步完成，更简洁</li>
+</ul>
+<pre><code class="language-c">/* 传统签名 */
+rv = C_SignInit(hSession, &amp;mechanism, hKey);
+rv = C_Sign(hSession, data, len, sig, &amp;sigLen);
+
+/* 消息签名（v3.0） */
+CK_VOID_PTR pParams = NULL_PTR;
+rv = C_MessageSignInit(hSession, &amp;mechanism, hKey);
+rv = C_SignMessage(hSession, pParams, paramLen, data, len, sig, &amp;sigLen);
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>签名验证是密码操作的核心功能：</p>
+<p><strong>签名函数</strong>：</p>
+<ul>
+<li>C_SignInit：初始化签名（指定私钥和机制）</li>
+<li>C_Sign：单步签名</li>
+<li>C_SignUpdate + C_SignFinal：多步签名</li>
+</ul>
+<p><strong>验证函数</strong>：</p>
+<ul>
+<li>C_VerifyInit：初始化验证（指定公钥和机制）</li>
+<li>C_Verify：单步验证</li>
+<li>C_VerifyUpdate + C_VerifyFinal：多步验证</li>
+</ul>
+<p><strong>签名机制</strong>：</p>
+<ul>
+<li>RSA：CKM_RSA_PKCS（PKCS#1 v1.5）、CKM_RSA_PKCS_PSS（PSS）</li>
+<li>ECDSA：CKM_ECDSA、CKM_ECDSA_SHA256</li>
+</ul>
+<p><strong>返回值</strong>：</p>
+<ul>
+<li>CKR_OK：签名有效</li>
+<li>CKR_SIGNATURE_INVALID：签名无效</li>
+</ul>
+<p><strong>消息签名模式（v3.0）</strong>：</p>
+<ul>
+<li>C_SignMessage：一步完成签名</li>
+</ul>
+<p>下一节，我们将学习哈希与MAC函数——数据的“指纹与印章“。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<ul>
+<li>
+<p>PKCS#11支持哪些哈希算法？</p>
+</li>
+<li>
+<p>如何进行多步哈希运算？</p>
+</li>
+<li>
+<p>HMAC如何使用C_Sign实现？</p>
+</li>
+<li>
+<p>双操作函数（DigestEncrypt等）有何用途？</p>
+</li>
+</ul>
+<p>下一节，哈希与MAC函数详解。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/3.13-加密解密函数.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/3.15-哈希与MAC函数.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/3.13-加密解密函数.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/3.15-哈希与MAC函数.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

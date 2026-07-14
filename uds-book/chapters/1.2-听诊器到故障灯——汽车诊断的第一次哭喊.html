@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>听诊器到故障灯——汽车诊断的第一次哭喊 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="12-听诊器到故障灯汽车诊断的第一次哭喊"><a class="header" href="#12-听诊器到故障灯汽车诊断的第一次哭喊">1.2 听诊器到故障灯——汽车诊断的第一次哭喊</a></h1>
+<h3 id="医生的第一个工具为什么是听诊器"><a class="header" href="#医生的第一个工具为什么是听诊器">医生的第一个工具为什么是听诊器</a></h3>
+<p>1816年，巴黎。一位名叫雷奈克（René Laennec）的法国医生面对一个难题：一位年轻女性病人需要听诊心音，但当时的常规做法是医生直接把耳朵贴在病人胸前。这在生理上可行，在礼仪上尴尬。</p>
+<p>雷奈克卷起一本笔记本，放在病人胸口。他惊讶地发现，通过纸卷听到的心音比直接贴耳更清晰。不是因为纸卷有魔法——是因为<strong>固体传导的声波比空气更集中</strong>。听诊器诞生了。</p>
+<p>一百多年后，当一台故障ECU被送进维修车间，技师面对的是一个比那位女病人更沉默的系统。病人至少还会说“我胸闷“，ECU不说一个字。</p>
+<hr>
+<h3 id="1950年代工程师第一次在发动机里埋了眼睛"><a class="header" href="#1950年代工程师第一次在发动机里埋了眼睛">1950年代：工程师第一次在发动机里埋了眼睛</a></h3>
+<p>汽车上第一个“诊断传感器“是什么？</p>
+<p>不是O2氧传感器。不是爆震传感器。不是进气温度传感器。事实上——所有这些传感器最初的使命都<strong>不是为了诊断</strong>，而是为了<strong>执行控制</strong>。O2传感器告诉ECU混合气是过浓还是过稀，用来调整喷油量；不是用来判断“三元催化器效率够不够“。爆震传感器告诉ECU退点火提前角，不是用来存DTC。</p>
+<p>第一个以“监视自身状态“为目的的存在，始于<strong>充电系统和机油压力</strong>。</p>
+<p>1950年代，车载电系统已经复杂到足够出问题——发电机不发电、机油泵不建压——而驾驶员根本感知不到直到发动机抱死。工程师在两处埋了开关：一个双金属片感知机油压力过低时接通，一个电压阈值电路监测发电机输出是否正常。接通时，仪表盘亮起一盏小灯。</p>
+<p>这就是仪表盘上那盏红色机油壶灯和电池灯的由来。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：最早的“诊断能力“只有一个比特。“机油压力低”=1，“正常”=0。没有故障码，没有快照，没有“发生的时候发动机转速多少“——只有一盏灯。但这一比特已经完成了诊断系统最基本的使命：<strong>把系统内部的一个二进制状态，翻译成人眼能在仪表盘上看到的信号。</strong></p>
+</blockquote>
+<hr>
+<h3 id="1980年代当ecu有了微处理器它就开始记账"><a class="header" href="#1980年代当ecu有了微处理器它就开始记账">1980年代：当ECU有了微处理器，它就开始记账</a></h3>
+<p>燃油喷射、点火正时、EGR废气再循环——1980年代的发动机电子控制系统把一堆传感器和执行器联到了一起。ECU里住着一颗8位、16MHz的微处理器——这颗芯片每秒读几千次传感器、算几十次喷油量、更新几十次点火角——但只在很少的时刻真正“思考“：等一下，这个传感器值合理吗？</p>
+<p><strong>第一批DTC正是在这种“喘口气“的时刻诞生的。</strong></p>
+<p>进气温度传感器——热敏电阻，负温度系数，-40°C时约45kΩ，100°C时约185Ω。ECU通过片上ADC读电阻值、换算温度。有一套很简单的验证逻辑摆在那里：</p>
+<pre><code>if (adcReading &lt; MIN_VALID_ADC) → 对地短路 → 存一个内部故障标志
+if (adcReading &gt; MAX_VALID_ADC) → 对电源短路或开路 → 存另一个内部故障标志
+</code></pre>
+<p>这是汽车史上的第一个DTC。存储在ECU的RAM里——几十字节的PPRAM（Parameter Plus RAM），用后备电容维持，熄火后保活一夜（以Motorola 68HC11等典型8位MCU为例，PPRAM通常为64~128字节）。没有诊断仪能读到它。技师只能在特殊的<strong>诊断模式</strong>下，让ECU把8位故障字节编码成特定的输出波形——比如读取节气门位置传感器的电压输出是否跳变到0V还是5V——间接判断“ECU是知道你传感器坏了不是在怠工的。</p>
+<p>那个时代的人类诊断流程是这样的：点火、连续踩油门（五秒内踩多少次）、观察发动机故障灯闪烁的次数和间隔。长闪=十位数字，短闪=个位数字。用车的车主手册后面有一张对照表——代码12=正常、代码13=氧传感器信号过慢、代码14=水温信号过慢、代码15=水温信号过快……</p>
+<p>通用汽车的ALDL (Assembly Line Diagnostic Link)接口——串口端子藏在方向盘下面——技师需要用一根跨接线短接端子的A和B，故障灯才开始闪烁工厂预置的“快码“。克莱斯勒的做法是循环发动机点火钥匙五次开关：开-关-开-关-开，灯开始闪码。福特的方法是在诊断口上用模拟电压表读数（跳表针的节奏）。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：一个不能为人类感知的内部状态，是没有诊断价值的。ECU早在1980年就已经知道了“传感器有开路故障“——但它不知道怎么告诉人类。<strong>“知道“和“告诉“之间，隔着一整条表达和传输链。</strong> 表达需要编码（用什么方式反馈信息），传输需要物理接口（诊断口）。如果这两样没有准备，你再强的ECU再精确的内部判断——只是一个孤独的、在心里知道却不能说出口的病人。</p>
+</blockquote>
+<hr>
+<h3 id="为什么只亮灯不多说一个字"><a class="header" href="#为什么只亮灯不多说一个字">为什么只亮灯，不多说一个字</a></h3>
+<p>你可能会想，ECU既然有微处理器，为什么不直接输出一个字节的故障码到串口？这有多难。</p>
+<p>答案是——当时根本没多少人想明白<strong>为什么需要这么做</strong>。汽车发动机控制系统是给驾驶员开的——不是为了给技师修的。这就像最早的ECU设计者不会在一开始就想着“得给维修站留个故障码接口“一样——功能永远追随需求演进。</p>
+<p>1980年代汽车电子工程师面对的核心矛盾不是“车能不能自诊断“——他们面对的核心矛盾是：</p>
+<ul>
+<li>8位微处理器的ROM只有8KB，已经塞满了点火和喷油的计算逻辑；</li>
+<li>在RAM里分配几个字节计故障码，行。再浪费宝贵的代码空间定义一个复杂的诊断通讯协议，不是不行——是<strong>当时没有足够强的需求驱动</strong>；</li>
+<li>而维修站端——扳手、听诊器、真空压力表、模拟电压表才是他们信任的工具。你就算把ECU的故障码通过串口打出来，技师也不一定信任——“会不会是ECU自己误报了？我用老方法再确认一遍靠谱。</li>
+</ul>
+<p>所以早期汽车诊断能力的发展规律是：</p>
+<pre><code>第一步：ECU自己知道出问题了     ←  80年代初实现
+第二步：亮一个警告灯        ←  80年代中期实现
+第三步：闪码               ←  80年代末期，但各车厂私有格式
+第四步：标准化串口读码     ←  90年代初OBD-I阶段，仍然各车厂私有
+</code></pre>
+<p>你现在回看这个过程，会觉得“为什么不一开始就做第四步“——但工程的演进不是按“最优解“走的，是按<strong>可被接受的成本</strong>和<strong>可产生回报的需求</strong>走的。灯泡最便宜。闪码次之。私有串口成本可控但收益有限。标准串口的收益最大——但有需求冲突：谁来做标准？谁有这个权力？</p>
+<blockquote>
+<p><strong>核心洞察</strong>：标准不是技术问题，是政治问题。你不说服通用、福特、克莱斯勒坐在一起——单方面给雪佛兰做一个标准诊断口没有任何价值。因为技师不会为了你这一款车型专门买一根诊断线。标准的价值在于<strong>网络的规模效应</strong>——越多参与者说同一种语言，每一个参与者都越受益。但在参与者不情愿的情况下，必须有外部的力量来推动。</p>
+</blockquote>
+<hr>
+<h3 id="推动标准化的大手不是车厂是政府"><a class="header" href="#推动标准化的大手不是车厂是政府">推动标准化的大手——不是车厂，是政府</a></h3>
+<p>加州，1960年代。洛杉矶盆地的光化学烟雾已经浓到能让人眼睛灼痛。居民在黄昏时分能看到一层黄色的霾笼罩城市。政府把霾采样器放在城市的不同地方，发现罪魁祸首是汽车尾气中的氮氧化物(NOx)和碳氢化合物(HC)在阳光下反应生成的臭氧和PAN（过氧乙酰硝酸酯）。</p>
+<p>这不是环境问题。这是公共健康问题。</p>
+<p>1966年，加州制定了全球第一个汽车排放标准。1970年，美国联邦《清洁空气法》出台，授权EPA制定全国范围的汽车排放限值。催化转换器被强制装到每一辆新车上。引擎控制不再是“怎么开得舒服“——是“怎么排得干净“。而为了确保催化转换器和氧传感器正常工作——ECU<strong>必须自己监视排放系统是否在工作。</strong></p>
+<p>这不是车厂自愿的。是法规强迫的。</p>
+<p>一辆车下线后跑了几万英里，三元催化器可能劣化、氧传感器可能中毒、EGR阀可能卡住——这些问题不影响动力性能（或影响得不太明显），驾驶员根本感觉不到——但尾气已经超标了。法规的解决方案很简单但极其有效：<strong>如果在使用过程中排放系统故障，ECU必须亮灯通知驾驶员去维修。</strong></p>
+<p><strong>这就是MIL（Malfunction Indicator Lamp）——那盏后来通用的“Check Engine“黄灯的来历。</strong></p>
+<p>它为什么是黄色的？不是红色的？因为红色=紧急停车（机油压力为0、水温120°C），黄色=尽快维修（排放超标不会立刻把你抛在高速上，但不去修下次年检可能不过）。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：汽车诊断的第一推动力不是“让维修更高效“。是<strong>法规要求你保证车辆的排放系统在整条生命周期内有效工作</strong>——而保证的办法只能是让ECU持续监视排放系统并向驾驶员报告异常。几万块钱的诊断仪、几百页的UDS标准——它们的根源，就是40年前加州那条黄烟滚滚的高速公路。</p>
+</blockquote>
+<hr>
+<h3 id="闪码时代为什么被遗忘或者说被原谅"><a class="header" href="#闪码时代为什么被遗忘或者说被原谅">闪码时代为什么被遗忘——或者说，被原谅</a></h3>
+<p>闪码这件事本身非常聪明——它用最少的硬件成本（就一个灯），把最多的信息传出来（闪烁的次数和节奏）。但它有五个致命缺陷：</p>
+<ol>
+<li>
+<p><strong>一位技师的记忆是有限的。</strong> 闪码一次只显示出几十个故障码中的一两个。你记不住，只能每次闪一个、看着、记录——再闪一次、确认——再闪一次、再确认——再读下一个。读取五个故障码可能要花5分钟、反复确认——这还不算可能的信号抖动造成的解析错误。</p>
+</li>
+<li>
+<p><strong>错误率不是零。</strong> 人不是示波器。光线、眨眼、手抖——任何一次错过闪烁，这个码就串了。</p>
+</li>
+<li>
+<p><strong>信息量太小。</strong> 一个8位的故障码（7位=故障代码，1位=当前/历史标志）——只能区分最多127种故障。对发动机本身来说勉强够——但如果你还要诊断ABS、气囊、车身控制器——不行。</p>
+</li>
+<li>
+<p><strong>没有上下文。</strong> 闪码只告诉你“哪个传感器出了故障“，不告诉你故障是什么类型（短路/开路/信号不合理），不告诉你什么时候发生的、当时其他参数是多少。对新一代含有几十个传感器的ECU来说，这等于什么也没说。</p>
+</li>
+<li>
+<p><strong>不可扩展。</strong> 如果有两个ECU同时在闪光，怎么分辨哪个是发动机故障码哪个是ABS故障码？如果一辆车有30个ECU怎么办？</p>
+</li>
+</ol>
+<p>闪码不是被时代淘汰的——它是<strong>被时代超越的</strong>。当ECU的能力越过某个临界点——内存大了、芯片快了、传感器多了、故障模式复杂了——闪码这条“最朴素的通信方式“就跟不上了。不是因为闪码错了，是因为世界变了。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>最早的汽车诊断能力只有一比特：机油灯、充电灯——接通=1，断开=0。这一比特已经完成了诊断的最基本使命：把内部状态翻译成人眼可见的信号。</li>
+<li>ECU在1980年代就有了内部自检能力——但当时没有标准接口把故障码传出去。机械师的工具仍是扳手、听诊器、真空压力表——他们不信任电子诊断。</li>
+<li>闪码是第一个大规模使用的汽车诊断通信方式——通过故障灯的闪烁次数编码故障码。它解决了“传出来“的问题，但受限于信息量、准确性和可扩展性。</li>
+<li>加州光化学烟雾事件是诊断标准化最关键的外部推动力。如果没有法规强制ECU持续监视排放系统，就不会有统一的MIL、统一的故障码格式——也就不会有后来的UDS。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：1988年，加州空气资源委员会做了第一件事——要求所有加州销售的1970年后的车都要有排放检测接口。结果很惨——每个车厂都搞了自己的私有接口和私有故障码。如何不重复闪码时代的教训？巴别塔的教训——OBD-I的尴尬：接口统一了，语言没统一。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/1.1-望闻问切——人类诊断的原型.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/1.3-OBD-I到OBD-II——语言的第一次统一.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/1.1-望闻问切——人类诊断的原型.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/1.3-OBD-I到OBD-II——语言的第一次统一.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

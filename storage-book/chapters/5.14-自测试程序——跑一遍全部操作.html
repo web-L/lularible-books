@@ -1,0 +1,673 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>自测试程序——跑一遍全部操作 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="514-自测试程序跑一遍全部操作"><a class="header" href="#514-自测试程序跑一遍全部操作">5.14 自测试程序——跑一遍全部操作</a></h2>
+<h3 id="没有硬件没有交叉编译没有目标板"><a class="header" href="#没有硬件没有交叉编译没有目标板">没有硬件，没有交叉编译，没有目标板</a></h3>
+<p>你在x86_64的Linux笔记本上，面前只有gcc和终端。</p>
+<p>一行命令：</p>
+<pre><code class="language-bash">make &amp;&amp; make test
+</code></pre>
+<p>然后终端里滚过12个测试用例的输出，最后打印一行：</p>
+<pre><code>  RESULTS: 18 / 18 tests passed
+</code></pre>
+<p>这~474行测试代码，验证了你前面学过的所有东西：双SB的mount/remount、CoW原子性、log-structured metadata replay、CRC32校验、磨损均衡、事件循环驱动的状态机、read的偏移裁剪、append的RMW、delete的块释放……</p>
+<p>它不是嵌入式开发板上烧录firmware。它不是一个需要JTAG调试器的环节。它就是<strong>在你的电脑上直接跑的一个C程序</strong>——零依赖，只需要libc和一个C11编译器。但它的架构、它的状态机、它的数据结构，和工程化版本是同一个模具浇铸出来的。</p>
+<hr>
+<h3 id="测试框架18行的极简主义"><a class="header" href="#测试框架18行的极简主义">测试框架：18行的极简主义</a></h3>
+<pre><code class="language-c">#include "knotfs.h"
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+static int ok_ct = 0;
+static int all_ct = 0;
+
+#define T(name) do { printf("  [%s] ", name); all_ct++; } while(0)
+#define OK() do { printf("OK\n"); ok_ct++; } while(0)
+#define FAIL(f, ...) printf("FAIL: " f "\n", ##__VA_ARGS__)
+</code></pre>
+<p>三个宏，撑起整个测试框架。<code>T(name)</code>声明一个测试点，打印名字并增加计数。<code>OK()</code>测试通过。<code>FAIL(f, ...)</code>测试失败并打印诊断信息。没有assert宏、没有setjmp/longjmp的异常处理、没有测试发现机制——就是最朴素的“C函数调用链“。</p>
+<p>这很适合嵌入式文件系统的测试场景——测试的本质是“执行操作，检查结果“。API返回0就是成功（入队成功），<code>drive()</code>返回0就是操作完成。文件系统的中间状态都在内存里，可以直接检查<code>sb.nodes[]</code>和<code>sb.free_map</code>。</p>
+<hr>
+<h3 id="drive事件循环的同义反复"><a class="header" href="#drive事件循环的同义反复">drive()：事件循环的同义反复</a></h3>
+<pre><code class="language-c">static int drive(void) {
+  int t = 0;
+  while (knotfs_run()) {
+    if (++t % 15 == 0)
+      printf("    tick %d...\n", t);
+  }
+  if (t &gt; 0 &amp;&amp; t % 15 != 0)
+    printf("    tick %d... done\n", t);
+  return knotfs_get_result();
+}
+</code></pre>
+<p><code>drive()</code>不是什么特殊的函数。它就是 <code>while (knotfs_run());</code> 加了一个进度打印（每15个tick打一个点）。它把异步事件循环变成了同步等待——这就是当你的代码没有OS时，你“等一个操作完成“的方式。</p>
+<p><code>knotfs_get_result()</code>返回的是<code>cur.result</code>——最后一个完成请求的返回值。0是成功，负值是错误码。</p>
+<hr>
+<h3 id="power_cycle模拟mcu掉电重启"><a class="header" href="#power_cycle模拟mcu掉电重启">power_cycle()：模拟MCU掉电重启</a></h3>
+<pre><code class="language-c">static void power_cycle(void) {
+  knotfs_init(); /* clears runtime state, does NOT erase flash */
+}
+</code></pre>
+<p>KnotFS的一切运行时状态——<code>sb</code>、<code>sb_alt</code>、<code>fdev</code>、<code>q[]</code>、<code>cur</code>、<code>mounted</code>……全部在<code>knotfs_init()</code>中被清零。但<code>flash[]</code>数组不受影响——它模拟的是NOR Flash芯片，掉电后数据保持。这就是“模拟MCU断电“的全部秘密：<strong>清掉RAM，保留Flash。</strong></p>
+<p>在真实硬件上，MCU复位后RAM必然清零，Flash自动保持。测试代码用同一个机制来模拟这个过程——不需要真的拔电源，一行<code>power_cycle()</code>就够了。</p>
+<hr>
+<h3 id="测试结构12个测试18个断言"><a class="header" href="#测试结构12个测试18个断言">测试结构：12个测试，18个断言</a></h3>
+<p>整个测试程序（<code>main</code>函数）就是一个顺序调用链：</p>
+<pre><code class="language-c">int main(void)
+{
+    printf("\n");
+    printf("  _  __            _   _____ ____  \n");
+    printf(" | |/ /_ __   ___ | |_|  ___/ ___| \n");
+    printf(" | ' /| '_ \\ / _ \\| __| |_  \\___ \\ \n");
+    printf(" | . \\| | | | (_) | |_|  _|  ___) |\n");
+    printf(" |_|\\_\\_| |_|\\___/ \\__|_|   |____/ \n");
+    printf("\n");
+    printf("  Teaching File System — Async + Log-Structured + Power-Loss Safe\n");
+    printf("  Simulated NOR Flash: %u KB\n\n",
+           KNOTFS_BLOCK_COUNT * KNOTFS_BLOCK_SIZE / 1024);
+
+    knotfs_init();  /* first-ever boot: flash initialised to 0xFF */
+
+    t1_format_and_mount();
+    t2_write_and_read();
+    t3_large_file();
+    t4_partial_read();
+    t5_overwrite();
+    t6_append();
+    t7_list();
+    t8_delete();
+    t9_nonexistent();
+    t10_stats();
+    t11_power_loss();
+    t12_format_and_remount();
+
+    printf("\n============================================================\n");
+    printf("  RESULTS: %d / %d tests passed\n", ok_ct, all_ct);
+    printf("============================================================\n\n");
+    return (ok_ct == all_ct) ? 0 : 1;
+}
+</code></pre>
+<p><strong>Test 1：format_and_mount</strong> —— 最基础的生命周期。</p>
+<pre><code class="language-c">T("format");
+int r = knotfs_format();
+if (r) { FAIL("enqueue=%d", r); return; }
+r = drive();
+if (r == 0) OK(); else { FAIL("result=%d", r); return; }
+
+T("mount");
+r = knotfs_mount();
+if (r) { FAIL("enqueue=%d", r); return; }
+r = drive();
+if (r == 0 &amp;&amp; knotfs_is_mounted()) OK(); else { FAIL("result=%d", r); return; }
+
+T("stats");
+uint32_t tot, fre;
+knotfs_stats(&amp;tot, &amp;fre);
+drive();
+if (fre == KNOTFS_DATA_BLKS) OK(); else FAIL("free=%u expected=%u", fre, KNOTFS_DATA_BLKS);
+</code></pre>
+<p>format后14个数据块全部空闲。这个测试验证了：擦除所有16块 → 写入双SB → mount识别有效SB → free_bitmap显示所有数据块FREE。</p>
+<p><strong>Test 2：write_and_read</strong> —— 读写闭环。</p>
+<pre><code class="language-c">{ const char *s = "Hello, KnotFS!";  uint32_t n = (uint32_t)strlen(s);
+  T("write 14B");
+  if (knotfs_write("greet.txt", s, n)) { FAIL("enqueue"); return; }
+  if (drive()) { FAIL("result"); return; } OK(); }
+
+{ char b[32];  uint32_t br;
+  T("read back");
+  if (knotfs_read("greet.txt", b, sizeof(b), 0, &amp;br)) { FAIL("enqueue"); return; }
+  if (drive()) { FAIL("result"); return; }
+  if (br == 14 &amp;&amp; !memcmp(b, "Hello, KnotFS!", 14)) OK();
+  else FAIL("got='%.14s' len=%u", b, br); }
+</code></pre>
+<p>14字节——不到一个块的4%——通过完整的CoW写流程存到Flash，然后通过read状态机的偏移计算和tmp拷贝读回来。<code>br == 14 &amp;&amp; !memcmp(b, "Hello, KnotFS!", 14)</code>是这个测试的唯一真理。</p>
+<p><strong>Test 3：large_file</strong> —— 跨块文件的模式验证。</p>
+<pre><code class="language-c">static uint8_t pat[8192];
+for (int i = 0; i &lt; 8192; i++) pat[i] = (uint8_t)(i &amp; 0xFF);
+
+T("write 8KB");
+if (knotfs_write("data.bin", pat, 8192)) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; } OK();
+
+T("read &amp; verify");
+{ uint8_t v[8192];  uint32_t br;
+  memset(v, 0, sizeof(v));
+  if (knotfs_read("data.bin", v, 8192, 0, &amp;br)) { FAIL("enqueue"); return; }
+  if (drive()) { FAIL("result"); return; }
+  if (br == 8192 &amp;&amp; !memcmp(v, pat, 8192)) OK();
+  else FAIL("br=%u match=%d", br, memcmp(v, pat, 8192) == 0); }
+</code></pre>
+<p>这个模式数据<code>pat[i] = i &amp; 0xFF</code>很聪明——每个字节的值就是它的偏移量（模256）。这样读回后做<code>memcmp</code>，任何一个比特的错位（比如偏移1字节的错写）都会立即被发现。8192字节 = 2个整块 + 0字节。正好验证了块边界的正确处理。</p>
+<p><strong>Test 4：partial_read</strong> —— 偏移量不在块起点。</p>
+<pre><code class="language-c">T("read offset");
+uint8_t buf[32];  uint32_t br;
+memset(buf, 0, sizeof(buf));
+if (knotfs_read("data.bin", buf, 32, 2000, &amp;br)) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+uint8_t exp[32];
+for (int i = 0; i &lt; 32; i++) exp[i] = (uint8_t)((2000 + i) &amp; 0xFF);
+if (br == 32 &amp;&amp; !memcmp(buf, exp, 32)) OK(); else FAIL("br=%u", br);
+</code></pre>
+<p>offset=2000，不是4096的整数倍。第一个块（块0）的偏移2000~2031处被读取。正好验证了<code>ST_RD_COPY</code>中的<code>seg_s = max(rs, bs)</code>和<code>src_o = seg_s - bs</code>计算。</p>
+<p><strong>Test 5：overwrite</strong> —— CoW原子性的验证。</p>
+<pre><code class="language-c">T("overwrite");
+const char *n = "greet.txt";
+const char *s = "This file has been replaced!";
+uint32_t len = (uint32_t)strlen(s);
+if (knotfs_write(n, s, len)) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+
+char b[64];  uint32_t br;
+if (knotfs_read(n, b, sizeof(b), 0, &amp;br)) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+if (br == len &amp;&amp; !memcmp(b, s, len)) OK(); else FAIL("got='%s'", b);
+</code></pre>
+<p>greet.txt从“Hello, KnotFS!“变成“This file has been replaced!”——通过CoW的“分配新块+释放旧块+compact“完整链路。如果CoW失败，要么看到旧内容，要么看到损坏的内容。看到正确的新内容，证明CoW原子性成立。</p>
+<p><strong>Test 6：append</strong> —— RMW的验证。</p>
+<pre><code class="language-c">T("append");
+const char *add = " (appended)";
+uint32_t alen = (uint32_t)strlen(add);
+if (knotfs_append("greet.txt", add, alen)) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+
+char b[128];  uint32_t br;
+if (knotfs_read("greet.txt", b, sizeof(b), 0, &amp;br)) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+const char *exp = "This file has been replaced! (appended)";
+if (br == (uint32_t)strlen(exp) &amp;&amp; !strcmp(b, exp)) OK();
+else FAIL("got='%s'", b);
+</code></pre>
+<p>append 12字节到已有文件——RMW的最后一块。文件从30字符变成42字符。验证了<code>write_off</code>在块内的正确偏移、<code>memcpy(tmp + write_off, s, n)</code>的正确性、和compact后的数据完整性。</p>
+<p><strong>Test 7：list</strong> —— 查看文件目录。</p>
+<pre><code class="language-c">T("list");
+knotfs_entry_t ents[8];  uint32_t n = 8;
+knotfs_list(ents, &amp;n);  drive();
+printf("  %u files:\n", n);
+for (uint32_t i = 0; i &lt; n; i++)
+    printf("    %-32s %u B\n", ents[i].name, ents[i].size);
+if (n == 2) OK(); else FAIL("expected 2, got %u", n);
+</code></pre>
+<p>此时文件系统中有两个文件：<code>greet.txt</code>（42字节）和<code>data.bin</code>（8192字节）。list遍历<code>sb.nodes[]</code>，跳过size==0的slot，输出文件名和大小。</p>
+<p><strong>Test 8：delete</strong> —— 删除并验证目录。</p>
+<pre><code class="language-c">T("delete data.bin");
+if (knotfs_delete("data.bin")) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+knotfs_entry_t e[8];  uint32_t n = 8;
+knotfs_list(e, &amp;n);  drive();
+if (n == 1 &amp;&amp; !strcmp(e[0].name, "greet.txt")) OK(); else FAIL("n=%u", n);
+</code></pre>
+<p>删除8192字节的data.bin后，list应该只显示greet.txt一个文件。验证了<code>memset(nd, 0, sizeof(knode_t))</code>正确清除了entry，且free_bitmap正确回收了2个块。</p>
+<p><strong>Test 9：nonexistent</strong> —— 错误路径。</p>
+<pre><code class="language-c">T("read missing");
+char b[32];  uint32_t br = 99;
+knotfs_read("nope.bin", b, sizeof(b), 0, &amp;br);  int r = drive();
+if (r != 0) OK(); else FAIL("should fail, got br=%u", br);
+</code></pre>
+<p>读取不存在的文件应该返回负值错误码（-20: file not found）。<code>br</code>初始化为99，如果测试通过它应该保持99（因为操作失败时不应该修改输出参数）。</p>
+<p><strong>Test 10：stats</strong> —— 空间统计。</p>
+<pre><code class="language-c">uint32_t tot, fre;
+knotfs_stats(&amp;tot, &amp;fre);  drive();
+printf("  total: %u  free: %u  used: %u\n", tot, fre, tot - fre);
+T("stats");
+if (tot == KNOTFS_DATA_BLKS &amp;&amp; fre &lt; tot) OK(); else FAIL("tot=%u free=%u", tot, fre);
+</code></pre>
+<p>总数据块14，空闲块应该小于14（因为greet.txt占用了块）。这个测试不关心具体的数字，只验证统计功能正常工作。</p>
+<p><strong>Test 11：power_loss</strong> —— 本章的核心验证。</p>
+<pre><code class="language-c">/* capture state before power-cycle */
+knotfs_entry_t before[8];  uint32_t bn = 8;
+knotfs_list(before, &amp;bn);  drive();
+
+char b64[64];  uint32_t br64;
+knotfs_read("greet.txt", b64, sizeof(b64), 0, &amp;br64);  drive();
+printf("  Before reset: '%s'\n", b64);
+printf("  Simulating MCU power-cycle (in-memory state lost, flash intact)...\n");
+
+/* power-cycle */
+power_cycle();
+
+T("remount");
+if (knotfs_mount()) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+if (!knotfs_is_mounted()) { FAIL("not mounted"); return; }
+OK();
+
+knotfs_entry_t after[8];  uint32_t an = 8;
+knotfs_list(after, &amp;an);  drive();
+printf("  After reset: %u files\n", an);
+
+char a64[64];  uint32_t ar64;
+knotfs_read("greet.txt", a64, sizeof(a64), 0, &amp;ar64);  drive();
+printf("  After reset: '%s'\n", a64);
+
+T("data intact");
+if (bn == an &amp;&amp; ar64 == br64 &amp;&amp; !strcmp(b64, a64)) OK();
+else FAIL("before='%s' after='%s'", b64, a64);
+</code></pre>
+<p>这是整套测试中最关键的测试。它在“断电“（power_cycle）前后对比：</p>
+<ul>
+<li>文件数量是否一致（<code>bn == an</code>）？</li>
+<li>文件大小是否一致（<code>ar64 == br64</code>）？</li>
+<li>文件内容是否一致（<code>!strcmp(b64, a64)</code>）？</li>
+</ul>
+<p>如果三个都是true，说明：</p>
+<ol>
+<li>mount正确选择了有效的SB副本</li>
+<li>log replay正确恢复了bitmap状态</li>
+<li>文件内容完整无损</li>
+</ol>
+<p><strong>Test 12：format_and_remount</strong> —— 从头格式化的循环验证。</p>
+<pre><code class="language-c">/* fresh format */
+power_cycle();
+knotfs_format();  drive();
+printf("  Fresh format done.\n");
+
+T("mount fresh");
+if (knotfs_mount()) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+OK();
+
+/* write a file and remount */
+const char *msg = "Persistent content across boots.";
+uint32_t mlen = (uint32_t)strlen(msg);
+knotfs_write("boot.txt", msg, mlen);  drive();
+
+power_cycle();
+
+T("remount &amp; verify");
+if (knotfs_mount()) { FAIL("enqueue"); return; }
+if (drive()) { FAIL("result"); return; }
+char chk[64];  uint32_t cr;
+memset(chk, 0, sizeof(chk));
+knotfs_read("boot.txt", chk, sizeof(chk), 0, &amp;cr);  drive();
+if (cr == mlen &amp;&amp; !memcmp(chk, msg, mlen)) OK();
+else FAIL("cr=%u expected=%u '%.32s'", cr, mlen, chk);
+</code></pre>
+<p>format → mount → write → power_cycle → remount → verify。这是完整的“冷启动“流程。它验证了format从零开始创建双SB的能力，以及在全新文件系统上经过一次写入后，断电重启仍能正确恢复。</p>
+<hr>
+<h3 id="测试的输出"><a class="header" href="#测试的输出">测试的输出</a></h3>
+<pre><code>  _  __            _   _____ ____
+ | |/ /_ __   ___ | |_|  ___/ ___|
+ | ' /| '_ \ / _ \| __| |_  \___ \
+ | . \| | | | (_) | |_|  _|  ___) |
+ |_|\_\_| |_|\___/ \__|_|   |____/
+
+  Teaching File System — Async + Log-Structured + Power-Loss Safe
+  Simulated NOR Flash: 64 KB
+
+
+============================================================
+  Test 1: Format &amp; Mount  (64 KB NOR Flash)
+============================================================
+  Flash layout: 16 blocks x 4096 B = 65536 bytes
+  Data region: blocks 2–15  (56 KB)
+  [format]     tick 15...
+    tick 30...
+    tick 45...
+    tick 60...
+    tick 69... done
+OK
+  [mount]     tick 4... done
+OK
+  [stats]     tick 1... done
+OK
+
+============================================================
+  Test 2: Write &amp; Read (small file)
+============================================================
+  [write 14B]     tick 12... done
+OK
+  [read back]     tick 4... done
+OK
+
+============================================================
+  Test 3: Large File  (2 blocks = 8192 B)
+============================================================
+  [write 8KB]     tick 15...
+OK
+  [read &amp; verify]     tick 6... done
+OK
+
+============================================================
+  Test 4: Partial Read  (offset=2000, size=32)
+============================================================
+  [read offset]     tick 4... done
+OK
+
+============================================================
+  Test 5: Overwrite  (atomic Copy-on-Write)
+============================================================
+  [overwrite]     tick 12... done
+    tick 4... done
+OK
+
+============================================================
+  Test 6: Append
+============================================================
+  [append]     tick 10... done
+    tick 4... done
+OK
+
+============================================================
+  Test 7: List Files
+============================================================
+  [list]     tick 1... done
+  2 files:
+    greet.txt                        39 B
+    data.bin                         8192 B
+OK
+
+============================================================
+  Test 8: Delete
+============================================================
+  [delete data.bin]     tick 6... done
+    tick 1... done
+OK
+
+============================================================
+  Test 9: Read Nonexistent
+============================================================
+  [read missing]     tick 1... done
+OK
+
+============================================================
+  Test 10: Stats
+============================================================
+    tick 1... done
+  total: 14  free: 13  used: 1
+  [stats] OK
+
+============================================================
+  Test 11: Power-Loss Recovery  (remount after simulated reset)
+============================================================
+    tick 1... done
+    tick 4... done
+  Before reset: 'This file has been replaced! (appended)'
+  Simulating MCU power-cycle (in-memory state lost, flash intact)...
+  [remount]     tick 4... done
+OK
+    tick 1... done
+  After reset: 1 files
+    tick 4... done
+  After reset: 'This file has been replaced! (appended)'
+  [data intact] OK
+
+============================================================
+  Test 12: Full Remount After Format
+============================================================
+    tick 15...
+    tick 30...
+    tick 45...
+    tick 60...
+    tick 69... done
+  Fresh format done.
+  [mount fresh]     tick 4... done
+OK
+    tick 12... done
+  [remount &amp; verify]     tick 4... done
+    tick 4... done
+OK
+
+============================================================
+  RESULTS: 18 / 18 tests passed
+============================================================
+</code></pre>
+<p>format 需要擦除 16 个块（每块 3 tick = 48 tick）+ 写入 2 个 SB（每块 2 tick = 4 tick）+ 状态机调度与 compact 开销，实测约 69 tick。write 小文件约 12 tick，read 约 4 tick。每个 tick 对应 <code>fdev_tick()</code> 的一次调用，进度打印每 15 tick 输出一次（<code>drive()</code> 中的 <code>% 15</code> 逻辑）。</p>
+<hr>
+<h3 id="测试覆盖了什么没覆盖什么"><a class="header" href="#测试覆盖了什么没覆盖什么">测试覆盖了什么，没覆盖什么</a></h3>
+<p><strong>覆盖了的：</strong></p>
+<ul>
+<li>所有API的正常路径（format/mount/write/read/append/delete/list/stats）</li>
+<li>错误路径（读不存在的文件）</li>
+<li>边界条件（跨块读写、偏移量不对齐、文件大小恰好是块大小的整倍数）</li>
+<li>掉电恢复（power_cycle ×2）</li>
+<li>磨损均衡（write分配新块，wear_count递增）</li>
+<li>CRC32校验（mount选择SB时隐式验证）</li>
+</ul>
+<p><strong>没覆盖的：</strong></p>
+<ul>
+<li>Flash全满的场景（write时没有空闲块，应该返回-6）</li>
+<li>文件名冲突的极端情况（8个文件全满后再创建第9个）</li>
+<li>Log compact阈值触发（需要大量write操作积累214+条log记录）</li>
+<li>间接块（KnotFS没有）</li>
+<li>垃圾回收（KnotFS没有后台GC）</li>
+<li>真实硬件上的Flash写入延迟和时序</li>
+</ul>
+<hr>
+<h3 id="如果你来设计"><a class="header" href="#如果你来设计">如果你来设计</a></h3>
+<p>试着回答：Test 11（power_loss）在什么情况下会失败？</p>
+<p>答案：有两种主要可能。①<code>compact</code>没有成功完成——如果在power_cycle之前，write或append的compact只写到了一半（<code>fdev_write</code>触发了但ticks_left还没降到0），那么新SB是不完整的。但drive()在return之前会等到<code>knotfs_is_idle()</code>为true——即所有操作都完成。所以只要drive()返回0，compact就一定已经完成。②mount时SB选择错误——如果两个SB的sequence号相等且内容不同（这可能发生在format的ST_FMT_WR_SB1写入了一半时断电），mount会选择第一个通过校验的SB。但KnotFS的测试流程保证了只有drive()完成后才power_cycle，所以sequence号一定正确。</p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>到这里，你已经看完了KnotFS的全部源码和全部测试。你知道了一个文件系统从format到power-loss recovery的完整生命周期，理解了CoW的原子性保证、事件循环驱动的状态机、log-structured的元数据管理、CRC32的校验哲学。</p>
+<p>但 KnotFS 只是教学版。从它到能在真实硬件上稳定运行的文件系统，中间还有一段无法在教材中完全展开的距离。最后一节，我们不写代码，不画状态机——我们站远一点，看看这根两万年的接力棒，看看你手里的那个结。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/5.13-请求队列与事件循环——协作式非阻塞调度.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/5.15-从教学到生产——传递人的最后一课.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/5.13-请求队列与事件循环——协作式非阻塞调度.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/5.15-从教学到生产——传递人的最后一课.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

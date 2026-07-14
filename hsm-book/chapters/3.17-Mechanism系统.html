@@ -1,0 +1,570 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Mechanism系统 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="317-mechanism系统密码算法的配方库"><a class="header" href="#317-mechanism系统密码算法的配方库">3.17 Mechanism系统：密码算法的“配方库“</a></h2>
+<h3 id="mechanism是什么"><a class="header" href="#mechanism是什么">Mechanism是什么？</a></h3>
+<p>在PKCS#11中，Mechanism（机制）是密码算法的“配方“。</p>
+<p>每个Mechanism定义了：</p>
+<ul>
+<li><strong>算法类型</strong>：RSA签名、AES加密、SHA哈希等</li>
+<li><strong>算法参数</strong>：密钥长度、IV、盐值等</li>
+<li><strong>使用方式</strong>：签名、加密、哈希、密钥生成等</li>
+</ul>
+<p>Mechanism是PKCS#11“提供机制而非策略“原则的核心体现：标准定义了可用的机制，部署者选择使用哪些机制。</p>
+<hr>
+<h3 id="ck_mechanism结构"><a class="header" href="#ck_mechanism结构">CK_MECHANISM结构</a></h3>
+<p>Mechanism用一个结构体表示：</p>
+<pre><code class="language-c">/* CK_MECHANISM结构定义 */
+
+typedef struct CK_MECHANISM {
+    CK_MECHANISM_TYPE type;      /* 机制类型（如CKM_RSA_PKCS） */
+    CK_VOID_PTR       pParameter; /* 机制参数（如IV、Salt等） */
+    CK_ULONG          ulParameterLen; /* 参数长度 */
+} CK_MECHANISM;
+</code></pre>
+<p><strong>使用示例</strong>：</p>
+<pre><code class="language-c">/* 无参数的机制 */
+
+CK_MECHANISM mechanism = {CKM_RSA_PKCS, NULL_PTR, 0};
+rv = C_SignInit(hSession, &amp;mechanism, hPrivateKey);
+
+/* 有参数的机制 */
+
+CK_RSA_PKCS_PSS_PARAMS pssParams = {
+    CKM_SHA256,            /* 哈希算法 */
+    CKG_MGF1_SHA256,       /* MGF算法 */
+    32                     /* 盐值长度 */
+};
+CK_MECHANISM mechanism = {CKM_RSA_PKCS_PSS, &amp;pssParams, sizeof(pssParams)};
+rv = C_SignInit(hSession, &amp;mechanism, hPrivateKey);
+</code></pre>
+<hr>
+<h3 id="ck_mechanism_type机制的标识符"><a class="header" href="#ck_mechanism_type机制的标识符">CK_MECHANISM_TYPE：机制的标识符</a></h3>
+<p>PKCS#11规范定义了100余种机制类型（规范第6章）：</p>
+<p><strong>分类概览</strong>：</p>
+<pre><code>机制类型分类：
+
+CKM_RSA_*                RSA相关机制（约15种）
+CKM_DSA_*                DSA相关机制（约5种）
+CKM_ECDSA_*              ECDSA相关机制（约5种）
+CKM_ECDH_*               ECDH相关机制（约5种）
+CKM_DH_*                 DH相关机制（约5种）
+CKM_AES_*                AES相关机制（约20种）
+CKM_DES_*                DES相关机制（约15种）
+CKM_SHA*                 SHA哈希机制（约30种）
+CKM_HMAC*                HMAC机制（约30种）
+CKM_*_KEY_PAIR_GEN       密钥生成机制
+CKM_*_KEY_DERIVE         密钥派生机制
+CKM_*_WRAP               密钥包装机制
+</code></pre>
+<hr>
+<h3 id="查询支持的机制"><a class="header" href="#查询支持的机制">查询支持的机制</a></h3>
+<p>应用程序可以查询Token支持的机制：</p>
+<p><strong>C_GetMechanismList</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetMechanismList(CK_SLOT_ID slotID,
+                          CK_MECHANISM_TYPE_PTR pMechanismList,
+                          CK_ULONG_PTR pulCount);
+</code></pre>
+<p><strong>C_GetMechanismInfo</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetMechanismInfo(CK_SLOT_ID slotID,
+                          CK_MECHANISM_TYPE type,
+                          CK_MECHANISM_INFO_PTR pInfo);
+
+/* CK_MECHANISM_INFO结构 */
+typedef struct CK_MECHANISM_INFO {
+    CK_ULONG ulMinKeySize;  /* 最小密钥长度 */
+    CK_ULONG ulMaxKeySize;  /* 最大密钥长度 */
+    CK_FLAGS flags;         /* 机制标志 */
+} CK_MECHANISM_INFO;
+
+/* flags可能值 */
+#define CKF_HW                 0x00000001  /* 硬件实现 */
+#define CKF_ENCRYPT            0x00000100  /* 可用于加密 */
+#define CKF_DECRYPT            0x00000200  /* 可用于解密 */
+#define CKF_DIGEST             0x00000400  /* 可用于哈希 */
+#define CKF_SIGN               0x00000800  /* 可用于签名 */
+#define CKF_SIGN_RECOVER       0x00001000  /* 可用于可恢复签名 */
+#define CKF_VERIFY             0x00002000  /* 可用于验证 */
+#define CKF_VERIFY_RECOVER     0x00004000  /* 可用于可恢复验证 */
+#define CKF_GENERATE           0x00008000  /* 可生成密钥 */
+#define CKF_GENERATE_KEY_PAIR  0x00010000  /* 可生成密钥对 */
+#define CKF_DERIVE             0x00020000  /* 可派生密钥 */
+#define CKF_WRAP               0x00040000  /* 可包装密钥 */
+#define CKF_UNWRAP             0x00080000  /* 可解包密钥 */
+</code></pre>
+<p><strong>示例代码</strong>：</p>
+<pre><code class="language-c">/* 查询Token支持的机制 */
+
+CK_ULONG mechCount;
+CK_MECHANISM_TYPE_PTR mechList;
+CK_MECHANISM_INFO mechInfo;
+CK_RV rv;
+
+// 1. 获取机制数量
+rv = C_GetMechanismList(slotID, NULL_PTR, &amp;mechCount);
+if (rv != CKR_OK) {
+    printf("获取机制数量失败\n");
+    return;
+}
+
+// 2. 分配内存，获取机制列表
+mechList = malloc(mechCount * sizeof(CK_MECHANISM_TYPE));
+rv = C_GetMechanismList(slotID, mechList, &amp;mechCount);
+
+// 3. 打印每个机制的详细信息
+for (CK_ULONG i = 0; i &lt; mechCount; i++) {
+    rv = C_GetMechanismInfo(slotID, mechList[i], &amp;mechInfo);
+    
+    printf("机制 %08x:\n", mechList[i]);
+    printf("  密钥长度: %lu-%lu\n", mechInfo.ulMinKeySize, mechInfo.ulMaxKeySize);
+    printf("  硬件实现: %s\n", (mechInfo.flags &amp; CKF_HW) ? "是" : "否");
+    printf("  可签名: %s\n", (mechInfo.flags &amp; CKF_SIGN) ? "是" : "否");
+    printf("  可加密: %s\n", (mechInfo.flags &amp; CKF_ENCRYPT) ? "是" : "否");
+}
+
+free(mechList);
+</code></pre>
+<hr>
+<h3 id="常用机制详解"><a class="header" href="#常用机制详解">常用机制详解</a></h3>
+<p><strong>RSA机制</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">机制</th><th style="text-align: left">描述</th><th style="text-align: left">用途</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKM_RSA_PKCS_KEY_PAIR_GEN</strong></td><td style="text-align: left">RSA密钥对生成</td><td style="text-align: left">生成RSA密钥</td></tr>
+<tr><td style="text-align: left"><strong>CKM_RSA_PKCS</strong></td><td style="text-align: left">PKCS#1 v1.5签名/加密</td><td style="text-align: left">签名、加密</td></tr>
+<tr><td style="text-align: left"><strong>CKM_RSA_PKCS_PSS</strong></td><td style="text-align: left">RSASSA-PSS签名</td><td style="text-align: left">更安全的签名</td></tr>
+<tr><td style="text-align: left"><strong>CKM_RSA_PKCS_OAEP</strong></td><td style="text-align: left">RSAES-OAEP加密</td><td style="text-align: left">更安全的加密</td></tr>
+<tr><td style="text-align: left"><strong>CKM_RSA_X_509</strong></td><td style="text-align: left">X.509原始RSA</td><td style="text-align: left">不推荐</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>CKM_RSA_PKCS_PSS参数</strong>：</p>
+<pre><code class="language-c">typedef struct CK_RSA_PKCS_PSS_PARAMS {
+    CK_MECHANISM_TYPE   hashAlg;     /* 哈希算法（如CKM_SHA256） */
+    CK_RSA_PKCS_MGF_TYPE mgf;        /* MGF掩码生成函数（如CKG_MGF1_SHA256） */
+    CK_ULONG             sLen;       /* 盐值长度 */
+} CK_RSA_PKCS_PSS_PARAMS;
+</code></pre>
+<p><strong>AES机制</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">机制</th><th style="text-align: left">描述</th><th style="text-align: left">模式</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKM_AES_KEY_GEN</strong></td><td style="text-align: left">AES密钥生成</td><td style="text-align: left">密钥生成</td></tr>
+<tr><td style="text-align: left"><strong>CKM_AES_ECB</strong></td><td style="text-align: left">AES ECB模式</td><td style="text-align: left">无IV</td></tr>
+<tr><td style="text-align: left"><strong>CKM_AES_CBC</strong></td><td style="text-align: left">AES CBC模式</td><td style="text-align: left">需要16字节IV</td></tr>
+<tr><td style="text-align: left"><strong>CKM_AES_CBC_PAD</strong></td><td style="text-align: left">AES CBC+PKCS#7填充</td><td style="text-align: left">需要16字节IV</td></tr>
+<tr><td style="text-align: left"><strong>CKM_AES_CTR</strong></td><td style="text-align: left">AES CTR模式</td><td style="text-align: left">需要计数器参数</td></tr>
+<tr><td style="text-align: left"><strong>CKM_AES_GCM</strong></td><td style="text-align: left">AES GCM模式</td><td style="text-align: left">需要IV和AAD</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>CKM_AES_CBC参数</strong>：</p>
+<pre><code class="language-c">CK_BYTE iv[16] = {0x00, 0x01, 0x02, ...};  /* 16字节IV */
+CK_MECHANISM mechanism = {CKM_AES_CBC, iv, 16};
+</code></pre>
+<p><strong>CKM_AES_GCM参数</strong>：</p>
+<pre><code class="language-c">typedef struct CK_GCM_PARAMS {
+    CK_BYTE_PTR  pIv;         /* IV指针 */
+    CK_ULONG     ulIvLen;     /* IV长度 */
+    CK_ULONG     ulIvBits;    /* IV位数（通常与ulIvLen*8相同） */
+    CK_BYTE_PTR  pAAD;        /* AAD（附加认证数据） */
+    CK_ULONG     ulAADLen;    /* AAD长度 */
+    CK_ULONG     ulTagBits;   /* 认证标签位数（如128） */
+} CK_GCM_PARAMS;
+</code></pre>
+<p><strong>ECDSA机制</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">机制</th><th style="text-align: left">描述</th><th style="text-align: left">用途</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKM_EC_KEY_PAIR_GEN</strong></td><td style="text-align: left">EC密钥对生成</td><td style="text-align: left">生成ECDSA密钥</td></tr>
+<tr><td style="text-align: left"><strong>CKM_ECDSA</strong></td><td style="text-align: left">ECDSA签名</td><td style="text-align: left">签名原始数据</td></tr>
+<tr><td style="text-align: left"><strong>CKM_ECDSA_SHA1</strong></td><td style="text-align: left">SHA1后ECDSA签名</td><td style="text-align: left">签名哈希后数据</td></tr>
+<tr><td style="text-align: left"><strong>CKM_ECDSA_SHA256</strong></td><td style="text-align: left">SHA256后ECDSA签名</td><td style="text-align: left">签名哈希后数据</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>SHA机制</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">机制</th><th style="text-align: left">描述</th><th style="text-align: left">输出长度</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKM_SHA_1</strong></td><td style="text-align: left">SHA-1哈希</td><td style="text-align: left">20字节</td></tr>
+<tr><td style="text-align: left"><strong>CKM_SHA256</strong></td><td style="text-align: left">SHA-256哈希</td><td style="text-align: left">32字节</td></tr>
+<tr><td style="text-align: left"><strong>CKM_SHA384</strong></td><td style="text-align: left">SHA-384哈希</td><td style="text-align: left">48字节</td></tr>
+<tr><td style="text-align: left"><strong>CKM_SHA512</strong></td><td style="text-align: left">SHA-512哈希</td><td style="text-align: left">64字节</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>HMAC机制</strong>：</p>
+<pre><code class="language-c">/* HMAC机制 */
+
+CK_MECHANISM mechanism = {CKM_SHA256_HMAC, NULL_PTR, 0};
+rv = C_SignInit(hSession, &amp;mechanism, hHmacKey);
+rv = C_Sign(hSession, data, dataLen, hmac, &amp;hmacLen);
+</code></pre>
+<hr>
+<h3 id="密钥生成机制"><a class="header" href="#密钥生成机制">密钥生成机制</a></h3>
+<p><strong>RSA密钥生成</strong>：</p>
+<pre><code class="language-c">CK_MECHANISM mechanism = {CKM_RSA_PKCS_KEY_PAIR_GEN, NULL_PTR, 0};
+CK_ULONG modulusBits = 2048;
+CK_BYTE publicExponent[] = {0x01, 0x00, 0x01};  /* 65537 */
+
+CK_ATTRIBUTE publicKeyTemplate[] = {
+    {CKA_MODULUS_BITS, &amp;modulusBits, sizeof(modulusBits)},
+    {CKA_PUBLIC_EXPONENT, publicExponent, sizeof(publicExponent)},
+    // 其他属性...
+};
+
+CK_ATTRIBUTE privateKeyTemplate[] = {
+    {CKA_SENSITIVE, &amp;bTrue, sizeof(bTrue)},
+    {CKA_EXTRACTABLE, &amp;bFalse, sizeof(bFalse)},
+    // 其他属性...
+};
+
+rv = C_GenerateKeyPair(hSession, &amp;mechanism,
+                       publicKeyTemplate, 2,
+                       privateKeyTemplate, 2,
+                       &amp;hPublicKey, &amp;hPrivateKey);
+</code></pre>
+<p><strong>AES密钥生成</strong>：</p>
+<pre><code class="language-c">CK_MECHANISM mechanism = {CKM_AES_KEY_GEN, NULL_PTR, 0};
+CK_ULONG keyLen = 32;  /* 256位 */
+
+CK_ATTRIBUTE keyTemplate[] = {
+    {CKA_VALUE_LEN, &amp;keyLen, sizeof(keyLen)},
+    {CKA_KEY_TYPE, &amp;aesKeyType, sizeof(aesKeyType)},
+    {CKA_CLASS, &amp;secretKeyClass, sizeof(secretKeyClass)},
+};
+
+rv = C_GenerateKey(hSession, &amp;mechanism, keyTemplate, 3, &amp;hKey);
+</code></pre>
+<hr>
+<h3 id="密钥派生机制"><a class="header" href="#密钥派生机制">密钥派生机制</a></h3>
+<p><strong>ECDH密钥派生</strong>：</p>
+<pre><code class="language-c">CK_ECDH1_DERIVE_PARAMS ecdhParams = {
+    CKD_NULL,        /* KDF类型 */
+    NULL_PTR,        /* 共享数据 */
+    0,               /* 共享数据长度 */
+    otherPublicKey,  /* 对方公钥数据 */
+    otherPubKeyLen   /* 公钥长度 */
+};
+
+CK_MECHANISM mechanism = {CKM_ECDH1_DERIVE, &amp;ecdhParams, sizeof(ecdhParams)};
+CK_ATTRIBUTE derivedKeyTemplate[] = {
+    {CKA_CLASS, &amp;secretKeyClass, sizeof(secretKeyClass)},
+    {CKA_KEY_TYPE, &amp;aesKeyType, sizeof(aesKeyType)},
+    {CKA_VALUE_LEN, &amp;keyLen, sizeof(keyLen)},
+};
+
+rv = C_DeriveKey(hSession, &amp;mechanism, hPrivateKey, derivedKeyTemplate, 3, &amp;hDerivedKey);
+</code></pre>
+<p><strong>HKDF密钥派生（v3.0新增）</strong>：</p>
+<pre><code class="language-c">/* CK_HKDF_PARAMS简化展示（完整定义请参考PKCS#11规范） */
+typedef struct CK_HKDF_PARAMS {
+    CK_BBOOL          bExtract;         /* 是否执行Extract步骤 */
+    CK_BBOOL          bExpand;          /* 是否执行Expand步骤 */
+    CK_MECHANISM_TYPE prfHashMechanism; /* PRF哈希机制（如CKM_SHA256） */
+    CK_ULONG          ulSaltType;       /* 盐值来源类型 */
+    CK_BYTE_PTR       pSalt;            /* 盐值数据 */
+    CK_ULONG          ulSaltLen;        /* 盐值长度 */
+    CK_OBJECT_HANDLE  hSaltKey;         /* 盐值密钥对象（可选） */
+    CK_BYTE_PTR       pInfo;            /* Info数据 */
+    CK_ULONG          ulInfoLen;        /* Info长度 */
+} CK_HKDF_PARAMS;
+
+/* 基础用法示例 */
+CK_HKDF_PARAMS hkdfParams = {
+    TRUE,           /* 执行Extract */
+    TRUE,           /* 执行Expand */
+    CKM_SHA256,     /* SHA-256作为PRF */
+    CKZ_SALT_SPECIFIED, /* 使用pSalt提供的盐值 */
+    salt, saltLen,  /* 盐值 */
+    CK_INVALID_HANDLE, /* 不使用hSaltKey */
+    info, infoLen   /* Info */
+};
+
+CK_MECHANISM mechanism = {CKM_HKDF_DERIVE, &amp;hkdfParams, sizeof(hkdfParams)};
+rv = C_DeriveKey(hSession, &amp;mechanism, hBaseKey, template, 3, &amp;hDerivedKey);
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>Mechanism是PKCS#11的“配方库“，定义了可用的密码算法：</p>
+<p><strong>CK_MECHANISM结构</strong>：</p>
+<ul>
+<li>type：机制类型（CKM_xxx）</li>
+<li>pParameter：机制参数（IV、Salt等）</li>
+<li>ulParameterLen：参数长度</li>
+</ul>
+<p><strong>机制查询</strong>：</p>
+<ul>
+<li>C_GetMechanismList：获取支持的机制列表</li>
+<li>C_GetMechanismInfo：获取机制详细信息</li>
+</ul>
+<p><strong>常用机制</strong>：</p>
+<ul>
+<li>RSA：CKM_RSA_PKCS、CKM_RSA_PKCS_PSS、CKM_RSA_PKCS_OAEP</li>
+<li>AES：CKM_AES_ECB、CKM_AES_CBC、CKM_AES_GCM</li>
+<li>ECDSA：CKM_ECDSA、CKM_ECDSA_SHA256</li>
+<li>SHA：CKM_SHA256、CKM_SHA512</li>
+<li>HMAC：CKM_SHA256_HMAC</li>
+<li>密钥生成：CKM_RSA_PKCS_KEY_PAIR_GEN、CKM_AES_KEY_GEN</li>
+<li>密钥派生：CKM_ECDH1_DERIVE、CKM_HKDF_DERIVE</li>
+</ul>
+<p>下一节，我们将详细解析AES机制——ECB、CBC、GCM等模式的区别和用法。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<ul>
+<li>
+<p>ECB是什么？为什么说不安全？</p>
+</li>
+<li>
+<p>CBC是什么？IV如何使用？</p>
+</li>
+<li>
+<p>GCM是什么？AEAD是什么？</p>
+</li>
+</ul>
+<p>下一节，AES机制详解。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/3.16-密钥管理函数.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/3.18-AES机制详解.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/3.16-密钥管理函数.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/3.18-AES机制详解.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

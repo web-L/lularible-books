@@ -1,0 +1,860 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Token存储实现 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="49-token存储实现pin与元数据的安全存储"><a class="header" href="#49-token存储实现pin与元数据的安全存储">4.9 Token存储实现：PIN与元数据的安全存储</a></h2>
+<h3 id="token存储的职责"><a class="header" href="#token存储的职责">Token存储的职责</a></h3>
+<p>Token存储负责管理Token的核心元数据：</p>
+<pre><code>Token元数据内容：
+
+Token元数据
+│
+├── 基本信息配置
+│   ├── Label（Token名称）
+│   ├── Serial（序列号）
+│   └── Flags（Token状态标志）
+│
+├── 安全凭证存储
+│   ├── SO PIN（安全管理员PIN）
+│   └── User PIN（用户PIN）
+│
+└── 对象管理接口
+    ├── 创建Object
+    ├── 删除Object
+    ├── 获取Object列表
+    └── 清空Token
+</code></pre>
+<hr>
+<h3 id="objectstoretoken抽象基类"><a class="header" href="#objectstoretoken抽象基类">ObjectStoreToken：抽象基类</a></h3>
+<p>ObjectStoreToken定义了Token存储的统一接口：</p>
+<pre><code class="language-cpp">class ObjectStoreToken
+{
+public:
+    static bool selectBackend(const std::string&amp; backend);
+    
+    static ObjectStoreToken* createToken(const std::string basePath, 
+                                          const std::string tokenDir, 
+                                          int umask, 
+                                          const ByteString&amp; label, 
+                                          const ByteString&amp; serial);
+    
+    static ObjectStoreToken* accessToken(const std::string &amp;basePath, 
+                                          const std::string &amp;tokenDir, 
+                                          int umask);
+    
+    virtual bool setSOPIN(const ByteString&amp; soPINBlob) = 0;
+    virtual bool getSOPIN(ByteString&amp; soPINBlob) = 0;
+    
+    virtual bool setUserPIN(ByteString userPINBlob) = 0;
+    virtual bool getUserPIN(ByteString&amp; userPINBlob) = 0;
+    
+    virtual bool getTokenFlags(CK_ULONG&amp; flags) = 0;
+    virtual bool setTokenFlags(const CK_ULONG flags) = 0;
+    
+    virtual bool getTokenLabel(ByteString&amp; label) = 0;
+    virtual bool getTokenSerial(ByteString&amp; serial) = 0;
+    
+    virtual std::set&lt;OSObject*&gt; getObjects() = 0;
+    virtual OSObject* createObject() = 0;
+    virtual bool deleteObject(OSObject* object) = 0;
+    
+    virtual bool isValid() = 0;
+    virtual void invalidate() = 0;
+    virtual bool clearToken() = 0;
+    virtual bool resetToken(const ByteString&amp; label) = 0;
+    
+    virtual ~ObjectStoreToken() {};
+};
+</code></pre>
+<p><strong>两种实现</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">实现</th><th style="text-align: left">存储方式</th><th style="text-align: left">适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>OSToken</strong></td><td style="text-align: left">文件系统</td><td style="text-align: left">默认，简单易用</td></tr>
+<tr><td style="text-align: left"><strong>DBToken</strong></td><td style="text-align: left">SQLite数据库</td><td style="text-align: left">可选，性能更好</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="后端选择机制"><a class="header" href="#后端选择机制">后端选择机制</a></h3>
+<p>SoftHSM2支持两种存储后端：</p>
+<pre><code class="language-cpp">static std::string backendType;
+
+bool ObjectStoreToken::selectBackend(const std::string&amp; backend)
+{
+    backendType = backend;
+    return true;
+}
+
+ObjectStoreToken* ObjectStoreToken::createToken(...)
+{
+    if (backendType == "db") {
+        return DBToken::createToken(basePath, tokenDir, umask, label, serial);
+    } else {
+        return OSToken::createToken(basePath, tokenDir, umask, label, serial);
+    }
+}
+</code></pre>
+<p><strong>配置方式</strong>：</p>
+<p>在<code>softhsm2.conf</code>中配置：</p>
+<pre><code># softhsm2.conf 示例
+
+directories.tokendir = /var/lib/softhsm2/tokens
+objectstore.backend = db    # 使用数据库后端
+# objectstore.backend = file  # 使用文件后端（默认）
+</code></pre>
+<hr>
+<h3 id="ostoken文件存储实现"><a class="header" href="#ostoken文件存储实现">OSToken：文件存储实现</a></h3>
+<p>OSToken使用文件系统存储Token元数据：</p>
+<pre><code>Token目录结构：
+
+/var/lib/softhsm2/tokens/
+│
+├── 1234567890abcdef/          ← Token目录
+│   │
+│   ├── token.object           ← Token元数据文件
+│   │   ├── CKA_LABEL
+│   │   ├── CKA_SERIAL_NUMBER
+│   │   ├── CKA_TOKEN_FLAGS
+│   │   ├── SO_PIN_BLOB
+│   │   └── USER_PIN_BLOB
+│   │
+│   ├── generation             ← 版本文件
+│   │
+│   ├── xxxxxxxx.object        ← Object文件
+│   ├── ...
+│   │
+│   └── xxxxxxxx.lock          ← Object锁文件
+</code></pre>
+<p><strong>token.object文件</strong>：</p>
+<p>Token元数据存储在一个特殊的ObjectFile中：</p>
+<pre><code class="language-cpp">class OSToken : public ObjectStoreToken
+{
+private:
+    ObjectFile* tokenObject;  // Token元数据存储在这里
+};
+</code></pre>
+<p><strong>PIN存储格式</strong>：</p>
+<p>PIN不是明文存储，而是以“Blob“形式存储：</p>
+<pre><code class="language-cpp">bool OSToken::setSOPIN(const ByteString&amp; soPINBlob)
+{
+    // soPINBlob是加密后的PIN数据
+    return tokenObject-&gt;setAttribute(CKA_SO_PIN, OSAttribute(soPINBlob));
+}
+
+bool OSToken::getSOPIN(ByteString&amp; soPINBlob)
+{
+    OSAttribute attr = tokenObject-&gt;getAttribute(CKA_SO_PIN);
+    soPINBlob = attr.getByteStringValue();
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="pin-blob的结构"><a class="header" href="#pin-blob的结构">PIN Blob的结构</a></h3>
+<p>PIN Blob包含加密后的PIN和验证信息：</p>
+<pre><code>PIN Blob结构：
+
+┌─────────────────────────────────────────────────────────────┐
+│                      PIN Blob                               │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  加密的PIN数据                                        │   │
+│  │                                                      │   │
+│  │  ├── 加密算法标识                                    │   │
+│  │  ├── 加密密钥索引                                    │   │
+│  │  ├── 加密后的PIN值                                   │   │
+│  │  └── IV/Nonce                                        │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  验证数据                                             │   │
+│  │                                                      │   │
+│  │  ├── Salt                                            │   │
+│  │  ├── Hash算法                                        │   │
+│  │  └── Hash值（用于快速验证PIN）                       │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>PIN验证流程</strong>：</p>
+<pre><code>PIN验证流程：
+
+应用程序输入PIN
+    │
+    │ C_Login(hSession, CKU_USER, pin, pinLen)
+    ▼
+SoftHSM2接收PIN
+    │
+    │ 1. 计算PIN的Hash（使用Blob中的Salt）
+    ▼
+比较Hash值
+    │
+    │ 如果匹配：
+    │ ├── 解密PIN Blob
+    │ ├── 获得实际PIN值
+    │ └── 使用PIN进行后续操作
+    │
+    │ 如果不匹配：
+    │ └── 返回CKR_PIN_INCORRECT
+    ▼
+验证完成
+</code></pre>
+<hr>
+<h3 id="token-flags管理"><a class="header" href="#token-flags管理">Token Flags管理</a></h3>
+<p>Token Flags记录Token的状态：</p>
+<pre><code class="language-cpp">bool OSToken::getTokenFlags(CK_ULONG&amp; flags)
+{
+    OSAttribute attr = tokenObject-&gt;getAttribute(CKA_TOKEN_FLAGS);
+    flags = attr.getUnsignedLongValue();
+    return true;
+}
+
+bool OSToken::setTokenFlags(const CK_ULONG flags)
+{
+    return tokenObject-&gt;setAttribute(CKA_TOKEN_FLAGS, OSAttribute(flags));
+}
+</code></pre>
+<p><strong>Token Flags定义</strong>：</p>
+<pre><code>Token Flags定义：
+
+CKF_RNG                        有随机数生成器
+CKF_WRITE_PROTECTED            写保护
+CKF_LOGIN_REQUIRED             需要登录
+CKF_USER_PIN_INITIALIZED       用户PIN已初始化
+CKF_RESTORE_KEY_NOT_NEEDED     不需要恢复密钥
+CKF_CLOCK_ON_TOKEN             有时钟
+CKF_PROTECTED_AUTHENTICATION_PATH  保护认证路径
+CKF_DUAL_CRYPTO_OPERATIONS     双重密码操作
+CKF_TOKEN_INITIALIZED          Token已初始化
+CKF_SECONDARY_AUTHENTICATION   二级认证
+CKF_USER_PIN_COUNT_LOW         用户PIN计数低
+CKF_USER_PIN_FINAL_TRY         用户PIN最后一次尝试
+CKF_USER_PIN_LOCKED            用户PIN锁定
+CKF_SO_PIN_COUNT_LOW           SO PIN计数低
+CKF_SO_PIN_FINAL_TRY           SO PIN最后一次尝试
+CKF_SO_PIN_LOCKED              SO PIN锁定
+CKF_SO_PIN_TO_BE_CHANGED       SO PIN需要更改
+CKF_USER_PIN_TO_BE_CHANGED     用户PIN需要更改
+</code></pre>
+<hr>
+<h3 id="token初始化流程"><a class="header" href="#token初始化流程">Token初始化流程</a></h3>
+<p>Token初始化创建Token目录和元数据：</p>
+<pre><code class="language-cpp">OSToken* OSToken::createToken(const std::string basePath, 
+                               const std::string tokenDir, 
+                               int umask, 
+                               const ByteString&amp; label, 
+                               const ByteString&amp; serial)
+{
+    std::string tokenPath = basePath + "/" + tokenDir;
+    
+    // 1. 创建Token目录
+    Directory dir(tokenPath);
+    if (!dir.createDirectory()) {
+        return NULL;
+    }
+    
+    // 2. 创建Generation文件
+    Generation gen(tokenPath + "/generation");
+    if (!gen.create()) {
+        return NULL;
+    }
+    
+    // 3. 创建Token Object文件
+    ObjectFile* tokenObject = new ObjectFile(NULL, 
+                                              tokenPath + "/token.object", 
+                                              umask, 
+                                              tokenPath + "/token.lock", 
+                                              true);
+    
+    // 4. 设置Token属性
+    tokenObject-&gt;startTransaction();
+    
+    tokenObject-&gt;setAttribute(CKA_LABEL, OSAttribute(label));
+    tokenObject-&gt;setAttribute(CKA_SERIAL_NUMBER, OSAttribute(serial));
+    tokenObject-&gt;setAttribute(CKA_TOKEN_FLAGS, OSAttribute(0));
+    
+    tokenObject-&gt;commitTransaction();
+    
+    // 5. 创建OSToken实例
+    OSToken* token = new OSToken(tokenPath, label, umask, serial);
+    token-&gt;tokenObject = tokenObject;
+    
+    return token;
+}
+</code></pre>
+<hr>
+<h3 id="token对象索引"><a class="header" href="#token对象索引">Token对象索引</a></h3>
+<p>OSToken需要枚举Token目录中的所有Object：</p>
+<pre><code class="language-cpp">bool OSToken::index(bool isFirstTime)
+{
+    MutexLocker lock(tokenMutex);
+    
+    // 1. 获取目录中的文件列表
+    Directory dir(tokenPath);
+    std::list&lt;std::string&gt; files = dir.getFiles();
+    
+    // 2. 更新当前文件集合
+    std::set&lt;std::string&gt; newFiles;
+    for (const std::string&amp; file : files) {
+        if (file.find(".object") != std::string::npos) {
+            newFiles.insert(file);
+        }
+    }
+    
+    // 3. 检查新增文件
+    for (const std::string&amp; file : newFiles) {
+        if (currentFiles.find(file) == currentFiles.end()) {
+            // 新文件，创建ObjectFile
+            ObjectFile* obj = new ObjectFile(this, 
+                                              tokenPath + "/" + file, 
+                                              umask, 
+                                              tokenPath + "/" + file + ".lock");
+            if (obj-&gt;isValid()) {
+                objects.insert(obj);
+                allObjects.insert(obj);
+            }
+        }
+    }
+    
+    // 4. 检查删除文件
+    for (const std::string&amp; file : currentFiles) {
+        if (newFiles.find(file) == newFiles.end()) {
+            // 文件被删除，使Object无效
+            for (auto it = objects.begin(); it != objects.end(); ) {
+                ObjectFile* obj = (ObjectFile*)*it;
+                if (obj-&gt;getFilename() == file) {
+                    obj-&gt;invalidate();
+                    it = objects.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        }
+    }
+    
+    // 5. 更新当前文件集合
+    currentFiles = newFiles;
+    
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="dbtoken数据库存储实现"><a class="header" href="#dbtoken数据库存储实现">DBToken：数据库存储实现</a></h3>
+<p>DBToken使用SQLite数据库存储Token：</p>
+<pre><code class="language-cpp">class DBToken : public ObjectStoreToken
+{
+public:
+    DBToken(const std::string &amp;baseDir, const std::string &amp;tokenName, 
+            int umask, const ByteString&amp; label, const ByteString&amp; serial);
+    
+    DBToken(const std::string &amp;baseDir, const std::string &amp;tokenName, int umask);
+    
+    static DBToken* createToken(...);
+    static DBToken* accessToken(...);
+    
+    virtual bool setSOPIN(const ByteString&amp; soPINBlob);
+    virtual bool getSOPIN(ByteString&amp; soPINBlob);
+    virtual bool setUserPIN(ByteString userPINBlob);
+    virtual bool getUserPIN(ByteString&amp; userPINBlob);
+    
+    virtual std::set&lt;OSObject*&gt; getObjects();
+    virtual OSObject* createObject();
+    virtual bool deleteObject(OSObject* object);
+    
+    virtual bool isValid();
+    virtual bool clearToken();
+
+private:
+    DB::Connection *_connection;
+    std::map&lt;long long, OSObject*&gt; _allObjects;
+    Mutex* _tokenMutex;
+};
+</code></pre>
+<p><strong>数据库结构</strong>：</p>
+<pre><code>SQLite数据库表结构：
+
+┌─────────────────────────────────────────────────────────────┐
+│                    SQLite Database                          │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  token表                                             │   │
+│  │  ├── label                                          │   │
+│  │  ├── serial                                         │   │
+│  │  ├── flags                                          │   │
+│  │  ├── so_pin                                         │   │
+│  │  ├── user_pin                                       │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  objects表                                           │   │
+│  │  ├── id (主键)                                       │   │
+│  │  ├── uuid                                           │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  attributes_bool表                                   │   │
+│  │  ├── object_id                                       │   │
+│  │  ├── type                                            │   │
+│  │  ├── value                                           │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  attributes_ulong表                                  │   │
+│  │  ├── object_id                                       │   │
+│  │  ├── type                                            │   │
+│  │  ├── value                                           │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  attributes_bytes表                                  │   │
+│  │  ├── object_id                                       │   │
+│  │  ├── type                                            │   │
+│  │  ├── value                                           │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="dbobject数据库object实现"><a class="header" href="#dbobject数据库object实现">DBObject：数据库Object实现</a></h3>
+<p>DBObject将属性存储在数据库表中：</p>
+<pre><code class="language-cpp">class DBObject : public OSObject
+{
+public:
+    DBObject(DB::Connection* connection, long long id);
+    
+    virtual bool attributeExists(CK_ATTRIBUTE_TYPE type);
+    virtual OSAttribute getAttribute(CK_ATTRIBUTE_TYPE type);
+    virtual bool setAttribute(CK_ATTRIBUTE_TYPE type, const OSAttribute&amp; attribute);
+    virtual bool deleteAttribute(CK_ATTRIBUTE_TYPE type);
+    
+    virtual bool isValid();
+    virtual bool destroyObject();
+
+private:
+    DB::Connection* connection;
+    long long objectId;
+    bool valid;
+    Mutex* objectMutex;
+};
+</code></pre>
+<p><strong>属性读写</strong>：</p>
+<pre><code class="language-cpp">bool DBObject::setAttribute(CK_ATTRIBUTE_TYPE type, const OSAttribute&amp; attribute)
+{
+    // 根据属性类型选择表
+    std::string tableName;
+    if (attribute.isBooleanAttribute()) {
+        tableName = "attributes_bool";
+    } else if (attribute.isUnsignedLongAttribute()) {
+        tableName = "attributes_ulong";
+    } else {
+        tableName = "attributes_bytes";
+    }
+    
+    // 执行SQL
+    std::string sql = "INSERT OR REPLACE INTO " + tableName + 
+                      " (object_id, type, value) VALUES (?, ?, ?)";
+    
+    // ...
+    return true;
+}
+
+OSAttribute DBObject::getAttribute(CK_ATTRIBUTE_TYPE type)
+{
+    // 尝试从各个表获取
+    // 先尝试bool表
+    // ...
+    
+    // 再尝试ulong表
+    // ...
+    
+    // 最后尝试bytes表
+    // ...
+    
+    return OSAttribute();
+}
+</code></pre>
+<hr>
+<h3 id="文件存储-vs-数据库存储"><a class="header" href="#文件存储-vs-数据库存储">文件存储 vs 数据库存储</a></h3>
+<p>两种存储方式的对比：</p>
+<pre><code>文件存储 vs 数据库存储对比：
+
+特性                文件存储（OSToken）       数据库存储（DBToken）
+─────────────────────────────────────────────────────────────────
+实现复杂度           简单                      复杂
+性能                 较低（多文件）            较高（单数据库）
+并发性能             较差（文件锁）            较好（事务）
+数据完整性           较低                      较高
+备份恢复             简单（复制目录）          简单（复制数据库）
+跨平台               很好                      需SQLite支持
+适用场景             小规模、简单场景          大规模、高性能场景
+─────────────────────────────────────────────────────────────────
+</code></pre>
+<hr>
+<h3 id="token销毁流程"><a class="header" href="#token销毁流程">Token销毁流程</a></h3>
+<p>Token销毁清空Token内容：</p>
+<pre><code class="language-cpp">bool OSToken::clearToken()
+{
+    MutexLocker lock(tokenMutex);
+    
+    // 1. 使所有Object无效
+    for (OSObject* obj : objects) {
+        obj-&gt;destroyObject();
+    }
+    objects.clear();
+    
+    // 2. 删除Token目录中的所有文件
+    Directory dir(tokenPath);
+    std::list&lt;std::string&gt; files = dir.getFiles();
+    for (const std::string&amp; file : files) {
+        File::remove(tokenPath + "/" + file);
+    }
+    
+    // 3. 删除Generation文件
+    if (gen != NULL) {
+        gen-&gt;reset();
+    }
+    
+    // 4. 使Token无效
+    valid = false;
+    
+    return true;
+}
+
+bool OSToken::resetToken(const ByteString&amp; label)
+{
+    MutexLocker lock(tokenMutex);
+    
+    // 1. 清空Token
+    clearToken();
+    
+    // 2. 重新创建Token Object
+    tokenObject = new ObjectFile(NULL, 
+                                  tokenPath + "/token.object", 
+                                  umask, 
+                                  tokenPath + "/token.lock", 
+                                  true);
+    
+    // 3. 设置新属性
+    tokenObject-&gt;startTransaction();
+    tokenObject-&gt;setAttribute(CKA_LABEL, OSAttribute(label));
+    tokenObject-&gt;setAttribute(CKA_TOKEN_FLAGS, OSAttribute(0));
+    tokenObject-&gt;commitTransaction();
+    
+    // 4. 使Token有效
+    valid = true;
+    
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="一个类比保险箱库的管理"><a class="header" href="#一个类比保险箱库的管理">一个类比：保险箱库的管理</a></h3>
+<pre><code>保险箱库管理类比：
+
+保险箱库（Token）
+│
+├── 库记录簿（token.object文件）
+│   ├── 库名称（Label）
+│   ├── 库编号（Serial）
+│   ├── 库状态（Flags）
+│   │   ├── 是否开放
+│   │   ├── 是否锁定
+│   │   ├── 是否需要管理员在场
+│   │
+│   ├── 管理员密码（SO PIN Blob）
+│   │   ├── 加密存储
+│   │   ├── 带验证Hash
+│   │
+│   └── 客户密码（User PIN Blob）
+│       ├── 加密存储
+│       ├── 带验证Hash
+│
+├── 保险箱存储方式
+│   │
+│   ├── 文件存储方式（OSToken）
+│   │   ├── 每个保险箱一个文件柜
+│   │   ├── 内容直接写入文件
+│   │   ├── 简单但效率较低
+│   │
+│   └── 数据库存储方式（DBToken）
+│       ├── 所有保险箱记录在一个大账本
+│       ├── 按类型分页存储属性
+│       ├── 复杂但效率较高
+│
+└── 库管理操作
+    ├── 创建库（createToken）
+    ├── 清空库（clearToken）
+    ├── 重置库（resetToken）
+    └── 销毁库（destroyToken）
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们分析了Token存储实现。</p>
+<p><strong>ObjectStoreToken接口</strong>：</p>
+<ul>
+<li>定义Token存储的统一接口</li>
+<li>支持PIN、Flags、Label等元数据管理</li>
+<li>支持Object创建/删除</li>
+</ul>
+<p><strong>两种实现</strong>：</p>
+<ul>
+<li>OSToken：文件存储，每个Object一个文件</li>
+<li>DBToken：数据库存储，所有属性在表中</li>
+</ul>
+<p><strong>PIN存储</strong>：</p>
+<ul>
+<li>不是明文存储</li>
+<li>以Blob形式加密存储</li>
+<li>包含Hash用于快速验证</li>
+</ul>
+<p><strong>Token Flags</strong>：</p>
+<ul>
+<li>记录Token状态（初始化、锁定等）</li>
+<li>记录PIN状态（低计数、锁定等）</li>
+</ul>
+<p><strong>后端选择</strong>：</p>
+<ul>
+<li>配置文件指定backend类型</li>
+<li>file（默认）或db</li>
+</ul>
+<p>下一节，我们将分析密码模块架构——CryptoFactory如何抽象密码后端。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>SoftHSM2如何实现密码算法？</p>
+<p>CryptoFactory是什么？</p>
+<p>Botan和OpenSSL如何被集成？</p>
+<p>AES、RSA、SHA如何实现？</p>
+<p>下一节，CryptoFactory架构。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/4.8-Object存储架构.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/4.10-CryptoFactory架构.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/4.8-Object存储架构.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/4.10-CryptoFactory架构.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

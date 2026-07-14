@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>传输层对决 · CAN与DoIP的共存 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="34-传输层对决can与doip的共存"><a class="header" href="#34-传输层对决can与doip的共存">3.4 传输层对决——CAN与DoIP的共存</a></h1>
+<h3 id="两个通道一台诊断仪"><a class="header" href="#两个通道一台诊断仪">两个通道，一台诊断仪</a></h3>
+<p>你站在2026年某高端新能源品牌的售后车间里，手中握着最新的诊断仪。这个诊断仪背面有两个数据接口——一个标准的DB9 CAN接口，一个RJ45以太网接口。中间的OBD-II连接器统一了物理形态——但内部并行了CAN_H/CAN_L双绞线和100BASE-T1以太网单对双绞线。</p>
+<p>你面对一台全新架构的中央计算平台ECU——它同时支持CAN诊断和DoIP以太网诊断。你该插哪个口？</p>
+<p>答案不是“随便哪个都一样“。答案取决于<strong>你想做什么</strong>。让你来串联两个世界的不是偏好——是用例。</p>
+<hr>
+<h3 id="为什么两套传输层必须共存从obd-ii到zonal架构"><a class="header" href="#为什么两套传输层必须共存从obd-ii到zonal架构">为什么两套传输层必须共存——从OBD-II到Zonal架构</a></h3>
+<p>要理解CAN和DoIP的共存逻辑，你首先得理解一个残酷的现实：<strong>CAN的物理带宽天花板。</strong></p>
+<p>ISO 15765-2定义在经典CAN 2.0B上（1Mbps理论速率）。一根1Mbps的CAN总线上承载着几十个ECU的周期性报文、事件报文、诊断报文——留给诊断的净有效带宽通常不到200kbps。按这个速度，传输4MB固件升级镜像需要多久？</p>
+<pre><code>4MB = 4 × 1024 × 1024 = 4,194,304 B
+CAN 单帧payload: 7B
+需要帧数: 4,194,304 / 7 ≈ 599,186 帧
+单帧周期(含CAN ID+CRC+应答): ~130μs at 500kbps
+总传输时间: 599,186 × 130μs ≈ 77.9秒
+加上STmin=1ms间隔: 77.9 + 599 × 1ms ≈ 679秒 ≈ 11分钟
+
+&gt; 以上为经典CAN（2.0B）计算。如果使用CAN FD（payload 64字节，速率最高8Mbps），同样4MB固件可缩短至约1~2分钟——虽仍不及以太网，但已从"喝杯咖啡"改善到"稍等片刻"。
+</code></pre>
+<p>11分钟传一个固件。在没有以太网的年代，维修技师插上诊断仪，开始刷写，去喝杯咖啡回来——还在传。这是OBD-II时代（乃至早期UDS on CAN时代）的真实工作流。</p>
+<p>而同一块固件在100Mbps以太网上：</p>
+<pre><code>4,194,304 B / (100Mbps/8) ≈ 335ms 裸文件传输
+加上TCP握手、DoIP路由激活、正响应确认: &lt;5秒
+</code></pre>
+<p>从11分钟到5秒——这不是“快了“，这是一个量级的跃迁。<strong>当数据量超过某个临界值（约10KB），CAN的传输时间开始变得不可接受。</strong> 这是CAN不能替代以太网的第一原因——物理带宽。</p>
+<p><strong>但反过来——能不能只用以太网、扔掉CAN？</strong></p>
+<p>不能。三个原因：</p>
+<ol>
+<li>
+<p><strong>部分ECU没有以太网PHY。</strong> ABS/ESP、气囊、胎压监测——这些底层ECU用CAN已经几十年了——加一颗100BASE-T1 PHY意味着加0.8美元的BOM成本——乘以一年百万台车的规模——这是不容忽视的成本。而它们在CAN上工作得很好。</p>
+</li>
+<li>
+<p><strong>以太网的实时性不如CAN。</strong> CAN的仲裁机制提供了天然的实时优先级——一个高优先级的CAN帧在正在发送的低优先级帧结束后<strong>立即</strong>获得的仲裁——最坏情况延迟是1个最坏帧的时间（~130μs）。而以太网的TCP重传、交换机缓冲——延迟是不可预测的。对安全气囊展开和ABS制动的诊断——CAN的确定性延迟比分发TCP数据包的毫秒级抖动更可靠。</p>
+</li>
+<li>
+<p><strong>以太网交换机的物理可靠性不如CAN收发器。</strong> 在高温、振动、电磁干扰的车载环境下，CAN的差分双绞线+错误检测具有29年的验证历史。100BASE-T1虽然设计指标优秀——但现场实际验证时间还不够长。</p>
+</li>
+</ol>
+<p>结论：<strong>CAN和以太网在车载诊断场景里不是替代关系——是互补关系。</strong> CAN负责“频繁、实时、小数据量“的诊断交互——以太网负责“偶尔、批量、大数据量“的诊断传输。</p>
+<hr>
+<h3 id="数字对决全程定量对比"><a class="header" href="#数字对决全程定量对比">数字对决——全程定量对比</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>CAN (ISO 15765-2)</th><th>DoIP (ISO 13400)</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>物理层</strong></td><td>CAN 2.0B (双绞线差分)</td><td>100BASE-T1 (单对双绞线) 或标准100BASE-TX</td></tr>
+<tr><td><strong>物理层速率</strong></td><td>500kbps / 1Mbps</td><td>100Mbps / 1000Mbps (未来)</td></tr>
+<tr><td><strong>有效应用吞吐</strong></td><td>~200kbps（含ID+CRC+应答开销）</td><td>~95Mbps（TCP开销约5%）</td></tr>
+<tr><td><strong>最大UDS消息</strong></td><td>4095字节（FF 12位DL字段上限）</td><td>理论4GB（DoIP payload支持32位长度）——实际受TCP MSS约束，协议规定最小支持65535</td></tr>
+<tr><td><strong>分段方式</strong></td><td>PCI + FF→FC→CF，硬件层分段</td><td>TCP流——零应用层分段</td></tr>
+<tr><td><strong>连接建立</strong></td><td>无连接——随时可发单帧</td><td>TCP三次握手 + DoIP Routing Activation</td></tr>
+<tr><td><strong>地址发现</strong></td><td>无（CAN ID即地址）</td><td>IPv4/v6地址分配（DHCP或AutoIP） + Vehicle Announcement/Identification</td></tr>
+<tr><td><strong>多ECU通信</strong></td><td>功能寻址（广播CAN ID）</td><td>广播UDP + 单播TCP</td></tr>
+<tr><td><strong>延迟确定性</strong></td><td>高——最坏帧延迟可精确计算(~130μs)</td><td>低——交换机缓冲、TCP重传引入抖动</td></tr>
+<tr><td><strong>硬件成本(ECU端)</strong></td><td>~$0.15 (CAN收发器)</td><td>~$1.50 (100BASE-T1 PHY + MAC)</td></tr>
+<tr><td><strong>EMC抗干扰</strong></td><td>极高——29年验证历史</td><td>高——100BASE-T1设计优良但验证时间短</td></tr>
+<tr><td><strong>诊断对接设备</strong></td><td>CAN-USB/PCAN (~$30)</td><td>标准以太网线 (~$2) + 软件协议栈</td></tr>
+<tr><td><strong>适合操作</strong></td><td>读DTC、读DID、TesterPresent、会话切换、RoutineControl</td><td>固件刷写、大批量数据读取、OTA远程升级</td></tr>
+<tr><td><strong>网络拓扑</strong></td><td>总线式——所有节点共享带宽</td><td>星型——交换机隔离流量</td></tr>
+<tr><td><strong>帧优先级</strong></td><td>消息ID仲裁（硬件）</td><td>无——TCP公平竞争</td></tr>
+<tr><td><strong>会话管理</strong></td><td>UDS DCM层管理——传输层无状态</td><td>DoIP层额外的Socket管理——连接维护有成本</td></tr>
+<tr><td><strong>远程访问</strong></td><td>不可能——CAN只能在本地物理总线</td><td>原生支持——通过互联网IP路由可达</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>核心洞察</strong>：CAN诊断是“打电话“——拨号即通、实时对话、但带宽有限。DoIP诊断是“发电子邮件“——需要建立连接、延迟稍高、但可以传输任意大小的附件。两套体系共享同一个UDS应用层（DCM），这意味着你的0x22读DID的业务逻辑代码同一套——变动的只是传输通道。这正是AUTOSAR架构PduR（PDU Router）的职责——将UDS PDU从通道中抽象出来。</p>
+</blockquote>
+<hr>
+<h3 id="双通道并存的实现挑战pdur的仲裁艺术"><a class="header" href="#双通道并存的实现挑战pdur的仲裁艺术">双通道并存的实现挑战——PduR的仲裁艺术</a></h3>
+<p>如果一个ECU同时打开CAN诊断和DoIP诊断两个通道，架构上会发生什么？</p>
+<pre><code>                    ┌──────────UDS Application──────────┐
+                    │         DCM (Diagnostic            │
+                    │     Communication Manager)         │
+                    │           │                        │
+                    │      PduR (PDU Router)             │
+                    │         /          \               │
+                    │   PduRCanTp     PduRDoIP           │
+                    │       │              │              │
+                    └───────┼──────────────┼──────────────┘
+                            │              │
+                    ┌───────┼──────────────┼──────────────┐
+                    │ CanTp │         DoIP │              │
+                    │ (ISO  │     (ISO     │              │
+                    │15765-2│     13400)   │   Transport  │
+                    │   │   │         │    │   Layer      │
+                    │ CAN  │    TCP/IP    │              │
+                    │  IF  │    Stack     │              │
+                    └──┬───┴──────┬──────┴──────────────┘
+                       │          │
+                ┌──────┴───┐ ┌───┴──────┐
+                │ CAN Bus  │ │Ethernet  │
+                │          │ │  Switch  │
+                └──────────┘ └──────────┘
+</code></pre>
+<p><strong>挑战1：会话竞争——两个诊断仪、一个ECU</strong></p>
+<p>最激烈的冲突场景：两个不同的诊断仪——一个通过CAN、另一个通过以太网——同时向同一个ECU发起物理寻址诊断请求。</p>
+<pre><code>时间线:
+T=0    CAN诊断仪 → ECU:  0x10 0x03 (切换到扩展会话)
+T=1ms  ECU → CAN诊断仪:   0x50 0x03 (OK——CAN诊断仪获得了会话控制权)
+
+T=20ms 以太网诊断仪 → ECU: 0x10 0x03 (也切换到扩展会话)
+T=21ms ECU内部：冲突检测——当前已有一个物理会话在CAN通道上活跃
+         →
+         根据ISO 14229-2的会话抢占规则：
+         - 后来的physical addressing请求可以抢占前一个
+         - 前一个被抢占方收到Session Timeout Notification
+         → ECU → 以太网诊断仪: 0x50 0x03 (OK——抢占成功)
+         → ECU → CAN诊断仪:   S3Server Timer重置为默认会话倒计时
+</code></pre>
+<p>会话抢占是ECU DCM的一个关键设计——<strong>同一时刻只允许一个物理寻址方控制诊断会话。</strong> 后来的抢占先前的——这是ISO 14229-2明确规定的规则。如果你不实现抢占——两个诊断仪同时向ECU发包——结果完全不可预测。</p>
+<p><strong>挑战2：资源竞争——共用的内存池和计算资源</strong></p>
+<p>CAN处理链路和DoIP处理链路共享同一个ECU的诊断处理的资源池：</p>
+<pre><code>资源冲突的典型场景:
+  1. 诊断缓冲区(DiagBuffer)只有一个——不能同时被两路请求使用
+  2. NvM的读写队列是串行的——CAN通道在执行NvM读时，DoIP不能同时读
+  3. P2/P2*定时器是全局的——CAN请求触发了P2，DoIP也需要等待
+  4. 安全访问状态(seed/key)是全局的——一条通道解锁≠另一条自动解锁
+</code></pre>
+<p><strong>解决方案：</strong> PduR（或更上层的DCM）实现了请求队列（Request Queue）——将来自不同通道的UDS请求按到达时间顺序排列、逐一处理。如果一条通道的请求正在处理中——另一条通道的新请求在队列中等待，如果等待时间超过P2——发送NRC 0x78(RCRRP)给发送方以示“正在处理中“。</p>
+<p><strong>挑战3：时序同步——全局定时器的误导</strong></p>
+<pre><code>问题:
+  CAN发送方使用了P2=50ms的默认时间窗口
+  DoIP发送方等待TCP ACK和响应也需要确认P2
+
+  如果ECU对所有通道共享同一个P2定时器：
+    - CAN侧的请求用了40ms处理——DoIP侧只有10ms剩余时间
+    - DoIP侧请求的数据量更大——10ms根本不够
+    - 结果: DoIP请求超时——即使ECU还在正常工作
+</code></pre>
+<p><strong>最佳实践：</strong> 大多数实现为每个通道维护独立的P2/P2*定时器实例——而不是全局单例。CAN侧的超时窗口和DoIP侧的超时窗口各自独立运行——互不干扰。</p>
+<hr>
+<h3 id="实战策略什么场景选什么通道"><a class="header" href="#实战策略什么场景选什么通道">实战策略——什么场景选什么通道</a></h3>
+<p><strong>快速诊断查询——走CAN：</strong></p>
+<pre><code>诊断仪要做的事: 读取发动机ECU的3个当前DTC
+数据量: 请求7B + 响应约50B
+最佳通道: CAN
+
+理由:
+  1. 50B在CAN上通过SF或少量CF即可完成——不需要TCP握手开销
+  2. TCP握手=3次往返(~5ms)比CAN的直接SF(0.13ms)慢40倍
+  3. 不需要维护TCP连接状态——简单、确定性高
+
+场景文本:
+  你开着诊断仪在车间快检——插上OBD、读取DTC、3秒出结果。
+  用CAN，诊断仪和ECU之间的交互就像面对面问诊。
+</code></pre>
+<p><strong>固件升级——走DoIP：</strong></p>
+<pre><code>诊断仪要做的事: 刷写中央计算平台ECU的新版固件
+数据量: 单个固件镜像 ~120MB
+最佳通道: DoIP (Ethernet)
+
+理由:
+  1. 120MB在500kbps CAN上需要约55分钟
+  2. 120MB在100Mbps以太网上需要约11秒 (纯数据)
+  3. DoIP的段式传输(TransferData)天然适合TCP流的大块输送
+  4. 升级过程中的完整性校验(CRC32)在带宽充足的通道上几乎不影响整体时间
+
+场景文本:
+  车间技师在诊断仪屏幕上点下"开始升级"——
+  DoIP通道在30秒内完成了固件传输+校验+ECU复位。
+  如果用CAN，技师得等一个小时——意味着这台车的升级服务费要涨
+  好几个工时。
+</code></pre>
+<p><strong>实时参数监控——走CAN：</strong></p>
+<pre><code>诊断仪要做的事: 在路试中实时画出发动机转速、车速、增压压力、爆震计数——每秒刷新10次
+数据量: 每个周期约20B，每秒10次 = 200B/s
+最佳通道: CAN
+
+理由:
+  1. 200B/s远低于CAN有效带宽——完全不是瓶颈
+  2. CAN的确定性延迟确保每个刷新周期的数据在固定时间窗口内到达
+  3. TCP的Nagle算法和延迟ACK可能引入不可预测的抖动——
+     在速度-时间图上表现为"画面一卡一卡
+  4. 以太网在车辆行驶中的物理连接可靠性不如CAN
+
+场景文本:
+  你坐在副驾，诊断仪屏幕上六条彩色曲线跟随引擎的咆哮实时跳动。
+  每一帧数据都在固定的10ms窗口内刷新——CAN的确定性让你看到的
+  不是回放，是实时。
+</code></pre>
+<p><strong>远程OTA升级——只能走DoIP：</strong></p>
+<pre><code>诊断仪(云服务器)要做的事: 通过互联网远程推送安全补丁
+数据量: 差异包 ~5MB
+最佳通道: DoIP (Ethernet → OTA Gateway → 车内以太网)
+
+理由:
+  1. CAN不经过IP网络——物理隔绝了远程访问
+  2. DoIP基于TCP/IP——网关可以将请求路由到TBox然后进车内以太网
+  3. 安全性——DoIP支持TLS加密——这是CAN完全没有的能力
+
+场景文本:
+  凌晨2点，云端服务器向全球车队推送了一个安全补丁。
+  车辆停在地下车库，通过TBox的4G/5G连接接收更新——
+  补丁通过DoIP→车内以太网→目标ECU→自验证→自安装。
+  第二天早上车主启动车辆——更新已经完成且静默生效。
+</code></pre>
+<hr>
+<h3 id="未来展望can-xl与10base-t1s"><a class="header" href="#未来展望can-xl与10base-t1s">未来展望——CAN XL与10BASE-T1S</a></h3>
+<p>双通道共存的格局在可见的未来不会改变——但两个通道自身都在进化：</p>
+<p><strong>CAN侧：</strong></p>
+<ul>
+<li><strong>CAN FD（Flexible Data-rate）</strong>：payload从8字节扩展到64字节——大幅减少了多帧传输的CF帧数量。一个260字节的响应只需要4个CAN FD帧——而不是37个经典CAN帧。</li>
+<li><strong>CAN XL</strong>：payload扩展到2048字节，速率提升到10Mbps+ —— 对于中等规模的诊断操作（如小型固件升级包），CAN XL可以吃掉过去只能走以太网的使用场景。</li>
+</ul>
+<p><strong>以太网侧：</strong></p>
+<ul>
+<li><strong>10BASE-T1S</strong>：10Mbps单对双绞线以太网——物理层成本逼近CAN收发器——专为成本敏感的底层ECU设计。如果1美分的10BASE-T1S PHY可以装进ABS ECU——那ABS也可以享受DoIP的带宽。</li>
+<li><strong>TSN（Time-Sensitive Networking）</strong>：为以太网增加了确定性延迟保证——填补了CAN在实时性上的独特优势。如果TSN成熟——以太网将同时拥有带宽和实时性。</li>
+</ul>
+<p><strong>但本质格局不变：低延迟+确定性→CAN（及其进化版），高带宽+IP路由→以太网。两者不是替代——是UDS诊断体系的南北两极。</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>CAN和以太网在车载诊断中不是替代关系而是互补关系——CAN提供实时、轻量、低成本的诊断交互通道，以太网提供高带宽、可远程、大数据量的诊断传输管道。两者共享同一套UDS应用层（DCM），通过PduR实现通道抽象。</li>
+<li>定量对比：CAN的有效诊断带宽约200kbps、最坏延迟可精确计算(~130μs)、硬件成本约$0.15；DoIP的有效带宽约95Mbps、延迟有TCP抖动不可预测、硬件成本约$1.50。差距在各维度上都是数量级的。</li>
+<li>双通道并存的三大挑战：会话竞争（后来的抢占先前的——ISO 14229-2规则）、资源竞争（共用诊断缓冲区/NvM/P2定时器——需要PduR请求队列管理）、时序同步（每个通道应维护独立的P2/P2*定时器）。</li>
+<li>实战策略：快速查询(读DTC/读DID)走CAN——省去了TCP握手开销；固件升级/大数据回读走DoIP——带宽优势碾压；实时参数监控走CAN——确定性延迟无抖动；远程OTA只能走DoIP——TCP/IP是远程访问的物理基础。</li>
+<li>未来趋势：CAN FD/CAN XL将扩展CAN的payload和速率；10BASE-T1S将降低以太网的硬件成本门槛；TSN将为以太网注入确定性。但在可预见的未来，双通道共存是UDS诊断的常态架构。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：你已经掌握了UDS在两个主流传输层上的编码方式——ISO 15765-2在CAN上的单帧/多帧/流控机制，以及ISO 13400 DoIP基于TCP/IP的诊断传输。下一步——拆开真实生产级ECU诊断源码——进入第4章——Arctic Core源码解析——看一个AUTOSAR兼容的DCM如何把第2章的全部协议逻辑翻译成C代码。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/3.3-ISO-13400-DoIP协议.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/4.1-DCM全景-AUTOSAR诊断栈的透明大厦.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/3.3-ISO-13400-DoIP协议.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/4.1-DCM全景-AUTOSAR诊断栈的透明大厦.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

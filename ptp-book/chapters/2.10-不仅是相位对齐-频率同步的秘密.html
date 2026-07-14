@@ -1,0 +1,684 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>不仅是相位对齐 · 频率同步的秘密 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="210-不仅是相位对齐频率同步的秘密"><a class="header" href="#210-不仅是相位对齐频率同步的秘密">2.10 不仅是相位对齐：频率同步的秘密</a></h1>
+<h2 id="两个时钟两个心跳"><a class="header" href="#两个时钟两个心跳">两个时钟，两个“心跳“</a></h2>
+<p>想象两个跑步者在跑道上跑步。</p>
+<p><strong>情况一</strong>：两个人跑得一样快，但位置不同。</p>
+<ul>
+<li>跑步者A在起点</li>
+<li>跑步者B在起点前10米</li>
+</ul>
+<p>这是<strong>相位偏差</strong>。解决方案：让B后退10米，两人就同步了。</p>
+<p>上一节讲的相位调整，就是这个“后退10米“。</p>
+<p><strong>情况二</strong>：两人位置相同，但速度不同。</p>
+<ul>
+<li>跑步者A每秒跑10米</li>
+<li>跑步者B每秒跑10.1米</li>
+</ul>
+<p>这是<strong>频率偏差</strong>。即使现在位置相同，10秒后B就会领先1米。</p>
+<p>相位调整只解决了“现在并排“，但没有解决“一直并排“。</p>
+<p>这一节，我们深入探讨<strong>频率同步</strong>——如何调整时钟的“心跳速度“。</p>
+<hr>
+<h2 id="什么是频率偏差"><a class="header" href="#什么是频率偏差">什么是频率偏差？</a></h2>
+<p><strong>频率偏差（Frequency Offset）</strong>：从时钟的走时速度与主时钟走时速度的差异。</p>
+<p><strong>符号</strong>：y 或 Δf/f</p>
+<p><strong>单位</strong>：无量纲（ppm、ppb等）</p>
+<p><strong>比喻</strong>：两个跑步者，一个每秒跑10米，一个每秒跑10.01米。这0.01米/秒的差异就是频率偏差。</p>
+<p><strong>关键洞察</strong>：</p>
+<p>相位偏差是频率偏差累积的结果：</p>
+<pre><code>相位偏差 = ∫ 频率偏差 dt
+</code></pre>
+<p>示例：</p>
+<pre><code>频率偏差 = +10 ppm（从时钟比主时钟快万分之一）
+经过1000秒
+
+相位偏差 = 10 ppm × 1000秒
+        = 10 × 10⁻⁶ × 1000
+        = 0.01秒
+        = 10毫秒
+</code></pre>
+<p>即使相位调整让时钟对齐了，频率偏差会让它们重新分开。</p>
+<hr>
+<h2 id="为什么频率同步如此重要"><a class="header" href="#为什么频率同步如此重要">为什么频率同步如此重要？</a></h2>
+<h3 id="场景一保持模式holdover"><a class="header" href="#场景一保持模式holdover">场景一：保持模式（Holdover）</a></h3>
+<p>假设从时钟同步到主时钟，相位偏差接近0。</p>
+<p>突然，主时钟故障，从时钟失去参考。</p>
+<p>如果从时钟没有频率同步：</p>
+<ul>
+<li>本地晶振频率偏差：+10ppm</li>
+<li>每秒累积误差：10微秒</li>
+<li>每分钟累积误差：600微秒</li>
+<li>每小时累积误差：36毫秒</li>
+</ul>
+<p>如果频率已同步：</p>
+<ul>
+<li>知道频率补偿值：-10ppm</li>
+<li>即使失去主时钟，仍可以应用这个补偿</li>
+<li>误差累积速度大大降低</li>
+</ul>
+<h3 id="场景二减少同步报文频率"><a class="header" href="#场景二减少同步报文频率">场景二：减少同步报文频率</a></h3>
+<p>如果从时钟的频率已经同步到主时钟：</p>
+<ul>
+<li>频率偏差接近0</li>
+<li>相位偏差累积很慢</li>
+<li>可以减少Sync报文频率</li>
+</ul>
+<p><strong>好处</strong>：</p>
+<ul>
+<li>降低网络负载</li>
+<li>降低CPU负载</li>
+<li>仍能保持精度</li>
+</ul>
+<h3 id="场景三长期稳定"><a class="header" href="#场景三长期稳定">场景三：长期稳定</a></h3>
+<p>相位调整只能暂时对齐时钟。</p>
+<p>如果没有频率同步：</p>
+<ul>
+<li>每隔几秒就要调整一次</li>
+<li>时钟不断跳变</li>
+<li>系统不稳定</li>
+</ul>
+<p>有了频率同步：</p>
+<ul>
+<li>相位偏差累积很慢</li>
+<li>调整频率降低</li>
+<li>系统长期稳定</li>
+</ul>
+<hr>
+<h2 id="ptp中的频率同步机制"><a class="header" href="#ptp中的频率同步机制">PTP中的频率同步机制</a></h2>
+<h3 id="方法一从相位偏差推导频率偏差"><a class="header" href="#方法一从相位偏差推导频率偏差">方法一：从相位偏差推导频率偏差</a></h3>
+<p><strong>原理</strong>：通过多次测量相位偏差，计算变化率。</p>
+<p><strong>公式</strong>：</p>
+<pre><code>频率偏差 ≈ (offsetₙ - offsetₙ₋₁) / (Tₙ - Tₙ₋₁)
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code>T₁ = 1000秒，offset₁ = +100ns
+T₂ = 1001秒，offset₂ = +110ns
+
+频率偏差 = (110ns - 100ns) / (1001秒 - 1000秒)
+        = 10ns/秒
+        = 10ppb
+</code></pre>
+<p><strong>实现</strong>：</p>
+<p>从时钟持续测量offsetFromMaster，使用滑动窗口平均或低通滤波，提取频率偏差。</p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>不需要额外报文</li>
+<li>实现简单</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>需要多次测量，收敛慢</li>
+<li>受网络抖动影响</li>
+</ul>
+<h3 id="方法二直接频率测量"><a class="header" href="#方法二直接频率测量">方法二：直接频率测量</a></h3>
+<p><strong>原理</strong>：直接比较主时钟和从时钟的频率。</p>
+<p><strong>Sync报文携带的信息</strong>：</p>
+<ul>
+<li>originTimestamp：Sync报文的发送时间</li>
+<li>correctionField：各种校正值</li>
+</ul>
+<p><strong>从时钟的处理</strong>：</p>
+<ol>
+<li>接收Sync报文，记录接收时间t2</li>
+<li>计算校正后的主时钟发送时间：
+<pre><code>correctedMasterTime = originTimestamp + correctionField + meanDelay
+</code></pre>
+</li>
+<li>记录两次Sync的correctedMasterTime和本地时间</li>
+<li>计算频率比：
+<pre><code>frequencyRatio = (本地时间间隔) / (主时钟时间间隔)
+</code></pre>
+</li>
+</ol>
+<p><strong>示例</strong>：</p>
+<pre><code>Sync 1:
+- 本地接收时间：t₂₁ = 1000.000000100秒
+- 主时钟发送时间（校正后）：T₁ = 1000.000000000秒
+
+Sync 2:
+- 本地接收时间：t₂₂ = 1001.000000110秒
+- 主时钟发送时间（校正后）：T₂ = 1001.000000000秒
+
+本地时间间隔 = t₂₂ - t₂₁ = 1.000000010秒
+主时钟时间间隔 = T₂ - T₁ = 1.000000000秒
+
+频率比 = 1.000000010 / 1.000000000 = 1.000000010
+频率偏差 = 频率比 - 1 = 10ppb
+</code></pre>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>精度高</li>
+<li>收敛快</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>需要准确的meanDelay测量</li>
+</ul>
+<hr>
+<h2 id="频率补偿调整时钟速度"><a class="header" href="#频率补偿调整时钟速度">频率补偿：调整时钟速度</a></h2>
+<p>知道了频率偏差，如何调整？</p>
+<h3 id="基本方法"><a class="header" href="#基本方法">基本方法</a></h3>
+<p><strong>目标</strong>：让从时钟的走时速度与主时钟一致。</p>
+<p><strong>公式</strong>：</p>
+<pre><code>调整后的时钟速度 = 原时钟速度 × (1 - 频率偏差)
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code>频率偏差 = +10 ppm（从时钟快了）
+调整后的时钟速度 = 原速度 × (1 - 0.00001) = 原速度 × 0.99999
+</code></pre>
+<p>让时钟走得慢一点，与主时钟同步。</p>
+<h3 id="软件实现"><a class="header" href="#软件实现">软件实现</a></h3>
+<p><strong>方法</strong>：维护一个频率补偿值，每次读取本地时钟时应用。</p>
+<pre><code class="language-c">double frequency_adjustment = 1.0 - frequency_offset;
+
+Timestamp get_adjusted_time() {
+    Timestamp raw_time = read_hardware_counter();
+    return raw_time * frequency_adjustment + phase_offset;
+}
+</code></pre>
+<h3 id="硬件实现"><a class="header" href="#硬件实现">硬件实现</a></h3>
+<p><strong>方法一：数控振荡器（NCO）</strong></p>
+<p>使用数字控制的方式调整振荡器频率。</p>
+<pre><code>NCO输出频率 = 参考频率 × (控制字 / 2^N)
+</code></pre>
+<p><strong>精度</strong>：</p>
+<p>对于32位NCO，频率调整粒度约为：</p>
+<pre><code>粒度 = 125 MHz / 2^32 ≈ 0.03 Hz ≈ 0.24 ppb
+</code></pre>
+<p><strong>方法二：锁相环（PLL）</strong></p>
+<p>如果主时钟提供1PPS信号，从时钟可以用PLL锁定这个信号，实现频率同步。</p>
+<hr>
+<h2 id="渐进调整通过频率调整消除相位偏差"><a class="header" href="#渐进调整通过频率调整消除相位偏差">渐进调整：通过频率调整消除相位偏差</a></h2>
+<p>上一节提到，阶跃调整（直接修改时钟值）会导致时间跳变或倒退。</p>
+<p>有没有更平滑的方式？</p>
+<p><strong>渐进调整（Slew Adjustment）</strong>：不直接跳变，而是通过调整时钟速度，逐渐消除相位偏差。</p>
+<h3 id="原理"><a class="header" href="#原理">原理</a></h3>
+<p>假设offsetFromMaster = -1毫秒（从时钟慢了1毫秒）。</p>
+<p>不是直接加1毫秒，而是：</p>
+<ul>
+<li>在一段时间内（比如1秒）</li>
+<li>让本地时钟走得稍快一点</li>
+<li>逐渐“追上“主时钟</li>
+</ul>
+<p><strong>数学描述</strong>：</p>
+<pre><code>调整期间，时钟速度 = 正常速度 × (1 - offsetFromMaster / 调整时间)
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code>offsetFromMaster = -1毫秒
+调整时间 = 1秒
+
+时钟速度调整 = -1毫秒 / 1秒 = -1000ppm
+
+在1秒内，时钟以比正常快1000ppm的速度运行：
+- 正常应该走：1秒
+- 实际走了：1秒 × (1 + 0.001) = 1.001秒
+- 相当于"追回"了1毫秒
+
+1秒后，相位偏差消除，时钟恢复正常速度
+</code></pre>
+<h3 id="与频率补偿的区别"><a class="header" href="#与频率补偿的区别">与频率补偿的区别</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">特性</th><th style="text-align: left">渐进调整</th><th style="text-align: left">频率补偿</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>目的</strong></td><td style="text-align: left">消除相位偏差</td><td style="text-align: left">消除频率偏差</td></tr>
+<tr><td style="text-align: left"><strong>持续时间</strong></td><td style="text-align: left">临时（调整完成后恢复）</td><td style="text-align: left">持续（长期应用）</td></tr>
+<tr><td style="text-align: left"><strong>调整幅度</strong></td><td style="text-align: left">较大（可达数千ppm）</td><td style="text-align: left">较小（通常数十ppm）</td></tr>
+<tr><td style="text-align: left"><strong>触发条件</strong></td><td style="text-align: left">相位偏差超过阈值</td><td style="text-align: left">频率偏差被测量出来</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li>时间连续，不跳变，不倒退</li>
+<li>应用层无感知</li>
+<li>比阶跃调整更平滑</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li>调整期间时钟精度降低</li>
+<li>需要更长时间完成调整</li>
+<li>调整幅度有限（不能太大，否则时钟精度太差）</li>
+</ul>
+<hr>
+<h2 id="时钟伺服动态调整的控制"><a class="header" href="#时钟伺服动态调整的控制">时钟伺服：动态调整的控制</a></h2>
+<h3 id="什么是时钟伺服"><a class="header" href="#什么是时钟伺服">什么是时钟伺服？</a></h3>
+<p><strong>伺服（Servo）</strong>：一种自动控制系统，通过反馈不断调整输出，使其跟踪目标值。</p>
+<p><strong>时钟伺服</strong>：一种控制系统，动态调整本地时钟的相位和频率，使其跟踪主时钟。</p>
+<h3 id="为什么需要伺服"><a class="header" href="#为什么需要伺服">为什么需要伺服？</a></h3>
+<p>相位偏差和频率偏差会不断变化：</p>
+<ul>
+<li>网络延迟抖动影响相位测量</li>
+<li>温度变化影响晶振频率</li>
+<li>其他环境因素</li>
+</ul>
+<p>静态的调整值无法应对这些变化。需要动态调整。</p>
+<h3 id="伺服的基本结构"><a class="header" href="#伺服的基本结构">伺服的基本结构</a></h3>
+<pre><code>            ┌─────────────┐
+主时钟 -----&gt;│  比较器     │&lt;------ 本地时钟
+时间        │             │
+            │ 计算误差    │
+            │ (offset)    │
+            └──────┬──────┘
+                   │
+                   ▼
+            ┌─────────────┐
+            │  控制器     │
+            │ (PI)        │
+            └──────┬──────┘
+                   │
+                   ▼
+            ┌─────────────┐
+            │  执行器     │
+            │ (调整时钟)  │
+            └──────┬──────┘
+                   │
+                   └──────────&gt; 相位调整 + 频率调整
+</code></pre>
+<h3 id="pi控制器"><a class="header" href="#pi控制器">PI控制器</a></h3>
+<p>PTP时钟伺服通常使用<strong>PI控制器</strong>（比例-积分控制器）。</p>
+<p><strong>公式</strong>：</p>
+<pre><code>控制输出 = Kp × offset + Ki × ∫offset dt
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><strong>Kp</strong>：比例增益</li>
+<li><strong>Ki</strong>：积分增益</li>
+<li><strong>offset</strong>：当前的相位偏差</li>
+<li><strong>∫offset dt</strong>：相位偏差的积分（累积误差）</li>
+</ul>
+<p><strong>比例项（P项）</strong>：</p>
+<pre><code>Kp × offset
+</code></pre>
+<ul>
+<li>响应当前的相位偏差</li>
+<li>产生相位调整（消除当前偏差）</li>
+</ul>
+<p><strong>积分项（I项）</strong>：</p>
+<pre><code>Ki × ∫offset dt
+</code></pre>
+<ul>
+<li>响应累积的相位偏差</li>
+<li>产生频率调整（消除长期累积）</li>
+</ul>
+<h3 id="为什么积分项对应频率调整"><a class="header" href="#为什么积分项对应频率调整">为什么积分项对应频率调整？</a></h3>
+<p>积分项是相位偏差的累积：</p>
+<pre><code>∫offset dt ≈ 频率偏差 × 时间
+</code></pre>
+<p>频率偏差越大，累积越快。积分项响应这个累积，调整时钟速度。</p>
+<p>所以：</p>
+<ul>
+<li><strong>P项</strong> → 相位调整（解决“现在“）</li>
+<li><strong>I项</strong> → 频率调整（解决“未来“）</li>
+</ul>
+<h3 id="为什么不用d项"><a class="header" href="#为什么不用d项">为什么不用D项？</a></h3>
+<p><strong>PID控制器</strong>还有微分项（D项）：</p>
+<pre><code>Kd × d(offset)/dt
+</code></pre>
+<p>但PTP时钟伺服通常<strong>不使用D项</strong>，原因：</p>
+<ol>
+<li><strong>offset本身有噪声</strong>：测量误差、网络抖动等</li>
+<li><strong>微分项会放大噪声</strong>：导致控制输出不稳定</li>
+</ol>
+<h3 id="pi参数调节"><a class="header" href="#pi参数调节">PI参数调节</a></h3>
+<p>PI参数的选择是伺服设计的关键。</p>
+<p><strong>参数太激进（Kp、Ki大）</strong>：</p>
+<ul>
+<li>响应快</li>
+<li>但容易振荡、不稳定</li>
+</ul>
+<p><strong>参数太保守（Kp、Ki小）</strong>：</p>
+<ul>
+<li>稳定</li>
+<li>但响应慢、收敛时间长</li>
+</ul>
+<p><strong>经验法则</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">网络特性</th><th style="text-align: left">Kp</th><th style="text-align: left">Ki</th><th style="text-align: left">说明</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">稳定网络（抖动小）</td><td style="text-align: left">大</td><td style="text-align: left">大</td><td style="text-align: left">可以激进调整</td></tr>
+<tr><td style="text-align: left">不稳定网络（抖动大）</td><td style="text-align: left">小</td><td style="text-align: left">小</td><td style="text-align: left">需要保守调整</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="一个完整的频率同步示例"><a class="header" href="#一个完整的频率同步示例">一个完整的频率同步示例</a></h2>
+<h3 id="场景"><a class="header" href="#场景">场景</a></h3>
+<ul>
+<li>主时钟频率：精确的125 MHz</li>
+<li>从时钟本地晶振：标称125 MHz，实际125.00125 MHz（+10ppm误差）</li>
+<li>Sync报文间隔：1秒</li>
+</ul>
+<h3 id="初始阶段"><a class="header" href="#初始阶段">初始阶段</a></h3>
+<p><strong>第1个Sync</strong>：</p>
+<ul>
+<li>主时钟发送时间：T₁ = 0秒</li>
+<li>从时钟接收时间：t₂₁ = 0秒（假设初始相位对齐）</li>
+</ul>
+<p><strong>第2个Sync</strong>：</p>
+<ul>
+<li>主时钟发送时间：T₂ = 1秒</li>
+<li>从时钟接收时间：t₂₂ = 1.00001秒（晶振快了10ppm）</li>
+</ul>
+<p>测量相位偏差：</p>
+<pre><code>offset = 1.00001 - 1 = 10微秒
+</code></pre>
+<p>计算频率偏差：</p>
+<pre><code>频率偏差 = offset / 时间间隔 = 10微秒 / 1秒 = 10ppm
+</code></pre>
+<h3 id="应用频率补偿"><a class="header" href="#应用频率补偿">应用频率补偿</a></h3>
+<p><strong>PI控制输出</strong>：</p>
+<ul>
+<li>P项：产生相位调整（可能使用渐进调整消除10微秒偏差）</li>
+<li>I项：产生频率调整 = -10ppm</li>
+</ul>
+<p><strong>应用频率补偿后</strong>：</p>
+<pre><code>调整后的时钟速度 = 原速度 × (1 - 0.00001) = 原速度 × 0.99999
+</code></pre>
+<p><strong>第3个Sync</strong>：</p>
+<p>主时钟经过1秒，从时钟原始时间经过1.00001秒。</p>
+<p>调整后：</p>
+<pre><code>从时钟时间 = 1.00001 × 0.99999 = 1.00000秒
+</code></pre>
+<p>与主时钟一致！频率同步成功。</p>
+<h3 id="稳态阶段"><a class="header" href="#稳态阶段">稳态阶段</a></h3>
+<p><strong>第10个Sync</strong>：</p>
+<ul>
+<li>offset ≈ 0</li>
+<li>频率偏差 ≈ 0</li>
+<li>PI控制输出 ≈ 0</li>
+</ul>
+<p>时钟保持稳定。</p>
+<p>假设温度变化，晶振频率漂移到+11ppm：</p>
+<ul>
+<li>offset开始累积</li>
+<li>PI控制检测到变化</li>
+<li>调整频率补偿值</li>
+</ul>
+<p>持续动态调整，保持长期同步。</p>
+<hr>
+<h2 id="小结频率同步的核心要点"><a class="header" href="#小结频率同步的核心要点">小结：频率同步的核心要点</a></h2>
+<p><strong>频率偏差</strong>：</p>
+<ul>
+<li>时钟走时速度的差异</li>
+<li>是相位偏差累积的原因</li>
+</ul>
+<p><strong>为什么重要</strong>：</p>
+<ul>
+<li>保持长期稳定</li>
+<li>支持保持模式</li>
+<li>减少同步报文频率</li>
+</ul>
+<p><strong>频率测量方法</strong>：</p>
+<ul>
+<li>从相位偏差推导</li>
+<li>直接频率测量</li>
+</ul>
+<p><strong>频率补偿</strong>：</p>
+<ul>
+<li>软件：数学调整</li>
+<li>硬件：NCO、PLL</li>
+</ul>
+<p><strong>渐进调整</strong>：</p>
+<ul>
+<li>通过频率调整消除相位偏差</li>
+<li>平滑，不跳变</li>
+</ul>
+<p><strong>时钟伺服</strong>：</p>
+<ul>
+<li>PI控制器动态调整</li>
+<li>P项 → 相位调整</li>
+<li>I项 → 频率调整</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>频率同步和相位同步，都依赖于一个关键前提：<strong>时间戳精确</strong>。</p>
+<p>下一节，我们将深入讲解<strong>硬件时间戳</strong>——PTP纳秒级精度的真正来源。</p>
+<blockquote>
+<p><strong>【悬念留给2.11】</strong></p>
+<p>你可能好奇：软件时间戳和硬件时间戳，精度差多少？</p>
+<p>答案是：差1000倍以上。</p>
+<ul>
+<li>软件时间戳精度：微秒级（受中断延迟、调度延迟影响）</li>
+<li>硬件时间戳精度：纳秒级（直接在PHY层记录）</li>
+</ul>
+<p>这个差距，决定了PTP能否达到纳秒级同步。</p>
+<p>下一节，我们详细解读。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.9-偏移计算的数学-从时间戳到时钟调整.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/2.11-纳秒从何而来-硬件时间戳的奥秘.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.9-偏移计算的数学-从时间戳到时钟调整.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/2.11-纳秒从何而来-硬件时间戳的奥秘.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

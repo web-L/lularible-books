@@ -1,0 +1,588 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>ECU端——会话管理 · SID分发与DID存储 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="53-ecu-端会话管理sid-分发与-did-存储"><a class="header" href="#53-ecu-端会话管理sid-分发与-did-存储">5.3 ECU 端——会话管理、SID 分发与 DID 存储</a></h1>
+<h2 id="场景你成了一个会听话的机器"><a class="header" href="#场景你成了一个会听话的机器">场景：你成了一个会听话的机器</a></h2>
+<p>想象你是一台 ECU。对你而言，诊断通信不是“发送消息“——而是<strong>等待</strong>。</p>
+<p>你在安静的嵌入式世界里运转：传感器采样、执行器驱动、CAN 报文收发。突然，TCP 端口 13400 上出现一个连接。你不需要主动做任何事——你只需要<strong>响应</strong>。</p>
+<p>TCP 连接建立后，字节流从网络涌入你的接收缓冲区。你不能假设字节会一次性到达（TCP 是流协议），你也不能假设每个请求之间有时间间隔。你唯一能做的，是 <strong>recv → 解析 → 决策 → 执行 → 响应 → recv</strong> ——一个永不停歇的回环。</p>
+<p>这就是 ECU 端的全部工作。<strong>你不是对话的发起者，你是对话的响应者。</strong> 这和医生的体检过程一模一样：患者不需要知道心电图机怎么工作，心电图机也不需要知道患者今天为什么来——它只需要在医生按下按钮时，忠实地执行每一个指令。</p>
+<p>现在，你要用 C 代码实现这个“听话的机器“。</p>
+<blockquote>
+<p><strong>核心洞察：</strong> ECU 诊断服务器的核心架构是一个<strong>事件驱动的状态机</strong>。TCP recv 是事件源，SID 是事件类型，当前会话/安全等级是状态，DID/DTC 是状态内的数据。你不需要线程池，不需要异步 I/O，一个阻塞的 <code>recv()</code> 就足够了——因为在嵌入式诊断的物理世界里，同一时刻只有一台诊断仪在说话。</p>
+</blockquote>
+<h2 id="服务器主循环从-socket-到响应的完整路径"><a class="header" href="#服务器主循环从-socket-到响应的完整路径">服务器主循环：从 socket 到响应的完整路径</a></h2>
+<pre><code class="language-c">/* uds_server.c — main函数 */
+int main(int argc, char **argv)
+{
+    int port = (argc &gt; 1) ? atoi(argv[1]) : UDS_SERVER_PORT;
+
+    init_did_table();
+    init_dtc_table();
+
+    int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (listen_fd &lt; 0) { perror("socket"); return 1; }
+
+    int opt = 1;
+    setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt));
+
+    struct sockaddr_in addr;
+    memset(&amp;addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(port);
+
+    if (bind(listen_fd, (struct sockaddr *)&amp;addr, sizeof(addr)) &lt; 0) {
+        perror("bind"); return 1;
+    }
+    if (listen(listen_fd, 5) &lt; 0) { perror("listen"); return 1; }
+
+    printf("### UDS Server (ECU) listening on port %d ###\n", port);
+    printf("    Session: Default | Security: Locked | DTCs: %d\n", g_dtc_count);
+    printf("    Supported DID count: %d\n", DID_COUNT);
+
+    while (1) {
+        struct sockaddr_in client_addr;
+        socklen_t client_len = sizeof(client_addr);
+        int client_fd = accept(listen_fd, (struct sockaddr *)&amp;client_addr, &amp;client_len);
+        if (client_fd &lt; 0) { perror("accept"); continue; }
+
+        char client_ip[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &amp;client_addr.sin_addr, client_ip, sizeof(client_ip));
+        printf("[ECU] Tester connected from %s:%d\n", client_ip, ntohs(client_addr.sin_port));
+
+        u8 req_buf[UDS_MAX_MSG_LEN], resp_buf[UDS_MAX_MSG_LEN];
+
+        while (1) {
+            ssize_t n = recv(client_fd, req_buf, sizeof(req_buf), 0);
+            if (n &lt;= 0) {
+                if (n &lt; 0) printf("[ECU] Connection timeout or error\n");
+                else printf("[ECU] Tester disconnected\n");
+                g_session = SESSION_DEFAULT;
+                g_security = SECURITY_LOCKED;
+                g_seed_pending = FALSE;
+                g_xfer.active = FALSE;
+                break;
+            }
+
+            u16 resp_len = dispatch(req_buf, (u16)n, resp_buf);
+            if (resp_len &gt; 0) {
+                send(client_fd, resp_buf, resp_len, 0);
+            }
+        }
+        close(client_fd);
+    }
+
+    close(listen_fd);
+    return 0;
+}
+</code></pre>
+<p>这个主循环的结构揭示了几个关键设计决策：</p>
+<ol>
+<li><strong>一次只服务一个客户端</strong>——uds-lite 使用阻塞 <code>accept()</code> 的教学简化。生产环境中 DoIP 可支持多客户端并发接入，真实 ECU 需管理多个诊断连接及会话隔离。</li>
+<li><strong>客户端断开后状态重置</strong>——会话和安全等级回到默认值。每个诊断会话是独立的。</li>
+<li><strong>S3 超时通过客户端断开检测间接实现</strong>——实际代码中使用阻塞 <code>recv()</code>，教学上未实现独立的 S3 定时器（生产代码需用 <code>select()</code> 或硬件定时器实现非阻塞超时检测）。</li>
+<li><strong>主循环本身没有超时</strong>——<code>recv()</code> 是阻塞的，这是教学简化。生产代码会用 <code>select()</code> 或轮询实现非阻塞 + S3 定时器。</li>
+</ol>
+<h2 id="sid-分发switch-驱动的调度器"><a class="header" href="#sid-分发switch-驱动的调度器">SID 分发——switch 驱动的调度器</a></h2>
+<p>uds-lite 采用 <strong>switch 语句</strong>实现 SID 分发，而非查表。这是教学简化——代码更短、更直观，生产级 AUTOSAR DCM 使用查表（见第 4.4 节）。</p>
+<pre><code class="language-c">static u16 dispatch(const u8 *req, u16 req_len, u8 *resp)
+{
+    if (req_len &lt; 1) return 0;
+    u8 sid = req[0];
+    u16 resp_len = 0;
+
+    switch (sid) {
+        case SID_DIAGNOSTIC_SESSION_CONTROL:
+            handle_session_control(req, req_len, resp, &amp;resp_len); break;
+        case SID_TESTER_PRESENT:
+            handle_tester_present(req, req_len, resp, &amp;resp_len); break;
+        case SID_ECU_RESET:
+            handle_ecu_reset(req, req_len, resp, &amp;resp_len); break;
+        case SID_SECURITY_ACCESS:
+            handle_security_access(req, req_len, resp, &amp;resp_len); break;
+        case SID_READ_DATA_BY_IDENTIFIER:
+            handle_read_did(req, req_len, resp, &amp;resp_len); break;
+        case SID_WRITE_DATA_BY_IDENTIFIER:
+            handle_write_did(req, req_len, resp, &amp;resp_len); break;
+        case SID_READ_DTC_INFORMATION:
+            handle_read_dtc(req, req_len, resp, &amp;resp_len); break;
+        case SID_CLEAR_DIAGNOSTIC_INFORMATION:
+            handle_clear_dtc(req, req_len, resp, &amp;resp_len); break;
+        case SID_ROUTINE_CONTROL:
+            handle_routine_control(req, req_len, resp, &amp;resp_len); break;
+        case SID_REQUEST_DOWNLOAD:
+            handle_request_download(req, req_len, resp, &amp;resp_len); break;
+        case SID_TRANSFER_DATA:
+            handle_transfer_data(req, req_len, resp, &amp;resp_len); break;
+        case SID_REQUEST_TRANSFER_EXIT:
+            handle_transfer_exit(req, req_len, resp, &amp;resp_len); break;
+        case SID_CONTROL_DTC_SETTING:
+            handle_control_dtc_setting(req, req_len, resp, &amp;resp_len); break;
+        default:
+            resp_len = uds_build_negative_response(resp, sid, NRC_SERVICE_NOT_SUPPORTED);
+            break;
+    }
+    return resp_len;
+}
+</code></pre>
+<p>每个 handler 接收裸字节（<code>req</code>/<code>resp</code>）而非 <code>UdsMsg</code> 结构体，因为此处的通信单位还是原始的 TCP/DoIP 字节流。每个 handler 负责验证权限、执行操作、构建响应。</p>
+<h2 id="处理函数实现"><a class="header" href="#处理函数实现">处理函数实现</a></h2>
+<p>每个 handler 处理 bare 字节（<code>const u8 *req</code> / <code>u8 *resp</code>），在内部完成权限检查、执行操作、构建响应字节。</p>
+<h3 id="会话控制0x10"><a class="header" href="#会话控制0x10">会话控制（0x10）</a></h3>
+<pre><code class="language-c">static void handle_session_control(const u8 *req, u16 req_len,
+                                    u8 *resp, u16 *resp_len)
+{
+    if (req_len &lt; 2) {
+        *resp_len = uds_build_negative_response(resp,
+            SID_DIAGNOSTIC_SESSION_CONTROL, NRC_INCORRECT_MESSAGE_LENGTH);
+        return;
+    }
+    u8 sub = req[1] &amp; 0x7F;
+    u8 suppress = (req[1] &amp; SUPPRESS_POS_RSP_MASK) ? 1 : 0;
+
+    if (sub != SESSION_DEFAULT &amp;&amp; sub != SESSION_PROGRAMMING
+        &amp;&amp; sub != SESSION_EXTENDED) {
+        *resp_len = uds_build_negative_response(resp,
+            SID_DIAGNOSTIC_SESSION_CONTROL, NRC_SUBFUNCTION_NOT_SUPPORTED);
+        return;
+    }
+
+    g_session = sub;
+    g_security = SECURITY_LOCKED;
+    g_seed_pending = FALSE;
+
+    if (suppress) { *resp_len = 0; return; }
+
+    u8 extra[] = {sub, (P2_SERVER_DEFAULT &gt;&gt; 8), P2_SERVER_DEFAULT &amp; 0xFF,
+                        (P2_STAR_SERVER_DEFAULT &gt;&gt; 8) &amp; 0xFF,
+                        P2_STAR_SERVER_DEFAULT &amp; 0xFF};
+    *resp_len = uds_build_positive_response(resp,
+        SID_DIAGNOSTIC_SESSION_CONTROL, extra, 5);
+}
+</code></pre>
+<p>几个关键点：</p>
+<ul>
+<li><strong>切换会话时重置安全等级</strong>——这是安全要求的，你不能从编程会话退回到默认会话时还保持解锁状态</li>
+<li><strong>每个会话返回不同的 P2/P2* 时间</strong>——客户端据此设置自己的等待超时</li>
+<li>子功能码的 bit7（suppressPosRsp）已经在解码时处理了，这里直接用 bit6-0</li>
+</ul>
+<h3 id="testerpresent0x3e"><a class="header" href="#testerpresent0x3e">TesterPresent（0x3E）</a></h3>
+<pre><code class="language-c">static void handle_tester_present(const u8 *req, u16 req_len,
+                                   u8 *resp, u16 *resp_len)
+{
+    u8 suppress = (req[1] &amp; SUPPRESS_POS_RSP_MASK) ? 1 : 0;
+    if (suppress) { *resp_len = 0; return; }
+    resp[0] = SID_TESTER_PRESENT | SID_POSITIVE_RESPONSE_MASK;
+    resp[1] = SUB_ZERO;
+    *resp_len = 2;
+}
+</code></pre>
+<h3 id="安全访问0x27"><a class="header" href="#安全访问0x27">安全访问（0x27）</a></h3>
+<p>uds-lite 使用硬编码 seed（<code>0xA3D45F12</code>），密钥算法为按字节 XOR <code>0x5A</code>：</p>
+<pre><code class="language-c">static void compute_seed(u8 seed[4]) {
+    seed[0] = 0xA3; seed[1] = 0xD4; seed[2] = 0x5F; seed[3] = 0x12;
+}
+
+static u8 verify_key(const u8 *key, u8 key_len) {
+    if (key_len &lt; 4) return FALSE;
+    u8 expected[4];
+    for (int i = 0; i &lt; 4; i++) expected[i] = g_seed[i] ^ 0x5A;
+    return (memcmp(key, expected, 4) == 0);
+}
+
+static void handle_security_access(const u8 *req, u16 req_len,
+                                    u8 *resp, u16 *resp_len)
+{
+    u8 sub = req[1] &amp; 0x7F;
+    if (sub == SUB_REQUEST_SEED) {
+        compute_seed(g_seed);
+        g_seed_pending = TRUE;
+        u8 extra[5] = {SUB_REQUEST_SEED};
+        memcpy(&amp;extra[1], g_seed, 4);
+        *resp_len = uds_build_positive_response(resp, SID_SECURITY_ACCESS, extra, 5);
+    } else if (sub == SUB_SEND_KEY &amp;&amp; g_seed_pending) {
+        u8 key[4];
+        memcpy(key, &amp;req[2], 4);
+        if (verify_key(key, 4)) {
+            g_security = SECURITY_LEVEL_1;
+            g_seed_pending = FALSE;
+            u8 extra[] = {SUB_SEND_KEY};
+            *resp_len = uds_build_positive_response(resp, SID_SECURITY_ACCESS, extra, 1);
+        } else {
+            *resp_len = uds_build_negative_response(resp, SID_SECURITY_ACCESS, NRC_INVALID_KEY);
+        }
+    }
+}
+</code></pre>
+<h3 id="did-存储与读写0x22--0x2e"><a class="header" href="#did-存储与读写0x22--0x2e">DID 存储与读写（0x22 / 0x2E）</a></h3>
+<pre><code class="language-c">static DidRecord g_did_table[] = {
+    {0x010C, {0x0B,0xB8}, 2, FALSE, SESSION_DEFAULT, SECURITY_LOCKED},   /* 转速 3000rpm */
+    {0x0105, {0x84}, 1, FALSE, SESSION_DEFAULT, SECURITY_LOCKED},         /* 冷液 92°C */
+    {0xF190, "W0L00000123456789", 17, TRUE, SESSION_EXTENDED, SECURITY_LEVEL_1}, /* VIN */
+    {0x010D, {87}, 1, FALSE, SESSION_DEFAULT, SECURITY_LOCKED},           /* 车速 */
+    {0x0110, {0x00,0xAA}, 2, FALSE, SESSION_DEFAULT, SECURITY_LOCKED},    /* MAF */
+    {0xF180, "SW-V1.0.0", 9, FALSE, SESSION_DEFAULT, SECURITY_LOCKED},    /* 版本 */
+    {0xFF01, {0x00,0x00}, 2, TRUE, SESSION_EXTENDED, SECURITY_LEVEL_1},   /* 诊断标定 */
+    {0x0150, {0x83}, 1, FALSE, SESSION_DEFAULT, SECURITY_LOCKED},         /* 燃油修正 */
+};
+
+static void handle_read_did(const u8 *req, u16 req_len, u8 *resp, u16 *resp_len) {
+    /* 解析DID → 查表 → 构建响应 {0x62, DID_H, DID_L, data...} */
+    u8 out[UDS_MAX_MSG_LEN]; u16 pos = 0;
+    out[pos++] = SID_READ_DATA_BY_IDENTIFIER | SID_POSITIVE_RESPONSE_MASK;
+    u16 idx = 1;
+    while (idx + 1 &lt; req_len) {
+        u16 did = uds_read_u16_be(&amp;req[idx]);
+        DidRecord *d = find_did(did);
+        out[pos++] = (did &gt;&gt; 8) &amp; 0xFF; out[pos++] = did &amp; 0xFF;
+        memcpy(&amp;out[pos], d-&gt;data, d-&gt;data_len); pos += d-&gt;data_len;
+        idx += 2;
+    }
+    memcpy(resp, out, pos); *resp_len = pos;
+}
+
+static void handle_write_did(const u8 *req, u16 req_len, u8 *resp, u16 *resp_len) {
+    u16 did = uds_read_u16_be(&amp;req[1]);
+    DidRecord *d = find_did(did);
+    u16 data_len = req_len - 3;
+    memcpy(d-&gt;data, &amp;req[3], data_len);
+    u8 extra[] = {(did &gt;&gt; 8) &amp; 0xFF, did &amp; 0xFF};
+    *resp_len = uds_build_positive_response(resp, SID_WRITE_DATA_BY_IDENTIFIER, extra, 2);
+}
+</code></pre>
+<h3 id="dtc-读取与清除0x19--0x14"><a class="header" href="#dtc-读取与清除0x19--0x14">DTC 读取与清除（0x19 / 0x14）</a></h3>
+<pre><code class="language-c">static DtcRecord g_dtc_table[] = {
+    {{0x00,0x01,0x02}, DTC_STATUS_TEST_FAILED|DTC_STATUS_CONFIRMED_DTC, ...}, /* P0102 */
+    {{0x40,0x02,0x01}, DTC_STATUS_TEST_FAILED|DTC_STATUS_PENDING_DTC, ...},   /* C0421 */
+};
+
+static void handle_read_dtc(const u8 *req, u16 req_len, u8 *resp, u16 *resp_len) {
+    u8 sub = req[1] &amp; 0x7F;
+    u8 status_mask = req[2];
+    if (sub == SUB_REPORT_NUMBER_OF_DTC_BY_STATUS_MASK) {
+        u8 count = 0;
+        for (int i = 0; i &lt; g_dtc_count; i++)
+            if (g_dtc_table[i].status &amp; status_mask) count++;
+        u8 extra[] = {SUB_REPORT_NUMBER_OF_DTC_BY_STATUS_MASK,
+                      status_mask, 0x01, 0, count};
+        *resp_len = uds_build_positive_response(resp,
+            SID_READ_DTC_INFORMATION, extra, sizeof(extra));
+    } else if (sub == SUB_REPORT_DTC_BY_STATUS_MASK) {
+        /* 遍历DTC表匹配 status mask, 每条4字节: DTC(3) + status(1) */
+        u8 extra[UDS_MAX_MSG_LEN]; u16 pos = 0;
+        extra[pos++] = SUB_REPORT_DTC_BY_STATUS_MASK;
+        extra[pos++] = status_mask;
+        for (int i = 0; i &lt; g_dtc_count; i++) {
+            if (g_dtc_table[i].status &amp; status_mask) {
+                memcpy(&amp;extra[pos], g_dtc_table[i].code, 3); pos += 3;
+                extra[pos++] = g_dtc_table[i].status;
+            }
+        }
+        *resp_len = uds_build_positive_response(resp,
+            SID_READ_DTC_INFORMATION, extra, pos);
+    }
+}
+</code></pre>
+<h3 id="例行控制0x31"><a class="header" href="#例行控制0x31">例行控制（0x31）</a></h3>
+<pre><code class="language-c">static void handle_routine_control(const u8 *req, u16 req_len,
+                                    u8 *resp, u16 *resp_len)
+{
+    u16 rid = uds_read_u16_be(&amp;req[2]);
+    g_routine.rid = rid;
+    g_routine.activated = TRUE;
+    u8 extra[4] = {SUB_START_ROUTINE, (rid &gt;&gt; 8) &amp; 0xFF, rid &amp; 0xFF, 0x01};
+    *resp_len = uds_build_positive_response(resp, SID_ROUTINE_CONTROL, extra, 4);
+}
+</code></pre>
+<h3 id="文件下载0x343637"><a class="header" href="#文件下载0x343637">文件下载（0x34/36/37）</a></h3>
+<pre><code class="language-c">static void handle_request_download(const u8 *req, u16 req_len,
+                                     u8 *resp, u16 *resp_len)
+{
+    g_xfer.active = TRUE;
+    g_xfer.max_block_size = 200;
+    g_xfer.expected_seq_counter = 1;
+    u8 extra[] = {0x20, (g_xfer.max_block_size &gt;&gt; 8) &amp; 0xFF,
+                        g_xfer.max_block_size &amp; 0xFF};
+    *resp_len = uds_build_positive_response(resp, SID_REQUEST_DOWNLOAD, extra, 3);
+}
+
+static void handle_transfer_data(const u8 *req, u16 req_len,
+                                  u8 *resp, u16 *resp_len)
+{
+    u8 seq = req[1];
+    u16 block_len = req_len - 2;
+    g_xfer.expected_seq_counter++;
+    u8 extra[] = {seq};
+    *resp_len = uds_build_positive_response(resp, SID_TRANSFER_DATA, extra, 1);
+}
+
+static void handle_transfer_exit(const u8 *req, u16 req_len,
+                                  u8 *resp, u16 *resp_len)
+{
+    g_xfer.active = FALSE;
+    *resp_len = uds_build_positive_response(resp, SID_REQUEST_TRANSFER_EXIT, NULL, 0);
+}
+</code></pre>
+<h3 id="ecu-复位0x11"><a class="header" href="#ecu-复位0x11">ECU 复位（0x11）</a></h3>
+<pre><code class="language-c">static void handle_ecu_reset(const u8 *req, u16 req_len, u8 *resp, u16 *resp_len)
+{
+    u8 sub = req[1] &amp; 0x7F;
+    /* 正响应在复位之前发送 */
+    u8 extra[] = {sub};
+    *resp_len = uds_build_positive_response(resp, SID_ECU_RESET, extra, 1);
+}
+</code></pre>
+<p><strong>ECUReset 的正响应必须在执行复位之前发送</strong>——这是一个黄金规则。如果先复位再发响应，客户端永远收不到这个响应。</p>
+<p>三次握手的 flow 是：</p>
+<ol>
+<li><strong>RequestDownload</strong>：客户端说“我要下载一些数据“，ECU 准备缓冲区和长度</li>
+<li><strong>TransferData × N</strong>：客户端分块发送数据，每块带有递增的 blockSequenceCounter</li>
+<li><strong>RequestTransferExit</strong>：客户端说“发送完毕“，ECU 验证完整性并“烧录</li>
+</ol>
+<p>blockSequenceCounter 从 1 开始，每次 TransferData 递增 1。如果收到的序号不匹配，返回 NRC 0x73。这是防止网络乱序或丢包的简单校验。</p>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>ECU 服务器是一个单客户端、阻塞式循环：<code>accept → recv → dispatch → send</code>，共约 490 行 C</li>
+<li>SID 分发采用 switch 语句（教学简化），每个 handler 接收裸字节、内部做权限验证</li>
+<li>会话切换必须重置安全等级，TesterPresent 防止 S3 超时，ECUReset 必须先发响应再执行复位</li>
+<li>DID 表 8 条（0x010C 转速、0x0105 冷液温度、0xF190 VIN、0x010D 车速等）</li>
+<li>DTC 表 2 条（P0102 MAF、C0421 ABS），按 status mask 过滤</li>
+<li>安全访问使用 XOR 0x5A 算法（教学简化），seed 固定为 <code>0xA3D45F12</code></li>
+<li>文件下载三次握手：RequestDownload→TransferData×N→RequestTransferExit</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：ECU 端已经就绪——它安静地监听着 TCP 13400，等待着第一个诊断请求。下一节我们换一个视角：诊断仪端。<strong>你要写出那个主动发起连接、构建请求、解析响应、并在遇到 NRC 时自动纠错的客户端。</strong> 如果说 ECU 是“听话的机器“，那诊断仪就是“聪明的机器“——它不仅要会问，还要<strong>会听、会想、会改策略</strong>。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/5.2-报文编解码——SID与正响应位的消息引擎.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/5.4-诊断仪端——逐服务发送与响应解析.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/5.2-报文编解码——SID与正响应位的消息引擎.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/5.4-诊断仪端——逐服务发送与响应解析.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

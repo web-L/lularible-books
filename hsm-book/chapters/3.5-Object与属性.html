@@ -1,0 +1,489 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Object与属性 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="35-object与属性密码世界的数据容器"><a class="header" href="#35-object与属性密码世界的数据容器">3.5 Object与属性：密码世界的“数据容器“</a></h2>
+<h3 id="object是什么"><a class="header" href="#object是什么">Object是什么？</a></h3>
+<p>在PKCS#11的世界里，所有密码资源都被抽象为“Object“（对象）。</p>
+<p>Object可以是：</p>
+<ul>
+<li><strong>密钥</strong>：公钥、私钥、对称密钥</li>
+<li><strong>证书</strong>：X.509证书</li>
+<li><strong>数据</strong>：用户自定义数据</li>
+<li><strong>硬件特性</strong>：时钟、计数器</li>
+</ul>
+<p>这个抽象的核心思想是：<strong>用统一的接口管理不同类型的密码资源</strong>。</p>
+<hr>
+<h3 id="ck_object_classobject的类型标识"><a class="header" href="#ck_object_classobject的类型标识">CK_OBJECT_CLASS：Object的类型标识</a></h3>
+<p>PKCS#11定义了多种Object类型，用<code>CK_OBJECT_CLASS</code>常量标识：</p>
+<pre><code class="language-c">/* Object类型定义（来自pkcs11.h） */
+
+#define CKO_DATA              0x00000000  /* 数据对象 */
+#define CKO_CERTIFICATE       0x00000001  /* 证书对象 */
+#define CKO_PUBLIC_KEY        0x00000002  /* 公钥对象 */
+#define CKO_PRIVATE_KEY       0x00000003  /* 私钥对象 */
+#define CKO_SECRET_KEY        0x00000004  /* 对称密钥对象 */
+#define CKO_HW_FEATURE        0x00000005  /* 硬件特性对象 */
+#define CKO_DOMAIN_PARAMETERS 0x00000006  /* 域参数对象 */
+#define CKO_MECHANISM         0x00000007  /* 机制对象 */
+#define CKO_OTP_KEY           0x00000008  /* OTP密钥对象 */
+#define CKO_PROFILE           0x00000009  /* Profile对象 */
+</code></pre>
+<p>每个Object都有一个必需属性：<code>CKA_CLASS</code>，它标识Object的类型。</p>
+<hr>
+<h3 id="ck_attribute属性的通用容器"><a class="header" href="#ck_attribute属性的通用容器">CK_ATTRIBUTE：属性的通用容器</a></h3>
+<p>PKCS#11用<code>CK_ATTRIBUTE</code>结构来表示属性：</p>
+<pre><code class="language-c">/* 属性结构定义（来自pkcs11.h） */
+
+typedef struct CK_ATTRIBUTE {
+    CK_ATTRIBUTE_TYPE type;   /* 属性类型（如CKA_VALUE） */
+    CK_VOID_PTR       pValue; /* 属性值指针 */
+    CK_ULONG          ulValueLen; /* 属性值长度 */
+} CK_ATTRIBUTE;
+</code></pre>
+<p>这个结构非常通用：</p>
+<ul>
+<li><code>type</code>：标识是什么属性</li>
+<li><code>pValue</code>：指向属性值</li>
+<li><code>ulValueLen</code>：属性值的长度</li>
+</ul>
+<p><strong>属性模板（Attribute Template）</strong>：</p>
+<p>创建Object或查找Object时，使用“属性模板“——一个CK_ATTRIBUTE数组：</p>
+<pre><code class="language-c">/* 属性模板示例：创建RSA公钥 */
+
+CK_ATTRIBUTE publicKeyTemplate[] = {
+    {CKA_CLASS, &amp;pubKeyClass, sizeof(pubKeyClass)},         /* Object类型 */
+    {CKA_KEY_TYPE, &amp;rsaKeyType, sizeof(rsaKeyType)},        /* 密钥类型 */
+    {CKA_TOKEN, &amp;bTrue, sizeof(bTrue)},                     /* 存储在Token中 */
+    {CKA_PRIVATE, &amp;bFalse, sizeof(bFalse)},                 /* 公开对象 */
+    {CKA_MODULUS, modulus, modulusLen},                     /* RSA模数 */
+    {CKA_PUBLIC_EXPONENT, exponent, exponentLen},           /* RSA公钥指数 */
+    {CKA_LABEL, "MyRSAKey", 8},                              /* 标签 */
+};
+
+CK_OBJECT_HANDLE hPublicKey;
+rv = C_CreateObject(hSession, publicKeyTemplate, 7, &amp;hPublicKey);
+</code></pre>
+<hr>
+<h3 id="object的生命周期"><a class="header" href="#object的生命周期">Object的生命周期</a></h3>
+<p>Object的生命周期由属性决定：</p>
+<pre><code>Object生命周期：
+
+创建 → 使用 → 销毁
+   │      │      │
+   │      │      │
+   C_CreateObject  C_Sign等  C_DestroyObject
+   或               操作      或
+   C_GenerateKeyPair         自然消失（Session Object）
+</code></pre>
+<p><strong>Session Object vs Token Object</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">特性</th><th style="text-align: left">Session Object</th><th style="text-align: left">Token Object</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKA_TOKEN</strong></td><td style="text-align: left">FALSE</td><td style="text-align: left">TRUE</td></tr>
+<tr><td style="text-align: left"><strong>持久性</strong></td><td style="text-align: left">Session关闭后消失</td><td style="text-align: left">永久存储</td></tr>
+<tr><td style="text-align: left"><strong>位置</strong></td><td style="text-align: left">Session内存</td><td style="text-align: left">Token存储</td></tr>
+<tr><td style="text-align: left"><strong>用途</strong></td><td style="text-align: left">临时密钥、中间数据</td><td style="text-align: left">长期密钥、证书</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code class="language-c">/* 创建Session Object（临时） */
+
+CK_ATTRIBUTE sessionKeyTemplate[] = {
+    {CKA_CLASS, &amp;secretKeyClass, sizeof(secretKeyClass)},
+    {CKA_KEY_TYPE, &amp;aesKeyType, sizeof(aesKeyType)},
+    {CKA_TOKEN, &amp;bFalse, sizeof(bFalse)},  /* FALSE = Session Object */
+    {CKA_VALUE, aesKey, 32},
+};
+
+/* 创建Token Object（持久） */
+
+CK_ATTRIBUTE tokenKeyTemplate[] = {
+    {CKA_CLASS, &amp;secretKeyClass, sizeof(secretKeyClass)},
+    {CKA_KEY_TYPE, &amp;aesKeyType, sizeof(aesKeyType)},
+    {CKA_TOKEN, &amp;bTrue, sizeof(bTrue)},   /* TRUE = Token Object */
+    {CKA_LABEL, "PermanentAES", 12},
+};
+</code></pre>
+<hr>
+<h3 id="object的访问控制"><a class="header" href="#object的访问控制">Object的访问控制</a></h3>
+<p>Object的访问由属性控制：</p>
+<p><strong>CKA_PRIVATE</strong>：</p>
+<ul>
+<li>TRUE：私有对象，需要登录才能访问</li>
+<li>FALSE：公开对象，不需要登录</li>
+</ul>
+<pre><code class="language-c">/* 公开对象（任何人可访问） */
+
+CK_ATTRIBUTE publicCertTemplate[] = {
+    {CKA_CLASS, &amp;certClass, sizeof(certClass)},
+    {CKA_PRIVATE, &amp;bFalse, sizeof(bFalse)},  /* FALSE = 公开 */
+    {CKA_VALUE, certData, certLen},
+};
+
+/* 私有对象（需要登录） */
+
+CK_ATTRIBUTE privateKeyTemplate[] = {
+    {CKA_CLASS, &amp;privKeyClass, sizeof(privKeyClass)},
+    {CKA_PRIVATE, &amp;bTrue, sizeof(bTrue)},    /* TRUE = 私有 */
+    {CKA_SENSITIVE, &amp;bTrue, sizeof(bTrue)},  /* 敏感 */
+};
+</code></pre>
+<p><strong>访问规则</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">对象状态</th><th style="text-align: left">未登录Session</th><th style="text-align: left">已登录Session</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>公开对象（CKA_PRIVATE=FALSE）</strong></td><td style="text-align: left">可访问</td><td style="text-align: left">可访问</td></tr>
+<tr><td style="text-align: left"><strong>私有对象（CKA_PRIVATE=TRUE）</strong></td><td style="text-align: left">不可访问</td><td style="text-align: left">可访问</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="查找object"><a class="header" href="#查找object">查找Object</a></h3>
+<p>查找Object使用C_FindObjects系列函数：</p>
+<pre><code class="language-c">/* 查找Object的完整流程 */
+
+CK_OBJECT_HANDLE hFoundObjects[10];
+CK_ULONG ulFoundCount;
+CK_ATTRIBUTE findTemplate[] = {
+    {CKA_CLASS, &amp;privKeyClass, sizeof(privKeyClass)},  /* 查找私钥 */
+    {CKA_KEY_TYPE, &amp;rsaKeyType, sizeof(rsaKeyType)},   /* RSA密钥 */
+};
+
+// 1. 初始化查找
+rv = C_FindObjectsInit(hSession, findTemplate, 2);
+
+// 2. 执行查找
+rv = C_FindObjects(hSession, hFoundObjects, 10, &amp;ulFoundCount);
+
+// 3. 结束查找
+rv = C_FindObjectsFinal(hSession);
+
+// 使用找到的Object
+for (CK_ULONG i = 0; i &lt; ulFoundCount; i++) {
+    printf("找到私钥：handle = %lu\n", hFoundObjects[i]);
+}
+</code></pre>
+<hr>
+<h3 id="object的属性操作"><a class="header" href="#object的属性操作">Object的属性操作</a></h3>
+<p><strong>读取属性</strong>：</p>
+<pre><code class="language-c">/* 读取Object属性 */
+
+CK_ATTRIBUTE getTemplate[] = {
+    {CKA_LABEL, NULL_PTR, 0},     /* 先获取长度 */
+};
+
+// 第一次调用：获取属性长度
+rv = C_GetAttributeValue(hSession, hObject, getTemplate, 1);
+CK_ULONG labelLen = getTemplate[0].ulValueLen;
+
+// 分配内存
+CK_CHAR label[labelLen + 1];
+getTemplate[0].pValue = label;
+
+// 第二次调用：获取属性值
+rv = C_GetAttributeValue(hSession, hObject, getTemplate, 1);
+printf("Label: %s\n", label);
+</code></pre>
+<p><strong>修改属性</strong>：</p>
+<pre><code class="language-c">/* 修改Object属性（如果允许） */
+
+CK_CHAR newLabel[] = "UpdatedKey";
+CK_ATTRIBUTE setTemplate[] = {
+    {CKA_LABEL, newLabel, sizeof(newLabel)},
+};
+
+rv = C_SetAttributeValue(hSession, hObject, setTemplate, 1);
+</code></pre>
+<p>注意：只有<code>CKA_MODIFIABLE = TRUE</code>的Object才能修改属性。</p>
+<hr>
+<h3 id="一个类比保险箱内的物品"><a class="header" href="#一个类比保险箱内的物品">一个类比：保险箱内的物品</a></h3>
+<p>让我用保险箱类比来理解Object：</p>
+<pre><code>保险箱物品系统：
+
+保险箱（Token）
+├── 物品（Object）
+│   ├── 类型标签（CKA_CLASS）：是钥匙还是证书？
+│   ├── 存放位置（CKA_TOKEN）：临时存放还是永久存放？
+│   ├── 访问权限（CKA_PRIVATE）：需要授权才能取吗？
+│   ├── 修改权限（CKA_MODIFIABLE）：可以改变标签吗？
+│   ├── 销毁权限（CKA_DESTROYABLE）：可以销毁吗？
+│   └── 物品编号（Handle）：操作时用什么编号引用？
+│
+└── 操作
+    ├── 存入物品（C_CreateObject）
+    ├── 查找物品（C_FindObjects）
+    ├── 查看物品信息（C_GetAttributeValue）
+    ├── 更改物品标签（C_SetAttributeValue）
+    └── 取出销毁（C_DestroyObject）
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>Object是PKCS#11的“数据容器“，承载所有密码资源。</p>
+<p>核心概念：</p>
+<ul>
+<li><strong>CK_OBJECT_CLASS</strong>：Object类型标识</li>
+<li><strong>CK_ATTRIBUTE</strong>：属性的通用容器（type, pValue, ulValueLen）</li>
+<li><strong>属性模板</strong>：创建/查找Object时的属性数组</li>
+</ul>
+<p>Object分类：</p>
+<ul>
+<li>Session Object（临时）：CKA_TOKEN = FALSE</li>
+<li>Token Object（持久）：CKA_TOKEN = TRUE</li>
+</ul>
+<p>访问控制：</p>
+<ul>
+<li>公开对象：CKA_PRIVATE = FALSE，无需登录</li>
+<li>私有对象：CKA_PRIVATE = TRUE，需要登录</li>
+</ul>
+<p>Object操作：</p>
+<ul>
+<li>C_CreateObject/C_DestroyObject：创建/销毁</li>
+<li>C_FindObjects系列：查找</li>
+<li>C_GetAttributeValue/C_SetAttributeValue：读取/修改属性</li>
+</ul>
+<p>下一节，我们将详细解析通用属性——CKA_CLASS、CKA_TOKEN、CKA_LABEL等基础属性的含义和用法。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>Object有几十种属性。</p>
+<p>哪些是所有Object都有的“通用属性“？</p>
+<p>CKA_CLASS、CKA_TOKEN、CKA_PRIVATE、CKA_LABEL、CKA_ID、CKA_MODIFIABLE、CKA_DESTROYABLE…</p>
+<p>这些属性分别控制什么行为？</p>
+<p>下一节，通用属性详解。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/3.4-Session状态与并发管理.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/3.6-通用属性详解.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/3.4-Session状态与并发管理.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/3.6-通用属性详解.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

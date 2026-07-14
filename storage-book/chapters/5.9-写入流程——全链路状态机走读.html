@@ -1,0 +1,534 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>写入流程——全链路状态机走读 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="59-写入流程全链路状态机走读"><a class="header" href="#59-写入流程全链路状态机走读">5.9 写入流程——全链路状态机走读</a></h2>
+<h3 id="先看全剧再看每一幕"><a class="header" href="#先看全剧再看每一幕">先看全剧，再看每一幕</a></h3>
+<p>在进入逐行代码之前，先看一眼这出戏的完整节目单。KnotFS 的一次写入，从 API 调用到完成，共 <strong>6 个状态</strong>：</p>
+<pre><code>状态机全景图
+=======================
+
+ST_WRT_INIT    —— 查找同名文件、记录旧块、分配新文件条目
+    ↓
+ST_WRT_ALLOC   —— 为新数据分配空闲块（pick_lowest_wear）
+    ↓
+ST_WRT_DATA    —— 把用户数据写入 tmp 缓冲区，发起 Flash 写入（CoW 核心）
+    ↓
+ST_WRT_META    —— 标记旧块为空闲（log_push），更新文件条目，compact 持久化
+    ↓
+ST_WRT_META_FLUSH —— 等待擦除完成，compact_write 写入新 SB
+    ↓
+ST_WRT_COMPACT —— compact_finish 更新 sequence，log_commit 确认提交
+    ↓
+ST_OK → 通知调用者
+</code></pre>
+<p>这 6 个状态不是 6 个函数调用——它们是 6 帧画面。每帧之间，<code>knotfs_run()</code> 被调用一次，推进一个 Tick。Flash 的擦除和写入在帧与帧之间异步完成。</p>
+<p>下面是每一幕的细节。</p>
+<h3 id="你不是在跑一个函数你是在演一出话剧"><a class="header" href="#你不是在跑一个函数你是在演一出话剧">你不是在跑一个函数，你是在演一出话剧</a></h3>
+<p>你调用了 <code>knotfs_write("hello.txt", buf, 11)</code>。你期望这个函数执行完，文件就写好了。</p>
+<p>它没有。它只是往请求队列里塞了一张纸条，就返回了。</p>
+<p>然后 <code>knotfs_run()</code> 被反复调用——在KnotFS的测试程序里是 <code>while(knotfs_run())</code> 空转——每一次调用都是一幕戏。状态机从<code>ST_WRT_INIT</code>跳转到<code>ST_WRT_ALLOC</code>，再跳到<code>ST_WRT_DATA</code>……每一跳之间，Flash模拟器都在执行读写延迟。这不是同步的函数调用，这是<strong>一部七幕话剧，每一幕结束后，演员要等道具组把下一场的布景搬上来</strong>。</p>
+<p>让我们跟踪这出戏的剧本。</p>
+<hr>
+<h3 id="第一幕st_wrt_init--找到旧书架申请新书架"><a class="header" href="#第一幕st_wrt_init--找到旧书架申请新书架">第一幕：ST_WRT_INIT —— 找到旧书架，申请新书架</a></h3>
+<pre><code>ST_WRT_INIT 要做的事：
+  1. 查找同名文件是否存在
+  2. 如果存在，记录它的旧块号（准备CoW释放用）
+  3. 清零旧entry的size（让alloc_node空出这个slot）
+  4. 计算新数据需要多少块
+  5. 分配新entry，填入文件名、size、block_count
+  6. 把旧块信息存入scratch[]数组（跨状态传递用）
+</code></pre>
+<p>这里有一个反直觉的操作：<code>nd-&gt;size = 0</code>。它清零的是旧entry，但<code>nd</code>这个指针指向的是<code>sb.nodes[]</code>里的那个slot——<code>alloc_node</code>在遍历<code>sb.nodes[]</code>时碰到size==0的就会复用。所以清零旧entry的size不是为了放弃这个slot，恰恰相反——是为了让<code>alloc_node</code>能够“回收利用“这个slot来放同名的新entry信息：</p>
+<pre><code class="language-c">case ST_WRT_INIT:
+    nd = find_node(cur.name);
+    oldcnt = 0;
+    if (nd) {
+      for (i = 0; i &lt; nd-&gt;block_count &amp;&amp; i &lt; KNOTFS_DIRECT_BLKS; i++)
+        oldb[i] = nd-&gt;blocks[i];
+      oldcnt = nd-&gt;block_count;
+      nd-&gt;size = 0; /* invalidate old entry so alloc_node won't skip it */
+    }
+    need = (cur.w_sz + KNOTFS_BLOCK_SIZE - 1) / KNOTFS_BLOCK_SIZE;
+    if (need &gt; KNOTFS_DIRECT_BLKS) {
+      cur.result = ERR_TOO_MANY;
+      cur.st = ST_ERR;
+      return;
+    }
+    nd = alloc_node(cur.name);
+    if (!nd) {
+      cur.result = ERR_NO_NODE;
+      cur.st = ST_ERR;
+      return;
+    }
+    nd-&gt;size = cur.w_sz;
+    nd-&gt;block_count = (uint32_t)need;
+
+    scratch[SCR_OLD_CNT] = oldcnt;
+    for (i = 0; i &lt; oldcnt &amp;&amp; i &lt; KNOTFS_DIRECT_BLKS; i++)
+      scratch[SCR_OLD_BLK(i)] = oldb[i];
+    scratch[SCR_NEW_NEED] = need;
+    subst = 0;
+    cur.st = ST_WRT_ALLOC;
+    return;
+</code></pre>
+<p><code>scratch[]</code>数组是KnotFS状态机里跨状态传递参数的桥梁。因为状态机每次进入只能通过<code>cur.st</code>知道“我在哪个状态“，而各状态之间共享的是一个<code>static uint32_t scratch[16]</code>数组——一个全局的便签纸。<code>scratch[0]</code>存旧块计数，<code>scratch[1..8]</code>存旧块号，<code>scratch[9]</code>存新块需求数。这不是优雅的设计，但它透明。</p>
+<hr>
+<h3 id="第二幕st_wrt_alloc--磨损均衡的选块"><a class="header" href="#第二幕st_wrt_alloc--磨损均衡的选块">第二幕：ST_WRT_ALLOC —— 磨损均衡的选块</a></h3>
+<pre><code class="language-c">case ST_WRT_ALLOC:
+    nd = find_node(cur.name);
+    if (!nd) {
+      cur.result = ERR_RD_COPY;
+      cur.st = ST_ERR;
+      return;
+    }
+    need = scratch[SCR_NEW_NEED];
+    if (subst &gt;= need) {
+      subst = 0;
+      cur.st = ST_WRT_DATA;
+      return;
+    }
+
+    {
+      uint32_t blk = pick_lowest_wear();
+      if (blk &gt;= KNOTFS_BLOCK_COUNT) {
+        cur.result = ERR_NO_BLK;
+        cur.st = ST_ERR;
+        return;
+      }
+      mark_used(blk);
+      sb.wear[blk]++;
+      nd-&gt;blocks[subst] = blk;
+    }
+    subst++;
+    return;
+</code></pre>
+<p>注意<code>subst</code>的用法：它既是块序号索引，又是“已经分配了几个块“的计数器。每调用一次<code>pick_lowest_wear()</code>，<code>subst++</code>，然后<code>return</code>。下一个tick时，状态机重新进入ST_WRT_ALLOC，<code>subst</code>继续递增——直到它到达<code>need</code>。</p>
+<p><strong>这里有一个异步的关键：<code>pick_lowest_wear</code>本身是同步的（它只是遍历内存数组），但它之后的状态跳转是异步的。</strong> KnotFS的状态机设计原则是：每个状态只做“一件事“，做完就return，把控制权交还给事件循环。下一个tick进来时，状态机从这个状态的顶部重新进入。如果事情还没做完（比如还有块要分配），就再做一次，再return。</p>
+<p><code>pick_lowest_wear</code>的实现简单但有效：</p>
+<pre><code class="language-c">static uint32_t pick_lowest_wear(void) {
+  uint32_t best = KNOTFS_BLOCK_COUNT;
+  uint32_t best_w = 0xFFFFFFFFU;
+  for (uint32_t i = KNOTFS_DATA_START; i &lt; KNOTFS_BLOCK_COUNT; i++) {
+    if (!(sb.free_map &amp; (1U &lt;&lt; i)) &amp;&amp; sb.wear[i] &lt; best_w) {
+      best_w = sb.wear[i];
+      best = i;
+    }
+  }
+  return best;
+}
+</code></pre>
+<p>它遍历数据区（block 2~15），只考虑free_bitmap中标记为FREE的块（<code>!(sb.free_map &amp; (1U &lt;&lt; i))</code>），然后选wear_count最小的那个。每次分配后<code>sb.wear[blk]++</code>。wear_count是32位无符号整数，远在溢出之前，NOR Flash的典型寿命已经到头了（10万次擦写）。</p>
+<hr>
+<h3 id="第三幕st_wrt_data--flash编程的异步延迟"><a class="header" href="#第三幕st_wrt_data--flash编程的异步延迟">第三幕：ST_WRT_DATA —— Flash编程的异步延迟</a></h3>
+<pre><code class="language-c">case ST_WRT_DATA: {
+    nd = find_node(cur.name);
+    if (!nd) {
+      cur.result = ERR_RD_COPY;
+      cur.st = ST_ERR;
+      return;
+    }
+    need = scratch[SCR_NEW_NEED];
+    if (subst &gt;= need) {
+      cur.st = ST_WRT_META;
+      return;
+    }
+
+    uint32_t blk = nd-&gt;blocks[subst];
+    uint32_t off = subst * KNOTFS_BLOCK_SIZE;
+    uint32_t rem = cur.w_sz - off;
+    uint32_t n = (rem &lt; KNOTFS_BLOCK_SIZE) ? rem : KNOTFS_BLOCK_SIZE;
+    const uint8_t *s = (const uint8_t *)cur.w_buf + off;
+
+    memcpy(tmp, s, n);
+    if (n &lt; KNOTFS_BLOCK_SIZE)
+      memset(tmp + n, 0xFF, KNOTFS_BLOCK_SIZE - n);
+    fdev_write(blk, tmp, 0, KNOTFS_BLOCK_SIZE);
+    subst++;
+    return;
+}
+</code></pre>
+<p>这一段做了几件重要的事：</p>
+<ol>
+<li>
+<p><strong>数据切分</strong>：把用户buffer按块边界切成4KB的片段。<code>off = subst * KNOTFS_BLOCK_SIZE</code>算出当前块的起始偏移，<code>rem = cur.w_sz - off</code>算出还剩多少数据。最后一个块可能不足4KB。</p>
+</li>
+<li>
+<p><strong>0xFF填充</strong>：Flash擦除后是全1（0xFF）。KnotFS保持这个约定——如果最后一个块不足4KB，剩余字节填0xFF。这是NOR Flash上“未编程区域“的标准状态。</p>
+</li>
+<li>
+<p><strong><code>fdev_write</code>有2个tick的延迟</strong>：<code>fdev_write</code>设置<code>fdev.ticks_left = 2</code>。这意味着在下一个<code>knotfs_run()</code>和再下一个<code>knotfs_run()</code>时，<code>fdev_tick()</code>都会<code>continue</code>（因为<code>ticks_left &gt; 0</code>）。直到第三个tick，数据才真正<code>memcpy</code>到flash数组。</p>
+</li>
+<li>
+<p><strong><code>subst++</code>后return</strong>：ST_WRT_DATA每次写一个块，写完后状态机return，下个tick再进入ST_WRT_DATA——但如果<code>subst &gt;= need</code>（所有块都写完了），就跳到ST_WRT_META。</p>
+</li>
+</ol>
+<pre><code>异步写入的时间线（以3块为例）：
+
+tick 0: ST_WRT_DATA(subst=0) → fdev_write(块A) [ticks_left=2]
+tick 1: fdev_tick → ticks_left=1 → 设备忙，不推进状态机
+tick 2: fdev_tick → ticks_left=0 → memcpy完成，设备闲
+tick 3: ST_WRT_DATA(subst=1) → fdev_write(块B) [ticks_left=2]
+tick 4: fdev_tick → ticks_left=1
+tick 5: fdev_tick → memcpy完成
+tick 6: ST_WRT_DATA(subst=2) → fdev_write(块C) [ticks_left=2]
+tick 7: fdev_tick → ticks_left=1
+tick 8: fdev_tick → memcpy完成
+tick 9: ST_WRT_DATA(subst=3) → subst&gt;=need → 跳转 ST_WRT_META
+</code></pre>
+<p>三个块的数据写入，消耗了10个tick。这就是为什么测试程序的 <code>drive()</code> 函数里会有 <code>tick % 15 == 0</code> 的进度打印——因为异步延迟让一切变慢了，但换来了可控的状态。</p>
+<hr>
+<h3 id="第四幕st_wrt_meta--写log启compact"><a class="header" href="#第四幕st_wrt_meta--写log启compact">第四幕：ST_WRT_META —— 写Log、启Compact</a></h3>
+<pre><code>ST_WRT_META 要做的事：
+  1. log_reset() — 清空Log缓冲区
+  2. 遍历旧块列表，log_push(LT_BITMAP, blk, 0) + mark_free — 释放旧块
+  3. 遍历新块列表，log_push(LT_BITMAP, blk, 1) — 占用新块
+  4. compact_erase() — 擦除非活跃SB槽位
+  5. 等待compact完成
+</code></pre>
+<pre><code class="language-c">case ST_WRT_META: {
+    log_reset();
+    oldcnt = scratch[SCR_OLD_CNT];
+    for (i = 0; i &lt; oldcnt &amp;&amp; i &lt; KNOTFS_DIRECT_BLKS; i++) {
+      uint32_t blk = scratch[SCR_OLD_BLK(i)];
+      if (blk &lt; KNOTFS_BLOCK_COUNT) {
+        log_push(LT_BITMAP, (uint8_t)blk, 0);
+        mark_free(blk);
+      }
+    }
+    need = scratch[SCR_NEW_NEED];
+    nd = find_node(cur.name);
+    if (!nd) {
+      cur.result = ERR_WRT_NODE;
+      cur.st = ST_ERR;
+      return;
+    }
+    for (i = 0; i &lt; need &amp;&amp; i &lt; KNOTFS_DIRECT_BLKS; i++)
+      log_push(LT_BITMAP, (uint8_t)nd-&gt;blocks[i], 1);
+
+    compact_erase();
+    comp_wait = true;
+    cur.st = ST_WRT_META_FLUSH;
+    return;
+}
+</code></pre>
+<p><code>log_push</code>只是往内存缓冲区<code>log_buf[]</code>里追加一条8字节记录，不涉及Flash操作。<code>compact_erase()</code>启动擦除流程（3个tick延迟）。<code>comp_wait = true</code>告诉事件循环等待compact完成。</p>
+<p>这里有一个容易被忽略的细节：<code>mark_free(blk)</code>直接修改了内存中的<code>sb.free_map</code>。这意味着从此刻起，旧块在内存视角里已经是FREE的了。但由于compact还没完成（Flash上的SB还是旧版本），如果现在断电，下次mount时会加载旧SB——旧块仍然是USED的。所以这个<code>mark_free</code>的“提前“操作是安全的——它只在compact成功后才真正生效。</p>
+<hr>
+<h3 id="第五幕st_wrt_meta_flush--写入compact后的新sb"><a class="header" href="#第五幕st_wrt_meta_flush--写入compact后的新sb">第五幕：ST_WRT_META_FLUSH —— 写入Compact后的新SB</a></h3>
+<pre><code class="language-c">case ST_WRT_META_FLUSH:
+    compact_write();
+    cur.st = ST_WRT_COMPACT;
+    return;
+</code></pre>
+<p><code>compact_write()</code>做三件事：</p>
+<ol>
+<li>把内存中的SB完整复制到<code>compact_buf</code></li>
+<li>把<code>compact_buf.sequence</code>设为<code>sb.sequence + 1</code></li>
+<li><code>fdev_write(target_slot, &amp;compact_buf, 0, sizeof(knot_sb_t))</code> —— 启动2个tick的写入延迟</li>
+</ol>
+<hr>
+<h3 id="第六幕st_wrt_compact--宣告新目录生效"><a class="header" href="#第六幕st_wrt_compact--宣告新目录生效">第六幕：ST_WRT_COMPACT —— 宣告新目录生效</a></h3>
+<pre><code class="language-c">case ST_WRT_COMPACT:
+    compact_finish();
+    log_commit();
+    cur.st = ST_OK;
+    return;
+</code></pre>
+<p><code>compact_finish()</code>：</p>
+<pre><code class="language-c">static void compact_finish(void) {
+  sb.sequence++;
+  sb.log_offset = SB_HEADER_SZ;
+  sb.log_count = 0;
+}
+</code></pre>
+<p><code>sb.sequence++</code>宣告：“从现在开始，新SB是权威版本”。<code>log_offset</code>回到初始位置，<code>log_count</code>清零。<code>log_commit()</code>也是一行：<code>sb.log_count += log_cnt; log_cnt = 0;</code>——把累积的log条目数记入SB。</p>
+<hr>
+<h3 id="第七幕st_ok--可以处理下一个请求了"><a class="header" href="#第七幕st_ok--可以处理下一个请求了">第七幕：ST_OK —— 可以处理下一个请求了</a></h3>
+<p><code>cur.st = ST_OK</code>。事件循环检测到<code>cur.st == ST_OK</code>，从队列中pop下一个请求。如果没有新请求，<code>cur.op = OP_NONE</code>。文件系统恢复空闲。</p>
+<hr>
+<h3 id="状态机总览图"><a class="header" href="#状态机总览图">状态机总览图</a></h3>
+<pre><code>knotfs_write("hello.txt", data, 8192)
+      │
+      ▼
+    [入队 ──→ 事件循环开始调度]
+      │
+      ▼
+  ST_WRT_INIT ────── 查找旧entry, 记录旧块, 分配新entry
+      │
+      ▼
+  ST_WRT_ALLOC ───── 分配块0 (pick_lowest_wear, 同步)
+      │ return (下一tick继续)
+      ├── ST_WRT_ALLOC ── 分配块1
+      │ return
+      └── subst&gt;=need → 跳转
+      │
+      ▼
+  ST_WRT_DATA ─────── 写块0 (fdev_write, 2 ticks异步)
+      │ …等待 ticks_left=0…
+      ├── ST_WRT_DATA ── 写块1
+      │ …等待 ticks_left=0…
+      └── subst&gt;=need → 跳转
+      │
+      ▼
+  ST_WRT_META ─────── 写Log(释放旧块+占用新块), compact_erase(3 ticks)
+      │ …等待 ticks_left=0…
+      ▼
+  ST_WRT_META_FLUSH ─ compact_write(2 ticks)
+      │ …等待 ticks_left=0…
+      ▼
+  ST_WRT_COMPACT ──── compact_finish + log_commit
+      │
+      ▼
+  ST_OK ──────────── 文件写入完成 ✓
+</code></pre>
+<hr>
+<h3 id="状态机的异步哲学"><a class="header" href="#状态机的异步哲学">状态机的“异步哲学“</a></h3>
+<p>KnotFS的每一个状态都是<strong>非阻塞</strong>的。没有一个状态会“等待“——它要么完成任务后跳转到下一个状态，要么提交一个异步操作后return，把控制权交还给事件循环。当异步操作完成（<code>fdev_idle() == true</code>），事件循环重新进入状态机，状态机从同一个<code>case</code>顶部重新进入。</p>
+<p>这种模式有几个优点：</p>
+<ol>
+<li><strong>无栈切换</strong>：不需要OS的线程/协程支持，纯C的函数调用+switch/case就能实现。</li>
+<li><strong>可观测</strong>：每个tick的行为是确定的——你可以精确知道当前在哪个状态、Flash在做什么操作。</li>
+<li><strong>可测试</strong>：测试程序可以通过控制<code>knotfs_run()</code>的调用次数来精确控制时间推进。</li>
+<li><strong>可移植</strong>：替换<code>fdev_read/write/erase</code>的底层实现，就可以把KnotFS迁移到任何支持异步I/O的平台。</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>教学简化提示</strong>：这里KnotFS的write状态机有6个状态（INIT→ALLOC→DATA→META→META_FLUSH→COMPACT）。生产级方案的write状态机有9个子状态用于metadata update——因为它除了SB Log还有FT Log（文件表日志），需要额外的状态处理：SB compact → FT compact → log prepare → flush → commit。而且它的alloc和data阶段也需要处理间接块（indirect blocks）的加载和保存，KnotFS没有间接块所以不用管。</p>
+</blockquote>
+<hr>
+<h3 id="如果你来设计"><a class="header" href="#如果你来设计">如果你来设计</a></h3>
+<p>现在试着回答：如果<code>fdev_write</code>的延迟是10个tick而不是2个tick，写操作的状态机会怎么变化？</p>
+<p>答案：状态机本身不需要任何改动——它只负责提交写请求（<code>fdev_write</code>设置<code>ticks_left</code>），然后return。延迟的长短只影响“从下一个tick到数据真正写入“之间经过的tick数。事件循环在<code>fdev_tick()</code>中递减<code>ticks_left</code>，每次递减后检查是否为0。这就是异步编程的魅力——<strong>延迟参数和业务逻辑解耦</strong>。</p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>写操作走了7个状态、6次异步等待。读操作呢？它只需要3个状态——但它的偏移计算和跨块拼装比写操作要复杂。下一节，我们跟踪<code>knotfs_read("data.bin", buf, 100, 2000, &amp;br)</code>，看它是怎么从“块3的第2000字节偏移处“开始，拼接一个跨越块边界的读取结果。<strong>按块寻址、tmp暂存、memcpy拼装——读取的“三段式“。</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/5.8-Copy-on-Write——没确认就不撤旧书.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/5.10-读取流程——按块寻址与偏移计算.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/5.8-Copy-on-Write——没确认就不撤旧书.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/5.10-读取流程——按块寻址与偏移计算.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

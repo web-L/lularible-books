@@ -1,0 +1,552 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Block · Allocator——lookahead与磨损均衡 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="45-block-allocatorlookahead与磨损均衡"><a class="header" href="#45-block-allocatorlookahead与磨损均衡">4.5 Block Allocator——lookahead与磨损均衡</a></h2>
+<h3 id="你如何在一个4mb的flash上找一块空地"><a class="header" href="#你如何在一个4mb的flash上找一块空地">你如何在一个4MB的Flash上找一块空地？</a></h3>
+<p>想象你现在正在LittleFS的内部。CTZ跳表刚决定要追加一个数据块——它调用<code>lfs_alloc(lfs, &amp;new_block)</code>，说：“给我一个空闲块。”</p>
+<p>你现在有1024个4KB的块。其中有些已经被目录和数据占用了，有些是空闲的。你必须在有界RAM的前提下（不能扫描1024个块并构建一个1024位的位图——等等，1024位是多少？128字节。但如果是8192个块呢？1024字节。如果是131072个块（512MB）呢？16KB。）——总之，LittleFS不能假设设备多小。它必须为任意大的设备提供O(1)内存的分配方案。</p>
+<p><strong>你的选择是什么？</strong></p>
+<p>选项A：在盘上维护一个空闲块位图。每次分配时读取它，每次释放时更新它。
+→ 问题：掉电时位图更新可能中断，导致“已分配的块被记录为空闲“（块泄漏）或“空闲块被记录为已分配“（永久丢失空间）。</p>
+<p>选项B：在挂载时扫描一次全盘，构建一个内存中的位图。
+→ 问题：RAM占用与设备大小线性增长，违反有界RAM原则。而且扫描一次全盘在大型设备上可能要数秒。</p>
+<p>选项C：完全不维护空闲块信息。每次需要空闲块时，遍历整个文件系统树，找到所有被引用的块，剩下的就是空闲的。每次从头开始选一个。
+→ 问题：O(n²)的分配时间，在大型设备上不可接受。</p>
+<p><strong>LittleFS选择了选项D——lookahead缓冲区。</strong></p>
+<hr>
+<h3 id="lookahead一个在空闲块上滑动的窗口"><a class="header" href="#lookahead一个在空闲块上滑动的窗口">Lookahead：一个在空闲块上滑动的窗口</a></h3>
+<p>Lookahead的核心思想是：<strong>用一个固定大小的位图——比如16字节（128位）——来缓存“当前区域“的空闲/占用状态。当这个区域里的空闲块用完后，扫描文件系统找到下一个区域，更新位图，继续分配。</strong></p>
+<pre><code>Lookahead Buffer 工作示意
+=========================================================
+
+设备（128个块，用 0 表示空闲，1 表示占用）：
+┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
+│1 │0 │1 │1 │1 │0 │0 │1 │0 │1 │0 │0 │1 │0 │1 │0 │0 │0 │1 │0 │ ...
+└──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
+ \____________________/ \___________________________________/
+   lookahead 位图           还未扫描的区域
+   (32位 = 跟踪32个块)
+</code></pre>
+<pre><code class="language-c">// lfs_t 中的 lookahead 结构体
+struct lfs_lookahead {
+    lfs_block_t start;       // 当前窗口的起始块号
+    lfs_block_t size;        // 窗口中还有多少blocks要检查
+    lfs_block_t next;        // 窗口内的下一个位置
+    lfs_block_t ckpoint;     // 距上次checkpoint以来检查过的块数
+    uint8_t *buffer;         // 指向位图缓冲区的指针
+};
+</code></pre>
+<p>lookahead位图的每一位对应一个物理块。“0“表示该块是空闲的（未被文件系统引用），“1“表示该块被占用。当你需要分配一个空闲块时，从<code>next</code>位置开始扫描位图，找到第一个值为0的位。</p>
+<p>以16字节（128位）的lookahead缓冲区在128块（512KB）的设备上运行示例：</p>
+<pre><code>boot...         lookahead:
+                fs blocks: fffff9fffffffffeffffffffffff0000
+scanning...     lookahead: fffff9ff          ← 扫描找到一批空闲块
+                fs blocks: fffff9fffffffffeffffffffffff0000
+alloc = 21      lookahead: fffffdff          ← 分配了block 21
+                fs blocks: fffffdfffffffffeffffffffffff0000
+alloc = 22      lookahead: ffffffff          ← 分配了block 22
+                fs blocks: fffffffffffffffeffffffffffff0000
+scanning...     lookahead:         fffffffe  ← 窗口前移，重新扫描
+                fs blocks: fffffffffffffffeffffffffffff0000
+alloc = 63      lookahead:         ffffffff  ← 分配了block 63
+                fs blocks: ffffffffffffffffffffffffffff0000
+scanning...     lookahead:         ffffffff  ← 扫描中……
+scanning...     lookahead:                 ffffffff  ← 继续扫描
+scanning...     lookahead:                         ffff0000  ← 最后一段
+alloc = 112     lookahead:                         ffff8000
+                fs blocks: ffffffffffffffffffffffffffff8000
+</code></pre>
+<p>当lookahead窗口中的空闲块用完时，<code>lfs_alloc_scan</code>被调用——它会遍历整个文件系统，在下一次扫描窗口内标记哪些块被占用。窗口在设备上不断向前滑动，形成一个环形扫描模式。</p>
+<hr>
+<h3 id="lfs_alloc分配一个块的完整过程"><a class="header" href="#lfs_alloc分配一个块的完整过程">lfs_alloc：分配一个块的完整过程</a></h3>
+<pre><code class="language-c">// lfs.c:666-715 — lfs_alloc 的完整逻辑
+static int lfs_alloc(lfs_t *lfs, lfs_block_t *block) {
+    while (true) {
+        // 1. 在当前lookahead窗口中找空闲块
+        while (lfs-&gt;lookahead.next &lt; lfs-&gt;lookahead.size) {
+            if (!(lfs-&gt;lookahead.buffer[lfs-&gt;lookahead.next / 8]
+                    &amp; (1U &lt;&lt; (lfs-&gt;lookahead.next % 8)))) {
+                // 找到了！这个块是空闲的
+                *block = (lfs-&gt;lookahead.start + lfs-&gt;lookahead.next)
+                        % lfs-&gt;block_count;
+
+                // 提前找到下一个空闲块位置（优化后续分配）
+                while (true) {
+                    lfs-&gt;lookahead.next += 1;
+                    lfs-&gt;lookahead.ckpoint -= 1;
+
+                    if (lfs-&gt;lookahead.next &gt;= lfs-&gt;lookahead.size
+                            || !(lfs-&gt;lookahead.buffer[lfs-&gt;lookahead.next / 8]
+                                &amp; (1U &lt;&lt; (lfs-&gt;lookahead.next % 8)))) {
+                        return 0;
+                    }
+                }
+            }
+
+            lfs-&gt;lookahead.next += 1;
+            lfs-&gt;lookahead.ckpoint -= 1;
+        }
+
+        // 2. 检查是否整个设备都扫描过了
+        if (lfs-&gt;lookahead.ckpoint &lt;= 0) {
+            LFS_ERROR("No more free space 0x%"PRIx32,
+                    (lfs-&gt;lookahead.start + lfs-&gt;lookahead.next)
+                        % lfs-&gt;block_count);
+            return LFS_ERR_NOSPC;
+        }
+
+        // 3. 当前窗口用完了，需要扫描下一个窗口
+        int err = lfs_alloc_scan(lfs);
+        if(err) {
+            return err;
+        }
+    }
+}
+</code></pre>
+<p>而<code>lfs_alloc_scan</code>的实现展示了lookahead窗口如何移动：</p>
+<pre><code class="language-c">// lfs.c:641-662 — lfs_alloc_scan：填充lookahead缓冲区
+static int lfs_alloc_scan(lfs_t *lfs) {
+    // 移动lookahead窗口到下一个位置
+    lfs-&gt;lookahead.start = (lfs-&gt;lookahead.start + lfs-&gt;lookahead.next)
+            % lfs-&gt;block_count;
+    lfs-&gt;lookahead.next = 0;
+    lfs-&gt;lookahead.size = lfs_min(
+            8*lfs-&gt;cfg-&gt;lookahead_size,     // 位图能追踪的最大块数
+            lfs-&gt;lookahead.ckpoint);         // 但不能超过剩余块数
+
+    // 初始化为全0（全空闲），然后标记已被占用的块
+    memset(lfs-&gt;lookahead.buffer, 0, lfs-&gt;cfg-&gt;lookahead_size);
+
+    // 遍历整个文件系统树，标记被占用的块
+    int err = lfs_fs_traverse_(lfs, lfs_alloc_lookahead, lfs, true);
+    if (err) {
+        lfs_alloc_drop(lfs);
+        return err;
+    }
+
+    return 0;
+}
+</code></pre>
+<p><code>lfs_alloc_lookahead</code>是一个回调函数，对每个被文件系统占用的块，它在lookahead位图中标记其为“1“：</p>
+<pre><code class="language-c">// lfs.c:627-637 — 标记被占用的块
+static int lfs_alloc_lookahead(void *p, lfs_block_t block) {
+    lfs_t *lfs = (lfs_t*)p;
+    lfs_block_t off = ((block - lfs-&gt;lookahead.start)
+            + lfs-&gt;block_count) % lfs-&gt;block_count;
+
+    if (off &lt; lfs-&gt;lookahead.size) {
+        lfs-&gt;lookahead.buffer[off / 8] |= 1U &lt;&lt; (off % 8);
+    }
+
+    return 0;
+}
+</code></pre>
+<p><strong>遍历的开销：</strong> 每次<code>lfs_alloc_scan</code>会调用<code>lfs_fs_traverse_</code>遍历整个文件系统树——包括所有目录的metadata pair和所有文件的CTZ跳表。这个遍历本身的复杂度是O(已用块数)。但因为lookahead窗口一次性填充了多个空闲块，每次遍历的平摊成本是：O(已用块数 / lookahead可以追踪的块数)。</p>
+<p>对于典型的配置（lookahead_size=16字节→128位，设备有1024块），一次扫描填充128个块的信息，每128次分配才需要一次全盘扫描。<strong>对于小设备的日常使用，这通常意味着只需要一到两次扫描。</strong></p>
+<hr>
+<h3 id="checkpoint机制防止无限循环"><a class="header" href="#checkpoint机制防止无限循环">checkpoint机制：防止无限循环</a></h3>
+<p>考虑一个边界情况：如果文件系统快满了，每次<code>lfs_alloc_scan</code>都找不到空闲块，<code>lfs_alloc</code>会不会一直绕圈扫描直到地老天荒？</p>
+<p>答案是不会——因为有<code>ckpoint</code>（检查点）计数器。</p>
+<pre><code class="language-c">// lfs.c:614-616 — 设置检查点
+static void lfs_alloc_ckpoint(lfs_t *lfs) {
+    lfs-&gt;lookahead.ckpoint = lfs-&gt;block_count;
+}
+</code></pre>
+<p><code>lfs_alloc_ckpoint</code>在一次完整的、无等待的分配操作序列开始前被调用。它把<code>ckpoint</code>设置为总块数。每次扫描过一个块，<code>ckpoint</code>减1。如果<code>ckpoint</code>降到0，说明lookahead已经转了一圈，没有空闲块了——返回<code>LFS_ERR_NOSPC</code>（空间不足）。</p>
+<p>这保证了分配器不会无限自旋。即使磁盘满了，它最多扫描一轮就会明确报告错误。</p>
+<hr>
+<h3 id="磨损均衡藏在分配器里的隐形福利"><a class="header" href="#磨损均衡藏在分配器里的隐形福利">磨损均衡：藏在分配器里的隐形福利</a></h3>
+<p>LittleFS的磨损均衡是<strong>统计式的动态磨损均衡</strong>——它不主动追踪每个块的擦除次数（那需要按块存储擦除计数，代价是O(n)的内存），而是利用分配模式的自然随机性来近似均匀分布。</p>
+<p>具体来说：</p>
+<p><strong>1. 线性循环分配（设备上电期间）。</strong></p>
+<p>lookahead窗口在设备上以线性循环的方式移动。每次<code>lfs_alloc_scan</code>都把窗口向前推进一段距离。这意味着在一次运行中，块按物理顺序被分配——块0、块1、块2……直到绕回。这已经提供了一层磨损分布：热点不会集中在某一块。</p>
+<p><strong>2. 随机起始偏移（每次挂载时）。</strong></p>
+<p>如果每次上电都从块0开始分配，那块0会比块1023经历更多次擦除。LittleFS通过在挂载时确定一个随机起始偏移来解决这个问题：</p>
+<pre><code class="language-c">// 每次挂载时的随机种子生成（来自 DESIGN.md）
+//
+//             ┌────────┐ \                         probably random
+//            ┌│metadata│ |                                ^
+//            ││        │ +→ crc ───────────────────────→ xor
+//            ││        │ |                                ^
+//            │└────────┘ /                                │
+//            └───│──│──┘                                   │
+//             ┌─┘    └─────────────────────────┐         │
+//            │                                  │         │
+//            │        ┌──────────────→ xor ────────────→ xor
+//            │        │                 ^       │         ^
+//            v       crc               crc      v        crc
+//       ┌────────┐ \  ^   ┌────────┐ \  ^   ┌────────┐ \  ^
+//      ┌│metadata│─│──│→│metadata│ │  │  ┌│metadata│ │  │
+//      ││        │ └──┘  ││        │ └──┘  ││        │ └──┘
+//      ││        │ │     ││        │ │     ││        │ │
+//      │└────────┘ /     │└────────┘ /     │└────────┘ /
+//      └──│──│──┘        └────│───┘        └──│──│──┘
+</code></pre>
+<p><strong>随机数不是来自硬件RNG——而是整个文件系统所有metadata pair的CRC值依次异或的结果。</strong> 这非常巧妙：文件系统上的数据本身就是熵源——文件内容、创建时间、元数据排列……都在CRC中体现。只要文件系统在上次运行中被修改过，这次挂载时的CRC异或结果就会与前次不同，从而产生不同的分配起始偏移。</p>
+<p>挂载时的<code>seed</code>被<code>lfs_mount_</code>设置为所有遍历过的metadata block的CRC的异或值。随后，<code>lfs_alloc</code>在第一次分配时用这个<code>seed</code>确定lookahead的起始位置。</p>
+<p><strong>3. 基于block_cycles的静态磨损级别。</strong></p>
+<p>除了动态磨损均衡，LittleFS还提供了一种基于擦除计数的“弱静态磨损均衡“：<code>block_cycles</code>参数。</p>
+<p>当metadata pair的revision计数达到<code>block_cycles</code>的整数倍时，LittleFS会强制搬迁（relocate）这个metadata pair到两个全新的块上。这防止了一个频繁更新的目录把它的metadata block擦写穿。</p>
+<pre><code class="language-c">// lfs.c:1940-1947 — 检查是否需要搬迁
+static bool lfs_dir_needsrelocation(lfs_t *lfs, lfs_mdir_t *dir) {
+    // 如果 dir-&gt;rev+1 是 (block_cycles+1)|1 的倍数，触发搬迁
+    return (lfs-&gt;cfg-&gt;block_cycles &gt; 0
+            &amp;&amp; ((dir-&gt;rev + 1) % ((lfs-&gt;cfg-&gt;block_cycles+1)|1) == 0));
+}
+</code></pre>
+<p><code>|1</code>是为了确保除数奇数，避免边界条件。如果<code>block_cycles</code>设为100，那么每100次compaction就会把metadata搬迁到新块上。对于root目录这种高频更新的metadata pair，这个机制非常重要。</p>
+<hr>
+<h3 id="坏块处理检测驱逐"><a class="header" href="#坏块处理检测驱逐">坏块处理：检测+驱逐</a></h3>
+<p>LittleFS的坏块处理策略是“检测即驱逐“：</p>
+<p><strong>写入时检测：</strong> 每次写入后，<code>lfs_bd_prog</code>（带<code>validate=true</code>参数）会立即回读数据并比较。如果不一致，返回<code>LFS_ERR_CORRUPT</code>。</p>
+<pre><code class="language-c">// lfs.c:228-272 — lfs_bd_prog 中的 validation
+static int lfs_bd_prog(lfs_t *lfs,
+        lfs_cache_t *pcache, lfs_cache_t *rcache, bool validate,
+        lfs_block_t block, lfs_off_t off,
+        const void *buffer, lfs_size_t size) {
+    // ...
+    if (validate) {
+        // 写入后立即回读校验
+        lfs_cache_drop(lfs, rcache);
+        int res = lfs_bd_cmp(lfs, NULL, rcache, diff,
+                pcache-&gt;block, pcache-&gt;off, pcache-&gt;buffer, diff);
+        if (res != LFS_CMP_EQ) {
+            return LFS_ERR_CORRUPT;  // 数据不匹配 → 坏块
+        }
+    }
+    // ...
+}
+</code></pre>
+<p><strong>驱逐：</strong> 在上层代码中，看到<code>LFS_ERR_CORRUPT</code>后跳转到<code>relocate</code>标签。在这个标签里，分配一个新块、把数据写到新块、旧块被遗弃——不再被文件系统引用，自然就变成了空闲块。</p>
+<pre><code>坏块检测与驱逐流程
+=========================================================
+
+      ┌──────┐
+      │ root │
+      └──────┘
+     v─┘    └──────────v
+  ┌──────┐          ┌──────┐
+  │  A   │          │  B   │
+  └──────┘          └──────┘
+   .    .          v─┘  .
+   .    .       ┌──────┐.
+   .    .       │  C   │.
+   .    .       │      │.
+   .    .       └──────┘.
+   .    .       .    .   .
+
+写入C时发现坏块：
+      ┌──────┐
+      │ root │
+      └──────┘
+     v─┘    └──────────v
+  ┌──────┐          ┌──────┐
+  │  A   │          │  B   │
+  └──────┘          └──────┘
+   .    .          v─┘  .
+   .    .       ┌──────┐.    ┌──────┐
+   .    .       │ bad  │.    │  C'  │  ← 把数据重写到新块
+   .    .       │ blck │.    │      │
+   .    .       └──────┘.    └──────┘
+
+更新B的指针指向C'：
+      ┌──────┐
+      │ root │
+      └──────┘
+     v─┘    └──────────v
+  ┌──────┐    ┌──────┐
+  │  A   │    │  B'  │  ← B也需要COW
+  └──────┘    └──────┘
+   .    .    .  │ .   └──────────v
+   .    .    .  └──────┐    ┌──────┐
+   .    .    .    .    │    │  C'  │
+   .    .    .    .    │    │      │
+                  └──────┘    └──────┘
+
+更新root指向B'：
+      ┌──────┐
+      │ root │  ← root也需要COW
+      └──────┘
+     v─┘    └──v
+  ┌──────┐    ┌──────┐
+  │  A   │    │  B'  │
+  └──────┘    └──────┘
+   .    .    .   └───────────v
+   .    .    .    .        ┌──────┐
+   .    .    .    .        │  C'  │
+                        └──────┘
+
+坏块成为垃圾，等待compaction回收
+</code></pre>
+<p>这个过程展示了COW结构的另一优势：坏块驱逐和COW搬迁可以用同一套机制处理——都只是“分配新块+写数据+更新父节点指针“的三步曲。</p>
+<hr>
+<h3 id="与knotfs的块管理对比"><a class="header" href="#与knotfs的块管理对比">与KnotFS的块管理对比</a></h3>
+<pre><code>KnotFS 块管理        vs        LittleFS 块管理
+===============================================================
+块数量              16个（固定）              理论上不限（实际受设备大小限制）
+空闲块查找          扫描free_bitmap（O(n)）   lookahead位图（O(1)平摊）
+                    只有16个块，开销很低      对于大设备是必要的
+磨损均衡            显式wear_count数组        统计式动态磨损均衡
+                    每块1个uint32（64 bytes）  不需要每块计数器
+块回收              compact时释放              垃圾块不主动回收
+                    通过free_bitmap标记        通过"drop on floor"策略
+坏块处理            未实现                     写入校验+自动重分配
+===============================================================
+</code></pre>
+<p>KnotFS的块管理非常简单——因为它只有16个块。维护一个16位的free_bitmap和一个16×4=64字节的wear_count数组在RAM中是微不足道的。每次分配时扫描16个位，找到第一个空闲块，然后选其中wear_count最小的。这是把问题简化到极致。</p>
+<p>LittleFS面对的块数量可能是KnotFS的100倍、1000倍。它必须在保持O(1)内存的前提下提供可接受的分配性能。lookahead方案是一个精妙的折中——它不是最快的，但它在任何设备大小下都能工作，且平摊性能在大多数场景下是O(1)。</p>
+<hr>
+<h3 id="垃圾回收的哲学drop-it-on-the-floor"><a class="header" href="#垃圾回收的哲学drop-it-on-the-floor">垃圾回收的哲学：Drop it on the floor</a></h3>
+<p>LittleFS的块回收策略可以用一句话概括：<strong>不主动回收垃圾块。</strong></p>
+<p>当一个文件被删除时，它的CTZ跳表块和metadata pair块不会立即被“标记为空闲“。它们只是不再被任何metadata pair引用——文件系统树上没有路径能到达它们了。在COW操作的日常过程中，compaction自然会把不再被引用的块排除在外。下一次<code>lfs_alloc_scan</code>扫描时，这些块因为没有被文件系统树引用，会被视为空闲块。</p>
+<p>这被称为“drop it on the floor“（丢在地上不理）策略。它的好处是：</p>
+<ul>
+<li>不需要维护free list（免去掉电安全问题）</li>
+<li>释放操作是O(1)（什么都不做）</li>
+<li>坏块自然被遗忘（只要没人引用它）</li>
+</ul>
+<p>代价是：已删除的空间不会立即可用——必须等到下一轮lookahead扫描经过那个区域。</p>
+<hr>
+<h3 id="一段关于熵的沉思"><a class="header" href="#一段关于熵的沉思">一段关于熵的沉思</a></h3>
+<p>LittleFS的熵源——用CRC异或生成随机种子——是一个让人会心一笑的设计。</p>
+<p>随机数在任何计算机系统中都是一个难题。在嵌入式系统上尤其如此：没有硬件RNG，没有操作系统提供的熵池，没有网络时间戳。上电后CPU寄存器的状态虽然是随机的，但你没法保证CRC在编译后不依赖那些初始化状态。</p>
+<p>LittleFS的解决方案是：<strong>用文件系统自身的数据作为熵源。</strong> 每个metadata pair在挂载时被遍历，它的CRC被读取并异或到一个累加器中。这个累加器的最终值取决于所有metadata pair的内容——而metadata pair的内容取决于文件系统的历史修改序列。只要在设备的上一次运行中有过任何写操作，这次挂载时的CRC异或结果就几乎不可能与上一次相同。</p>
+<p>这个设计的哲学含义是：<strong>文件系统本身就是它最可靠的随机源——因为它“记住了“自己的历史。</strong> 一个文件系统之所以需要磨损均衡，恰恰是因为它被使用过；而一个被使用过的文件系统，恰好携带着能使磨损均衡工作所需的“使用痕迹“。</p>
+<p>这是一种自举式的优雅：问题创造了它自己的答案。</p>
+<p>KnotFS 的块分配器比 lookahead 简单得多：只有 16 个块，一个 <code>free_map</code> 位图就够，不需要滑动窗口。KnotFS 的磨损均衡也比 LittleFS 更朴素——<code>pick_lowest_wear</code> 直接从所有空闲块中遍历选 wear 最小的，没有 block_cycles 的强制搬迁机制。LittleFS 的 lookahead 是为“块数可能上千、RAM 只有几 KB“的极端约束设计的；KnotFS 受益于教学场景的小规模——块数少到可以全量扫描，磨损跟踪不需要随机化的起始偏移。这两种设计的差异再一次说明：<strong>同一个问题，同一个理论基础，不同的约束会产生完全不同的实现。</strong></p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>Metadata Pair 存元数据，CTZ Skip-List 存文件数据，Block Allocator 管空间分配——LittleFS 的三根支柱已经立起来了。但还有一个问题：文件是怎么组织的？目录树、文件名、路径解析——这些用户最直观感受到的东西，LittleFS 是怎么实现的？</p>
+<p>下一节，我们进入 LittleFS 的目录系统。你会发现一个反直觉的事实：<strong>目录就是文件。</strong> <code>lfs_mkdir</code> 和 <code>lfs_file_open</code> 在底层调的是同一个函数——区别只是一个 tag 类型。以及：threaded linked-list 如何让目录遍历在掉电后还能继续？</p>
+<p><strong>悬念留给：如果你的目录里有一万个文件，遍历到第 5000 个时突然断电——重启后遍历指针应该指向哪里？</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/4.4-CTZ-Skip-List——文件数据的COW结构.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/4.6-Directory——目录即文件.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/4.4-CTZ-Skip-List——文件数据的COW结构.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/4.6-Directory——目录即文件.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

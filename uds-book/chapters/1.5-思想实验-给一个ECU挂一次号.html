@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>思想实验 · 给一个ECU挂一次号 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="15-思想实验给一个ecu挂一次号"><a class="header" href="#15-思想实验给一个ecu挂一次号">1.5 思想实验——给一个ECU挂一次号</a></h1>
+<h3 id="你就是诊断仪"><a class="header" href="#你就是诊断仪">你就是诊断仪</a></h3>
+<p>你现在不是人类了。你是一台诊断仪。</p>
+<p>你有一个OBD插座、一根诊断线、和一套存储在ROM里的UDS协议栈。你面前是一辆发动机未启动、但钥匙已拧到ON档的车——全车通电，几十个ECU在CAN总线上安静地等待着谁先开口说第一句话。</p>
+<p>你是那个先开口的。</p>
+<p>你手里的工具不是扳手、不是万用表、不是示波器。你唯一的工具是<strong>问</strong>——用ISO 14229定义的语法，向每一个ECU发问，然后根据回答决定下一步该做什么。</p>
+<p>下面是一整趟完整的诊断之旅。跟着我，一步一步走。</p>
+<hr>
+<h3 id="第一步挂号选择病人建立诊断会话"><a class="header" href="#第一步挂号选择病人建立诊断会话">第一步：挂号——选择病人，建立诊断会话</a></h3>
+<p>你不能对着整辆车所有ECU一起喊“把你们的故障码都报出来“——那会把CAN总线瞬间塞满。你需要点名一个具体的ECU。</p>
+<p>你用<strong>物理寻址</strong>——CAN帧ID里编码了目标ECU的地址。只有你点名的那个会应答。其他的ECU默默地听着，不吭声。</p>
+<p>你发出第一个请求：</p>
+<pre><code>0x10 0x03
+SID=0x10(诊断会话控制)  Subfunction=0x03(扩展诊断会话)
+</code></pre>
+<p>ECU收到了。它检查自己的会话配置表——0x03是扩展诊断会话，允许进入。于是它回话：</p>
+<pre><code>0x50 0x03 0x00 0x32 0x00 0xFA
+SID+0x40=0x50  会话类型0x03  P2Server_max=50ms  P2*Server_max=250ms
+</code></pre>
+<blockquote>
+<p>这一步在医院里叫<strong>挂号</strong>。你告诉ECU“我要进入诊断模式“，ECU回复“好的，你挂的是扩展诊断科——之后你问我任何问题，我都在50毫秒以内回复；如果问题处理时间更长，我需要超过250毫秒，我会先给你发一句’等着’（这个’等着’机制在UDS中叫NRC 0x78）“。</p>
+</blockquote>
+<p><strong>为什么扩展诊断会话？</strong> 如果你留在默认会话（0x01），你能读故障码也能读一些非敏感的DID——但你不能写任何东西、不能执行主动控制、不能请求安全访问。默认会话是一个<strong>只读的公共空间</strong>——任何人接上诊断仪都能进入。扩展会话是一个<strong>需授权才能进入的诊察区</strong>——你有了，就可以准备做更进一步的动作了。</p>
+<p>但你还不能“开药“。你现在只是坐在诊察室里——还没有权限翻看某些敏感的病历页（比如安全气囊的配置参数、转向角传感器的零点标定值）。要获得这些权限，你需要：</p>
+<hr>
+<h3 id="第二步病历授权安全访问"><a class="header" href="#第二步病历授权安全访问">第二步：病历授权——安全访问</a></h3>
+<p>你向ECU发出：</p>
+<pre><code>0x27 0x01
+SID=0x27(安全访问)  Subfunction=0x01(请求种子——第1级安全等级)
+</code></pre>
+<p>ECU回复：</p>
+<pre><code>0x67 0x01 0xA3 0x7F 0x2B 0x91
+SID+0x40=0x67  level=0x01  seed[4]=A3 7F 2B 91
+</code></pre>
+<p>4字节的随机种子。你手里有一把密钥——你在ROM里存着和ECU共享的密钥计算算法。你把种子喂进算法，算出密钥：</p>
+<pre><code>Key = f(0xA37F2B91) → 0x3E 0xD5 0x8A 0x02
+</code></pre>
+<p>你发出第二条安全访问请求：</p>
+<pre><code>0x27 0x02 0x3E 0xD5 0x8A 0x02
+SID=0x27  Subfunction=0x02(发送密钥——对应level 1的密钥)  Key[4]
+</code></pre>
+<p>ECU自己也在内部算了一遍。两者匹配。它回话：</p>
+<pre><code>0x67 0x02
+SID+0x40=0x67  level=0x02(密钥通过)
+</code></pre>
+<blockquote>
+<p>现在ECU的安全等级已解锁到Level 1。<strong>这一步在医院里是“获取病历权限“</strong>——你不是路人，你是授权医生。你可以查所有常规检查结果（DID），也可以执行诊断治疗（例行程序），但<strong>不能给病人做手术</strong>（刷写固件需要更高级别的安全访问或者进入编程会话）。</p>
+</blockquote>
+<p>这一步的设计有那么多细节——为什么requestSeed(0x01)和sendKey(0x02)是相隔1而不是任意偏移？为什么不同的安全等级(0x01/0x03/0x05)共享同一个0x27 SID而不是各自独立的SID？这些谜底留到第二章第6节去解开。</p>
+<hr>
+<h3 id="第三步问诊读dtc"><a class="header" href="#第三步问诊读dtc">第三步：问诊——读DTC</a></h3>
+<p>你挂好号、授权完、先不急着开药。你得先<strong>了解病史</strong>。你问ECU——你有多少confirmed（已经确认的、真正存在的、不是偶发信号的）故障码？</p>
+<pre><code>0x19 0x01 0x09
+SID=0x19(读DTC信息)  子功能0x01(按状态掩码报告数量)  DTCStatusMask=0x09
+</code></pre>
+<p>掩码0x09 = bit3(confirmedDTC) + bit0(testFailed) = 当前确认且刚刚检测到失败的DTC。</p>
+<p>ECU查了查它的内部DTC表，回复：</p>
+<pre><code>0x59 0x01 0x09 0x0F 0x00 0x03
+SID+0x40=0x59  子功能0x01  statusAvailabilityMask=0x09
+DTCFormatIdentifier=0x0F(ISO 14229-1三字节格式)  DTCCount=3个
+</code></pre>
+<p>3个confirmed故障。你接着问——都是哪三个？</p>
+<pre><code>0x19 0x02 0x09
+子功能0x02(按状态掩码报告DTC列表)  DTCStatusMask=0x09
+</code></pre>
+<p>ECU回复：</p>
+<pre><code>0x59 0x02 0x09
+  DTC#1: 0x01 0x02 0x03  status=0x09  → P0102(MAF传感器电路低电压)
+  DTC#2: 0x01 0x03 0x05  status=0x09  → P0305(5号缸检测到失火)
+  DTC#3: 0x04 0x02 0x01  status=0x09  → C0421(ABS泵电机故障)
+</code></pre>
+<p>你有三个症状。但“失火“这个诊断描述不够——发症的当时是什么状况？车速多少？发动机转速多少？进气温度多少？你需要<strong>冻结帧</strong>（Freeze Frame）——DTC发生那一刻ECU自动记录下的运行参数快照。</p>
+<p>你锁定P0305：</p>
+<pre><code>0x19 0x04 0x01 0x03 0x05 0xFF
+子功能0x04(按DTC号报告快照)  DTC=0x010305  recordNumber=0xFF(全部快照记录)
+</code></pre>
+<p>ECU返回：</p>
+<pre><code>0x59 0x04 0x01 0x03 0x05 0x09 0x02
+  recordNumber=0x01  snapshotData[0..n]...
+    VehicleSpeed=87 km/h
+    EngineSpeed=2450 rpm
+    CoolantTemp=92°C
+    LTFT=+3.1%
+    EngineLoad=62%
+    TimeSinceEngineStart=174 seconds
+</code></pre>
+<blockquote>
+<p>这告诉你——P0305是车辆在高速巡航时（87km/h、中负荷62%）发生的。水温92°C是正常水温——不是冷启动的失火——是因为5号缸在持续负荷下掉了点火或喷油。你已经大致知道病因和病发情景了。<strong>这就是冻结帧的意义——不只知道“得了什么病“，还知道“什么时候因什么诱因发病“。</strong></p>
+</blockquote>
+<hr>
+<h3 id="第四步化验读did"><a class="header" href="#第四步化验读did">第四步：化验——读DID</a></h3>
+<p>DTC告诉你出了问题。但要确诊，需要<strong>实时数据</strong>。你怀疑MAF传感器可能读数偏了——于是你直接读当前MAF值：</p>
+<pre><code>0x22 0x01 0x10
+SID=0x22(按ID读数据)  DID=0x0110(MAF空气流率, 0~655.35 g/s, 分辨率0.01)
+</code></pre>
+<p>ECU回复：</p>
+<pre><code>0x62 0x01 0x10 0x00 0xAA
+SID+0x40=0x62  DID=0x0110  data=0x00AA=170 → 1.70 g/s
+</code></pre>
+<p>发动机怠速(750rpm)时1.70g/s的MAF读数——以这辆2.0L发动机来说偏低了。正常值应该在2.0~2.5g/s左右。但你还需要确认是在哪个工况下偏低的——于是你同时请求三个DID（如果ECU支持多DID读取）：</p>
+<pre><code>0x22 0x01 0x10 0x01 0x0C 0x01 0x11
+DID=0x0110(MAF) + DID=0x010C(发动机转速) + DID=0x0111(节气门绝对位置)
+</code></pre>
+<p>ECU回复三个数据块绑在一起：</p>
+<pre><code>0x62 0x01 0x10 0x00 0xAA    0x01 0x0C 0x0B 0xB8    0x01 0x11 0x1A
+ └──DID=0x0110──┘  MAF=170   └──DID=0x010C──┘ RPM=752 └DID=0x0111┘ Throttle=11.2%
+</code></pre>
+<blockquote>
+<p>这一步在医院里是<strong>开化验单</strong>。“血糖多少”→读DID 0x0110血糖值。“血压多少”→读DID 0x0112血压值。你可以同时要十几项结果——ECU在一个响应帧里一次全返。<strong>DID的核心价值不是“返回一个数值“——是返回一个语义标签对应的数值。你不说“给我地址0x40024000“，你说“给我MAF传感器值“——ECU知道去哪找。</strong></p>
+</blockquote>
+<hr>
+<h3 id="第五步触诊io控制"><a class="header" href="#第五步触诊io控制">第五步：触诊——IO控制</a></h3>
+<p>确诊需要验证。你怀疑MAF传感器的信号线可能有间歇性短路——但你不可能用万用表去测量ECU内部的ADC采样值。你需要让ECU执行一个动作，同时观察这个动作的响应。</p>
+<pre><code>0x2F 0x01 0x10 0x03 0x0B 0xB8
+SID=0x2F(IO控制)  DID=0x0110(MAF空气流率)
+IOControlParameter=0x03(短期替代)  强制把MAF读数值写入0x0BB8=3000即30.00 g/s
+</code></pre>
+<p>ECU执行替换——它照着你设的值欺骗了自己的控制逻辑——然后回复：</p>
+<pre><code>0x6F 0x01 0x10 0x03 0x0B 0xB8
+SID+0x40=0x6F  DID=0x0110  控制参数0x03  当前控制状态=你设的30.00 g/s
+</code></pre>
+<p>你接下来观察发动机的短期燃油修正(STFT)变化——如果ECU的控制环在看到“MAF=30.00 g/s“时正确地增加了喷油量，那就说明MAF信号链在“读到假值“的情形下下游逻辑是正常的——这帮助你排除了“可能是进气歧管漏气“的选项。而如果ECU没反应，那就是MAF芯片本身有硬件故障——因为软件路径是通的。</p>
+<p>完成后，你把控制权交还给ECU：</p>
+<pre><code>0x2F 0x01 0x10 0x00
+IOControlParameter=0x00(交还ECU控制)
+</code></pre>
+<blockquote>
+<p>这一步在医院里是<strong>触诊</strong>。医生不是只问你“这里疼不疼“——他还要按一下、敲一下、让你“深呼吸，再深一点“——观察你的主动反应。IO控制的本质就是对ECU说：“在你这边，把这个值暂时假改成X——然后告诉我发生了什么。</p>
+</blockquote>
+<hr>
+<h3 id="第六步治疗例行控制和下载"><a class="header" href="#第六步治疗例行控制和下载">第六步：治疗——例行控制和下载</a></h3>
+<p>你已经确诊了三个问题：</p>
+<ol>
+<li>MAF传感器读数偏低→可能是传感器本身脏污</li>
+<li>ABS泵电机报故障C0421→可能是泵体卡滞，需要自检程序重新激活</li>
+<li>你的ECU软件版本太旧——有一版标定把5号缸的失火检测灵敏度提高了</li>
+</ol>
+<p>针对#2——你执行ABS泵的例行自检程序。这个程序的routineID是0x0201：</p>
+<pre><code>0x31 0x01 0x02 0x01
+SID=0x31(例行控制)  子功能0x01(开始例行程序)  routineID=0x0201
+</code></pre>
+<p>ECU启动泵电机自检——泵转2秒→建立压力→检测压力保持→泄压→回复：</p>
+<pre><code>0x71 0x01 0x02 0x01 0x01
+SID+0x40=0x71  子功能0x01  routineID=0x0201  routineStatus=0x01(完成)
+</code></pre>
+<p>自检通过——泵体没有卡滞。大概率是上次掉电时有状态卡在“故障“状态，现在自检清除之后标志位恢复了。</p>
+<p>针对#3——你需要给ECU刷入新的固件。这是一个<strong>手术级别的操作</strong>。你得先切换到编程会话（0x02），然后解锁更高级的安全等级——之后才是下载序列。</p>
+<p>但刷写流程我留到第二章第16节完整展开。这里你只需知道概要：编程会话→安全访问→请求下载→传输数据（循环多次）→传输终止→ECU复位→切回默认会话。那是UDS里最复杂的一条服务链，其逻辑严密程度不亚于一套分布式系统的两阶段提交。</p>
+<hr>
+<h3 id="第七步结账离开回到默认会话清除上下文"><a class="header" href="#第七步结账离开回到默认会话清除上下文">第七步：结账离开——回到默认会话、清除上下文</a></h3>
+<p>诊断完成。新固件刷入。你要做最后一件事——清除DTC并释放诊断会话。</p>
+<pre><code>0x14 0xFF 0xFF 0xFF
+SID=0x14(清除诊断信息)  groupOfDTC=0xFFFFFF(全部组)
+</code></pre>
+<p>ECU回复：</p>
+<pre><code>0x54
+SID+0x40=0x54  →  清除完毕
+</code></pre>
+<p>然后你不再发送保活。ECU的S3会话超时倒计时归零后自动切回默认会话——默认会话不需要保活。安全等级自动回锁。</p>
+<p><strong>诊断会话生命周期——完整结束。</strong></p>
+<blockquote>
+<p>这一步在医院里是<strong>结账、退号、病历归档</strong>。已修好的问题关掉症状条目，诊断会话关闭让ECU回归正常运行状态。</p>
+</blockquote>
+<hr>
+<h3 id="复盘一条完整的诊断工作流映射"><a class="header" href="#复盘一条完整的诊断工作流映射">复盘：一条完整的诊断工作流映射</a></h3>
+<p>回过头看，你刚才执行的这七个步骤不是一个随机的SID序列——它遵循的正是两千年前中医那套望闻问切：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>诊断阶段</th><th>中医映射</th><th>UDS服务</th><th>你在做的事</th></tr>
+</thead>
+<tbody>
+<tr><td>挂号</td><td>—</td><td>0x10 诊断会话控制</td><td>声明身份、确定权限范围</td></tr>
+<tr><td>授权</td><td>—</td><td>0x27 安全访问</td><td>证明你有权做下一步</td></tr>
+<tr><td>望+闻</td><td>被动收集</td><td>0x19 读DTC</td><td>ECU自报告的症状</td></tr>
+<tr><td>问</td><td>主动问询</td><td>0x22 读DID</td><td>主动拉取实时体征数据</td></tr>
+<tr><td>切</td><td>触诊探查</td><td>0x2F IO控制</td><td>主动干扰并观察系统反应</td></tr>
+<tr><td>针灸</td><td>针刺治疗</td><td>0x31 例行控制</td><td>执行程序化治疗操作</td></tr>
+<tr><td>手术</td><td>结构改变</td><td>0x34/36/37 固件下载</td><td>永久改变ECU的软件</td></tr>
+<tr><td>归档</td><td>—</td><td>0x14 清除DTC</td><td>记录已修复、复位状态</td></tr>
+<tr><td>结账</td><td>—</td><td>S3超时→切默认</td><td>释放诊断资源</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>核心洞察</strong>：这不是巧合。所有复杂系统的诊断——人体、发动机、计算机网络——都共享同一种认知框架：<strong>先建立身份和权限，再收集数据，再主动探查，再执行干预。</strong> UDS和中医共享的不是具体的工具——是思维方式。不同之处在于：中医用银针、脉诊和汤药，你用SID、DID和CAN帧。而最根本的哲学追问是——你怎么知道一个不透明的系统里面到底发生了什么？</p>
+</blockquote>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>一次完整的UDS诊断工作流遵循“建立会话→授权→读DTC→读DID→主动测试→执行干预→清除DTC→释放会话“的固定顺序。这个顺序不是协议规定的语法规则——而是诊断认知逻辑的自然展开。</li>
+<li>DID的核心价值是语义化寻址——你说“给我发动机转速“，而不是“给我地址0x40024000“——这让诊断仪可以适配不同硬件平台。</li>
+<li>0x27 SecurityAccess的Seed/Key不是密码学炫技——它是一个在有限ECU算力约束下确保只有授权设备才能执行敏感操作的门禁系统。</li>
+<li>0x31 RoutineControl和0x2F IOControl的地位在UDS中是平行的——它们都是主动干预手段，前者适用于程序化流程（几秒到几分钟的自动操作序列），后者适用于直接的瞬时参数修改。</li>
+<li>诊断和医学在认知框架上的同构不是比喻——它们面对的是同一个根本问题：<strong>不透明系统的内部状态推断</strong>。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：恭喜——你已经挂过一次完整的号了。现在你知道诊断工作流的全貌、知道每一组SID的定位和相互作用。接下来我们要把每一个SID拆开，从报文格式到子功能码，从正响应编码到每一种负响应码的精确触发条件。一句话：我们要读ISO 14229了——不是那种从头啃到尾的死读，而是把标准里的每一个设计决策还原成它背后的诊断意图。你准备好了吗？</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/1.4-KWP2000与UDS——从专有到统一.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/2.1-UDS服务全景——26个SID的地图.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/1.4-KWP2000与UDS——从专有到统一.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/2.1-UDS服务全景——26个SID的地图.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

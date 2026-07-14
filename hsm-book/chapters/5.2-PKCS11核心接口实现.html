@@ -1,0 +1,920 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>PKCS11核心接口实现 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="52-pkcs11核心接口实现从代码到理解"><a class="header" href="#52-pkcs11核心接口实现从代码到理解">5.2 PKCS#11核心接口实现：从代码到理解</a></h2>
+<h3 id="初始化与清理"><a class="header" href="#初始化与清理">初始化与清理</a></h3>
+<p><strong>C_Initialize</strong>：</p>
+<pre><code class="language-c">CK_RV C_Initialize(CK_VOID_PTR pInitArgs)
+{
+    (void)pInitArgs;  // 简化：忽略初始化参数
+    
+    // 检查是否已初始化
+    if (g_ctx.initialized) {
+        return CKR_GENERAL_ERROR;
+    }
+    
+    // 清零全局上下文
+    memset(&amp;g_ctx, 0, sizeof(g_ctx));
+    
+    // 设置初始化状态
+    g_ctx.initialized = CK_TRUE;
+    g_ctx.next_session_handle = 1;  // 句柄从1开始
+    g_ctx.next_key_handle = 1;
+    
+    printf("[hsm-lite] Initialized (version %s)\n", HSM_LITE_VERSION);
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>实现要点</strong>：</p>
+<pre><code>C_Initialize要点：
+
+1. 防止重复初始化
+   检查g_ctx.initialized状态
+
+2. 初始化全局上下文
+   memset清零所有状态
+
+3. 句柄起始值
+   从1开始（0保留为无效）
+
+4. 打印日志
+   方便调试和追踪
+</code></pre>
+<p><strong>C_Finalize</strong>：</p>
+<pre><code class="language-c">CK_RV C_Finalize(CK_VOID_PTR pReserved)
+{
+    (void)pReserved;
+    
+    // 检查是否已初始化
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 清理状态
+    g_ctx.initialized = CK_FALSE;
+    
+    printf("[hsm-lite] Finalized\n");
+    return CKR_OK;
+}
+</code></pre>
+<hr>
+<h3 id="slot管理"><a class="header" href="#slot管理">Slot管理</a></h3>
+<p><strong>C_GetSlotList</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetSlotList(CK_BBOOL tokenPresent, CK_SLOT_ID_PTR pSlotList,
+                     CK_ULONG_PTR pulCount)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 检查参数
+    if (!pulCount) {
+        return CKR_ARGUMENTS_BAD;
+    }
+    
+    // hsm-lite只有一个Slot
+    *pulCount = 1;
+    
+    // 如果提供了数组，填充Slot ID
+    if (pSlotList) {
+        pSlotList[0] = 0;  // Slot ID = 0
+    }
+    
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>单Slot设计</strong>：</p>
+<pre><code>单Slot设计原因：
+
+简化目的：
+├── 教学导向，不需要多Slot
+├── 真实HSM可能有多个Slot
+├── SoftHSM2支持多Token
+└── hsm-lite简化为单Slot
+
+实际场景：
+├── Slot 0 → 唯一的Token
+├── 无物理插槽概念
+└── 无可移除设备支持
+</code></pre>
+<hr>
+<h3 id="session管理"><a class="header" href="#session管理">Session管理</a></h3>
+<p><strong>C_OpenSession</strong>：</p>
+<pre><code class="language-c">CK_RV C_OpenSession(CK_SLOT_ID slotID, CK_FLAGS flags,
+                     CK_SESSION_HANDLE_PTR phSession)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Slot ID
+    if (slotID != 0) {
+        return CKR_SLOT_ID_INVALID;
+    }
+    
+    // 验证参数
+    if (!phSession) {
+        return CKR_ARGUMENTS_BAD;
+    }
+    
+    // 检查Session数量限制
+    if (g_ctx.session_count &gt;= HSM_MAX_SESSIONS) {
+        return CKR_GENERAL_ERROR;
+    }
+    
+    // 查找空闲Session槽位
+    for (CK_ULONG i = 0; i &lt; HSM_MAX_SESSIONS; i++) {
+        if (!g_ctx.sessions[i].in_use) {
+            // 初始化Session
+            g_ctx.sessions[i].in_use = CK_TRUE;
+            g_ctx.sessions[i].handle = g_ctx.next_session_handle++;
+            g_ctx.sessions[i].slot_id = slotID;
+            g_ctx.sessions[i].is_rw = (flags &amp; CKF_RW_SESSION) ? CK_TRUE : CK_FALSE;
+            g_ctx.sessions[i].encrypt_init = CK_FALSE;
+            g_ctx.sessions[i].decrypt_init = CK_FALSE;
+            
+            g_ctx.session_count++;
+            
+            // 返回Session句柄
+            *phSession = g_ctx.sessions[i].handle;
+            
+            printf("[hsm-lite] OpenSession: handle=%lu\n", *phSession);
+            return CKR_OK;
+        }
+    }
+    
+    return CKR_GENERAL_ERROR;
+}
+</code></pre>
+<p><strong>Session查找辅助函数</strong>：</p>
+<pre><code class="language-c">static hsm_session_t *find_session(CK_SESSION_HANDLE hSession)
+{
+    // 遍历Session数组，查找匹配句柄
+    for (CK_ULONG i = 0; i &lt; HSM_MAX_SESSIONS; i++) {
+        if (g_ctx.sessions[i].in_use &amp;&amp; 
+            g_ctx.sessions[i].handle == hSession) {
+            return &amp;g_ctx.sessions[i];
+        }
+    }
+    return NULL;  // 未找到
+}
+</code></pre>
+<p><strong>C_CloseSession</strong>：</p>
+<pre><code class="language-c">CK_RV C_CloseSession(CK_SESSION_HANDLE hSession)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 查找Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 清理Session状态
+    sess-&gt;in_use = CK_FALSE;
+    g_ctx.session_count--;
+    
+    printf("[hsm-lite] CloseSession: handle=%lu\n", hSession);
+    return CKR_OK;
+}
+</code></pre>
+<hr>
+<h3 id="密钥生成"><a class="header" href="#密钥生成">密钥生成</a></h3>
+<p><strong>C_GenerateKey</strong>：</p>
+<pre><code class="language-c">CK_RV C_GenerateKey(CK_SESSION_HANDLE hSession,
+                     CK_MECHANISM_PTR pMechanism,
+                     CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount,
+                     CK_OBJECT_HANDLE_PTR phKey)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 验证参数
+    if (!pMechanism || !phKey) {
+        return CKR_ARGUMENTS_BAD;
+    }
+    
+    // 验证机制（只支持AES）
+    if (pMechanism-&gt;mechanism != CKM_AES_KEY_GEN) {
+        return CKR_MECHANISM_INVALID;
+    }
+    
+    // 检查密钥数量限制
+    if (g_ctx.key_count &gt;= HSM_MAX_OBJECTS) {
+        return CKR_GENERAL_ERROR;
+    }
+    
+    // 查找空闲密钥槽位
+    for (CK_ULONG i = 0; i &lt; HSM_MAX_OBJECTS; i++) {
+        if (!g_ctx.keys[i].in_use) {
+            // 初始化密钥对象
+            g_ctx.keys[i].in_use = CK_TRUE;
+            g_ctx.keys[i].handle = g_ctx.next_key_handle++;
+            g_ctx.keys[i].key_len = HSM_AES_KEY_SIZE;  // 32字节
+            
+            // 生成随机密钥值
+            CK_RV rv = get_random_bytes(g_ctx.keys[i].key, HSM_AES_KEY_SIZE);
+            if (rv != CKR_OK) {
+                g_ctx.keys[i].in_use = CK_FALSE;
+                return rv;
+            }
+            
+            g_ctx.key_count++;
+            
+            // 返回密钥句柄
+            *phKey = g_ctx.keys[i].handle;
+            
+            printf("[hsm-lite] GenerateKey: handle=%lu (AES-256)\n", *phKey);
+            return CKR_OK;
+        }
+    }
+    
+    return CKR_GENERAL_ERROR;
+}
+</code></pre>
+<p><strong>随机数生成辅助函数</strong>：</p>
+<pre><code class="language-c">static CK_RV get_random_bytes(CK_BYTE_PTR buf, CK_ULONG len)
+{
+    // 从/dev/urandom读取随机字节
+    int fd = open("/dev/urandom", O_RDONLY);
+    if (fd &lt; 0) {
+        return CKR_GENERAL_ERROR;
+    }
+    
+    ssize_t ret = read(fd, buf, len);
+    close(fd);
+    
+    return (ret == (ssize_t)len) ? CKR_OK : CKR_GENERAL_ERROR;
+}
+</code></pre>
+<hr>
+<h3 id="加密操作"><a class="header" href="#加密操作">加密操作</a></h3>
+<p><strong>C_EncryptInit</strong>：</p>
+<pre><code class="language-c">CK_RV C_EncryptInit(CK_SESSION_HANDLE hSession,
+                     CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hKey)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 验证密钥
+    hsm_key_t *key = find_key(hKey);
+    if (!key) {
+        return CKR_KEY_HANDLE_INVALID;
+    }
+    
+    // 验证机制
+    if (pMechanism-&gt;mechanism != CKM_AES_ECB &amp;&amp;
+        pMechanism-&gt;mechanism != CKM_AES_CBC) {
+        return CKR_MECHANISM_INVALID;
+    }
+    
+    // 设置加密操作状态
+    sess-&gt;active_mech = pMechanism-&gt;mechanism;
+    sess-&gt;active_key = hKey;
+    sess-&gt;encrypt_init = CK_TRUE;
+    
+    printf("[hsm-lite] EncryptInit: mech=%s\n",
+           pMechanism-&gt;mechanism == CKM_AES_ECB ? "ECB" : "CBC");
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>C_Encrypt</strong>：</p>
+<pre><code class="language-c">CK_RV C_Encrypt(CK_SESSION_HANDLE hSession,
+                 CK_BYTE_PTR pData, CK_ULONG ulDataLen,
+                 CK_BYTE_PTR pEncrypted, CK_ULONG_PTR pulEncryptedLen)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 验证加密已初始化
+    if (!sess-&gt;encrypt_init) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 获取密钥
+    hsm_key_t *key = find_key(sess-&gt;active_key);
+    if (!key) {
+        return CKR_KEY_HANDLE_INVALID;
+    }
+    
+    // 验证参数
+    if (!pEncrypted || !pulEncryptedLen) {
+        return CKR_ARGUMENTS_BAD;
+    }
+    
+    // 设置输出长度
+    *pulEncryptedLen = ulDataLen;
+    
+    // 执行加密
+    CK_RV rv;
+    if (sess-&gt;active_mech == CKM_AES_ECB) {
+        rv = aes_encrypt_ecb(key-&gt;key, pData, ulDataLen, pEncrypted);
+    } else {
+        CK_BYTE iv[16] = {0};  // 简化：固定IV
+        rv = aes_encrypt_cbc(key-&gt;key, iv, pData, ulDataLen, pEncrypted);
+    }
+    
+    printf("[hsm-lite] Encrypt: %lu bytes -&gt; %lu bytes\n",
+           ulDataLen, *pulEncryptedLen);
+    return rv;
+}
+</code></pre>
+<hr>
+<h3 id="解密操作"><a class="header" href="#解密操作">解密操作</a></h3>
+<p><strong>C_DecryptInit</strong>：</p>
+<pre><code class="language-c">CK_RV C_DecryptInit(CK_SESSION_HANDLE hSession,
+                     CK_MECHANISM_PTR pMechanism, CK_OBJECT_HANDLE hKey)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 验证密钥
+    hsm_key_t *key = find_key(hKey);
+    if (!key) {
+        return CKR_KEY_HANDLE_INVALID;
+    }
+    
+    // 验证机制
+    if (pMechanism-&gt;mechanism != CKM_AES_ECB &amp;&amp;
+        pMechanism-&gt;mechanism != CKM_AES_CBC) {
+        return CKR_MECHANISM_INVALID;
+    }
+    
+    // 设置解密操作状态
+    sess-&gt;active_mech = pMechanism-&gt;mechanism;
+    sess-&gt;active_key = hKey;
+    sess-&gt;decrypt_init = CK_TRUE;
+    
+    printf("[hsm-lite] DecryptInit: mech=%s\n",
+           pMechanism-&gt;mechanism == CKM_AES_ECB ? "ECB" : "CBC");
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>C_Decrypt</strong>：</p>
+<pre><code class="language-c">CK_RV C_Decrypt(CK_SESSION_HANDLE hSession,
+                 CK_BYTE_PTR pEncrypted, CK_ULONG ulEncryptedLen,
+                 CK_BYTE_PTR pData, CK_ULONG_PTR pulDataLen)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 验证解密已初始化
+    if (!sess-&gt;decrypt_init) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 获取密钥
+    hsm_key_t *key = find_key(sess-&gt;active_key);
+    if (!key) {
+        return CKR_KEY_HANDLE_INVALID;
+    }
+    
+    // 验证参数
+    if (!pData || !pulDataLen) {
+        return CKR_ARGUMENTS_BAD;
+    }
+    
+    // 设置输出长度
+    *pulDataLen = ulEncryptedLen;
+    
+    // 执行解密
+    CK_RV rv;
+    if (sess-&gt;active_mech == CKM_AES_ECB) {
+        rv = aes_decrypt_ecb(key-&gt;key, pEncrypted, ulEncryptedLen, pData);
+    } else {
+        CK_BYTE iv[16] = {0};
+        rv = aes_decrypt_cbc(key-&gt;key, iv, pEncrypted, ulEncryptedLen, pData);
+    }
+    
+    printf("[hsm-lite] Decrypt: %lu bytes -&gt; %lu bytes\n",
+           ulEncryptedLen, *pulDataLen);
+    return rv;
+}
+</code></pre>
+<hr>
+<h3 id="object管理"><a class="header" href="#object管理">Object管理</a></h3>
+<p><strong>C_CreateObject</strong>：</p>
+<pre><code class="language-c">CK_RV C_CreateObject(CK_SESSION_HANDLE hSession,
+                      CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount,
+                      CK_OBJECT_HANDLE_PTR phObject)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 验证参数
+    if (!pTemplate || !phObject || ulCount == 0) {
+        return CKR_ARGUMENTS_BAD;
+    }
+    
+    // 解析属性模板
+    CK_OBJECT_CLASS class = CKO_SECRET_KEY;
+    CK_KEY_TYPE key_type = CKK_AES;
+    CK_ULONG value_len = HSM_AES_KEY_SIZE;
+    CK_BYTE_PTR value = NULL;
+    
+    for (CK_ULONG i = 0; i &lt; ulCount; i++) {
+        switch (pTemplate[i].type) {
+        case CKA_CLASS:
+            class = *((CK_OBJECT_CLASS *)pTemplate[i].pValue);
+            break;
+        case CKA_KEY_TYPE:
+            key_type = *((CK_KEY_TYPE *)pTemplate[i].pValue);
+            break;
+        case CKA_VALUE:
+            value = (CK_BYTE_PTR)pTemplate[i].pValue;
+            value_len = pTemplate[i].ulValueLen;
+            break;
+        }
+    }
+    
+    // 验证对象类型
+    if (class != CKO_SECRET_KEY || key_type != CKK_AES) {
+        return CKR_ATTRIBUTE_VALUE_INVALID;
+    }
+    
+    // 创建密钥对象
+    // ...（查找空闲槽位，复制密钥值）
+    
+    printf("[hsm-lite] CreateObject: handle=%lu\n", *phObject);
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>C_GetAttributeValue</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetAttributeValue(CK_SESSION_HANDLE hSession,
+                           CK_OBJECT_HANDLE hObject,
+                           CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session和对象
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    hsm_key_t *key = find_key(hObject);
+    if (!key) {
+        return CKR_OBJECT_HANDLE_INVALID;
+    }
+    
+    // 填充属性值
+    for (CK_ULONG i = 0; i &lt; ulCount; i++) {
+        switch (pTemplate[i].type) {
+        case CKA_CLASS:
+            if (pTemplate[i].pValue) {
+                *((CK_OBJECT_CLASS *)pTemplate[i].pValue) = CKO_SECRET_KEY;
+            }
+            pTemplate[i].ulValueLen = sizeof(CK_OBJECT_CLASS);
+            break;
+        case CKA_KEY_TYPE:
+            if (pTemplate[i].pValue) {
+                *((CK_KEY_TYPE *)pTemplate[i].pValue) = CKK_AES;
+            }
+            pTemplate[i].ulValueLen = sizeof(CK_KEY_TYPE);
+            break;
+        case CKA_VALUE_LEN:
+            if (pTemplate[i].pValue) {
+                *((CK_ULONG *)pTemplate[i].pValue) = key-&gt;key_len;
+            }
+            pTemplate[i].ulValueLen = sizeof(CK_ULONG);
+            break;
+        case CKA_VALUE:
+            if (pTemplate[i].pValue) {
+                memcpy(pTemplate[i].pValue, key-&gt;key, key-&gt;key_len);
+                pTemplate[i].ulValueLen = key-&gt;key_len;
+            } else {
+                pTemplate[i].ulValueLen = key-&gt;key_len;  // 返回长度
+            }
+            break;
+        default:
+            pTemplate[i].ulValueLen = CK_UNAVAILABLE_INFORMATION;
+            break;
+        }
+    }
+    
+    return CKR_OK;
+}
+</code></pre>
+<hr>
+<h3 id="随机数生成"><a class="header" href="#随机数生成">随机数生成</a></h3>
+<p><strong>C_GenerateRandom</strong>：</p>
+<pre><code class="language-c">CK_RV C_GenerateRandom(CK_SESSION_HANDLE hSession,
+                        CK_BYTE_PTR pRandomData, CK_ULONG ulRandomLen)
+{
+    // 检查初始化状态
+    if (!g_ctx.initialized) {
+        return CKR_FUNCTION_NOT_INITIALIZED;
+    }
+    
+    // 验证Session
+    hsm_session_t *sess = find_session(hSession);
+    if (!sess) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 验证参数
+    if (!pRandomData) {
+        return CKR_ARGUMENTS_BAD;
+    }
+    
+    // 从系统熵源获取随机数
+    CK_RV rv = get_random_bytes(pRandomData, ulRandomLen);
+    
+    printf("[hsm-lite] GenerateRandom: %lu bytes\n", ulRandomLen);
+    return rv;
+}
+</code></pre>
+<hr>
+<h3 id="实现流程总结"><a class="header" href="#实现流程总结">实现流程总结</a></h3>
+<pre><code>hsm-lite函数调用流程：
+
+应用程序调用
+    │
+    │ C_Initialize()
+    ├── 检查是否已初始化
+    ├── 清零全局上下文
+    ├── 设置句柄起始值
+    ▼
+初始化完成
+    │
+    │ C_GetSlotList()
+    ├── 返回单Slot
+    ▼
+获取Slot
+    │
+    │ C_OpenSession()
+    ├── 查找空闲Session槽位
+    ├── 分配句柄
+    ├── 初始化Session状态
+    ▼
+Session创建
+    │
+    │ C_GenerateKey()
+    ├── 验证机制（AES）
+    ├── 查找空闲密钥槽位
+    ├── 从/dev/urandom获取随机字节
+    ├── 分配密钥句柄
+    ▼
+密钥创建
+    │
+    │ C_EncryptInit()
+    ├── 验证机制（ECB/CBC）
+    ├── 设置Session加密状态
+    ▼
+加密初始化
+    │
+    │ C_Encrypt()
+    ├── 获取Session的活跃密钥
+    ├── 执行简化AES（XOR）
+    ▼
+加密完成
+    │
+    │ C_Decrypt()
+    ├── 类似Encrypt
+    ▼
+解密完成
+    │
+    │ C_CloseSession()
+    │ C_Finalize()
+    ▼
+清理完成
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>hsm-lite的核心实现约615行代码：</p>
+<p><strong>初始化管理</strong>：</p>
+<ul>
+<li>C_Initialize：清零全局上下文，设置句柄起始值</li>
+<li>C_Finalize：清理初始化状态</li>
+</ul>
+<p><strong>Slot管理</strong>：</p>
+<ul>
+<li>C_GetSlotList：返回单Slot（简化设计）</li>
+</ul>
+<p><strong>Session管理</strong>：</p>
+<ul>
+<li>C_OpenSession：查找空闲槽位，分配句柄</li>
+<li>C_CloseSession：清理Session状态</li>
+<li>find_session：辅助查找函数</li>
+</ul>
+<p><strong>密钥操作</strong>：</p>
+<ul>
+<li>C_GenerateKey：从/dev/urandom生成随机密钥</li>
+<li>find_key：辅助查找密钥</li>
+</ul>
+<p><strong>加密解密</strong>：</p>
+<ul>
+<li>C_EncryptInit/C_DecryptInit：设置操作状态</li>
+<li>C_Encrypt/C_Decrypt：执行XOR简化加密</li>
+</ul>
+<p><strong>Object管理</strong>：</p>
+<ul>
+<li>C_CreateObject：从属性模板创建对象</li>
+<li>C_GetAttributeValue：返回对象属性</li>
+</ul>
+<p><strong>随机数</strong>：</p>
+<ul>
+<li>C_GenerateRandom：从系统熵源获取</li>
+</ul>
+<p>下一节，我们将分析安全存储与密钥管理——密钥如何存储、查找、销毁。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<ul>
+<li>
+<p>密钥如何存储？</p>
+</li>
+<li>
+<p>如何通过Handle查找密钥？</p>
+</li>
+<li>
+<p>密钥如何销毁？</p>
+</li>
+</ul>
+<p>下一节，安全存储与密钥管理。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/5.1-hsm-lite项目概述.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/5.3-安全存储与密钥管理.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/5.1-hsm-lite项目概述.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/5.3-安全存储与密钥管理.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>phc2sys工具分析 · PHC与系统时钟的 · 桥梁 ·  - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="311-phc2sys工具分析phc与系统时钟的桥梁"><a class="header" href="#311-phc2sys工具分析phc与系统时钟的桥梁">3.11 phc2sys工具分析：PHC与系统时钟的“桥梁“</a></h1>
+<h2 id="为什么需要phc2sys"><a class="header" href="#为什么需要phc2sys">为什么需要phc2sys</a></h2>
+<p>PTP同步存在一个关键问题：</p>
+<pre><code>PTP同步的是PHC（PTP Hardware Clock）：
+- ptp4l操作PHC
+- 时间戳来自PHC
+- 调整的是PHC
+
+但应用使用的是系统时钟（CLOCK_REALTIME）：
+- gettimeofday()读取系统时钟
+- 系统时钟≠ PHC
+- 应用看到的时间可能错误
+
+问题：
+如何让应用获得准确的时间？
+
+答案：
+phc2sys！
+</code></pre>
+<h3 id="ptp4l-vs-phc2sys"><a class="header" href="#ptp4l-vs-phc2sys">ptp4l vs phc2sys</a></h3>
+<pre><code>ptp4l的作用：
+- 同步PHC到网络主时钟
+- 处理PTP协议
+- 调整PHC频率和相位
+
+phc2sys的作用：
+- 同步系统时钟到PHC
+- 或同步PHC到系统时钟
+- 或同步PHC到PHC
+
+典型部署：
+网络主时钟 → ptp4l → PHC → phc2sys → 系统时钟 → 应用
+</code></pre>
+<hr>
+<h2 id="phc2sys工作原理"><a class="header" href="#phc2sys工作原理">phc2sys工作原理</a></h2>
+<h3 id="时钟层级"><a class="header" href="#时钟层级">时钟层级</a></h3>
+<pre><code>时钟层次结构：
+
+1. 网络主时钟（Grandmaster）
+   - GPS时间源
+   - 原子钟
+   - 最高精度
+
+2. PHC（PTP Hardware Clock）
+   - 网卡硬件时钟
+   - 纳秒级精度
+   - ptp4l同步到网络主时钟
+
+3. 系统时钟（CLOCK_REALTIME）
+   - Linux内核时钟
+   - 应用访问的时钟
+   - phc2sys同步到PHC
+
+同步链：
+Grandmaster → PHC → System Clock
+</code></pre>
+<h3 id="同步方法"><a class="header" href="#同步方法">同步方法</a></h3>
+<pre><code class="language-c">/* phc2sys.c, 第576-647行 */
+
+static void update_clock(struct domain *domain, struct clock *clock,
+                         int64_t offset, uint64_t ts, int64_t delay)
+{
+    enum servo_state state = SERVO_UNLOCKED;
+    double ppb = 0.0;
+
+    /* 创建servo */
+    if (!clock-&gt;servo) {
+        clock-&gt;servo = servo_add(domain, clock);
+        if (!clock-&gt;servo)
+            return;
+    }
+
+    /* 处理闰秒 */
+    if (clock_handle_leap(domain, clock, offset, ts))
+        return;
+
+    /* 应用偏移调整 */
+    offset += get_sync_offset(domain, clock);
+
+    /* 如果不是free running模式，调整时钟 */
+    if (!domain-&gt;free_running) {
+        /* sanity check */
+        if (clock-&gt;sanity_check &amp;&amp; clockcheck_sample(clock-&gt;sanity_check, ts))
+            servo_reset(clock-&gt;servo);
+
+        /* servo采样 */
+        ppb = servo_sample(clock-&gt;servo, offset, ts, 1.0, &amp;state);
+        clock-&gt;servo_state = state;
+
+        /* 根据servo状态调整时钟 */
+        switch (state) {
+        case SERVO_UNLOCKED:
+            break;
+        case SERVO_JUMP:
+            clockadj_step(clock-&gt;clkid, -offset);
+            break;
+        case SERVO_LOCKED:
+        case SERVO_LOCKED_STABLE:
+            clockadj_set_freq(clock-&gt;clkid, -ppb);
+            break;
+        }
+    }
+}
+</code></pre>
+<p><strong>同步流程</strong>：</p>
+<pre><code>phc2sys主循环：
+
+1. 读取源时钟时间（PHC或系统时钟）
+2. 读取目标时钟时间
+3. 计算偏差：offset = 目标时间 - 源时间
+4. 调用servo计算调整量
+5. 根据servo状态调整目标时钟：
+   - SERVO_JUMP：时钟跳变（大偏差）
+   - SERVO_LOCKED：频率调整（小偏差）
+   - SERVO_LOCKED_STABLE：稳定同步
+
+调整方法：
+- 时钟跳变：立即修改时间（可能影响应用）
+- 频率调整：渐进调整（平滑，无跳变）
+</code></pre>
+<hr>
+<h2 id="phc2sys命令行"><a class="header" href="#phc2sys命令行">phc2sys命令行</a></h2>
+<h3 id="基本用法"><a class="header" href="#基本用法">基本用法</a></h3>
+<pre><code class="language-bash"># 同步系统时钟到PHC
+phc2sys -s /dev/ptp0 -c CLOCK_REALTIME -w
+
+# 参数说明：
+# -s /dev/ptp0：源时钟（PHC）
+# -c CLOCK_REALTIME：目标时钟（系统时钟）
+# -w：等待ptp4l同步
+</code></pre>
+<h3 id="常用参数"><a class="header" href="#常用参数">常用参数</a></h3>
+<pre><code class="language-bash"># 指定源和目标
+-s [device]    源时钟设备
+-c [device]    目标时钟设备
+
+# 同步模式
+-w             等待ptp4l同步
+-W [timeout]   等待超时时间
+
+# 伺服参数
+-P [kp]        PI控制器的比例增益（默认0.7）
+-I [ki]        PI控制器的积分增益（默认0.3）
+-S             使用非线性回归servo
+
+# 其他
+-O [offset]    时间偏移（UTC/TAI）
+-l [interval]  日志间隔
+-m             打印到stdout
+</code></pre>
+<h3 id="典型场景"><a class="header" href="#典型场景">典型场景</a></h3>
+<pre><code class="language-bash"># 场景1：PTP从时钟
+# ptp4l同步PHC到网络主时钟
+# phc2sys同步系统时钟到PHC
+ptp4l -i eth0 -s -m &amp;
+phc2sys -s eth0 -c CLOCK_REALTIME -w -m
+
+# 场景2：PTP主时钟
+# PHC由本地GPS同步
+# phc2sys同步系统时钟到PHC
+phc2sys -s /dev/ptp0 -c CLOCK_REALTIME -m
+
+# 场景3：多网卡
+# 同步多个PHC
+phc2sys -s eth0 -c eth1 -m
+</code></pre>
+<hr>
+<h2 id="phc2sys实现详解"><a class="header" href="#phc2sys实现详解">phc2sys实现详解</a></h2>
+<h3 id="clock结构体"><a class="header" href="#clock结构体">clock结构体</a></h3>
+<pre><code class="language-c">/* phc2sys.c, 第72-93行 */
+
+struct clock {
+    LIST_ENTRY(clock) list;           /* 链表节点 */
+    clockid_t clkid;                  /* 时钟ID */
+    int phc_index;                    /* PHC索引 */
+    int sysoff_method;                /* 系统偏移方法 */
+    int is_utc;                       /* 是否UTC时间 */
+    int dest_only;                    /* 仅作为目标 */
+    int state;                        /* 状态 */
+    int new_state;                    /* 新状态 */
+    int sync_offset;                  /* 同步偏移 */
+    int leap_set;                     /* 闰秒设置 */
+    int utc_offset_set;               /* UTC偏移设置 */
+    struct servo *servo;              /* 伺服控制器 */
+    enum servo_state servo_state;     /* 伺服状态 */
+    char *device;                     /* 设备名 */
+    const char *source_label;         /* 源标签 */
+    struct stats *offset_stats;       /* 偏移统计 */
+    struct stats *freq_stats;         /* 频率统计 */
+    struct stats *delay_stats;        /* 延迟统计 */
+    struct clockcheck *sanity_check;  /* 健康检查 */
+};
+</code></pre>
+<h3 id="domain结构体"><a class="header" href="#domain结构体">domain结构体</a></h3>
+<pre><code class="language-c">/* phc2sys.c, 第102-121行 */
+
+struct domain {
+    unsigned int stats_max_count;     /* 统计最大数量 */
+    int sanity_freq_limit;            /* 频率限制 */
+    enum servo_type servo_type;       /* 伺服类型 */
+    int phc_readings;                 /* PHC读取次数 */
+    double phc_interval;              /* PHC间隔 */
+    int forced_sync_offset;           /* 强制同步偏移 */
+    int kernel_leap;                  /* 内核闰秒 */
+    int state_changed;                /* 状态变化 */
+    int free_running;                 /* 自由运行 */
+    int has_rt_clock;                 /* 有实时时钟 */
+    struct pmc_agent *agent;          /* PMC代理 */
+    int agent_subscribed;             /* 代理订阅 */
+    LIST_HEAD(port_head, port) ports; /* 端口列表 */
+    LIST_HEAD(clock_head, clock) clocks; /* 时钟列表 */
+    LIST_HEAD(dst_clock_head, clock) dst_clocks; /* 目标时钟列表 */
+    struct clock *src_clock;          /* 源时钟 */
+    struct domain *src_domain;        /* 源域 */
+    int src_priority;                 /* 源优先级 */
+};
+</code></pre>
+<h3 id="自动配置"><a class="header" href="#自动配置">自动配置</a></h3>
+<pre><code class="language-c">/* phc2sys.c, 第382-466行 */
+
+static int reconfigure_domain(struct domain *domain)
+{
+    struct clock *c, *src = NULL;
+    int src_cnt = 0, dst_cnt = 0;
+
+    /* 遍历所有时钟 */
+    LIST_FOREACH(c, &amp;domain-&gt;clocks, list) {
+        if (c-&gt;clkid == CLOCK_REALTIME) {
+            /* 系统时钟总是可以作为目标 */
+            LIST_INSERT_HEAD(&amp;domain-&gt;dst_clocks, c, dst_list);
+            domain-&gt;src_clock = c-&gt;dest_only ? NULL : c;
+            return 0;
+        }
+
+        /* 根据端口状态选择源时钟 */
+        switch (c-&gt;state) {
+        case PS_SLAVE:
+            src = c;
+            src_cnt++;
+            break;
+        case PS_MASTER:
+        case PS_PASSIVE:
+            /* 作为目标时钟 */
+            LIST_INSERT_HEAD(&amp;domain-&gt;dst_clocks, c, dst_list);
+            dst_cnt++;
+            break;
+        }
+    }
+
+    /* 选择源时钟 */
+    if (src_cnt == 1) {
+        domain-&gt;src_clock = src;
+        pr_info("selecting %s as domain source clock", src-&gt;device);
+    }
+
+    return 0;
+}
+</code></pre>
+<p><strong>自动选择源时钟</strong>：</p>
+<pre><code>phc2sys可以自动选择源时钟：
+
+1. 监听ptp4l的端口状态通知
+2. 当端口变为SLAVE状态时
+3. 自动将该PHC选为源时钟
+4. 同步其他时钟到该PHC
+
+配置：
+phc2sys -a（自动模式）
+
+工作流程：
+- 端口A：SLAVE状态 → PHC A作为源
+- 端口B：MASTER状态 → PHC B作为目标
+- phc2sys自动同步：PHC A → PHC B
+</code></pre>
+<hr>
+<h2 id="时间偏移处理"><a class="header" href="#时间偏移处理">时间偏移处理</a></h2>
+<h3 id="utc-vs-tai"><a class="header" href="#utc-vs-tai">UTC vs TAI</a></h3>
+<pre><code>PTP使用TAI时间：
+- International Atomic Time
+- 不受闰秒影响
+- 连续递增
+
+系统时钟通常使用UTC：
+- Coordinated Universal Time
+- 受闰秒影响
+- 有跳变
+
+偏移：
+UTC = TAI - leap_seconds
+
+当前（2024年）：TAI - UTC = 37秒
+
+phc2sys需要处理这个偏移：
+- 读取PHC（TAI）
+- 读取系统时钟（UTC）
+- offset = PHC_time - (sys_time + 37)
+</code></pre>
+<h3 id="同步偏移配置"><a class="header" href="#同步偏移配置">同步偏移配置</a></h3>
+<pre><code class="language-c">/* phc2sys.c, 第528-535行 */
+
+static int64_t get_sync_offset(struct domain *domain, struct clock *dst)
+{
+    int direction = domain-&gt;forced_sync_offset;
+
+    if (!direction)
+        direction = dst-&gt;is_utc - domain-&gt;src_clock-&gt;is_utc;
+    
+    return (int64_t)dst-&gt;sync_offset * NS_PER_SEC * direction;
+}
+</code></pre>
+<p><strong>配置示例</strong>：</p>
+<pre><code class="language-bash"># PHC（TAI）→ 系统时钟（UTC）
+# 自动处理37秒偏移
+phc2sys -s /dev/ptp0 -c CLOCK_REALTIME -w
+
+# 手动指定偏移
+phc2sys -s /dev/ptp0 -c CLOCK_REALTIME -O 37
+</code></pre>
+<hr>
+<h2 id="统计和监控"><a class="header" href="#统计和监控">统计和监控</a></h2>
+<h3 id="输出示例"><a class="header" href="#输出示例">输出示例</a></h3>
+<pre><code class="language-bash">$ phc2sys -s eth0 -c CLOCK_REALTIME -w -m
+
+phc2sys[1234.567]: selected /dev/ptp0 as PTP clock
+phc2sys[1234.567]: selecting CLOCK_REALTIME for synchronization
+phc2sys[1235.567]: CLOCK_REALTIME rms  100 max  150 freq -100 +/-  10
+phc2sys[1236.567]: CLOCK_REALTIME rms   50 max   80 freq  -50 +/-   5
+phc2sys[1237.567]: CLOCK_REALTIME rms   20 max   30 freq  -20 +/-   2
+</code></pre>
+<p><strong>字段说明</strong>：</p>
+<pre><code>CLOCK_REALTIME：目标时钟
+rms  100：偏差的均方根值（纳秒）
+max  150：最大偏差（纳秒）
+freq -100：频率调整（ppb）
++/-   10：频率标准差
+</code></pre>
+<h3 id="统计实现"><a class="header" href="#统计实现">统计实现</a></h3>
+<pre><code class="language-c">/* phc2sys.c, 第537-574行 */
+
+static void update_clock_stats(struct clock *clock, unsigned int max_count,
+                               int64_t offset, double freq, int64_t delay)
+{
+    struct stats_result offset_stats, freq_stats, delay_stats;
+
+    /* 添加统计值 */
+    stats_add_value(clock-&gt;offset_stats, offset);
+    stats_add_value(clock-&gt;freq_stats, freq);
+    if (delay &gt;= 0)
+        stats_add_value(clock-&gt;delay_stats, delay);
+
+    /* 达到最大数量时输出 */
+    if (stats_get_num_values(clock-&gt;offset_stats) &lt; max_count)
+        return;
+
+    /* 获取统计结果 */
+    stats_get_result(clock-&gt;offset_stats, &amp;offset_stats);
+    stats_get_result(clock-&gt;freq_stats, &amp;freq_stats);
+
+    /* 输出 */
+    pr_info("%s "
+            "rms %4.0f max %4.0f "
+            "freq %+6.0f +/- %3.0f",
+            clock-&gt;device,
+            offset_stats.rms, offset_stats.max_abs,
+            freq_stats.mean, freq_stats.stddev);
+
+    /* 重置统计 */
+    stats_reset(clock-&gt;offset_stats);
+    stats_reset(clock-&gt;freq_stats);
+    stats_reset(clock-&gt;delay_stats);
+}
+</code></pre>
+<hr>
+<h2 id="实战示例"><a class="header" href="#实战示例">实战示例</a></h2>
+<h3 id="场景1ptp从时钟完整部署"><a class="header" href="#场景1ptp从时钟完整部署">场景1：PTP从时钟完整部署</a></h3>
+<pre><code class="language-bash"># 终端1：运行ptp4l
+sudo ptp4l -i eth0 -s -m -S
+
+# 终端2：运行phc2sys
+sudo phc2sys -s eth0 -c CLOCK_REALTIME -w -m
+
+# 终端3：监控同步状态
+watch -n 1 'pmc -u "GET TIME_STATUS_NP"'
+
+# 终端4：检查时间
+date          # 系统时间（UTC）
+hwclock       # 硬件时钟
+phc_ctl /dev/ptp0 -- get  # PHC时间（TAI）
+</code></pre>
+<h3 id="场景2多域同步"><a class="header" href="#场景2多域同步">场景2：多域同步</a></h3>
+<pre><code class="language-bash"># 域0：主域
+ptp4l -i eth0 -m --domainNumber 0 &amp;
+phc2sys -a -r --domainNumber 0 &amp;
+
+# 域1：备用域
+ptp4l -i eth1 -m --domainNumber 1 &amp;
+phc2sys -a -r --domainNumber 1 &amp;
+
+# 自动选择最佳源时钟
+</code></pre>
+<h3 id="场景3使用pps信号"><a class="header" href="#场景3使用pps信号">场景3：使用PPS信号</a></h3>
+<pre><code class="language-bash"># 使用PPS信号辅助同步
+phc2sys -s /dev/ptp0 -c CLOCK_REALTIME -w -m \
+    --pps /dev/pps0
+
+# PPS提供精确的秒脉冲
+# 提高同步精度
+</code></pre>
+<hr>
+<h2 id="小结phc2sys的关键要点"><a class="header" href="#小结phc2sys的关键要点">小结：phc2sys的关键要点</a></h2>
+<p><strong>核心作用</strong>：</p>
+<ul>
+<li>连接PHC和系统时钟</li>
+<li>让应用获得准确时间</li>
+</ul>
+<p><strong>工作原理</strong>：</p>
+<ul>
+<li>读取两个时钟</li>
+<li>计算偏差</li>
+<li>servo控制调整</li>
+</ul>
+<p><strong>典型部署</strong>：</p>
+<ul>
+<li>ptp4l：网络→ PHC</li>
+<li>phc2sys：PHC → 系统时钟</li>
+</ul>
+<p><strong>自动配置</strong>：</p>
+<ul>
+<li>监听端口状态</li>
+<li>自动选择源时钟</li>
+<li>多域支持</li>
+</ul>
+<p><strong>UTC/TAI处理</strong>：</p>
+<ul>
+<li>自动处理闰秒偏移</li>
+<li>可手动配置</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>phc2sys解决了PHC与系统时钟的同步，但单播协商如何工作？</p>
+<p>下一节，我们将分析<strong>单播协商实现</strong>——看看如何建立单播PTP会话。</p>
+<blockquote>
+<p><strong>【悬念留给3.12】</strong></p>
+<p>默认PTP使用组播。</p>
+<p>但有些场景需要单播：</p>
+<ul>
+<li>跨路由器</li>
+<li>精确控制</li>
+<li>减少网络负载</li>
+</ul>
+<p>单播协商如何建立？</p>
+<p>如何维护单播会话？</p>
+<p>下一节，深入单播世界。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/3.10-管理协议与pmc-PTP的-远程控制台-.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/3.12-单播协商实现-PTP的-专线服务-.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/3.10-管理协议与pmc-PTP的-远程控制台-.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/3.12-单播协商实现-PTP的-专线服务-.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

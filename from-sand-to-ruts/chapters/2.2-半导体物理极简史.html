@@ -1,0 +1,355 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>半导体物理极简史 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="22-半导体物理极简史"><a class="header" href="#22-半导体物理极简史">2.2 半导体物理极简史</a></h2>
+<h3 id="一块奇怪的方铅矿"><a class="header" href="#一块奇怪的方铅矿">一块奇怪的方铅矿</a></h3>
+<p>1874年。德国物理学家费迪南德·布劳恩（Ferdinand Braun）在维尔茨堡大学的实验室里做了一件很普通的事。</p>
+<p>他把一根细细的金属探针戳在一块天然方铅矿（PbS，硫化铅）晶体的表面上，然后接通电池，测量流过这块矿物的电流。</p>
+<p>匪夷所思的结果出现了：<strong>电流只能往一个方向走。</strong></p>
+<p>他把电池正负极调换——同一根探针、同一块晶体、同一个接触点——电流从正向的毫安级别，变成了反向的微安级别。差了三个数量级。不是材料坏了。不是仪器出了问题。不是他接反了。他就是碰巧发现了<strong>整流效应</strong>——晶体与金属的接触允许电流从一个方向轻易通过，反向则几乎不导通。</p>
+<p>布劳恩当时不知道“半导体“这个名词。他不知道 PN 结。他不知道自己触碰的这块方铅矿里的铅和硫原子之间，正在发生着当时没有人理解的量子力学过程。他只是把这个现象忠实地记录了下来，写了一篇论文，发表了。</p>
+<p>32岁的布劳恩可能觉得这不过是个边角料级别的发现。他后来的职业生涯证明了他的想法——他在 1909 年获得了诺贝尔物理学奖，但不是因为半导体，而是因为他发明的“布劳恩管“（阴极射线管，CRT 显示器和电视显像管的前身）。</p>
+<p>这个故事的启示是：<strong>伟大的发现，在当时往往看不出伟大。</strong> 布劳恩戳那块方铅矿的时候，没有想过 130 年后，地球上会有几千亿个“整流器“在日夜不停地工作——只不过它们不再是方铅矿探针，而是刻在硅片上的、尺寸只有几十纳米的 PN 结。</p>
+<hr>
+<h3 id="原子能级能带为什么有些材料导电有些不能"><a class="header" href="#原子能级能带为什么有些材料导电有些不能">原子、能级、能带——为什么有些材料导电，有些不能？</a></h3>
+<p>要理解半导体，先要理解导电的基本原理。</p>
+<p>原子由原子核和核外电子构成。早期的物理学（玻尔模型）把电子想象成绕原子核旋转的小球——每个球只能在特定的、分立的轨道上运行。这些轨道叫做<strong>能级</strong>。电子不能待在任何两个能级之间的“中间位置“——它要么在这个轨道，要么在那个轨道，没有过渡态。这就是量子力学的第一个令人不安的结论：能量不是连续的，是<strong>量子化</strong>的。</p>
+<p>当很多很多个原子紧密排列在一起——形成晶体时——情况发生了质变。每个原子的电子轨道受到相邻原子核的电磁作用，能级会发生微小的偏移。几十亿个原子排在一起，每个能级都会分裂成一个由几十亿个极微小的子能级构成的<strong>能带</strong>。你可以想象把一根琴弦的每个谐波（分立频率）放进一个巨大的乐团——每根琴弦都有略微不同的调音，结果是一个连续的频率区间。</p>
+<p>在晶体中，最关键的两个能带是：</p>
+<p><strong>价带（Valence Band）</strong>：能量较低的能带。在价带中的电子被原子紧紧束缚——它们填充着原子之间的共价键，没有能力在晶体中自由移动。</p>
+<p><strong>导带（Conduction Band）</strong>：能量较高的能带。如果一个电子获得了足够的能量“跳“进导带，它就摆脱了原子核的束缚，变成可以在晶体中自由游走的<strong>自由电子</strong>。自由电子 = 导电。</p>
+<p>这两条带之间，有一个<strong>禁带</strong>（Band Gap，也叫带隙）——在这个能量区间内，<strong>没有任何能级存在</strong>。电子不能存在于禁带中。它要么在价带（不导电），要么在导带（导电）。禁带的宽度决定了这个材料是“导体“、“半导体“还是“绝缘体”。</p>
+<pre><code>金属：              半导体：               绝缘体：
+导带 ████████       导带                    导带
+     ▼ 重叠             ▲ E_g ≈ 1.12 eV         ▲ E_g &gt; 5 eV
+价带 ████████       价带 ████████           价带 ████████
+(电子随时在导带)    (需要能量跃迁)          (几乎不可能跃迁)
+</code></pre>
+<p><strong>金属（铜、铝、银）</strong>：价带和导带重叠——或者说，费米能级恰好落在导带内部。这意味着即使在绝对零度，也有大量电子天然处在导带中。不需要任何外界能量，电子就可以自由移动。因此金属在任何温度下都是良导体。</p>
+<p><strong>绝缘体（玻璃、橡胶、二氧化硅）</strong>：禁带宽度大于 5 eV。电子从价带跃迁到导带需要的能量太大了。室温下的热运动能量大约是 kT ≈ 0.026 eV（k 是玻尔兹曼常数，T 是温度 300K）。5 eV 和 0.026 eV——差距 200 倍。靠热激发跳到导带的概率微乎其微。所以绝缘体在正常情况下完全不导电。</p>
+<p><strong>半导体（硅、锗、砷化镓）</strong>：禁带宽度在 0.5 到 3 eV 之间。硅是 1.12 eV。锗是 0.67 eV。碳化硅（4H-SiC）是 3.23 eV。氮化镓（GaN）是 3.4 eV。在室温下，少量电子可以通过热激发获得足够的能量跳进导带——所以说半导体“有一点导电“。但更关键的是：<strong>你可以主动控制它的导电性。</strong> 通过掺杂、电场、光照来精确调控导带中的电子数。</p>
+<p>硅的 1.12 eV 是一个神奇的数字。如果太小（像锗的 0.67 eV），室温下漏电流太大，器件关不死。如果太大（像 SiC 的 3.23 eV），需要更高的电压才能让器件导通，功耗上升。1.12 eV——恰好是一个平衡点。大自然没有“设计“硅成为半导体之王，但硅的物理参数恰好落在了最实用的那个点上。这不是必然的——这是幸运的。</p>
+<hr>
+<h3 id="pn-结半导体物理的基石耗尽区里发生了什么"><a class="header" href="#pn-结半导体物理的基石耗尽区里发生了什么">PN 结：半导体物理的基石——耗尽区里发生了什么</a></h3>
+<p>纯硅（本征半导体）的每个原子有 4 个外层电子（四价），在晶体中和周围 4 个硅原子各共享一对电子，形成 4 条共价键。在绝对零度下，所有电子都被困在共价键中——晶体完全不导电。</p>
+<p>但如果你在纯硅中有意掺入极少量的<strong>五价</strong>杂质原子——比如磷（P）或砷（As）呢？磷有 5 个外层电子。它顶替了晶格中的一个硅原子，用掉 4 个电子和邻居形成共价键，然后多出一个电子——这个“多余“电子被磷原子核很微弱地束缚着，只需要约 0.045 eV 的能量就能挣脱，成为自由电子。而室温下的热激发能量有 0.026 eV——已经有相当概率把这个电子释放出来。</p>
+<p>所以掺磷的硅里充满了自由电子。这种材料叫 <strong>N 型半导体</strong>（N 代表 Negative，因为自由电子带负电）。磷原子贡献了自由电子后，自身变成了带正电的固定离子——但它嵌在晶格中，不能移动。所以 N 型半导体中：可以移动的负电荷（自由电子）多，固定的正电荷（磷离子）也多。</p>
+<p>反过来，如果你掺入<strong>三价</strong>杂质——比如硼（B）呢？硼只有 3 个外层电子。当它顶替硅原子时，它缺失了一个电子来形成第 4 条共价键。这个缺失叫<strong>空穴</strong>。空穴不是一个真实的粒子——它只是一个“本该有电子但没有“的位置。但相邻的电子很容易跳过来填补这个空穴，然后原来那个电子的位置又形成了一个新的空穴。所以空穴在晶格中<strong>等效于一个带正电的、可以移动的载流子</strong>。这种材料叫 <strong>P 型半导体</strong>（P 代表 Positive）。硼原子捕获了一个电子（填补了空穴）后，自身变成带负电的固定离子。</p>
+<p>现在——把你刚刚想象的这两块材料——一块 P 型，一块 N 型——紧贴在一起。在它们的交界面上发生的事，是所有半导体器件的基础。</p>
+<p><strong>扩散电流</strong>：在交界处，N 型区的电子浓度远高于 P 型区。浓度差驱动电子从 N 型区向 P 型区扩散——就像一滴墨水滴进清水会扩散一样。同理，P 型区的空穴浓度远高于 N 型区，空穴从 P 型区向 N 型区扩散。</p>
+<p>电子扩散进入 P 型区后，遇到大量的空穴，发生<strong>复合</strong>——电子掉进空穴中，两者同时消失。空穴扩散进入 N 型区后，遇到大量电子，同样发生复合。在交界面附近的薄层内，自由载流子几乎全部复合殆尽——剩下的只有那些固定的、不能移动的离子：N 型区一侧是固定的正磷离子，P 型区一侧是固定的负硼离子。</p>
+<p>这个几乎没有自由载流子的薄层，叫<strong>耗尽区</strong>（Depletion Region）。“耗尽”——因为自由电子和空穴都被耗尽了。</p>
+<p><strong>内建电场</strong>：耗尽区里，固定的正离子（N 侧）和负离子（P 侧）形成了一个<strong>内建电场</strong>。电场方向是从 N 到 P——恰好阻止更多的电子从 N 向 P 扩散，也阻止空穴从 P 向 N 扩散。最终，扩散和漂移达到动态平衡。耗尽区达到一个稳定宽度——在硅材料中，典型值是 0.5 到 1 μm。</p>
+<p>耗尽区两端的电势差叫<strong>内建电势</strong>（Built-in Potential）——用 V_bi 表示。对硅 PN 结，V_bi 通常在 0.6 到 0.8 V 之间。当外界不加电压时，这个内建电势正好阻止了任何净电流穿过结区。</p>
+<p><strong>正向偏压</strong>：P 端接正电压，N 端接负电压。外部电场与内建电场方向相反——削弱了内建电场。耗尽区变窄。当外部电压超过约 0.6-0.7V 后，大量电子从 N 侧涌入，大量空穴从 P 侧涌入——电流呈指数级增长。I = I₀ × (e^(V/V_T) - 1)。V_T 是热电压，约 26mV。</p>
+<p><strong>反向偏压</strong>：N 端接正电压，P 端接负电压。外部电场与内建电场方向相同——增大了内建电场。耗尽区变宽。N 型区中的少数载流子（空穴）被电场的 P 侧方向吸引，P 型区中的少数载流子（电子）被 N 侧方向吸引——形成微小的反向饱和电流。这个电流极小——通常是 nA 到 pA 级别。</p>
+<p><strong>这就是二极管。</strong> 这就是布劳恩在 1874 年碰巧发现的“整流效应“的物理学本质。他戳的那块方铅矿里，一定有一个天然形成的金属-半导体结或者晶界整流结——130 年后，我们把它刻在硅片上，缩小几百万倍，大量生产。</p>
+<hr>
+<h3 id="良率分析中最常见的失效模式"><a class="header" href="#良率分析中最常见的失效模式">良率分析中，最常见的失效模式</a></h3>
+<p>在失效分析报告中，最常见的失效模式是什么？不是栅氧化层击穿——那个在车规芯片上不常见，因为电压不高。不是金属线断裂——那个更多是封装问题。最常见的，是 <strong>PN 结漏电</strong>。</p>
+<p>具体来说：某一个 I/O 引脚的保护二极管，或者某一个内部节点的源漏结，在反向偏压下应该表现为断路（只有 pA 级的漏电流），但实际上呈现了 nA 甚至 μA 级的漏电。</p>
+<p>典型的排查案例：一批玻璃基板的良率突然从稳定的 95% 跌到了 72%。缺陷分布图上呈现出一个奇怪的同心环图案——外圈面板单元良率还行，内圈大面积 fail。这种空间分布不是随机的——它通常指向某一道工序在基板上的不均匀性。</p>
+<p>失效分析团队把一片 fail 的面板单元送去做参数测试（parametric test）。在探针台上，工程师把几十根钨探针扎到 TEG 测试结构上，用半导体参数分析仪（如 Keysight B1500A）逐一测量每个测试结构的 I-V 曲线。最后找到了罪魁祸首：某一组 TFT 的源极到阱的 PN 结，反向漏电流比 spec 高了约 200 倍。正常的应该在 1-10 pA 之间，这批到了 2 nA。</p>
+<p>单个器件的 2 nA 听起来不多。但一个面板单元上有几万个这样的器件。加起来——静态漏电流就从 μA 级飙升到了 mA 级。整块屏幕在待机状态功耗超出规格，而且更致命的是——这些漏电的 PN 结在高温下会加速退化，最终导致永久性失效。</p>
+<p>排查过程持续了三个星期。调出了所有的工艺日志（process log）——每一个炉管（furnace）的温度曲线、每一次离子注入的剂量和能量读数、每一批化学品的批次号。最后发现：这批基板经过的那台离子注入机（ion implanter），在当天上午做过一次预防性维护（PM）。维护后，工程师重新校准了束流——但在校准过程中，束流监测法拉第杯（Faraday cup）的读数有一个瞬间的跃变，被自动校准系统误判为正常波动。结果，注入的硼剂量比 recipe 多了约 7%。</p>
+<p>7%听起来不多。但离子注入剂量决定了 PN 结的掺杂浓度，而掺杂浓度决定了耗尽区的宽度——耗尽区越窄，隧穿电流和产生-复合电流就越大。多出的 7% 剂量正好让这一批基板的 PN 结耗尽区变窄到了漏电的门槛。</p>
+<p>那台离子注入机的法拉第杯重新校准后，下一批基板的良率回到 95%。</p>
+<p><strong>一粒尘埃可以破坏整个电路——这是我做良率工程学到的最深刻的一课。</strong> 而“尘埃“不一定真的是尘埃——它可以是一个误判的校准值，一个老化的 O-ring，一截长了 0.01% 的时间控制的蚀刻时间。在原子尺度做事的代价就是——你的误差容忍度也是原子的尺度。</p>
+<hr>
+<h3 id="参数退化不是坏了是在慢慢朝坏的方向走"><a class="header" href="#参数退化不是坏了是在慢慢朝坏的方向走">参数退化不是“坏了“——是在慢慢朝坏的方向走</a></h3>
+<p>上面这个故事揭示了半导体失效的一个关键特征：<strong>大部分失效不是突然发生的——是参数缓慢漂移，直到超出 spec。</strong></p>
+<p>这在车规芯片上尤其重要。因为一颗消费芯片只要在出厂时 pass，然后在 2-3 年使用期内不出问题就行。但一颗车规芯片要在 15 年内保持参数在 spec 内——即使经历了几千次温度循环（从 -40°C 冷启动到引擎舱 125°C）、几百次湿度浸泡、各种电压冲击。</p>
+<p>参数漂移的物理机制多种多样：热载流子注入（HCI）——高能电子“撞“进栅氧化层，形成陷阱电荷，逐渐抬升阈值电压。负偏压温度不稳定性（NBTI）——PMOS 在高温和负栅压下，Si-SiO₂ 界面产生界面态，阈值电压向负方向漂移。电迁移（EM）——金属互连线中的电子流“推“着金属原子移动，几十年下来，一条 28nm 宽的铜线可能出现空洞或凸起，最终断掉或短接。</p>
+<p>我在产线里看过加速寿命测试后的面板单元。它们在 150°C、1.4 倍标称电压下跑了 1000 小时。取出来后，有些单元的参数已经漂了 10-20%。还没有到“坏“的程度——但如果这是车上的 ECU，十年后它在零下 40°C 的早晨冷启动时，那个漂了 20% 的阈值电压会不会刚好让一个时序路径挂掉？</p>
+<p><strong>这就是车规芯片测试的残酷之处：你不是在测“好不好“——你是在测“还有多久才会坏“。</strong></p>
+<hr>
+<h3 id="贝尔实验室的恩怨三个人一个晶体管一个诺贝尔奖"><a class="header" href="#贝尔实验室的恩怨三个人一个晶体管一个诺贝尔奖">贝尔实验室的恩怨：三个人、一个晶体管、一个诺贝尔奖</a></h3>
+<p>理解了 PN 结之后，晶体管的发明就顺理成章了。</p>
+<p>1947 年 12 月 23 日，贝尔实验室（Bell Labs）。物理学家约翰·巴丁（John Bardeen）和实验物理学家沃尔特·布拉顿（Walter Brattain）把一片薄薄的金箔切成两半，压在一块 N 型锗晶体的表面上。两片金箔之间的间隙只有 50 微米——不到一根头发丝的宽度。金箔和锗的表面形成了两个金属-半导体结（肖特基结）。</p>
+<p>当巴丁和布拉顿把微小的电流注入其中一个触点（发射极）时，他们在另一个触点（集电极）观察到了被放大的信号。增益大约 100 倍——用微弱的输入信号控制了更大的输出电流。</p>
+<p><strong>人类第一次用固态器件——不是真空管——实现了电信号的放大。电子时代的基石就此奠下。</strong></p>
+<p>但这个器件长得很丑。一块指甲盖大小的锗晶体，被塑料楔子固定在金属底座上。两片金箔被压在锗表面，用一根弹簧控制压力。接线用焊锡手工点上去。它看起来像一个坏掉的罐头起子——但它是人类历史上第一个晶体管。</p>
+<p>但这个真正创新的故事，教科书很少讲到的是后面的恩怨。</p>
+<p>威廉·肖克利（William Shockley）是巴丁和布拉顿的上司，贝尔实验室固体物理组的负责人。他早在 1940 年代就提出了“场效应晶体管“（FET）的理论构想——用电场控制半导体表面的导电性。但在整个 1940 年代，他的实验一次次失败。半导体表面的缺陷密度太高，电场被陷阱态屏蔽，无法形成有效的沟道控制。</p>
+<p>1947 年底，当肖克利正在欧洲度假时，巴丁和布拉顿做出了点接触晶体管。他们采用了和肖克利的 FET 完全不同的原理——不是电场控制，而是少子注入。肖克利回到美国后，第一反应不是祝贺同事——而是愤怒。</p>
+<p>肖克利认为巴丁和布拉顿的器件不是“真正的“晶体管——它只是投机取巧，绕过了 FET 应遵循的原理，做了一个“变种“。他把妒火转化为动力，把自己反锁在实验室里，在短短几个星期内独立发明了<strong>双极结型晶体管</strong>（BJT）——用三层半导体（NPN 或 PNP）实现电流放大。BJT 的工作原理和点接触晶体管完全不同：它是利用基极电流控制发射极到集电极的少子注入——这是一种更稳定、更可预测、更适合量产的器件结构。</p>
+<p>他把自己的想法写在笔记本里，秘不示人，直到确信自己已经“超越“了巴丁和布拉顿的发明，才同意公开。</p>
+<p>据说，他后来去巴丁和布拉顿的实验室，站在他们的点接触晶体管面前看了很久。然后走掉了。没有说话。</p>
+<p>1956 年，肖克利、巴丁和布拉顿三人一同获得诺贝尔物理学奖。但在颁奖典礼后的记者招待会上，三人几乎没有交谈。巴丁后来离开了贝尔实验室，去了伊利诺伊大学研究超导——1972 年，他因为 BCS 超导理论（以巴丁、库珀、施里弗命名）第二次获得诺贝尔物理学奖，成为历史上唯一一位两次获得诺贝尔物理学奖的人。布拉顿回归了学术教学，在惠特曼学院教物理直到退休。肖克利则去了加州，在 Mountain View 创建了肖克利半导体实验室。</p>
+<p>肖克利是个物理学天才——但他是个糟糕的管理者。他疑心极重，管理方式就是当众羞辱下属。他甚至怀疑自己的员工在暗中破坏他的研究。1957 年，他的八名核心工程师集体出走——“叛逆八人帮”（Traitorous Eight）。这八个人就是戈登·摩尔（后来的摩尔定律）、罗伯特·诺伊斯（集成电路的共同发明人）等。他们先是加入了仙童照相机与仪器公司，创立了仙童半导体（Fairchild Semiconductor）。1959 年，诺伊斯在仙童发明了平面工艺集成电路——比基尔比在德州仪器的台面式集成电路更适合量产。1968 年，摩尔和诺伊斯离开仙童，创建了一家公司——英特尔（Intel）。</p>
+<p>从肖克利实验室到仙童半导体到英特尔——硅谷的整个半导体产业，就是从这三个人的恩怨和八个人的“叛逃“开始的。</p>
+<p><strong>晶体管的发明，既是科学的巅峰，也是人性的灰度。</strong></p>
+<hr>
+<h3 id="当晶体管遇见汽车"><a class="header" href="#当晶体管遇见汽车">当晶体管遇见汽车</a></h3>
+<p>晶体管最先改变的是通信和计算领域——电话交换机、收音机、大型计算机。但它在汽车工业中的渗透，是一场更安静的革命。</p>
+<p>1960 年代之前，汽车几乎没有什么电子东西。点火系统是机械白金触点和分电器——接触点在每次点火时都要承受电弧烧蚀，每隔几千英里就要打磨或更换。电压调节器和整流器是机电式的。化油器是全机械的。收音机是晶体管化的——日本厂商在 1960 年代的民用高频锗晶体管方面大幅领先——但那只能算“消费电子产品装在车上“，不是真正的汽车电子。</p>
+<p>1970 年代，两件事彻底改变了格局。第一，两次石油危机迫使全球车企追求燃油效率。第二，美国的清洁空气法案（Clean Air Act）要求在 1975 年前将汽车尾气排放降低 90%。机械式化油器不可能满足这个标准——你需要精确控制空燃比（λ = 1 ± 1%）和点火正时，而纯机械手段永远做不到。</p>
+<p>晶体管的介入正当其时。博世（Bosch）在 1967 年推出了第一款电子控制燃油喷射系统 D-Jetronic——它用离散的晶体管电路（不是单片机！）根据进气歧管压力和发动机转速查 MAP 表控制喷油脉宽。1979 年，博世的 Motronic 系统把点火和喷油整合到了一个数字控制器里——这是现代发动机管理系统（EMS）的原型。</p>
+<p>与此同时，晶体管也在制动系统上登台。1978 年，博世推出了世界上第一套量产 ABS（防抱死制动系统），装在奔驰 S-Class（W116）上。ABS 的 ECU 需要实时监测四个车轮的轮速传感器输出的脉冲信号——车轮转一圈可能只有 48 个脉冲。当检测到某个车轮即将抱死的瞬间——几毫秒内——ECU 必须向液压调节器发出指令，以每秒几十次的频率点刹。没有晶体管化的小信号放大器和逻辑电路，这个响应速度根本不可能实现。</p>
+<p>从 1947 年第一颗点接触晶体管到 1978 年第一套量产的 ABS ECU——中间只隔了 31 年。</p>
+<p><strong>从物理发现到挽救生命，只需要一代人的时间。</strong></p>
+<hr>
+<h3 id="从第一颗晶体管到-570-亿个"><a class="header" href="#从第一颗晶体管到-570-亿个">从第一颗晶体管到 570 亿个</a></h3>
+<p>1947 年：贝尔实验室，点接触晶体管，1 个晶体管。</p>
+<p>1958 年：德州仪器的杰克·基尔比（Jack Kilby）把两个晶体管、几个电阻和一个电容集成在同一块锗基板上——用金线手工连接——<strong>世界上第一块集成电路</strong>。他老板给他的任务其实是“想办法缩小导弹电子系统的体积“，不是为了造计算机。</p>
+<p>1971 年：英特尔推出 Intel 4004——世界上第一颗商用微处理器。2300 个晶体管，10μm 制程，最高时钟频率 740kHz。用的是 PMOS 工艺——比 NMOS 慢，功耗大，但 1971 年的英特尔只能做 PMOS。</p>
+<p>2021 年：苹果 M1 Max 芯片——570 亿个晶体管，5nm 制程，最高频率 3.23GHz。集成了 CPU、GPU、神经引擎、内存控制器、显示引擎——全在一颗 die 上。</p>
+<p>从 2300 个到 570 亿个——50 年间晶体管数量膨胀了约 2480 万倍。</p>
+<p><strong>这是人类历史上从未有过的增长曲线。</strong> 不是 linear。不是 quadratic。是 exponential——而且 sustained 了 50 年。</p>
+<hr>
+<h3 id="我们现在觉得粗糙的东西后人也觉得"><a class="header" href="#我们现在觉得粗糙的东西后人也觉得">我们现在觉得粗糙的东西，后人也觉得</a></h3>
+<p>布劳恩在 1874 年发现整流效应时，他没有想到这件事会与地球上所有的电子设备联系起来。</p>
+<p>肖克利在 1956 年诺贝尔颁奖典礼上的演讲，没有提“计算机的未来“——他在担心自己的场效应理论被巴丁和布拉顿抢先了。</p>
+<p>基尔比在 1958 年搭出第一块集成电路时，他以为它只是“把离散元件做在一小块材料上省空间“的技术奇技——不知道自己刚刚开启了人类历史上最大的产业。</p>
+<p>摩尔在 1965 年提出“晶体管每年翻倍“（1975年修正为每两年翻倍）时，他手头只有四年份的数据点——一共才三四个数据点画了一条直线。他后来承认自己也没想到这条线能撑 50 年。</p>
+<p><strong>伟大的发现，当时都只解决了眼前的问题。但它们的后果，远远超出了当时的想象。</strong></p>
+<p>你在今天调通一个 SPI 驱动，可能觉得这有什么了不起——不就是往一个寄存器写几个 bit 嘛。但在这个 SPI 驱动的底层，有布劳恩的整流效应（1874），有肖克利、巴丁、布拉顿对 PN 结物理的深入理解（1940 年代），有贝尔实验室的点接触晶体管（1947），有基尔比和诺伊斯的集成电路（1958-1959），有 Dennard 的缩放定律（1974），有 FinFET 的发明（加州大学伯克利分校胡正明教授，1999；胡正明后来加入台积电任CTO），有 EUV 光刻的量产（ASML，2018）。<strong>长达 150 年的物理探索和工程实践，都在为你这一次“读寄存器“而工作。</strong></p>
+<p>王羲之在《兰亭集序》里说：<strong>“后之视今，亦犹今之视昔”。</strong> 我们今天看布劳恩的方铅矿，觉得粗糙——一块矿石、一根探针、一个微安计。50 年后的工程师看我们今天的 3nm 芯片，也会觉得粗糙。但正如布劳恩的发现开启了整个半导体时代——你今天在 ECU 上调试的一个小小的 GPIO 输出模式配置，也许正在为下一个时代的某种计算范式奠基。</p>
+<p><strong>不是“也许“——是一定。只是你还不知道它是什么。</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>从一块方铅矿出发，把半导体物理最核心的概念串了起来。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>能带理论解释了为什么有些材料导电、有些不能、有些“半“导电</strong>：硅的1.12eV禁带宽度是一个幸运的物理参数——不大不小，恰好让它在室温下成为完美的半导体。</li>
+<li><strong>PN结是半导体物理的基石</strong>：耗尽区、内建电场、正向偏压、反向偏压——布劳恩在1874年偶然发现的整流效应，130年后变成了硅片上几十纳米的二极管。</li>
+<li><strong>晶体管的发明既是科学的巅峰，也是人性的灰度</strong>：巴丁、布拉顿、肖克利——三个诺贝尔奖得主之间的恩怨，催生了硅谷的整个半导体产业。</li>
+</ol>
+<p>下一节，走进MOSFET——现代文明的“原子“，一个用电压控制的、几乎不耗电的开关。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>PN 结是最简单的半导体器件。但真正统治现代电子世界的，是它的“后裔“——MOSFET。</p>
+<p>MOSFET 像一个水龙头：控制端（栅极）和被控端（源极和漏极）之间完全绝缘——你用微弱的电压，穿过一层只有十几个原子厚的氧化硅，在它下面“召唤“出一条导电通道。这种精确到原子级别的控制，在布劳恩戳方铅矿的年代是无法想象的。</p>
+<p>更神奇的是：MOSFET 的栅氧化层在现代工艺中已经薄到了 1-2 纳米——量子隧穿已经开始发生。电子直接从栅极穿越绝缘体到达沟道——这不是科幻，这是 45nm 以下制程每天面对的现实。Intel 怎么用“high-k 金属栅“把这个极限又推了十年？</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/2.1-思想实验-在原始森林里造芯片.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/2.3-MOSFET-现代文明的原子.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/2.1-思想实验-在原始森林里造芯片.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/2.3-MOSFET-现代文明的原子.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

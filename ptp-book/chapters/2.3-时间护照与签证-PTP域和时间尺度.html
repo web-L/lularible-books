@@ -1,0 +1,694 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>时间护照与签证 · PTP域和时间尺度 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="23-时间护照与签证ptp域和时间尺度"><a class="header" href="#23-时间护照与签证ptp域和时间尺度">2.3 时间护照与签证：PTP域和时间尺度</a></h1>
+<h2 id="一张时间旅行的护照"><a class="header" href="#一张时间旅行的护照">一张时间旅行的“护照“</a></h2>
+<p>想象你要出国旅行。</p>
+<p>首先，你需要一本<strong>护照</strong>，证明你是哪个国家的公民。护照上有你的国籍、护照号码、有效期。</p>
+<p>其次，你需要<strong>签证</strong>，允许你进入目标国家。签证规定了你可以停留多久、可以做什么。</p>
+<p>最后，你需要注意<strong>时区</strong>。你从北京飞到纽约，手表要调慢12小时，否则你的时间和当地时间就对不上。</p>
+<p>PTP网络中的“跨国旅行“，也需要类似的机制：</p>
+<ul>
+<li><strong>域（Domain）</strong> = 护照（你是哪个“时间国家“的公民）</li>
+<li><strong>时间尺度（Timescale）</strong> = 时区（你使用什么“时间标准“）</li>
+<li><strong>溯源信息（Traceability）</strong> = 签证（你的时间从哪里来，是否可信）</li>
+</ul>
+<hr>
+<h2 id="域时间的国籍"><a class="header" href="#域时间的国籍">域：时间的“国籍“</a></h2>
+<h3 id="为什么需要域"><a class="header" href="#为什么需要域">为什么需要域？</a></h3>
+<p><strong>场景一：一座智能工厂</strong></p>
+<p>一座智能工厂，有三条生产线：</p>
+<ul>
+<li><strong>生产线A</strong>：生产芯片，设备需要纳秒级同步，使用PTP over以太网</li>
+<li><strong>生产线B</strong>：装配汽车，设备需要毫秒级同步，使用PTP over以太网</li>
+<li><strong>监控系统</strong>：监控环境参数，秒级同步就够了，使用NTP</li>
+</ul>
+<p>问题来了：这三套系统都连接在同一个物理网络上。如果它们使用同一个PTP域，会发生什么？</p>
+<p><strong>混乱场景</strong>：</p>
+<p>生产线的PTP设备可能误同步到监控系统的NTP时间源（如果NTP设备也支持PTP）。监控系统的低精度时间“污染“了生产线的高精度同步。</p>
+<p>或者，BMCA可能选举出一个监控系统的设备作为主时钟，导致生产线精度下降。</p>
+<p><strong>解决方案</strong>：使用不同的域。</p>
+<ul>
+<li>生产线A：domainNumber = 0</li>
+<li>生产线B：domainNumber = 1</li>
+<li>监控系统：不使用PTP，或domainNumber = 2</li>
+</ul>
+<p>PTP报文的头部携带domainNumber，设备只处理与自己domainNumber匹配的报文。不同域的报文互不干扰。</p>
+<hr>
+<h3 id="域标识符domainnumber和sdoid"><a class="header" href="#域标识符domainnumber和sdoid">域标识符：domainNumber和sdoId</a></h3>
+<p>PTP使用两个字段来标识域：</p>
+<h4 id="domainnumber主域标识"><a class="header" href="#domainnumber主域标识">domainNumber：主域标识</a></h4>
+<ul>
+<li><strong>类型</strong>：UInteger8（0-255）</li>
+<li><strong>作用</strong>：用户可配置的主要隔离机制</li>
+<li><strong>默认值</strong>：0</li>
+</ul>
+<p><strong>分配规则</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">domainNumber范围</th><th style="text-align: left">用途</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>0-127</strong></td><td style="text-align: left">用户自定义（默认使用）</td></tr>
+<tr><td style="text-align: left"><strong>128-239</strong></td><td style="text-align: left">特殊用途（部分保留）</td></tr>
+<tr><td style="text-align: left"><strong>240-255</strong></td><td style="text-align: left">保留，不得使用</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>注意</strong>：不同传输协议对domainNumber的范围有限制。例如，PTP over IEEE 802.3（二层以太网）允许使用0-127，但PTP over UDP/IPv4/IPv6（三层）可以使用更大的范围。</p>
+<hr>
+<h4 id="sdoid标准组织隔离"><a class="header" href="#sdoid标准组织隔离">sdoId：标准组织隔离</a></h4>
+<ul>
+<li><strong>类型</strong>：12位整数（0-4095）</li>
+<li><strong>作用</strong>：隔离不同标准组织定义的Profile</li>
+<li><strong>结构</strong>：高4位 = majorSdoId，低8位 = minorSdoId</li>
+</ul>
+<p><strong>为什么需要sdoId？</strong></p>
+<p>不同标准组织可能定义不同的PTP Profile（配置规则）。例如：</p>
+<ul>
+<li><strong>IEEE 802.1</strong> 定义了802.1AS（音视频桥接）</li>
+<li><strong>ITU-T</strong> 定义了G.8275.1（电信时间同步）</li>
+<li><strong>IEC</strong> 定义了IEC 62439-3（工业网络）</li>
+</ul>
+<p>这些Profile有不同的默认值、不同的选项要求。如果它们使用相同的domainNumber，不同Profile的设备可能相互干扰。</p>
+<p><strong>sdoId分配</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">sdoId范围</th><th style="text-align: left">用途</th><th style="text-align: left">管理方</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>0x000</strong></td><td style="text-align: left">默认（无特殊Profile）</td><td style="text-align: left">—</td></tr>
+<tr><td style="text-align: left"><strong>0x100</strong></td><td style="text-align: left">IEEE 802.1 Profile</td><td style="text-align: left">IEEE 802.1工作组</td></tr>
+<tr><td style="text-align: left"><strong>0x200</strong></td><td style="text-align: left">公共平均链路延迟服务</td><td style="text-align: left">IEEE 1588工作组</td></tr>
+<tr><td style="text-align: left"><strong>0x300-0xFFC</strong></td><td style="text-align: left">QSDO注册的Profile</td><td style="text-align: left">从IEEE RA申请</td></tr>
+<tr><td style="text-align: left"><strong>0xFFD, 0xFFE</strong></td><td style="text-align: left">实验性使用</td><td style="text-align: left">临时</td></tr>
+<tr><td style="text-align: left"><strong>0xFFF</strong></td><td style="text-align: left">IEEE 1588工作组保留</td><td style="text-align: left">IEEE 1588工作组</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>QSDO是什么？</strong></p>
+<p>QSDO = Qualified Standards Development Organization（合格标准制定组织）。</p>
+<p>要成为QSDO，需要满足：</p>
+<ul>
+<li>组织成员来自多家公司或学术/政府实体</li>
+<li>不被单一实体主导</li>
+<li>Profile需通过成员投票或正式程序批准</li>
+</ul>
+<p>QSDO可以向IEEE RA申请唯一的sdoId，用于标识其定义的Profile。</p>
+<hr>
+<h3 id="域隔离的实际效果"><a class="header" href="#域隔离的实际效果">域隔离的实际效果</a></h3>
+<p><strong>场景</strong>：一个同时运行IEEE 802.1AS和ITU-T G.8275.1的网络。</p>
+<ul>
+<li><strong>IEEE 802.1AS设备</strong>：domainNumber = 0, sdoId = 0x100</li>
+<li><strong>ITU-T G.8275.1设备</strong>：domainNumber = 0, sdoId = 0x300（假设ITU-T申请了这个值）</li>
+</ul>
+<p><strong>结果</strong>：</p>
+<p>802.1AS设备收到G.8275.1设备的Announce报文时：</p>
+<ol>
+<li>检查domainNumber：都是0，匹配</li>
+<li>检查majorSdoId：0x100 vs 0x300，不匹配</li>
+<li><strong>丢弃报文，不处理</strong></li>
+</ol>
+<p>反过来也一样，G.8275.1设备也会丢弃802.1AS设备的报文。</p>
+<p>两套PTP网络在同一物理网络上独立运行，互不干扰。</p>
+<hr>
+<h2 id="时间尺度时间的时区"><a class="header" href="#时间尺度时间的时区">时间尺度：时间的“时区“</a></h2>
+<h3 id="两种时间尺度"><a class="header" href="#两种时间尺度">两种时间尺度</a></h3>
+<p>PTP支持两种时间尺度：</p>
+<h4 id="ptp时间尺度ptp-timescale"><a class="header" href="#ptp时间尺度ptp-timescale">PTP时间尺度（PTP Timescale）</a></h4>
+<p><strong>定义</strong>：</p>
+<ul>
+<li><strong>纪元</strong>：1970年1月1日00:00:00 TAI</li>
+<li><strong>秒长</strong>：TAI秒（SI秒，国际原子时定义的秒）</li>
+<li><strong>溯源</strong>：可溯源到国际标准</li>
+</ul>
+<p><strong>关键概念：TAI（国际原子时）</strong></p>
+<p>TAI = International Atomic Time，由国际计量局（BIPM）维护。</p>
+<p>TAI基于全球约400台原子钟的平均值，使用SI秒（铯-133原子跃迁定义的秒）作为时间单位。</p>
+<p>TAI的特点：</p>
+<ul>
+<li><strong>稳定</strong>：不随地球自转变化</li>
+<li><strong>均匀</strong>：不会因为闰秒而跳变</li>
+<li><strong>可溯源</strong>：可以追溯到国际标准</li>
+</ul>
+<p><strong>PTP时间与TAI的关系</strong>：</p>
+<p>PTP时间 = TAI时间</p>
+<p>完全相同，PTP纪元就是TAI的1970年1月1日00:00:00。</p>
+<hr>
+<h4 id="arb时间尺度arbitrary-timescale"><a class="header" href="#arb时间尺度arbitrary-timescale">ARB时间尺度（Arbitrary Timescale）</a></h4>
+<p><strong>定义</strong>：</p>
+<ul>
+<li><strong>纪元</strong>：由管理过程设置</li>
+<li><strong>秒长</strong>：由主时钟确定</li>
+<li><strong>溯源</strong>：无法溯源到国际标准</li>
+</ul>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>工业控制</strong>：设备只需要内部时间一致，不需要与外部时间对齐</li>
+<li><strong>实验室测试</strong>：测试PTP功能，不需要真实时间</li>
+<li><strong>封闭网络</strong>：与外界隔离的网络，时间可以任意设置</li>
+</ul>
+<p><strong>ARB的使用方式</strong>：</p>
+<p>主时钟可以说：“现在的时间是1000秒”。所有从时钟跟随主时钟，也都认为现在是1000秒。</p>
+<p>这个“1000秒“是什么意思？没关系，只要大家都认为现在是1000秒，同步就能工作。</p>
+<p><strong>注意</strong>：ARB时间尺度下，UTC偏移（currentUtcOffset）无效，因为ARB时间无法转换为UTC。</p>
+<hr>
+<h3 id="ptp时间-vs-utc时间关键区别"><a class="header" href="#ptp时间-vs-utc时间关键区别">PTP时间 vs UTC时间：关键区别</a></h3>
+<p><strong>UTC（协调世界时）</strong>：</p>
+<ul>
+<li>基于TAI，但为了与地球自转保持同步，会插入闰秒</li>
+<li>UTC = TAI - 累积闰秒</li>
+<li>截至2026年，累积闰秒 = 37秒</li>
+</ul>
+<p><strong>PTP时间</strong>：</p>
+<ul>
+<li>就是TAI时间</li>
+<li>不会因为闰秒而跳变</li>
+<li>PTP时间 = UTC + 累积闰秒</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<p>某个时刻：</p>
+<ul>
+<li>UTC时间：2026-01-01 00:00:00</li>
+<li>PTP时间：2026-01-01 00:00:37（快了37秒）</li>
+</ul>
+<p><strong>为什么要用PTP时间而不是UTC？</strong></p>
+<p><strong>原因一：避免闰秒导致的跳变</strong></p>
+<p>UTC会插入闰秒。当闰秒发生时，UTC时间会从23:59:59跳到23:59:60，然后再到00:00:00。</p>
+<p>这种跳变对同步系统是灾难性的。如果主时钟和从时钟处理闰秒的方式不同，会导致时间突然差1秒。</p>
+<p>PTP时间不插入闰秒，永远不会跳变，稳定性更好。</p>
+<p><strong>原因二：时间间隔计算</strong></p>
+<p>如果用UTC计算时间间隔，闰秒会导致问题。</p>
+<p>假设你在23:59:58开始计时，到00:00:01结束。正常情况下，间隔应该是3秒。但如果中间插入了闰秒（23:59:60），实际间隔是4秒，但计算出来还是3秒（因为时钟只显示59→60→00→01）。</p>
+<p>PTP时间没有闰秒，时间间隔计算永远是准确的。</p>
+<hr>
+<h3 id="从ptp时间计算utccurrentutcoffset"><a class="header" href="#从ptp时间计算utccurrentutcoffset">从PTP时间计算UTC：currentUtcOffset</a></h3>
+<p>PTP设备如何知道UTC时间？</p>
+<p>答案：通过<strong>currentUtcOffset</strong>字段。</p>
+<p><strong>currentUtcOffset</strong>：</p>
+<ul>
+<li><strong>定义</strong>：TAI - UTC的当前值</li>
+<li><strong>单位</strong>：秒</li>
+<li><strong>来源</strong>：IERS Bulletin C（国际地球自转和参考系统服务公告）</li>
+</ul>
+<p><strong>工作原理</strong>：</p>
+<p>主时钟（通常接GPS）从GPS信号中提取当前闰秒累积值，写入Announce报文的currentUtcOffset字段。</p>
+<p>从时钟收到Announce报文后，就知道：</p>
+<pre><code>UTC时间 = PTP时间 - currentUtcOffset
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code>PTP时间：2026-01-01 00:00:37
+currentUtcOffset：37
+UTC时间 = 00:00:37 - 37 = 00:00:00
+</code></pre>
+<hr>
+<h3 id="闰秒预告leap59和leap61"><a class="header" href="#闰秒预告leap59和leap61">闰秒预告：leap59和leap61</a></h3>
+<p>闰秒不是突然发生的，而是提前公告的。</p>
+<p>IERS会提前几个月发布闰秒预告：“在某年某月某日，将插入一个正闰秒。”</p>
+<p>PTP通过两个标志位传递这个预告：</p>
+<h4 id="leap61正闰秒标志"><a class="header" href="#leap61正闰秒标志">leap61：正闰秒标志</a></h4>
+<ul>
+<li><strong>含义</strong>：当月最后一分钟将有61秒（插入一个闰秒）</li>
+<li><strong>取值</strong>：TRUE或FALSE</li>
+</ul>
+<h4 id="leap59负闰秒标志"><a class="header" href="#leap59负闰秒标志">leap59：负闰秒标志</a></h4>
+<ul>
+<li><strong>含义</strong>：当月最后一分钟将有59秒（删除一个闰秒）</li>
+<li><strong>取值</strong>：TRUE或FALSE</li>
+</ul>
+<p><strong>注意</strong>：到目前为止，从未发生过负闰秒。地球自转一直在变慢，所以只插入正闰秒。</p>
+<p><strong>闰秒发生时的PTP行为</strong>：</p>
+<p><strong>主时钟</strong>（接GPS）：</p>
+<ol>
+<li>GPS信号会提前告知闰秒信息</li>
+<li>主时钟在闰秒发生前的Announce报文中设置leap61=TRUE</li>
+<li>闰秒发生后，currentUtcOffset加1</li>
+</ol>
+<p><strong>从时钟</strong>：</p>
+<ol>
+<li>收到leap61=TRUE的Announce报文</li>
+<li>知道即将发生闰秒，准备调整UTC计算</li>
+<li>闰秒发生后，使用新的currentUtcOffset计算UTC</li>
+</ol>
+<p><strong>关键点</strong>：PTP时间本身不变，只有UTC计算发生变化。</p>
+<hr>
+<h2 id="溯源信息时间的签证"><a class="header" href="#溯源信息时间的签证">溯源信息：时间的“签证“</a></h2>
+<h3 id="什么是溯源traceability"><a class="header" href="#什么是溯源traceability">什么是溯源（Traceability）？</a></h3>
+<p><strong>定义</strong>：测量结果或标准值的属性，使其能够通过具有规定不确定度的不间断比较链与规定的参考相关联。</p>
+<p>通俗地说：你的时间是从哪里来的？来源可靠吗？能追溯到国际标准吗？</p>
+<h3 id="traceability标志"><a class="header" href="#traceability标志">traceability标志</a></h3>
+<p>PTP定义了两个溯源标志：</p>
+<h4 id="timetraceable时间可溯源"><a class="header" href="#timetraceable时间可溯源">timeTraceable：时间可溯源</a></h4>
+<ul>
+<li><strong>含义</strong>：主时钟的时间可以追溯到国际标准（如UTC）</li>
+<li><strong>典型来源</strong>：GPS、GLONASS、Galileo、国家时间实验室</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<p>主时钟接了GPS天线，GPS时间可追溯到美国海军天文台（USNO），USNO的时间可追溯到国际原子时（TAI）。</p>
+<p>这个链条是连续的、有文档记录的，因此主时钟可以声明timeTraceable=TRUE。</p>
+<h4 id="frequencytraceable频率可溯源"><a class="header" href="#frequencytraceable频率可溯源">frequencyTraceable：频率可溯源</a></h4>
+<ul>
+<li><strong>含义</strong>：主时钟的频率可以追溯到国际标准</li>
+<li><strong>典型来源</strong>：同步以太网（SyncE）、铷原子钟、铯原子钟</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<p>主时钟从同步以太网获取频率信号，同步以太网的频率来自电信运营商的网络，运营商的频率来自铯原子钟，铯原子钟的频率可追溯到SI秒定义。</p>
+<p>因此，主时钟可以声明frequencyTraceable=TRUE。</p>
+<hr>
+<h3 id="timesource时间源类型"><a class="header" href="#timesource时间源类型">timeSource：时间源类型</a></h3>
+<p>Announce报文中携带<strong>timeSource</strong>字段，指示主时钟的时间来自哪种类型的源。</p>
+<p><strong>枚举值</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">值（十六进制）</th><th style="text-align: left">时间源</th><th style="text-align: left">说明</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>0x10</strong></td><td style="text-align: left">ATOMIC_CLOCK</td><td style="text-align: left">原子钟（铯钟、铷钟）</td></tr>
+<tr><td style="text-align: left"><strong>0x20</strong></td><td style="text-align: left">GNSS</td><td style="text-align: left">全球导航卫星系统（GPS、GLONASS、Galileo、北斗）</td></tr>
+<tr><td style="text-align: left"><strong>0x30</strong></td><td style="text-align: left">TERRESTRIAL_RADIO</td><td style="text-align: left">地面无线电授时（如WWVB、BPC）</td></tr>
+<tr><td style="text-align: left"><strong>0x40</strong></td><td style="text-align: left">PTP</td><td style="text-align: left">从另一个PTP域获取时间</td></tr>
+<tr><td style="text-align: left"><strong>0x50</strong></td><td style="text-align: left">NTP</td><td style="text-align: left">从NTP服务器获取时间</td></tr>
+<tr><td style="text-align: left"><strong>0x60</strong></td><td style="text-align: left">HAND_SET</td><td style="text-align: left">人工设置</td></tr>
+<tr><td style="text-align: left"><strong>0x90</strong></td><td style="text-align: left">OTHER</td><td style="text-align: left">其他</td></tr>
+<tr><td style="text-align: left"><strong>0xA0</strong></td><td style="text-align: left">INTERNAL_OSCILLATOR</td><td style="text-align: left">内部振荡器</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>timeSource的作用</strong>：</p>
+<ul>
+<li><strong>信息性</strong>：不参与BMCA决策</li>
+<li><strong>诊断性</strong>：帮助管理员了解主时钟的时间来源</li>
+<li><strong>审计性</strong>：用于时间溯源审计</li>
+</ul>
+<hr>
+<h2 id="一个完整的时间信息传递示例"><a class="header" href="#一个完整的时间信息传递示例">一个完整的时间信息传递示例</a></h2>
+<p>让我们用一个完整的例子，演示时间信息如何在PTP网络中传递。</p>
+<p><strong>网络拓扑</strong>：</p>
+<pre><code>GPS卫星
+  ↓
+主时钟A（接GPS天线 + 铷原子钟）
+  ↓
+边界时钟B
+  ↓
+从时钟C（5G基站）
+</code></pre>
+<p><strong>主时钟A的数据</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">字段</th><th style="text-align: left">值</th><th style="text-align: left">说明</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">clockClass</td><td style="text-align: left">6</td><td style="text-align: left">直接同步到GPS</td></tr>
+<tr><td style="text-align: left">clockAccuracy</td><td style="text-align: left">0x20</td><td style="text-align: left">精度≤25纳秒</td></tr>
+<tr><td style="text-align: left">ptpTimescale</td><td style="text-align: left">TRUE</td><td style="text-align: left">使用PTP时间尺度</td></tr>
+<tr><td style="text-align: left">timeTraceable</td><td style="text-align: left">TRUE</td><td style="text-align: left">时间可溯源到GPS</td></tr>
+<tr><td style="text-align: left">frequencyTraceable</td><td style="text-align: left">TRUE</td><td style="text-align: left">频率可溯源到铷钟</td></tr>
+<tr><td style="text-align: left">timeSource</td><td style="text-align: left">0x20（GNSS）</td><td style="text-align: left">时间来自GPS</td></tr>
+<tr><td style="text-align: left">currentUtcOffset</td><td style="text-align: left">37</td><td style="text-align: left">TAI-UTC = 37秒</td></tr>
+<tr><td style="text-align: left">leap61</td><td style="text-align: left">FALSE</td><td style="text-align: left">本月无闰秒</td></tr>
+<tr><td style="text-align: left">leap59</td><td style="text-align: left">FALSE</td><td style="text-align: left">无负闰秒</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Announce报文</strong>：</p>
+<p>主时钟A发送Announce报文，携带上述所有信息。</p>
+<p><strong>边界时钟B的处理</strong>：</p>
+<ol>
+<li>
+<p>接收Announce报文</p>
+</li>
+<li>
+<p>提取时间信息</p>
+</li>
+<li>
+<p>更新自己的数据集：</p>
+<ul>
+<li>parentDS.grandmasterIdentity = A的clockIdentity</li>
+<li>parentDS.grandmasterClockQuality = A的clockQuality</li>
+<li>timePropertiesDS.currentUtcOffset = 37</li>
+<li>timePropertiesDS.timeTraceable = TRUE</li>
+<li>等等</li>
+</ul>
+</li>
+<li>
+<p>转发Announce报文（某些字段需要更新，如stepsRemoved + 1）</p>
+</li>
+</ol>
+<p><strong>从时钟C的接收</strong>：</p>
+<ol>
+<li>接收边界时钟B转发的Announce报文</li>
+<li>提取时间信息</li>
+<li>更新自己的数据集</li>
+</ol>
+<p><strong>从时钟C如何获取UTC时间？</strong></p>
+<p>从时钟C的本地PTP时间（通过同步获得）：</p>
+<pre><code>PTP时间 = 2026-01-01 00:00:37（主时钟A的时间）
+</code></pre>
+<p>从Announce报文获取：</p>
+<pre><code>currentUtcOffset = 37
+</code></pre>
+<p>计算UTC：</p>
+<pre><code>UTC时间 = PTP时间 - currentUtcOffset
+UTC时间 = 2026-01-01 00:00:37 - 37 = 2026-01-01 00:00:00
+</code></pre>
+<p><strong>从时钟C的应用层</strong>：</p>
+<p>5G基站的应用层需要UTC时间（用于日志时间戳、调度等）。</p>
+<p>基站内部实现：</p>
+<ul>
+<li>PTP协议栈维护PTP时间</li>
+<li>应用层调用API获取时间时，PTP协议栈自动减去currentUtcOffset，返回UTC时间</li>
+</ul>
+<hr>
+<h2 id="时间尺度转换的实际问题"><a class="header" href="#时间尺度转换的实际问题">时间尺度转换的实际问题</a></h2>
+<h3 id="问题一gps时间-vs-utc时间"><a class="header" href="#问题一gps时间-vs-utc时间">问题一：GPS时间 vs UTC时间</a></h3>
+<p><strong>背景</strong>：</p>
+<p>GPS时间也是一个连续的时间尺度，不插入闰秒。但GPS纪元与PTP纪元不同。</p>
+<ul>
+<li><strong>GPS纪元</strong>：1980年1月6日00:00:00 UTC</li>
+<li><strong>PTP纪元</strong>：1970年1月1日00:00:00 TAI</li>
+</ul>
+<p>GPS接收机输出的时间通常是GPS时间，或者UTC时间（从GPS时间减去累积闰秒）。</p>
+<p><strong>转换</strong>：</p>
+<p>如果主时钟接GPS，需要知道GPS接收机输出的是哪种时间：</p>
+<ul>
+<li><strong>输出GPS时间</strong>：需要加上TAI-GPS偏移（恒为19秒），得到TAI时间，即PTP时间</li>
+<li><strong>输出UTC时间</strong>：需要加上累积闰秒（截至2026年是37秒），得到PTP时间</li>
+</ul>
+<p><strong>配置示例</strong>：</p>
+<pre><code class="language-bash"># 主时钟配置（假设GPS接收机输出UTC时间）
+ptp timescale ptp
+ptp current-utc-offset 37  # 配置当前闰秒值
+ptp time-traceable true
+ptp frequency-traceable true
+ptp time-source gnss
+</code></pre>
+<hr>
+<h3 id="问题二ntp时间-vs-ptp时间"><a class="header" href="#问题二ntp时间-vs-ptp时间">问题二：NTP时间 vs PTP时间</a></h3>
+<p><strong>背景</strong>：</p>
+<p>NTP（Network Time Protocol）是互联网上最常用的时间同步协议。</p>
+<p>NTP时间：</p>
+<ul>
+<li><strong>纪元</strong>：1900年1月1日00:00:00 UTC</li>
+<li><strong>时间表示</strong>：32位秒 + 32位小数秒</li>
+<li><strong>时间回绕</strong>：约每136年回绕一次（2036年会回绕）</li>
+</ul>
+<p><strong>问题</strong>：</p>
+<p>如果一个PTP主时钟从NTP服务器获取时间，需要注意：</p>
+<ol>
+<li>NTP时间通常有毫秒级误差，不能提供纳秒级精度</li>
+<li>NTP时间通常是UTC时间，需要转换为PTP时间</li>
+<li>NTP闰秒处理可能与PTP不同</li>
+</ol>
+<p><strong>建议</strong>：</p>
+<ul>
+<li>如果需要纳秒级精度，不要使用NTP作为时间源</li>
+<li>如果只需要毫秒级精度，可以使用NTP，但要正确处理时间转换</li>
+</ul>
+<hr>
+<h3 id="问题三闰秒处理不一致"><a class="header" href="#问题三闰秒处理不一致">问题三：闰秒处理不一致</a></h3>
+<p><strong>背景</strong>：</p>
+<p>闰秒发生时，如果网络中的设备处理方式不一致，会导致时间混乱。</p>
+<p><strong>常见问题</strong>：</p>
+<ul>
+<li>主时钟正确处理了闰秒，但某些从时钟没有处理</li>
+<li>不同设备的闰秒处理时机不同（有的提前，有的延迟）</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><strong>使用PTP时间尺度</strong>：PTP时间不插入闰秒，避免跳变</li>
+<li><strong>正确配置currentUtcOffset</strong>：主时钟及时更新</li>
+<li><strong>监控leap61/leap59标志</strong>：从时钟提前获知闰秒</li>
+<li><strong>测试验证</strong>：闰秒发生前，进行模拟测试</li>
+</ol>
+<hr>
+<h2 id="小结域和时间尺度的核心要点"><a class="header" href="#小结域和时间尺度的核心要点">小结：域和时间尺度的核心要点</a></h2>
+<p><strong>域（Domain）</strong>：</p>
+<ul>
+<li>隔离不同的PTP网络</li>
+<li>通过domainNumber和sdoId双重标识</li>
+<li>不同域的报文互不干扰</li>
+</ul>
+<p><strong>时间尺度（Timescale）</strong>：</p>
+<ul>
+<li>PTP时间尺度：TAI时间，可溯源，稳定</li>
+<li>ARB时间尺度：任意时间，不可溯源，用于封闭系统</li>
+<li>PTP时间 = UTC时间 + currentUtcOffset</li>
+</ul>
+<p><strong>闰秒处理</strong>：</p>
+<ul>
+<li>PTP时间不插入闰秒，避免跳变</li>
+<li>通过leap61/leap59预告闰秒</li>
+<li>通过currentUtcOffset计算UTC时间</li>
+</ul>
+<p><strong>溯源信息</strong>：</p>
+<ul>
+<li>timeTraceable：时间是否可溯源到国际标准</li>
+<li>frequencyTraceable：频率是否可溯源到国际标准</li>
+<li>timeSource：时间源类型</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>现在，我们知道了PTP如何组织“时间国家“（域）和“时间时区“（时间尺度）。</p>
+<p>但还有一个问题：PTP设备内部如何存储和管理这些信息？</p>
+<p>下一节，我们将深入讲解<strong>PTP数据集</strong>——PTP设备的“记忆系统“。你会看到，PTP定义了一套完整的数据结构，存储了设备的身份、状态、配置、统计等信息。</p>
+<blockquote>
+<p><strong>【悬念留给2.4】</strong></p>
+<p>PTP数据集听起来像数据库，但它不是存在硬盘上的文件，而是存在于设备内存中的实时数据。这些数据会被PTP协议不断读取和更新。</p>
+<p>更有趣的是，某些数据集成员是“静态“的（不会变），某些是“动态“的（协议运行时自动变），某些是“可配置“的（管理员可以改）。</p>
+<p>PTP如何区分这三种类型？如何保证数据的一致性？下一节，我们详细解读。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.2-让指挥家诞生-BMCA算法详解.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/2.4-时间机器的记忆-PTP数据集全解析.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.2-让指挥家诞生-BMCA算法详解.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/2.4-时间机器的记忆-PTP数据集全解析.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

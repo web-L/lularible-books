@@ -1,0 +1,807 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Slot管理模块 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="45-slot管理模块token的注册中心"><a class="header" href="#45-slot管理模块token的注册中心">4.5 Slot管理模块：Token的“注册中心“</a></h2>
+<h3 id="一个问题slot如何被管理"><a class="header" href="#一个问题slot如何被管理">一个问题：Slot如何被管理？</a></h3>
+<p>假设你刚刚读完第三章，了解了PKCS#11的Slot概念：</p>
+<ul>
+<li>Slot是“逻辑插槽“</li>
+<li>Token是“插入的令牌“</li>
+<li>一个Slot可以有（或没有）Token</li>
+</ul>
+<p>现在你打开SoftHSM2源码，想找到Slot管理的代码。</p>
+<p>但你可能会困惑：</p>
+<ul>
+<li>软件HSM没有物理插槽，Slot是什么？</li>
+<li>Slot如何被创建？</li>
+<li>Token如何与Slot绑定？</li>
+</ul>
+<p>更深层的问题是：</p>
+<p><strong>软件HSM如何“模拟“硬件HSM的Slot机制？</strong></p>
+<hr>
+<h3 id="注册中心的设计意图"><a class="header" href="#注册中心的设计意图">“注册中心“的设计意图</a></h3>
+<p>SlotManager就像政府注册中心：</p>
+<pre><code>注册中心类比：
+
+政府注册中心（SlotManager）
+│
+├── 职责：
+│   ├── 管理所有注册号（Slot ID）
+│   ├── 登录新企业（创建Token）
+│   ├── 注销企业（销毁Token）
+│   ├── 查询企业列表（GetSlotList）
+│   └── 检查企业状态（Token是否存在）
+│   │
+│   ├── 注册号（Slot ID）：
+│   │   ├── 每个企业有一个编号
+│   │   ├── 编号是逻辑概念
+│   │   └── 不代表物理位置
+│   │
+│   ├── 企业（Token）：
+│   │   ├── 可能"已注册"（Token存在）
+│   │   ├── 可能"未注册"（Token不存在）
+│   │   └── 企业有档案信息
+│   │
+│   └── 软件注册 vs 硬件注册：
+│   │   ├── 软件注册：数据库记录即可
+│   │   ├── 硬件注册：需要物理检测
+│   │   └── 软件注册可以"凭空"创建
+│   │
+│   └── 车载理解：
+│   │   ├── 注册号 = HSM芯片编号
+│   │   ├── 企业 = HSM芯片本身
+│   │   ├── 多个注册号 = 多个HSM芯片
+│   │   └── 注册中心 = 系统的Slot管理模块
+│   │
+└── 关键设计：
+    ├── Slot是逻辑概念（注册号）
+    ├── Token是数据实体（企业档案）
+    ├── Slot可以没有Token（空注册号）
+    └── SoftHSM2用文件/数据库模拟Token
+</code></pre>
+<hr>
+<h3 id="slotmanager的地位"><a class="header" href="#slotmanager的地位">SlotManager的地位</a></h3>
+<p>SlotManager管理PKCS#11的Slot和Token：</p>
+<pre><code>Slot管理架构：
+
+PKCS#11 Slot概念：
+┌─────────────────────────────────────┐
+│ Slot = 逻辑插槽                      │
+│                                     │
+│ ├─ 可以插入Token                    │
+│ ├─ 每个Slot有Slot ID                │
+│ ├─ 每个Slot有Slot信息               │
+│ └─ Token存在时才有Token信息          │
+│                                     │
+│ 车载理解：                           │
+│ Slot = HSM芯片的通信端口            │
+│ Token = HSM芯片本身                 │
+│ 多个Slot = 多个HSM芯片              │
+└─────────────────────────────────────┘
+
+SlotManager职责：
+┌─────────────────────────────────────┐
+│ 软件HSM vs 硬件HSM                   │
+│                                     │
+│ 软件HSM（SoftHSM2）：                │
+│ ├─ Slot = 配置文件定义              │
+│ ├─ Token = 数据库/文件              │
+│ ├─ 可动态创建                       │
+│ └─ 无真实硬件                       │
+│                                     │
+│ 硬件HSM：                            │
+│ ├─ Slot = SPI/I2C端口               │
+│ ├─ Token = 检测到芯片               │
+│ ├─ 不可动态创建                     │
+│ └─ 有真实硬件                       │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="slotmanager类设计"><a class="header" href="#slotmanager类设计">SlotManager类设计</a></h3>
+<p>SlotManager是Slot管理的核心类：</p>
+<pre><code class="language-cpp">/* SlotManager类结构 */
+
+class SlotManager {
+public:
+    // Slot列表
+    // 教学简化：实际源码使用std::map&lt;CK_SLOT_ID, Slot*&gt;而非std::vector
+    std::vector&lt;Slot*&gt; slots;
+    
+    // 初始化（注册中心开业）
+    CK_RV init();
+    
+    // Slot操作（注册号查询）
+    CK_RV getSlotList(CK_BBOOL tokenPresent,  // 只返回有Token的Slot
+                      CK_SLOT_ID_PTR pSlotList, 
+                      CK_ULONG_PTR pulCount);
+    
+    Slot* getSlot(CK_SLOT_ID slotID);        // 获取指定Slot
+    bool isValidSlot(CK_SLOT_ID slotID);     // 验证Slot ID
+    
+    // Token操作（企业查询）
+    bool isTokenPresent(CK_SLOT_ID slotID);  // Token是否存在
+    Token* getToken(CK_SLOT_ID slotID);      // 获取Token
+    
+    // Slot事件（企业变动通知）
+    CK_RV waitForSlotEvent(CK_FLAGS flags, 
+                           CK_SLOT_ID_PTR pSlot, 
+                           CK_VOID_PTR pReserved);
+    
+private:
+    // 加载配置（导入已有企业）
+    CK_RV loadSlotsFromConfig();
+    
+    // 创建Slot（分配注册号）
+    CK_RV createSlot(CK_SLOT_ID slotID);
+};
+</code></pre>
+<hr>
+<h3 id="slotmanager初始化"><a class="header" href="#slotmanager初始化">SlotManager初始化</a></h3>
+<p>SlotManager初始化时加载已有Slot：</p>
+<pre><code class="language-cpp">CK_RV SlotManager::init()
+{
+    // 1. 清空Slot列表（清空注册簿）
+    slots.clear();
+    
+    // 2. 从配置加载Slot（导入已有企业）
+    CK_RV rv = loadSlotsFromConfig();
+    if (rv != CKR_OK) {
+        return rv;
+    }
+    
+    // 3. 如果没有Slot，创建默认Slot（分配默认注册号）
+    if (slots.empty()) {
+        Slot* slot = new Slot(0);  // Slot ID = 0
+        slots.push_back(slot);
+    }
+    
+    return CKR_OK;
+}
+
+CK_RV SlotManager::loadSlotsFromConfig()
+{
+    // 从配置文件加载Slot定义
+    
+    // 获取配置中的Slot数量
+    CK_ULONG slotCount = Configuration::i()-&gt;getSlotCount();
+    
+    for (CK_ULONG i = 0; i &lt; slotCount; i++) {
+        // 创建Slot
+        Slot* slot = new Slot(i);
+        
+        // 初始化Slot信息
+        slot-&gt;init();
+        
+        // 加载Token（如果存在）
+        slot-&gt;loadToken();
+        
+        slots.push_back(slot);
+    }
+    
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>配置文件示例</strong>：</p>
+<pre><code># softhsm2.conf 配置文件
+
+# Token存储目录
+directories.tokendir = /var/lib/softhsm2/tokens
+
+# Slot数量（注册号数量）
+# SoftHSM2可以动态创建，这个值不是固定限制
+</code></pre>
+<hr>
+<h3 id="slot类设计"><a class="header" href="#slot类设计">Slot类设计</a></h3>
+<p>Slot类代表一个逻辑插槽：</p>
+<pre><code class="language-cpp">class Slot {
+public:
+    Slot(CK_SLOT_ID slotID);
+    ~Slot();
+    
+    // Slot ID（注册号）
+    CK_SLOT_ID getSlotID();
+    
+    // Slot信息（注册号信息）
+    CK_RV getSlotInfo(CK_SLOT_INFO_PTR pInfo);
+    
+    // Token操作（企业操作）
+    bool isTokenPresent();
+    Token* getToken();
+    CK_RV getTokenInfo(CK_TOKEN_INFO_PTR pInfo);
+    
+    // Token生命周期（企业生命周期）
+    CK_RV initToken(CK_UTF8CHAR_PTR pPin, 
+                    CK_ULONG ulPinLen,
+                    CK_UTF8CHAR_PTR pLabel);
+    
+    CK_RV loadToken();        // 加载已有Token
+    CK_RV destroyToken();     // 销毁Token
+    
+    // 机制查询（服务能力查询）
+    CK_RV getMechanismList(...);
+    CK_RV getMechanismInfo(...);
+    
+private:
+    CK_SLOT_ID slotID;        // Slot ID
+    SlotInfo* slotInfo;        // Slot信息
+    Token* token;              // Token实例（可能为NULL）
+    bool tokenPresent;         // Token是否存在
+};
+</code></pre>
+<p><strong>Slot信息结构</strong>：</p>
+<pre><code class="language-cpp">CK_RV Slot::getSlotInfo(CK_SLOT_INFO_PTR pInfo)
+{
+    // 填充Slot信息（注册号信息）
+    
+    // Slot描述（注册号描述）
+    strncpy(pInfo-&gt;slotDescription, 
+            "SoftHSM2 Slot", 
+            sizeof(pInfo-&gt;slotDescription));
+    
+    // 制造商ID（注册中心名称）
+    strncpy(pInfo-&gt;manufacturerID, 
+            "OpenDNSSEC", 
+            sizeof(pInfo-&gt;manufacturerID));
+    
+    // Slot标志（注册号标志）
+    pInfo-&gt;flags = CKF_TOKEN_PRESENT;  // Token存在
+    
+    // 硬件版本（无关，软件HSM）
+    pInfo-&gt;hardwareVersion.major = 1;
+    pInfo-&gt;hardwareVersion.minor = 0;
+    
+    // 固件版本（无关，软件HSM）
+    pInfo-&gt;firmwareVersion.major = 1;
+    pInfo-&gt;firmwareVersion.minor = 0;
+    
+    return CKR_OK;
+}
+</code></pre>
+<hr>
+<h3 id="token类设计"><a class="header" href="#token类设计">Token类设计</a></h3>
+<p>Token类代表一个密码令牌：</p>
+<pre><code class="language-cpp">class Token {
+public:
+    Token(Slot* slot);
+    ~Token();
+    
+    // Token信息（企业信息）
+    CK_RV getTokenInfo(CK_TOKEN_INFO_PTR pInfo);
+    CK_RV setTokenLabel(const std::string&amp; label);
+    
+    // PIN管理（密码管理）
+    CK_RV initPIN(CK_USER_TYPE userType, 
+                  CK_UTF8CHAR_PTR pPin, 
+                  CK_ULONG ulPinLen);
+    
+    CK_RV setPIN(CK_USER_TYPE userType, 
+                 CK_UTF8CHAR_PTR pOldPin, 
+                 CK_ULONG ulOldLen,
+                 CK_UTF8CHAR_PTR pNewPin, 
+                 CK_ULONG ulNewLen);
+    
+    CK_RV verifyPIN(CK_USER_TYPE userType, 
+                    CK_UTF8CHAR_PTR pPin, 
+                    CK_ULONG ulPinLen);
+    
+    // 登录状态（登录状态）
+    bool isLoggedIn();
+    CK_USER_TYPE getLoggedInUser();
+    
+    // Session管理（窗口管理）
+    CK_RV openSession(...);
+    CK_RV closeSession(...);
+    CK_RV closeAllSessions();
+    
+    // Object管理（档案管理）
+    ObjectStore* getObjectStore();
+    
+private:
+    Slot* slot;                 // 所属Slot
+    TokenInfo* tokenInfo;       // Token信息
+    ObjectStore* objectStore;   // Object存储
+    SessionManager* sessions;   // Session管理
+    
+    // PIN存储
+    ByteString soPINBlob;      // SO PIN（加密存储）
+    ByteString userPINBlob;    // User PIN（加密存储）
+    
+    // 登录状态
+    bool loggedIn;
+    CK_USER_TYPE loggedInUser;
+};
+</code></pre>
+<hr>
+<h3 id="token初始化流程"><a class="header" href="#token初始化流程">Token初始化流程</a></h3>
+<p>Token初始化创建新的Token：</p>
+<pre><code class="language-cpp">CK_RV Slot::initToken(CK_UTF8CHAR_PTR pPin, 
+                       CK_ULONG ulPinLen,
+                       CK_UTF8CHAR_PTR pLabel)
+{
+    // 1. 检查Slot状态（检查注册号状态）
+    if (token != NULL) {
+        // Token已存在，需要先销毁
+        destroyToken();
+    }
+    
+    // 2. 创建Token（新企业注册）
+    token = new Token(this);
+    
+    // 3. 设置Token Label（企业名称）
+    token-&gt;setTokenLabel(std::string(pLabel, 32));
+    
+    // 4. 初始化SO PIN（管理员密码）
+    CK_RV rv = token-&gt;initPIN(CKU_SO, pPin, ulPinLen);
+    if (rv != CKR_OK) {
+        delete token;
+        token = NULL;
+        return rv;
+    }
+    
+    // 5. 初始化Object存储（企业档案库）
+    token-&gt;getObjectStore()-&gt;init();
+    
+    // 6. 标记Token存在
+    tokenPresent = true;
+    
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>Token初始化流程图</strong>：</p>
+<pre><code>Token初始化流程（企业注册流程）：
+
+检查Slot状态
+    │
+    │ Token已存在？ → 先销毁
+    │
+    ▼ Token不存在
+创建Token对象
+    │
+    ▼ 创建成功
+设置Token Label
+    │
+    ▼ Label设置完成
+初始化SO PIN
+    │
+    │ 失败？ → 清理并返回错误
+    │
+    ▼ PIN设置完成
+初始化Object存储
+    │
+    ▼ 存储初始化完成
+标记Token存在
+    │
+    ▼ 完成
+返回CKR_OK
+
+对应softhsm2-util命令：
+softhsm2-util --init-token --slot 0 --label "MyToken" --so-pin 12345678
+</code></pre>
+<hr>
+<h3 id="getslotlist实现"><a class="header" href="#getslotlist实现">getSlotList实现</a></h3>
+<p>getSlotList返回Slot列表：</p>
+<pre><code class="language-cpp">CK_RV SlotManager::getSlotList(CK_BBOOL tokenPresent,
+                                 CK_SLOT_ID_PTR pSlotList,
+                                 CK_ULONG_PTR pulCount)
+{
+    // 1. 计算Slot数量（统计注册号）
+    CK_ULONG count = 0;
+    
+    if (tokenPresent) {
+        // 只统计有Token的Slot（只返回有企业的注册号）
+        for (Slot* slot : slots) {
+            if (slot-&gt;isTokenPresent()) {
+                count++;
+            }
+        }
+    } else {
+        // 统计所有Slot（返回所有注册号）
+        count = slots.size();
+    }
+    
+    // 2. 返回数量（返回统计结果）
+    *pulCount = count;
+    
+    // 3. 如果pSlotList不为NULL，填充列表（返回注册号列表）
+    if (pSlotList != NULL) {
+        CK_ULONG index = 0;
+        
+        for (Slot* slot : slots) {
+            if (tokenPresent) {
+                if (slot-&gt;isTokenPresent()) {
+                    pSlotList[index] = slot-&gt;getSlotID();
+                    index++;
+                }
+            } else {
+                pSlotList[index] = slot-&gt;getSlotID();
+                index++;
+            }
+        }
+    }
+    
+    return CKR_OK;
+}
+</code></pre>
+<p><strong>使用示例</strong>：</p>
+<pre><code class="language-c">/* 获取Slot列表示例 */
+
+CK_SLOT_ID slotList[10];
+CK_ULONG slotCount;
+
+// 只获取有Token的Slot
+rv = C_GetSlotList(CK_TRUE, slotList, &amp;slotCount);
+
+// slotCount = 实际Slot数量
+// slotList = Slot ID数组
+
+// 典型SoftHSM2配置：slotCount = 1，slotList[0] = 0
+</code></pre>
+<hr>
+<h3 id="waitforsloteventslot变动通知"><a class="header" href="#waitforsloteventslot变动通知">waitForSlotEvent：Slot变动通知</a></h3>
+<p>waitForSlotEvent等待Slot状态变化：</p>
+<pre><code class="language-cpp">CK_RV SlotManager::waitForSlotEvent(CK_FLAGS flags,
+                                     CK_SLOT_ID_PTR pSlot,
+                                     CK_VOID_PTR pReserved)
+{
+    // 软件HSM通常不支持Slot事件
+    // 真实HSM可以检测硬件插入/拔出
+    
+    // SoftHSM2返回CKR_NO_EVENT
+    return CKR_NO_EVENT;
+}
+</code></pre>
+<p><strong>硬件HSM vs 软件HSM</strong>：</p>
+<pre><code>Slot事件对比：
+
+硬件HSM：
+├── 支持waitForSlotEvent
+├── 可以检测Token插入
+├── 可以检测Token拔出
+├── 有物理事件触发
+└── 车载理解：检测HSM芯片连接状态
+
+软件HSM（SoftHSM2）：
+├── 不支持waitForSlotEvent
+├── 返回CKR_NO_EVENT
+├── 无物理事件
+├── Token状态由软件控制
+└── 无硬件检测机制
+</code></pre>
+<hr>
+<h3 id="一个类比政府注册中心"><a class="header" href="#一个类比政府注册中心">一个类比：政府注册中心</a></h3>
+<pre><code>政府注册中心类比：
+
+SlotManager（注册中心）
+│
+├── 注册号管理（Slot管理）
+│   ├── getSlotList：列出所有注册号
+│   ├── getSlot：查询指定注册号
+│   ├── isValidSlot：验证注册号有效性
+│   └── waitForSlotEvent：等待注册变动（不支持）
+│   │
+│   ├── 软件注册中心（SoftHSM2）：
+│   │   ├── 注册号在配置文件定义
+│   │   ├── 企业在数据库注册
+│   │   ├── 可以凭空创建
+│   │   └── 无物理限制
+│   │
+│   └── 硬件注册中心（真实HSM）：
+│   │   ├── 注册号对应物理端口
+│   │   ├── 企业对应物理芯片
+│   │   ├── 创建需要物理检测
+│   │   └── 支持硬件事件
+│   │
+│   └── 车载理解：
+│   │   ├── 注册号 = HSM芯片编号
+│   │   ├── 注册中心 = SlotManager
+│   │   ├── 企业档案 = Token数据
+│   │   ├── 企业窗口 = Session
+│   │   └── 企业档案库 = ObjectStore
+│   │
+│   └── 注册流程：
+│   │   ├── 1. 分配注册号（分配Slot ID）
+│   │   ├── 2. 企业注册（initToken）
+│   │   ├── 3. 设置企业名称（setLabel）
+│   │   ├── 4. 设置管理员密码（initPIN）
+│   │   ├── 5. 创建档案库（ObjectStore）
+│   │   └── 6. 企业开业（Token可用）
+│   │
+│   └── 查询流程：
+│   │   ├── 1. 查询注册号列表（getSlotList）
+│   │   ├── 2. 查询企业是否存在（isTokenPresent）
+│   │   ├── 3. 查询企业信息（getTokenInfo）
+│   │   └── 4. 打开企业窗口（openSession）
+│   │
+└── 关键理解：
+    ├── Slot是逻辑概念（注册号）
+    ├── Token是数据实体（企业档案）
+    ├── 注册号可以空置（无Token）
+    └── 软件HSM用数据库模拟注册
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>SlotManager是Token的“注册中心“：</p>
+<p><strong>SlotManager职责</strong>：</p>
+<ul>
+<li>管理Slot列表</li>
+<li>查询Slot信息</li>
+<li>加载已有Token</li>
+<li>监听Slot事件（软件HSM不支持）</li>
+</ul>
+<p><strong>Slot类</strong>：</p>
+<ul>
+<li>Slot ID：注册号</li>
+<li>Slot信息：注册号信息</li>
+<li>Token关联：企业档案</li>
+<li>机制查询：服务能力</li>
+</ul>
+<p><strong>Token类</strong>：</p>
+<ul>
+<li>Token信息：企业信息</li>
+<li>PIN管理：密码管理</li>
+<li>Session管理：窗口管理</li>
+<li>Object存储：档案存储</li>
+</ul>
+<p><strong>初始化流程</strong>：</p>
+<ul>
+<li>检查Slot状态</li>
+<li>创建Token</li>
+<li>设置Label</li>
+<li>初始化SO PIN</li>
+<li>初始化ObjectStore</li>
+</ul>
+<p><strong>软件vs硬件</strong>：</p>
+<ul>
+<li>软件：Slot在配置定义，Token在数据库</li>
+<li>硬件：Slot对应物理端口，Token对应芯片</li>
+</ul>
+<p>下一节，我们将分析Session管理模块——Session如何被创建和管理。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<ul>
+<li>
+<p>SessionManager如何工作？</p>
+</li>
+<li>
+<p>Session如何被创建？</p>
+</li>
+<li>
+<p>Session状态如何管理？</p>
+</li>
+<li>
+<p>登录状态如何共享？</p>
+</li>
+</ul>
+<p>下一节，Session管理模块。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/4.4-P11Objects与P11Attributes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/4.6-Session管理模块.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/4.4-P11Objects与P11Attributes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/4.6-Session管理模块.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

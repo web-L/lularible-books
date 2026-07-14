@@ -1,0 +1,857 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>P11Objects与P11Attributes - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="44-p11objects与p11attributes对象的dna"><a class="header" href="#44-p11objects与p11attributes对象的dna">4.4 P11Objects与P11Attributes：对象的“DNA“</a></h2>
+<h3 id="一个问题密钥对象如何被表示"><a class="header" href="#一个问题密钥对象如何被表示">一个问题：密钥对象如何被表示？</a></h3>
+<p>假设你正在阅读SoftHSM2源码，理解了SoftHSM.cpp的大管家角色。</p>
+<p>现在你想知道：</p>
+<p><strong>密钥对象在内部是怎么存储的？</strong></p>
+<p>你可能会想：</p>
+<ul>
+<li>密钥有类型（RSA、AES）、值、权限等属性</li>
+<li>这些属性怎么被管理？</li>
+<li>不同类型的密钥有什么不同？</li>
+</ul>
+<p>更深层的问题是：</p>
+<p><strong>PKCS#11的Object概念，在C++代码中怎么实现？</strong></p>
+<hr>
+<h3 id="dna的设计意图"><a class="header" href="#dna的设计意图">“DNA“的设计意图</a></h3>
+<p>Object的属性就像生物的DNA：</p>
+<pre><code>DNA类比：
+
+生物DNA：
+├── 决定物种类型（人类、猫、狗）
+├── 决定个体特征（眼睛颜色、身高）
+├── 决定行为能力（是否可以生育）
+├── 决定生命周期（寿命）
+└── 一套基因编码定义整个生物
+
+Object属性（DNA）：
+├── 决定对象类型（公钥、私钥、证书）
+├── 决定对象特征（密钥长度、算法类型）
+├── 决定行为能力（是否可签名、是否可加密）
+├── 决定生命周期（Token对象 vs Session对象）
+└── 一套属性定义整个对象
+
+关键设计：
+├── 属性是对象的"基因"
+├── 不同对象有不同的"基因组合"
+├── P11Attribute是"基因片段"
+└── P11Object是"完整生物体"
+</code></pre>
+<hr>
+<h3 id="对象系统的地位"><a class="header" href="#对象系统的地位">对象系统的地位</a></h3>
+<p>P11Objects和P11Attributes是SoftHSM2对象管理的核心：</p>
+<pre><code>对象系统架构：
+
+PKCS#11对象概念：
+┌─────────────────────────────────────┐
+│ Object（对象）                       │
+│                                     │
+│ ├─ CK_OBJECT_CLASS（对象类）        │
+│ ├─ CK_KEY_TYPE（密钥类型）          │
+│ └─ Attributes（属性集合）           │
+│                                     │
+│ 属性是对象的"DNA"：                  │
+│ ├─ 定义对象类型                     │
+│ ├─ 定义对象行为                     │
+│ ├─ 定义对象权限                     │
+│ └─ 定义对象值                       │
+└─────────────────────────────────────┘
+
+SoftHSM2实现：
+┌─────────────────────────────────────┐
+│ P11Object（对象类）                  │
+│                                     │
+│ ├─ P11Attributes（属性管理）        │
+│ ├─ 类型识别                         │
+│ ├─ 属性验证                         │
+│ └─ 属性访问                         │
+│                                     │
+│ 继承体系：                           │
+│ P11Object                           │
+│ ├─ P11PublicKeyObj                  │
+│ ├─ P11PrivateKeyObj                 │
+│ ├─ P11SecretKeyObj                  │
+│ ├─ P11CertificateObj                │
+│ └─ P11DataObj                       │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="p11object基类设计"><a class="header" href="#p11object基类设计">P11Object基类设计</a></h3>
+<p>P11Object是所有对象的基类：</p>
+<pre><code class="language-cpp">/* P11Object基类 */
+
+class P11Object {
+public:
+    // 对象标识（生物编号）
+    CK_OBJECT_HANDLE handle;       // Handle编号
+    CK_OBJECT_CLASS objectClass;   // 对象类型（物种）
+    
+    // 属性存储（基因库）
+    // 实际源码使用std::map存储P11Attribute派生类实例
+    std::map&lt;CK_ATTRIBUTE_TYPE, P11Attribute*&gt; attributes;
+    
+    // 构造和析构
+    P11Object();
+    virtual ~P11Object();
+    
+    // 属性操作（基因读取和修改）
+    CK_RV getAttributeValue(CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount);
+    CK_RV setAttributeValue(CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount);
+    
+    // 属性验证（基因有效性检查）
+    CK_RV validateAttributes();
+    
+    // 对象类型检查（物种识别）
+    virtual bool isKeyObject() { return false; }
+    virtual bool isPublicKey() { return false; }
+    virtual bool isPrivateKey() { return false; }
+    virtual bool isSecretKey() { return false; }
+    
+    // 对象生命周期（生命周期判断）
+    bool isTokenObject();    // 是否是持久对象
+    bool isPrivateObject();  // 是否是私有对象
+    bool isDestroyable();    // 是否可销毁
+    
+protected:
+    // 初始化属性（设置默认基因）
+    void initializeCommonAttributes();
+};
+</code></pre>
+<hr>
+<h3 id="p11attribute单个属性的抽象"><a class="header" href="#p11attribute单个属性的抽象">P11Attribute：单个属性的抽象</a></h3>
+<p>P11Attribute是单个属性的抽象：</p>
+<pre><code class="language-cpp">/* P11Attribute基类 */
+
+class P11Attribute {
+public:
+    P11Attribute(OSObject* parent, CK_ATTRIBUTE_TYPE type);
+    virtual ~P11Attribute();
+    
+    // 属性类型（基因编号）
+    CK_ATTRIBUTE_TYPE getType();
+    
+    // 属性值操作（基因读写）
+    virtual CK_RV getValue(CK_VOID_PTR pValue, CK_ULONG_PTR pulValueLen);
+    virtual CK_RV setValue(CK_VOID_PTR pValue, CK_ULONG ulValueLen);
+    
+    // 属性验证（基因有效性）
+    virtual CK_RV validate();
+    
+    // 属性特性（基因特性）
+    virtual bool isSensitive();      // 是否敏感（不可读取）
+    virtual bool isModifiable();     // 是否可修改
+    
+protected:
+    OSObject* parent;                // 父对象（所属生物体）
+    CK_ATTRIBUTE_TYPE type;          // 属性类型（基因编号）
+};
+</code></pre>
+<p><strong>属性类型分类</strong>：</p>
+<pre><code>P11Attribute派生类：
+
+基础属性（所有对象共享）：
+├── P11Class          CKA_CLASS（对象类）
+├── P11Token          CKA_TOKEN（是否Token对象）
+├── P11Private        CKA_PRIVATE（是否私有）
+├── P11Modifiable     CKA_MODIFIABLE（是否可修改）
+└── P11Label          CKA_LABEL（标签）
+
+密钥属性（密钥对象共享）：
+├── P11KeyType        CKA_KEY_TYPE（密钥类型）
+├── P11KeyId          CKA_ID（密钥ID）
+├── P11StartDate      CKA_START_DATE（生效日期）
+├── P11EndDate        CKA_END_DATE（失效日期）
+└── P11Derive         CKA_DERIVE（是否可派生）
+
+RSA密钥属性：
+├── P11Modulus        CKA_MODULUS（模数N）
+├── P11PublicExponent CKA_PUBLIC_EXPONENT（公钥指数E）
+├── P11PrivateExponent CKA_PRIVATE_EXPONENT（私钥指数D）
+├── P11Prime1         CKA_PRIME_1（素数P）
+├── P11Prime2         CKA_PRIME_2（素数Q）
+└── ...
+
+AES密钥属性：
+├── P11ValueLen       CKA_VALUE_LEN（密钥长度）
+└── P11Value          CKA_VALUE（密钥值）
+
+使用属性：
+├── P11Encrypt        CKA_ENCRYPT（是否可加密）
+├── P11Decrypt        CKA_DECRYPT（是否可解密）
+├── P11Sign           CKA_SIGN（是否可签名）
+├── P11Verify         CKA_VERIFY（是否可验证）
+├── P11Wrap           CKA_WRAP（是否可包装）
+└── P11Unwrap         CKA_UNWRAP（是否可解包）
+
+安全属性：
+├── P11Sensitive      CKA_SENSITIVE（是否敏感）
+├── P11Extractable    CKA_EXTRACTABLE（是否可导出）
+├── P11AlwaysSensitive CKA_ALWAYS_SENSITIVE（是否一直敏感）
+└── P11NeverExtractable CKA_NEVER_EXTRACTABLE（是否从不导出）
+</code></pre>
+<hr>
+<h3 id="p11publickeyobj公钥对象"><a class="header" href="#p11publickeyobj公钥对象">P11PublicKeyObj：公钥对象</a></h3>
+<p>P11PublicKeyObj是公钥对象的实现：</p>
+<pre><code class="language-cpp">class P11PublicKeyObj : public P11Object {
+public:
+    P11PublicKeyObj(OSObject* object);
+    virtual ~P11PublicKeyObj();
+    
+    // 类型识别
+    virtual bool isKeyObject() { return true; }
+    virtual bool isPublicKey() { return true; }
+    
+    // RSA公钥属性
+    ByteString getModulus();        // 获取模数N
+    ByteString getPublicExponent(); // 获取公钥指数E
+    CK_ULONG getModulusBits();      // 获取密钥长度
+    
+    // EC公钥属性
+    ByteString getEcPoint();        // 获取EC点Q
+    
+    // 初始化属性
+    void initializeRSAAttributes();
+    void initializeECAttributes();
+    
+protected:
+    // RSA公钥特定属性
+    P11Modulus* modulusAttr;
+    P11PublicExponent* exponentAttr;
+};
+
+ByteString P11PublicKeyObj::getModulus()
+{
+    // 从属性中获取模数值
+    CK_ATTRIBUTE attr = {CKA_MODULUS, NULL_PTR, 0};
+    getAttributeValue(&amp;attr, 1);
+    
+    // 分配内存并读取值
+    ByteString modulus(attr.ulValueLen);
+    attr.pValue = modulus.data();
+    getAttributeValue(&amp;attr, 1);
+    
+    return modulus;
+}
+</code></pre>
+<hr>
+<h3 id="p11privatekeyobj私钥对象"><a class="header" href="#p11privatekeyobj私钥对象">P11PrivateKeyObj：私钥对象</a></h3>
+<p>P11PrivateKeyObj是私钥对象的实现：</p>
+<pre><code class="language-cpp">class P11PrivateKeyObj : public P11Object {
+public:
+    P11PrivateKeyObj(OSObject* object);
+    virtual ~P11PrivateKeyObj();
+    
+    // 类型识别
+    virtual bool isKeyObject() { return true; }
+    virtual bool isPrivateKey() { return true; }
+    
+    // RSA私钥属性
+    ByteString getPrivateExponent();  // 获取私钥指数D
+    ByteString getPrime1();           // 获取素数P
+    ByteString getPrime2();           // 获取素数Q
+    
+    // 安全属性检查
+    bool isSensitive();               // 检查CKA_SENSITIVE
+    bool isExtractable();             // 检查CKA_EXTRACTABLE
+    
+    // 私钥值是否可读取
+    bool canReadPrivateKey();         // 综合检查
+    
+protected:
+    // RSA私钥特定属性
+    P11PrivateExponent* privateExponentAttr;
+    P11Prime1* prime1Attr;
+    P11Prime2* prime2Attr;
+};
+
+bool P11PrivateKeyObj::canReadPrivateKey()
+{
+    // 检查是否敏感
+    if (isSensitive()) {
+        return false;  // 私钥值不可读取
+    }
+    
+    // 检查是否可导出
+    if (!isExtractable()) {
+        return false;  // 私钥值不可导出
+    }
+    
+    return true;  // 可以读取私钥值
+}
+</code></pre>
+<p><strong>安全属性的作用</strong>：</p>
+<pre><code>私钥安全属性：
+
+CKA_SENSITIVE：
+├── TRUE：私钥值不可通过C_GetAttributeValue读取
+├── 设置后不可改为FALSE
+└── 保护私钥不被泄露
+
+CKA_EXTRACTABLE：
+├── TRUE：私钥可以通过C_WrapKey导出
+├── FALSE：私钥不可导出
+├── 设置后不可改为TRUE
+└── 控制私钥导出权限
+
+CKA_ALWAYS_SENSITIVE：
+├── TRUE：对象创建时就是敏感的
+├── 记录对象的历史
+└── 防止"先不敏感，后来敏感"的情况
+
+CKA_NEVER_EXTRACTABLE：
+├── TRUE：对象创建时就不可以导出
+├── 记录对象的历史
+└── 防止"先可导出，后来不可导出"的情况
+
+安全等级不可逆转：
+├── 可以从"不安全"变为"安全"
+├── 不能从"安全"变为"不安全"
+└── 这是PKCS#11的安全设计原则
+</code></pre>
+<hr>
+<h3 id="p11secretkeyobj对称密钥对象"><a class="header" href="#p11secretkeyobj对称密钥对象">P11SecretKeyObj：对称密钥对象</a></h3>
+<p>P11SecretKeyObj是对称密钥对象的实现：</p>
+<pre><code class="language-cpp">class P11SecretKeyObj : public P11Object {
+public:
+    P11SecretKeyObj(OSObject* object);
+    virtual ~P11SecretKeyObj();
+    
+    // 类型识别
+    virtual bool isKeyObject() { return true; }
+    virtual bool isSecretKey() { return true; }
+    
+    // 密钥值
+    ByteString getValue();        // 获取密钥值
+    CK_ULONG getValueLen();       // 获取密钥长度
+    
+    // 密钥类型检查
+    bool isAESKey();              // 是否是AES密钥
+    bool isDESKey();              // 是否是DES密钥
+    
+    // 密钥用途检查
+    bool canEncrypt();            // 是否可加密
+    bool canDecrypt();            // 是否可解密
+    bool canSign();               // 是否可签名（MAC）
+    bool canVerify();             // 是否可验证（MAC）
+    
+protected:
+    P11Value* valueAttr;          // 密钥值属性
+    P11ValueLen* valueLenAttr;    // 密钥长度属性
+};
+
+ByteString P11SecretKeyObj::getValue()
+{
+    // 检查敏感属性
+    if (isSensitive()) {
+        return ByteString();  // 返回空，不能读取
+    }
+    
+    // 读取密钥值
+    CK_ATTRIBUTE attr = {CKA_VALUE, NULL_PTR, 0};
+    getAttributeValue(&amp;attr, 1);
+    
+    ByteString value(attr.ulValueLen);
+    attr.pValue = value.data();
+    getAttributeValue(&amp;attr, 1);
+    
+    return value;
+}
+</code></pre>
+<hr>
+<h3 id="属性初始化设置默认基因"><a class="header" href="#属性初始化设置默认基因">属性初始化：设置“默认基因“</a></h3>
+<p>创建对象时，需要初始化默认属性：</p>
+<pre><code class="language-cpp">void P11Object::initializeCommonAttributes()
+{
+    // 所有对象都有这些基本属性
+    
+    // 对象类（物种）
+    attributes[CKA_CLASS] = new P11Class(this);
+    
+    // 是否Token对象（是否持久）
+    attributes[CKA_TOKEN] = new P11Token(this);
+    attributes[CKA_TOKEN]-&gt;setValue(&amp;bFalse, sizeof(bFalse));
+    
+    // 是否私有对象（是否需要登录才能访问）
+    attributes[CKA_PRIVATE] = new P11Private(this);
+    attributes[CKA_PRIVATE]-&gt;setValue(&amp;bFalse, sizeof(bFalse));
+    
+    // 是否可修改
+    attributes[CKA_MODIFIABLE] = new P11Modifiable(this);
+    attributes[CKA_MODIFIABLE]-&gt;setValue(&amp;bTrue, sizeof(bTrue));
+    
+    // 标签（空）
+    attributes[CKA_LABEL] = new P11Label(this);
+}
+
+void P11SecretKeyObj::initializeSecretKeyAttributes()
+{
+    // 对称密钥的特定属性
+    
+    // 密钥类型
+    attributes[CKA_KEY_TYPE] = new P11KeyType(this);
+    
+    // 密钥长度
+    attributes[CKA_VALUE_LEN] = new P11ValueLen(this);
+    
+    // 密钥值
+    attributes[CKA_VALUE] = new P11Value(this);
+    
+    // 使用属性
+    attributes[CKA_ENCRYPT] = new P11Encrypt(this);
+    attributes[CKA_DECRYPT] = new P11Decrypt(this);
+    attributes[CKA_SIGN] = new P11Sign(this);
+    attributes[CKA_VERIFY] = new P11Verify(this);
+    attributes[CKA_WRAP] = new P11Wrap(this);
+    attributes[CKA_UNWRAP] = new P11Unwrap(this);
+    attributes[CKA_DERIVE] = new P11Derive(this);
+    
+    // 安全属性
+    attributes[CKA_SENSITIVE] = new P11Sensitive(this);
+    attributes[CKA_EXTRACTABLE] = new P11Extractable(this);
+    attributes[CKA_ALWAYS_SENSITIVE] = new P11AlwaysSensitive(this);
+    attributes[CKA_NEVER_EXTRACTABLE] = new P11NeverExtractable(this);
+}
+</code></pre>
+<hr>
+<h3 id="属性验证检查基因有效性"><a class="header" href="#属性验证检查基因有效性">属性验证：检查“基因有效性“</a></h3>
+<p>属性设置需要验证：</p>
+<pre><code class="language-cpp">CK_RV P11Sensitive::validate()
+{
+    // 检查CKA_SENSITIVE的合法性
+    
+    CK_BBOOL value;
+    getValue(&amp;value, sizeof(value));
+    
+    // 必须是TRUE或FALSE
+    if (value != CK_TRUE &amp;&amp; value != CK_FALSE) {
+        return CKR_ATTRIBUTE_VALUE_INVALID;
+    }
+    
+    // 检查历史状态
+    CK_BBOOL alwaysSensitive = parent-&gt;getBooleanValue(CKA_ALWAYS_SENSITIVE);
+    
+    // 如果之前是敏感的，现在不能改为不敏感
+    if (alwaysSensitive == CK_TRUE &amp;&amp; value == CK_FALSE) {
+        return CKR_ATTRIBUTE_VALUE_INVALID;
+    }
+    
+    return CKR_OK;
+}
+
+CK_RV P11Extractable::validate()
+{
+    // 检查CKA_EXTRACTABLE的合法性
+    
+    CK_BBOOL value;
+    getValue(&amp;value, sizeof(value));
+    
+    // 必须是TRUE或FALSE
+    if (value != CK_TRUE &amp;&amp; value != CK_FALSE) {
+        return CKR_ATTRIBUTE_VALUE_INVALID;
+    }
+    
+    // 检查历史状态
+    CK_BBOOL neverExtractable = parent-&gt;getBooleanValue(CKA_NEVER_EXTRACTABLE);
+    
+    // 如果之前不可导出，现在不能改为可导出
+    if (neverExtractable == CK_TRUE &amp;&amp; value == CK_TRUE) {
+        return CKR_ATTRIBUTE_VALUE_INVALID;
+    }
+    
+    return CKR_OK;
+}
+</code></pre>
+<hr>
+<h3 id="getattributevalue实现"><a class="header" href="#getattributevalue实现">getAttributeValue实现</a></h3>
+<p>读取属性值的实现：</p>
+<pre><code class="language-cpp">CK_RV P11Object::getAttributeValue(CK_ATTRIBUTE_PTR pTemplate, CK_ULONG ulCount)
+{
+    CK_RV rv = CKR_OK;
+    
+    for (CK_ULONG i = 0; i &lt; ulCount; i++) {
+        CK_ATTRIBUTE_TYPE type = pTemplate[i].type;
+        
+        // 查找属性
+        auto it = attributes.find(type);
+        
+        if (it == attributes.end()) {
+            // 属性不存在
+            pTemplate[i].ulValueLen = CK_UNAVAILABLE_INFORMATION;
+            rv = CKR_ATTRIBUTE_TYPE_INVALID;
+            continue;
+        }
+        
+        P11Attribute* attr = it-&gt;second;
+        
+        // 检查是否敏感
+        if (attr-&gt;isSensitive()) {
+            // 敏感属性不能读取
+            pTemplate[i].ulValueLen = CK_UNAVAILABLE_INFORMATION;
+            rv = CKR_ATTRIBUTE_SENSITIVE;
+            continue;
+        }
+        
+        // 读取属性值
+        if (pTemplate[i].pValue == NULL_PTR) {
+            // 只返回长度
+            attr-&gt;getValue(NULL_PTR, &amp;pTemplate[i].ulValueLen);
+        } else {
+            // 返回值
+            rv = attr-&gt;getValue(pTemplate[i].pValue, &amp;pTemplate[i].ulValueLen);
+            
+            // 检查缓冲区是否足够
+            if (rv == CKR_BUFFER_TOO_SMALL) {
+                // 缓冲区不够，返回所需长度
+                continue;
+            }
+        }
+    }
+    
+    return rv;
+}
+</code></pre>
+<hr>
+<h3 id="一个类比dna与生物体"><a class="header" href="#一个类比dna与生物体">一个类比：DNA与生物体</a></h3>
+<pre><code>DNA与生物体类比：
+
+P11Object（生物体）
+│
+├── 生物类型（对象类）
+│   ├── P11PublicKeyObj（人类）
+│   ├── P11PrivateKeyObj（猫）
+│   ├── P11SecretKeyObj（狗）
+│   ├── P11CertificateObj（鸟类）
+│   └── P11DataObj（鱼类）
+│
+├── DNA库（属性集合）
+│   │
+│   ├── 基本基因（所有生物都有）
+│   │   ├── CKA_CLASS（物种编号）
+│   │   ├── CKA_TOKEN（寿命长短）
+│   │   ├── CKA_PRIVATE（是否需要保护）
+│   │   └── CKA_LABEL（名字）
+│   │
+│   ├── 密钥基因（所有密钥都有）
+│   │   ├── CKA_KEY_TYPE（密钥种类）
+│   │   ├── CKA_ENCRYPT（是否可加密）
+│   │   ├── CKA_SIGN（是否可签名）
+│   │   └── ...
+│   │
+│   ├── RSA基因（RSA密钥特有）
+│   │   ├── CKA_MODULUS（模数N）
+│   │   ├── CKA_PUBLIC_EXPONENT（指数E）
+│   │   └── ...
+│   │
+│   └── AES基因（AES密钥特有）
+│   │   ├── CKA_VALUE_LEN（密钥长度）
+│   │   └── CKA_VALUE（密钥值）
+│   │
+│   └── 安全基因（私钥安全属性）
+│   │   ├── CKA_SENSITIVE（是否敏感）
+│   │   ├── CKA_EXTRACTABLE（是否可导出）
+│   │   └── ...
+│   │
+│   └── P11Attribute（单个基因片段）
+│   │   ├── getValue（读取基因值）
+│   │   ├── setValue（修改基因值）
+│   │   ├── validate（检查基因有效性）
+│   │   └── isSensitive（是否是隐秘基因）
+│   │
+│   └── 基因不可逆变化
+│   │   ├── 可以从"公开"变为"隐秘"
+│   │   ├── 不能从"隐秘"变为"公开"
+│   │   └── 这是安全设计原则
+│   │
+└── 对象生命周期
+    ├── Token对象：长寿生物（持久存储）
+    ├── Session对象：短命生物（Session关闭后消失）
+    └── Private对象：需要认证才能访问的生物
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>P11Objects和P11Attributes是对象系统的“DNA“：</p>
+<p><strong>P11Object基类</strong>：</p>
+<ul>
+<li>所有对象的基类</li>
+<li>属性存储：std::map&lt;CK_ATTRIBUTE_TYPE, P11Attribute*&gt;</li>
+<li>类型识别：isKeyObject、isPublicKey等</li>
+</ul>
+<p><strong>P11Attribute抽象</strong>：</p>
+<ul>
+<li>单个属性的抽象</li>
+<li>getValue/setValue：属性读写</li>
+<li>validate：属性验证</li>
+<li>isSensitive：敏感属性检查</li>
+</ul>
+<p><strong>派生类</strong>：</p>
+<ul>
+<li>P11PublicKeyObj：公钥对象</li>
+<li>P11PrivateKeyObj：私钥对象</li>
+<li>P11SecretKeyObj：对称密钥对象</li>
+<li>P11CertificateObj：证书对象</li>
+</ul>
+<p><strong>属性分类</strong>：</p>
+<ul>
+<li>基础属性：CKA_CLASS、CKA_TOKEN等</li>
+<li>密钥属性：CKA_KEY_TYPE、CKA_VALUE等</li>
+<li>使用属性：CKA_ENCRYPT、CKA_SIGN等</li>
+<li>安全属性：CKA_SENSITIVE、CKA_EXTRACTABLE等</li>
+</ul>
+<p><strong>安全设计</strong>：</p>
+<ul>
+<li>CKA_SENSITIVE：私钥值不可读取</li>
+<li>CKA_EXTRACTABLE：私钥可否导出</li>
+<li>安全等级不可逆转</li>
+</ul>
+<p>下一节，我们将分析Slot管理模块——Slot如何被初始化和管理。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<ul>
+<li>
+<p>SlotManager如何工作？</p>
+</li>
+<li>
+<p>Slot如何与Token绑定？</p>
+</li>
+<li>
+<p>Slot初始化流程？</p>
+</li>
+<li>
+<p>多Slot如何管理？</p>
+</li>
+</ul>
+<p>下一节，Slot管理模块。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/4.3-SoftHSMcpp深度解析.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/4.5-Slot管理模块.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/4.3-SoftHSMcpp深度解析.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/4.5-Slot管理模块.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

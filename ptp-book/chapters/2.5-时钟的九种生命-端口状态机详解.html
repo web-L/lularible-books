@@ -1,0 +1,741 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>时钟的九种生命 · 端口状态机详解 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="25-时钟的九种生命端口状态机详解"><a class="header" href="#25-时钟的九种生命端口状态机详解">2.5 时钟的九种生命：端口状态机详解</a></h1>
+<h2 id="一个ptp端口的生命旅程"><a class="header" href="#一个ptp端口的生命旅程">一个PTP端口的“生命旅程“</a></h2>
+<p>想象一下，一个PTP端口就像一个“生命体“，它会经历不同的“生命阶段“。</p>
+<p>有时候它在休息，等待信号。
+有时候它在准备，蓄势待发。
+有时候它是“指挥家“，发送时间信号。
+有时候它是“跟随者“，接收时间信号。</p>
+<p>PTP标准定义了<strong>9种端口状态</strong>，每种状态都有明确的行为规则。</p>
+<p>今天，我们就像生物学家一样，仔细观察PTP端口的“生命周期“。</p>
+<hr>
+<h2 id="九种状态一眼看全"><a class="header" href="#九种状态一眼看全">九种状态：一眼看全</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">状态</th><th style="text-align: left">英文</th><th style="text-align: left">核心行为</th><th style="text-align: left">能发送什么报文？</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>初始化</strong></td><td style="text-align: left">INITIALIZING</td><td style="text-align: left">正在初始化</td><td style="text-align: left">不发送任何报文</td></tr>
+<tr><td style="text-align: left"><strong>故障</strong></td><td style="text-align: left">FAULTY</td><td style="text-align: left">出故障了</td><td style="text-align: left">只响应管理报文</td></tr>
+<tr><td style="text-align: left"><strong>禁用</strong></td><td style="text-align: left">DISABLED</td><td style="text-align: left">被人工禁用</td><td style="text-align: left">不发送任何报文</td></tr>
+<tr><td style="text-align: left"><strong>监听</strong></td><td style="text-align: left">LISTENING</td><td style="text-align: left">等待Announce报文</td><td style="text-align: left">可发送Pdelay报文</td></tr>
+<tr><td style="text-align: left"><strong>预备主</strong></td><td style="text-align: left">PRE_MASTER</td><td style="text-align: left">准备成为主时钟</td><td style="text-align: left">不发送定时报文</td></tr>
+<tr><td style="text-align: left"><strong>主时钟</strong></td><td style="text-align: left">MASTER</td><td style="text-align: left">已经是主时钟</td><td style="text-align: left">发送所有报文</td></tr>
+<tr><td style="text-align: left"><strong>被动</strong></td><td style="text-align: left">PASSIVE</td><td style="text-align: left">被动，不参与同步</td><td style="text-align: left">只发送Pdelay报文</td></tr>
+<tr><td style="text-align: left"><strong>未校准</strong></td><td style="text-align: left">UNCALIBRATED</td><td style="text-align: left">正在校准</td><td style="text-align: left">可发送Delay_Req</td></tr>
+<tr><td style="text-align: left"><strong>从时钟</strong></td><td style="text-align: left">SLAVE</td><td style="text-align: left">已经同步</td><td style="text-align: left">发送Delay_Req</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="状态详解每一种生命的意义"><a class="header" href="#状态详解每一种生命的意义">状态详解：每一种“生命“的意义</a></h2>
+<h3 id="状态1initializing初始化"><a class="header" href="#状态1initializing初始化">状态1：INITIALIZING（初始化）</a></h3>
+<p><strong>含义</strong>：端口刚刚上电或被重置，正在进行初始化。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>初始化所有数据集成员</li>
+<li>初始化硬件（如时间戳生成器）</li>
+<li>不发送任何PTP报文</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>初始化完成 → 进入LISTENING或DISABLED</li>
+</ul>
+<p><strong>比喻</strong>：就像一个人刚出生，需要先学会呼吸、学会看、学会听，才能开始社交。</p>
+<p><strong>典型持续时间</strong>：几毫秒到几秒，取决于硬件初始化速度。</p>
+<hr>
+<h3 id="状态2faulty故障"><a class="header" href="#状态2faulty故障">状态2：FAULTY（故障）</a></h3>
+<p><strong>含义</strong>：端口检测到故障，无法正常工作。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>不主动发送任何PTP报文（管理报文除外）</li>
+<li>可以响应管理报文，供管理员诊断</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>硬件故障（如PHY损坏）</li>
+<li>软件故障（如内存溢出）</li>
+<li>配置错误（如参数超出范围）</li>
+<li>P2P机制检测到多个响应者</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>管理员通过管理接口清除故障 → 进入INITIALIZING</li>
+<li>或者人工修复故障后重启设备</li>
+</ul>
+<p><strong>比喻</strong>：就像一个人生病了，需要治疗，不能正常工作。</p>
+<p><strong>故障诊断</strong>：</p>
+<p>管理员可以通过管理接口（SNMP、CLI等）查询故障信息：</p>
+<ul>
+<li><code>faultLogDS</code>：故障日志</li>
+<li><code>portDS.portState</code>：当前状态</li>
+</ul>
+<hr>
+<h3 id="状态3disabled禁用"><a class="header" href="#状态3disabled禁用">状态3：DISABLED（禁用）</a></h3>
+<p><strong>含义</strong>：端口被人工禁用，不参与PTP协议。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>不发送任何PTP报文</li>
+<li>丢弃所有收到的PTP报文（管理报文除外）</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>管理员通过管理接口禁用端口</li>
+<li>配置文件指定该端口禁用</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>管理员通过管理接口启用端口 → 进入INITIALIZING</li>
+</ul>
+<p><strong>比喻</strong>：就像一个人休长假，主动选择不工作。</p>
+<p><strong>用途</strong>：</p>
+<p><strong>场景一：维护</strong></p>
+<p>某个端口连接的设备需要维护，管理员可以暂时禁用该端口，避免干扰PTP网络。</p>
+<p><strong>场景二：拓扑控制</strong></p>
+<p>网络中有冗余链路，管理员可以通过禁用某些端口，控制PTP拓扑。</p>
+<hr>
+<h3 id="状态4listening监听"><a class="header" href="#状态4listening监听">状态4：LISTENING（监听）</a></h3>
+<p><strong>含义</strong>：端口正在监听网络，等待接收Announce报文。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>监听Announce报文</li>
+<li>可以发送Pdelay_Req/Pdelay_Resp（如果配置了P2P机制）</li>
+<li>可以发送Signaling和管理报文</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>INITIALIZING完成后</li>
+<li>没有收到任何Announce报文（超时）</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>收到有效的Announce报文 → 根据BMCA决策，进入PRE_MASTER、SLAVE或PASSIVE</li>
+<li>自己成为最佳主时钟 → 进入PRE_MASTER</li>
+</ul>
+<p><strong>比喻</strong>：就像一个新员工刚入职，先观察周围，听别人说话，了解情况。</p>
+<p><strong>关键超时</strong>：</p>
+<p>端口在LISTENING状态会启动<code>announceReceiptTimeout</code>计时器。如果超时，端口可能进入PRE_MASTER（尝试成为主时钟）。</p>
+<p><strong>为什么LISTENING很重要？</strong></p>
+<p>LISTENING是端口的“等待室“。在这个状态，端口不急于成为主时钟，而是先观察网络中是否已经有更好的主时钟。</p>
+<p>这避免了“抢先发言“的问题：如果每个端口一上电就立即发送Announce报文，可能导致多个端口同时声称自己是主时钟，造成混乱。</p>
+<hr>
+<h3 id="状态5pre_master预备主"><a class="header" href="#状态5pre_master预备主">状态5：PRE_MASTER（预备主）</a></h3>
+<p><strong>含义</strong>：端口准备成为主时钟，但还在等待最终确认。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>不发送Announce、Sync、Delay_Resp报文</li>
+<li>可以发送Pdelay_Req/Pdelay_Resp（如果配置了P2P机制）</li>
+<li>可以发送Signaling和管理报文</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>BMCA决策：我应该成为主时钟（M1/M2/M3决策）</li>
+<li>但需要等待qualificationTimeout，确保没有其他更好的主时钟</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>qualificationTimeout超时，期间没收到更好的Announce → 进入MASTER</li>
+<li>收到更好的Announce → 进入SLAVE或PASSIVE</li>
+</ul>
+<p><strong>比喻</strong>：就像一个人当选了领导，但需要等待“公示期“结束，才能正式上任。</p>
+<p><strong>为什么要PRE_MASTER状态？</strong></p>
+<p><strong>问题场景</strong>：</p>
+<p>假设网络中有两个设备：A和B。</p>
+<p>A先上电，BMCA决定A成为主时钟。A立即进入MASTER状态，开始发送Announce。</p>
+<p>B后上电，B的clockQuality比A更好。B在LISTENING状态收到A的Announce，BMCA决定B应该成为主时钟。B进入PRE_MASTER状态。</p>
+<p>如果B立即切换到MASTER，会发生什么？</p>
+<p>A收到B的Announce，发现B更好，切换到SLAVE。B也发送Announce，成为主时钟。</p>
+<p>看起来没问题？但实际上，在这个切换瞬间，网络中可能短暂出现<strong>两个主时钟</strong>，导致下游设备混乱。</p>
+<p><strong>PRE_MASTER的解决方案</strong>：</p>
+<p>B进入PRE_MASTER后，等待<code>qualificationTimeout</code>（默认 = (stepsRemoved + 1) × announceInterval）。</p>
+<p>在这个等待期间：</p>
+<ul>
+<li>如果B收到更好的Announce（比如又有C上线），B放弃成为主时钟</li>
+<li>如果B没收到更好的Announce，B确认网络稳定，进入MASTER</li>
+</ul>
+<p>这样可以避免主时钟频繁切换。</p>
+<hr>
+<h3 id="状态6master主时钟"><a class="header" href="#状态6master主时钟">状态6：MASTER（主时钟）</a></h3>
+<p><strong>含义</strong>：端口已经成为主时钟，向网络发送时间信号。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>发送Announce报文（根据logAnnounceInterval）</li>
+<li>发送Sync报文（根据logSyncInterval）</li>
+<li>发送Follow_Up报文（如果是two-step模式）</li>
+<li>响应Delay_Req报文，发送Delay_Resp</li>
+<li>响应Pdelay_Req报文，发送Pdelay_Resp（如果是P2P机制）</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>PRE_MASTER状态超时，确认成为主时钟</li>
+<li>BMCA决策：我应该是主时钟</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>收到更好的Announce → 根据BMCA决策，进入SLAVE或PASSIVE</li>
+<li>管理员禁用端口 → 进入DISABLED</li>
+<li>检测到故障 → 进入FAULTY</li>
+</ul>
+<p><strong>比喻</strong>：就像一个人正式成为领导，开始发号施令。</p>
+<p><strong>MASTER状态的职责</strong>：</p>
+<p><strong>职责一：发送时间信号</strong></p>
+<p>主时钟定期发送Sync报文，告诉从时钟“现在几点了“。</p>
+<p><strong>职责二：响应延迟测量请求</strong></p>
+<p>从时钟发送Delay_Req，主时钟必须响应Delay_Resp，告诉从时钟“你的请求是在某个时间收到的“。</p>
+<p><strong>职责三：广播主时钟信息</strong></p>
+<p>主时钟定期发送Announce报文，告诉网络“我是谁，我的质量如何“。</p>
+<p><strong>职责四：维护时间质量</strong></p>
+<p>主时钟必须确保自己的时间质量（clockClass、clockAccuracy）与实际情况一致。如果主时钟失去GPS信号，应该降级clockClass。</p>
+<hr>
+<h3 id="状态7passive被动"><a class="header" href="#状态7passive被动">状态7：PASSIVE（被动）</a></h3>
+<p><strong>含义</strong>：端口不参与主从关系，处于“剪枝“状态。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>不发送Announce、Sync、Delay_Resp报文</li>
+<li>不接收Sync报文</li>
+<li>可以发送Pdelay_Req/Pdelay_Resp（如果配置了P2P机制）</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>BMCA决策：这个端口既不应该是主时钟，也不应该是从时钟</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>收到更好的Announce → 根据BMCA决策，进入SLAVE或PASSIVE</li>
+<li>网络拓扑变化 → 进入其他状态</li>
+</ul>
+<p><strong>比喻</strong>：就像一个人在会议上被“禁言“，既不发言，也不表态。</p>
+<p><strong>为什么需要PASSIVE状态？</strong></p>
+<p><strong>场景：环路剪枝</strong></p>
+<p>考虑一个三角形拓扑：</p>
+<pre><code>设备A ---- 设备B
+  |        /
+  |       /
+  |      /
+设备C ----
+</code></pre>
+<p>假设A是主时钟。</p>
+<p>如果B和C之间的链路也存在，可能出现：</p>
+<ul>
+<li>B从A同步，进入SLAVE状态</li>
+<li>C从A同步，进入SLAVE状态</li>
+<li>但B和C之间也可能建立主从关系</li>
+</ul>
+<p>如果B从C同步，C从A同步，会怎样？</p>
+<pre><code>A（MASTER） → C（SLAVE） → B（SLAVE）
+</code></pre>
+<p>B间接从A同步，似乎没问题。</p>
+<p>但问题是：如果B和C之间的链路断了，B需要重新从A同步，切换时间可能较长。</p>
+<p>PTP的做法是：让B和C之间的链路进入PASSIVE状态，不参与同步。如果A→C的链路断了，C可以快速切换到PASSIVE→SLAVE，从B同步。</p>
+<p><strong>PASSIVE的作用</strong>：</p>
+<ul>
+<li>防止形成同步环路</li>
+<li>提供冗余路径，快速故障切换</li>
+</ul>
+<hr>
+<h3 id="状态8uncalibrated未校准"><a class="header" href="#状态8uncalibrated未校准">状态8：UNCALIBRATED（未校准）</a></h3>
+<p><strong>含义</strong>：端口正在校准，同步还未稳定。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>可以发送Delay_Req报文</li>
+<li>可以接收Sync报文</li>
+<li>时钟伺服正在初始化和调整</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>从LISTENING或其他状态进入SLAVE状态之前</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>时钟伺服锁定，同步稳定 → 进入SLAVE</li>
+<li>收到更好的Announce → 进入其他状态</li>
+<li>时钟伺服无法锁定 → 可能回到LISTENING</li>
+</ul>
+<p><strong>比喻</strong>：就像一个学生刚开始学习，还在摸索，成绩不稳定。</p>
+<p><strong>为什么需要UNCALIBRATED状态？</strong></p>
+<p><strong>问题场景</strong>：</p>
+<p>端口从LISTENING进入SLAVE状态，立即开始应用时间同步。</p>
+<p>但如果从时钟的本地时钟与主时钟相差很大（比如几秒），时钟伺服需要时间调整。在调整期间，从时钟的时间可能剧烈跳变。</p>
+<p>如果应用层在这个时候使用PTP时间，可能出现问题（比如日志时间戳倒退）。</p>
+<p><strong>UNCALIBRATED的解决方案</strong>：</p>
+<p>端口先进入UNCALIBRATED状态，等待时钟伺服初步锁定，时间偏差降到合理范围，再进入SLAVE状态。</p>
+<p>这给了应用层一个信号：<strong>“时间还未稳定，不要依赖”</strong>。</p>
+<hr>
+<h3 id="状态9slave从时钟"><a class="header" href="#状态9slave从时钟">状态9：SLAVE（从时钟）</a></h3>
+<p><strong>含义</strong>：端口已经成为从时钟，从主时钟同步时间。</p>
+<p><strong>行为</strong>：</p>
+<ul>
+<li>接收Sync报文，调整本地时钟</li>
+<li>发送Delay_Req报文（如果是E2E机制）</li>
+<li>接收Delay_Resp报文</li>
+<li>可以发送Pdelay_Req/Pdelay_Resp（如果是P2P机制）</li>
+</ul>
+<p><strong>进入原因</strong>：</p>
+<ul>
+<li>BMCA决策：我应该是从时钟（S1决策）</li>
+<li>UNCALIBRATED状态，同步稳定</li>
+</ul>
+<p><strong>退出条件</strong>：</p>
+<ul>
+<li>收到更好的Announce → 根据BMCA决策，进入其他状态</li>
+<li>主时钟丢失（announceReceiptTimeout超时）→ 进入LISTENING或PRE_MASTER</li>
+<li>管理员禁用端口 → 进入DISABLED</li>
+<li>检测到故障 → 进入FAULTY</li>
+</ul>
+<p><strong>比喻</strong>：就像一个学生正式成为学生，跟随老师学习。</p>
+<p><strong>SLAVE状态的职责</strong>：</p>
+<p><strong>职责一：接收时间信号</strong></p>
+<p>从时钟接收主时钟的Sync报文，提取时间戳，计算时间偏差。</p>
+<p><strong>职责二：测量路径延迟</strong></p>
+<p>从时钟发送Delay_Req报文（E2E机制）或参与P2P延迟测量，测量到主时钟的路径延迟。</p>
+<p><strong>职责三：调整本地时钟</strong></p>
+<p>从时钟运行时钟伺服算法，根据时间偏差调整本地时钟的相位和频率。</p>
+<p><strong>职责四：监控同步质量</strong></p>
+<p>从时钟监控offsetFromMaster和meanDelay的变化，判断同步质量。如果偏差过大，可以触发告警。</p>
+<hr>
+<h2 id="状态转换ptp端口的人生转折"><a class="header" href="#状态转换ptp端口的人生转折">状态转换：PTP端口的“人生转折“</a></h2>
+<h3 id="完整状态转换图"><a class="header" href="#完整状态转换图">完整状态转换图</a></h3>
+<pre><code>POWERUP / INITIALIZE
+        ↓
+  INITIALIZING
+        ↓
+        ├── 初始化完成，端口被禁用 → DISABLED
+        ├── 检测到故障 → FAULTY
+        └── 初始化完成，端口正常 → LISTENING
+                                                ↓
+                    ┌───────────────────────────┼───────────────────────────┐
+                    ↓                           ↓                           ↓
+            收到更好的Announce          我应该成为主时钟              收到Announce，我应该成为从时钟
+            （但不是最佳）              （M1/M2/M3决策）              （S1决策）
+                    ↓                           ↓                           ↓
+                PASSIVE                    PRE_MASTER                  UNCALIBRATED
+                    ↓                           ↓                           ↓
+            保持PASSIVE                qualificationTimeout超时       时钟伺服锁定
+            或收到其他Announce              ↓                           ↓
+            或收到更好的Announce          MASTER                       SLAVE
+                    ↓                           ↓                           ↓
+            根据BMCA切换            收到更好的Announce           主时钟丢失（超时）
+                                     或其他事件                  或其他事件
+                                            ↓                           ↓
+                                    根据BMCA切换                 进入LISTENING或PRE_MASTER
+</code></pre>
+<hr>
+<h3 id="典型状态转换场景"><a class="header" href="#典型状态转换场景">典型状态转换场景</a></h3>
+<h4 id="场景一普通时钟上电"><a class="header" href="#场景一普通时钟上电">场景一：普通时钟上电</a></h4>
+<pre><code>上电
+  ↓
+INITIALIZING（初始化数据集、检查硬件）
+  ↓
+LISTENING（监听Announce报文）
+  ↓
+  ├── 收到Announce，BMCA决策：我是从时钟
+  │     ↓
+  │   UNCALIBRATED（时钟伺服初始化）
+  │     ↓
+  │   SLAVE（同步完成）
+  │
+  └── 超时未收到Announce，或BMCA决策：我是主时钟
+        ↓
+      PRE_MASTER（等待确认）
+        ↓
+      MASTER（成为主时钟）
+</code></pre>
+<h4 id="场景二主时钟故障从时钟升级"><a class="header" href="#场景二主时钟故障从时钟升级">场景二：主时钟故障，从时钟升级</a></h4>
+<pre><code>初始状态：
+- 主时钟A：MASTER
+- 从时钟B：SLAVE（从A同步）
+
+主时钟A故障（断电或失去GPS）
+  ↓
+从时钟B不再收到A的Announce
+  ↓
+announceReceiptTimeout超时（比如6秒后）
+  ↓
+从时钟B重新运行BMCA
+  ↓
+BMCA决策：我是最佳主时钟
+  ↓
+从时钟B进入PRE_MASTER
+  ↓
+qualificationTimeout超时（比如2秒后）
+  ↓
+从时钟B进入MASTER
+  ↓
+从时钟B成为新的主时钟
+</code></pre>
+<p><strong>切换总时间</strong>：announceReceiptTimeout + qualificationTimeout ≈ 8秒</p>
+<h4 id="场景三环路检测与剪枝"><a class="header" href="#场景三环路检测与剪枝">场景三：环路检测与剪枝</a></h4>
+<pre><code>初始状态（三角形拓扑）：
+- 设备A：MASTER（主时钟）
+- 设备B：SLAVE（从A同步）
+- 设备C：SLAVE（从A同步）
+
+B和C之间有一条冗余链路。
+
+BMCA运行：
+- B检查：最佳主时钟是A
+- C检查：最佳主时钟是A
+- 但B和C之间的端口，既不是到A的最佳路径，也不是主时钟
+
+BMCA决策：
+- B连接C的端口：进入PASSIVE
+- C连接B的端口：进入PASSIVE
+
+结果：
+- B和C之间的链路被"剪枝"
+- 如果A→C的链路断了，C可以快速切换PASSIVE→SLAVE，从B同步
+</code></pre>
+<hr>
+<h2 id="状态机的关键设计原则"><a class="header" href="#状态机的关键设计原则">状态机的关键设计原则</a></h2>
+<h3 id="原则一确定性"><a class="header" href="#原则一确定性">原则一：确定性</a></h3>
+<p>相同的输入，必然产生相同的输出。</p>
+<p>PTP状态机是确定性的：给定当前状态和事件，下一个状态是确定的。</p>
+<p>这保证了协议的可预测性和可测试性。</p>
+<h3 id="原则二稳定性"><a class="header" href="#原则二稳定性">原则二：稳定性</a></h3>
+<p>状态机设计为稳定，避免频繁切换。</p>
+<p><strong>示例</strong>：PRE_MASTER状态</p>
+<p>端口在成为主时钟之前，先进入PRE_MASTER状态等待一段时间。这避免了“抢先发言“导致的频繁主时钟切换。</p>
+<h3 id="原则三原子性"><a class="header" href="#原则三原子性">原则三：原子性</a></h3>
+<p>状态决策是原子的。</p>
+<p>当BMCA计算出所有端口的推荐状态后，<strong>原子性地</strong>更新所有端口状态，而不是逐个更新。</p>
+<p>这保证了状态的一致性。</p>
+<h3 id="原则四快速收敛"><a class="header" href="#原则四快速收敛">原则四：快速收敛</a></h3>
+<p>状态机设计为快速收敛。</p>
+<p>在稳定网络中，状态转换通常在一个announceInterval内完成。</p>
+<hr>
+<h2 id="slaveonly模式简化状态机"><a class="header" href="#slaveonly模式简化状态机">slaveOnly模式：简化状态机</a></h2>
+<p>如果设备的<code>defaultDS.slaveOnly = TRUE</code>，它使用简化状态机。</p>
+<h3 id="简化状态机"><a class="header" href="#简化状态机">简化状态机</a></h3>
+<pre><code>INITIALIZING → LISTENING → UNCALIBRATED → SLAVE
+</code></pre>
+<p><strong>关键限制</strong>：</p>
+<ul>
+<li>永远不会进入PRE_MASTER、MASTER、PASSIVE状态</li>
+<li>clockClass必须为255</li>
+</ul>
+<p><strong>应用场景</strong>：</p>
+<ul>
+<li>终端设备（工作站、服务器）</li>
+<li>不提供时间给他人的设备</li>
+</ul>
+<p><strong>好处</strong>：</p>
+<ul>
+<li>简化实现</li>
+<li>减少资源消耗</li>
+<li>避免误成为主时钟</li>
+</ul>
+<hr>
+<h2 id="状态机实现注意事项"><a class="header" href="#状态机实现注意事项">状态机实现注意事项</a></h2>
+<h3 id="注意事项一事件处理顺序"><a class="header" href="#注意事项一事件处理顺序">注意事项一：事件处理顺序</a></h3>
+<p>状态机可能同时收到多个事件。例如：</p>
+<ul>
+<li>收到Announce报文</li>
+<li>超时事件</li>
+<li>管理命令</li>
+</ul>
+<p>实现时，需要明确定义事件处理优先级。</p>
+<p><strong>典型优先级</strong>（从高到低）：</p>
+<ol>
+<li>管理命令（如DISABLE_PORT）</li>
+<li>故障事件</li>
+<li>Announce报文处理</li>
+<li>超时事件</li>
+</ol>
+<h3 id="注意事项二资源管理"><a class="header" href="#注意事项二资源管理">注意事项二：资源管理</a></h3>
+<p>不同状态需要不同的资源：</p>
+<ul>
+<li>MASTER状态：需要发送Announce、Sync、Delay_Resp</li>
+<li>SLAVE状态：需要发送Delay_Req、接收Sync</li>
+<li>LISTENING状态：只需要监听</li>
+</ul>
+<p>实现时，可以在状态转换时动态分配/释放资源。</p>
+<h3 id="注意事项三时钟伺服初始化"><a class="header" href="#注意事项三时钟伺服初始化">注意事项三：时钟伺服初始化</a></h3>
+<p>进入UNCALIBRATED状态时，需要初始化时钟伺服。这个过程可能涉及：</p>
+<ul>
+<li>清除历史数据</li>
+<li>设置初始参数</li>
+<li>等待足够的样本</li>
+</ul>
+<p>实现时，需要考虑初始化时间和资源消耗。</p>
+<hr>
+<h2 id="小结状态机的核心要点"><a class="header" href="#小结状态机的核心要点">小结：状态机的核心要点</a></h2>
+<p><strong>九种状态</strong>：</p>
+<ul>
+<li>INITIALIZING：初始化</li>
+<li>FAULTY：故障</li>
+<li>DISABLED：禁用</li>
+<li>LISTENING：监听</li>
+<li>PRE_MASTER：预备主</li>
+<li>MASTER：主时钟</li>
+<li>PASSIVE：被动</li>
+<li>UNCALIBRATED：未校准</li>
+<li>SLAVE：从时钟</li>
+</ul>
+<p><strong>关键转换</strong>：</p>
+<ul>
+<li>INITIALIZING → LISTENING：初始化完成</li>
+<li>LISTENING → PRE_MASTER：我应该成为主时钟</li>
+<li>PRE_MASTER → MASTER：确认成为主时钟</li>
+<li>LISTENING → UNCALIBRATED → SLAVE：我应该成为从时钟</li>
+<li>LISTENING → PASSIVE：既不是主，也不是从</li>
+</ul>
+<p><strong>关键超时</strong>：</p>
+<ul>
+<li>announceReceiptTimeout：未收到Announce的超时</li>
+<li>qualificationTimeout：PRE_MASTER等待确认的超时</li>
+</ul>
+<p><strong>关键原则</strong>：</p>
+<ul>
+<li>确定性：相同输入产生相同输出</li>
+<li>稳定性：避免频繁切换</li>
+<li>原子性：状态更新原子完成</li>
+<li>快速收敛：秒级完成转换</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>现在，我们知道了PTP端口如何在不同状态之间转换。</p>
+<p>但还有一个关键角色我们还没有深入讲解：<strong>透明时钟</strong>。</p>
+<p>透明时钟不做主时钟，也不做从时钟，它像一个“透明管道“，让PTP报文穿越，但记录下报文在它内部停留的时间。</p>
+<p>下一节，我们将深入讲解<strong>透明时钟</strong>——PTP网络的“隐形守护者“。</p>
+<blockquote>
+<p><strong>【悬念留给2.6】</strong></p>
+<p>你可能好奇：透明时钟既然不参与BMCA，不维护状态机，那它如何帮助提升同步精度？</p>
+<p>答案在于一个关键概念：<strong>驻留时间（residence time）</strong>。</p>
+<p>当PTP报文穿过透明时钟时，透明时钟会记录报文进入和离开的时间戳，计算驻留时间，并写入报文的correctionField。</p>
+<p>这样，下游设备就知道：“这个报文在路上被耽搁了多久”，从而消除延迟抖动的影响。</p>
+<p>下一节，我们详细解读透明时钟的工作原理。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.4-时间机器的记忆-PTP数据集全解析.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/2.6-不说谎的中继站-透明时钟如何工作.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.4-时间机器的记忆-PTP数据集全解析.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/2.6-不说谎的中继站-透明时钟如何工作.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

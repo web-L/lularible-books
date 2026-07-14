@@ -1,0 +1,571 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>交互式诊断终端——命令行上的UDS控制台 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="55-交互式诊断终端命令行上的-uds-控制台"><a class="header" href="#55-交互式诊断终端命令行上的-uds-控制台">5.5 交互式诊断终端——命令行上的 UDS 控制台</a></h1>
+<h2 id="场景当协议变成对话"><a class="header" href="#场景当协议变成对话">场景：当协议变成对话</a></h2>
+<p>你面前打开了一个终端窗口。黑色的背景，绿色的光标在闪烁。</p>
+<p>你敲下：</p>
+<pre><code>uds&gt; session 03
+</code></pre>
+<p>不到 50 毫秒，屏幕上出现了：</p>
+<pre><code>uds&gt; session 03
+  Tx [2]: 10 03
+  Rx [6]: 50 03 00 32 13 88 rea✓ POSITIVE: origSID=0x10
+</code></pre>
+<p>你又敲下：</p>
+<pre><code>uds&gt; read F190
+</code></pre>
+<p>50 毫秒后：</p>
+<pre><code>uds&gt; read F190
+  Tx [3]: 22 F1 90
+  Rx [3]: 7F 22 33   ⚠ NEGATIVE: SID=0x22 NRC=0x33 (SecurityAccessDenied)
+</code></pre>
+<p><strong>VIN 受安全保护——你需要先解锁才能读取。</strong> 这是 UDS 的访问控制机制在 shell 中的直接体现：你无法在默认会话（未解锁）下读取受安全保护的 DID。这比“看打印的十六进制“更直观——shell 直接告诉你“SecurityAccessDenied“。</p>
+<pre><code>uds&gt; security
+  Tx [2]: 27 01
+  Rx [6]: 67 01 A3 D4 5F 12
+ ✓ POSITIVE: origSID=0x27
+  Seed: A3 D4 5F 12
+  Key hint: XOR 0x5A
+
+uds&gt; sendkey F9 8E 05 48
+  Tx [6]: 27 02 F9 8E 05 48
+  Rx [2]: 67 02
+ ✓ POSITIVE: origSID=0x27
+  =&gt; Security Level 1 unlocked
+
+uds&gt; read F190
+  Tx [3]: 22 F1 90
+  Rx [20]: 62 F1 90 57 30 4C 30 30 30 30 30 31 32 33 34 35 36 37 38 39
+ ✓ POSITIVE: origSID=0x22
+  DID 0xF190 = "W0L00000123456789"
+</code></pre>
+<p><strong>这就是交互式 UDS 终端的魔力。</strong> 你不再是一个“观察协议的人“，你成了一个“和 ECU 对话的人“。字节消失了，语义留下了。</p>
+<p>在上一节，你写了一个完整的工作流——但它像一条流水线，按下按钮，所有步骤自动执行。你无法中途探索、重试、实验。交互式终端改变了这一切：它把 UDS 的每一个服务变成了一条<strong>命令</strong>，把 ECU 的每一个响应变成了一条<strong>回复</strong>。</p>
+<p>这很像早期的计算机——从卡片机（批处理）到命令行（交互式）的跃迁。诊断工具的发展史也遵循相同的轨迹：从早期的自动测试脚本，到 Vector CANoe 和 Softing DTS 的可视化面板和脚本语言，再到今天你可以直接在任何 Linux 终端里敲 UDS 命令。</p>
+<blockquote>
+<p><strong>核心洞察：</strong> 交互式终端的意义不在于“方便“——而在于<strong>缩短反馈回路</strong>。当你敲下一个命令，50ms 后看到响应，你的大脑在建立“SID → 响应格式“的神经映射。这和阅读协议文档的学习效果完全不同：<strong>阅读是“存储知识“，交互是“建立反射“。</strong> 你用 uds_shell 调试一个下午，比你读一个月的 ISO 14229-1 更深刻地理解 UDS。</p>
+</blockquote>
+<h2 id="shell-的整体架构"><a class="header" href="#shell-的整体架构">Shell 的整体架构</a></h2>
+<pre><code>┌────────────────────────────────────────────────────┐
+│                   uds_shell                         │
+│                                                     │
+│  while(running) {                                   │
+│    1. 打印提示符 "uds&gt;" 并读取一行                  │
+│    2. 解析命令行 → 确定 service + parameters        │
+│    3. 构建原始 UDS 请求字节序列                      │
+│    4. 通过 TCP 发送给 ECU                           │
+│    5. 等待接收响应（带超时）                         │
+│    6. 解析响应 → 判断正/负                          │
+│    7. 将响应翻译成人类可读格式打印                    │
+│  }                                                  │
+└────────────────────────────────────────────────────┘
+</code></pre>
+<p>Shell 不引入任何新的 UDS 逻辑——它复用 <code>uds_msg.h</code> 的编解码和 <code>uds_client.c</code> 的发送-接收管道。它唯一的额外职责是<strong>人类 ↔ 字节的双向翻译</strong>。</p>
+<h2 id="主循环实现"><a class="header" href="#主循环实现">主循环实现</a></h2>
+<pre><code class="language-c">/* uds_shell.c —— 交互式 UDS 终端 */
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;ctype.h&gt;
+#include "uds_common.h
+#include "uds_msg.h
+
+static int sock_fd = -1;
+
+static int connect_ecu(const char *ip, int port)
+{
+    sock_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock_fd &lt; 0) { perror("socket"); return -1; }
+    struct sockaddr_in addr;
+    memset(&amp;addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    if (inet_pton(AF_INET, ip, &amp;addr.sin_addr) &lt;= 0) { perror("inet_pton"); close(sock_fd); return -1; }
+    if (connect(sock_fd, (struct sockaddr *)&amp;addr, sizeof(addr)) &lt; 0) { perror("connect"); close(sock_fd); return -1; }
+    struct timeval tv = {UDS_RX_TIMEOUT_SEC, 0};
+    setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, &amp;tv, sizeof(tv));
+    return 0;
+}
+
+static void send_and_recv(const u8 *data_in, u16 len)
+{
+    u8 buf[UDS_MAX_MSG_LEN];
+    memcpy(buf, data_in, len);
+    if (sock_fd &lt; 0) { printf("  Not connected\n"); return; }
+    printf("  Tx [%u]: ", len);
+    for (u16 i = 0; i &lt; len; i++) printf("%02X ", buf[i]);
+    printf("\n");
+    send(sock_fd, buf, len, 0);
+
+    ssize_t n = recv(sock_fd, buf, UDS_MAX_MSG_LEN, 0);
+    if (n &lt;= 0) { printf("  No response (timeout)\n"); return; }
+    printf("  Rx [%zu]: ", n);
+    for (ssize_t i = 0; i &lt; n; i++) printf("%02X ", buf[i]);
+
+    /* 解析响应类型 */
+    if (n &gt;= 1 &amp;&amp; buf[0] == NEGATIVE_RESPONSE_SID) {
+        const char *nrc_str = "Unknown";
+        if (n &gt;= 3) {
+            switch (buf[2]) {
+                case NRC_SERVICE_NOT_SUPPORTED: nrc_str = "ServiceNotSupported"; break;
+                case NRC_SUBFUNCTION_NOT_SUPPORTED: nrc_str = "SubFunctionNotSupported"; break;
+                case NRC_INCORRECT_MESSAGE_LENGTH: nrc_str = "IncorrectMessageLength"; break;
+                case NRC_CONDITIONS_NOT_CORRECT: nrc_str = "ConditionsNotCorrect"; break;
+                case NRC_REQUEST_SEQUENCE_ERROR: nrc_str = "RequestSequenceError"; break;
+                case NRC_REQUEST_OUT_OF_RANGE: nrc_str = "RequestOutOfRange"; break;
+                case NRC_SECURITY_ACCESS_DENIED: nrc_str = "SecurityAccessDenied"; break;
+                case NRC_INVALID_KEY: nrc_str = "InvalidKey"; break;
+                case NRC_WRONG_BLOCK_SEQ_COUNTER: nrc_str = "WrongBlockSequenceCounter"; break;
+                case NRC_RESPONSE_PENDING: nrc_str = "ResponsePending"; break;
+                case NRC_SERVICE_NOT_IN_ACTIVE_SESSION: nrc_str = "ServiceNotSupportedInActiveSession"; break;
+            }
+        }
+        printf(" ⚠ NEGATIVE: SID=0x%02X NRC=0x%02X (%s)", buf[1], buf[2], nrc_str);
+    } else if (n &gt;= 1 &amp;&amp; (buf[0] &amp; SID_POSITIVE_RESPONSE_MASK)) {
+        printf(" ✓ POSITIVE: origSID=0x%02X", buf[0] &amp; ~SID_POSITIVE_RESPONSE_MASK);
+    }
+    printf("\n");
+}
+
+int main(int argc, char **argv)
+{
+    const char *ip = (argc &gt; 1) ? argv[1] : "127.0.0.1";
+    int port = (argc &gt; 2) ? atoi(argv[2]) : UDS_SERVER_PORT;
+
+    printf("### UDS Interactive Diagnostic Shell ###\n");
+    connect_ecu(ip, port);
+    printf("    Connected. Type 'help' for commands.\n\n");
+
+    char line[512];
+    for (;;) {
+        printf("uds&gt; "); fflush(stdout);
+        if (!fgets(line, sizeof(line), stdin)) break;
+        /* 解析命令... */
+    }
+    close(sock_fd);
+    return 0;
+}
+</code></pre>
+<h2 id="命令解析引擎"><a class="header" href="#命令解析引擎">命令解析引擎</a></h2>
+<pre><code class="language-c">char cmd[32] = {0}, rest[480] = {0};
+int n = sscanf(line, "%31s %479[^\n]", cmd, rest);
+if (n &lt; 1) continue;
+
+if (strcmp(cmd, "quit") == 0 || strcmp(cmd, "exit") == 0) break;
+else if (strcmp(cmd, "help") == 0 || strcmp(cmd, "?") == 0) print_help();
+else if (strcmp(cmd, "session") == 0) cmd_session(rest);
+else if (strcmp(cmd, "security") == 0) cmd_security();
+else if (strcmp(cmd, "sendkey") == 0) cmd_sendkey(rest);
+else if (strcmp(cmd, "read") == 0) cmd_read(rest);
+else if (strcmp(cmd, "write") == 0) cmd_write(rest);
+else if (strcmp(cmd, "dtc") == 0) cmd_dtc(rest);
+else if (strcmp(cmd, "clear") == 0) cmd_clear();
+else if (strcmp(cmd, "routine") == 0) cmd_routine(rest);
+else if (strcmp(cmd, "download") == 0) cmd_download(rest);
+else if (strcmp(cmd, "xfer") == 0) cmd_xfer_data(rest);
+else if (strcmp(cmd, "xexit") == 0) cmd_xfer_exit();
+else if (strcmp(cmd, "tp") == 0) cmd_tp();
+else if (strcmp(cmd, "reset") == 0) cmd_reset(rest);
+else if (strcmp(cmd, "dtcset") == 0) cmd_dtc_setting(rest);
+else printf("  Unknown command: %s (type 'help')\n", cmd);
+</code></pre>
+<p>命令解析采用的是经典的 <code>sscanf</code> 方式——简单但能覆盖所有需求。每个命令函数独立处理其参数验证，这样新的命令可以随时添加而不影响其他命令。</p>
+<h2 id="帮助系统shell-的自文档"><a class="header" href="#帮助系统shell-的自文档">帮助系统——Shell 的自文档</a></h2>
+<pre><code class="language-c">static void print_help(void)
+{
+    printf(
+"\n  UDS Shell Commands:\n"
+"  ─────────────────────────────────────────────────────────────\n"
+"  session &lt;01|02|03&gt;   切换诊断会话 (01=默认 02=编程 03=扩展)\n"
+"  security              请求安全种子 (再发 sendkey &lt;4 hex&gt;)\n"
+"  sendkey &lt;hex4&gt;        发送安全密钥 (4字节hex)\n"
+"  read &lt;did&gt;            读取DID (如 read f190)\n"
+"  write &lt;did&gt; &lt;hex&gt;     写入DID (如 write ff01 aabb)\n"
+"  dtc [mask]            读取DTC (可选状态掩码, 默认0x08)\n"
+"  clear                 清除全部DTC\n"
+"  routine &lt;rid&gt;         启动例行程序 (如 routine 0201)\n"
+"  download [addr] [sz]  请求下载 (如 download 40000 100)\n"
+"  xfer [seq]            传输数据块 (默认seq=1)\n"
+"  xexit                 传输终止\n"
+"  tp                    TesterPresent 保活\n"
+"  reset [hard|soft|keyoff]  ECU复位\n"
+"  dtcset [on|off]       暂停/恢复DTC记录\n"
+"  help                  显示此帮助\n"
+"  quit                  退出\n"
+"  ─────────────────────────────────────────────────────────────\n"
+    );
+}
+</code></pre>
+<h2 id="tcp-通信管道shell-版"><a class="header" href="#tcp-通信管道shell-版">TCP 通信管道（shell 版）</a></h2>
+<p>shell 版的通信管道就是 <code>send_and_recv</code>：发送 + 接收 + 自动解析正/负响应并打印。不再单独维护连接/断开命令，启动时自动连接。</p>
+<h2 id="命令实现示例"><a class="header" href="#命令实现示例">命令实现示例</a></h2>
+<pre><code class="language-c">static void cmd_session(const char *arg)
+{
+    unsigned int s;
+    if (sscanf(arg, "%x", &amp;s) != 1) { printf("  Usage: session &lt;01|02|03&gt;\n"); return; }
+    u8 req[] = {SID_DIAGNOSTIC_SESSION_CONTROL, (u8)s};
+    send_and_recv(req, 2);
+}
+
+static void cmd_security(void)
+{
+    u8 req1[] = {SID_SECURITY_ACCESS, SUB_REQUEST_SEED};
+    printf("  --- RequestSeed ---\n");
+    send_and_recv(req1, 2);
+}
+
+static void cmd_sendkey(const char *arg)
+{
+    u8 key[4];
+    u16 klen = parse_hex(arg, key, 4);
+    if (klen &lt; 4) { printf("  Usage: sendkey &lt;4 hex bytes&gt;\n"); return; }
+    u8 req[6] = {SID_SECURITY_ACCESS, SUB_SEND_KEY, 0};
+    memcpy(&amp;req[2], key, 4);
+    printf("  --- SendKey ---\n");
+    send_and_recv(req, 6);
+}
+
+static void cmd_read(const char *arg)
+{
+    u16 did = parse_did(arg);
+    u8 req[3] = {SID_READ_DATA_BY_IDENTIFIER, (did &gt;&gt; 8) &amp; 0xFF, did &amp; 0xFF};
+    send_and_recv(req, 3);
+}
+
+static void cmd_write(const char *arg)
+{
+    char did_str[8], data_str[256];
+    sscanf(arg, "%7s %255[^\n]", did_str, data_str);
+    u16 did = parse_did(did_str);
+    u8 data[128];
+    u16 dlen = parse_hex(data_str, data, sizeof(data));
+    u8 req[3 + 128];
+    req[0] = SID_WRITE_DATA_BY_IDENTIFIER;
+    req[1] = (did &gt;&gt; 8) &amp; 0xFF; req[2] = did &amp; 0xFF;
+    if (dlen &gt; 128) dlen = 128;
+    memcpy(&amp;req[3], data, dlen);
+    send_and_recv(req, 3 + dlen);
+}
+
+static void cmd_reset(const char *arg)
+{
+    unsigned int t = SUB_HARD_RESET;
+    if (arg &amp;&amp; *arg) {
+        if (strcmp(arg, "soft") == 0) t = SUB_SOFT_RESET;
+        else if (strcmp(arg, "keyoff") == 0) t = SUB_KEY_OFF_ON_RESET;
+    }
+    u8 req[] = {SID_ECU_RESET, (u8)t};
+    send_and_recv(req, 2);
+}
+</code></pre>
+<p>注意 <code>cmd_reset</code>：ISO 14229 定义 <code>0x01=hardReset</code>、<code>0x02=keyOffOnReset</code>、<code>0x03=softReset</code>。壳命令 <code>reset soft</code> 发送 <code>0x03</code>，<code>reset hard</code>（默认）发送 <code>0x01</code>。</p>
+<h2 id="readdid最常用的命令"><a class="header" href="#readdid最常用的命令">ReadDID——最常用的命令</a></h2>
+<pre><code class="language-c">static void cmd_read(const char *arg)
+{
+    u16 did = parse_did(arg);
+    u8 req[3] = {SID_READ_DATA_BY_IDENTIFIER, (did &gt;&gt; 8) &amp; 0xFF, did &amp; 0xFF};
+    send_and_recv(req, 3);
+}
+</code></pre>
+<p>Shell 的 <code>send_and_recv</code> 自动打印 Tx/Rx 字节和正/负响应标识，用户不需要自行解析。</p>
+<h2 id="安全访问两步命令"><a class="header" href="#安全访问两步命令">安全访问——两步命令</a></h2>
+<p>Shell 将安全访问拆为两条命令：<code>security</code>（请求 seed）和 <code>sendkey &lt;hex4&gt;</code>（发送 key）。key 的计算需要在 Shell 外部手动完成（<code>seed[i] ^ 0x5A</code>），因为 Shell 是一个通用 hex 发送器而非安全工作流编排器。这种设计让用户可以自由探索不同的 key 算法。</p>
+<h2 id="例程控制和文件下载"><a class="header" href="#例程控制和文件下载">例程控制和文件下载</a></h2>
+<pre><code class="language-c">static void cmd_routine(const char *arg)
+{
+    u16 rid = parse_did(arg);
+    u8 req[] = {SID_ROUTINE_CONTROL, SUB_START_ROUTINE, (rid &gt;&gt; 8) &amp; 0xFF, rid &amp; 0xFF};
+    send_and_recv(req, 4);
+}
+
+static void cmd_download(const char *arg)
+{
+    u32 addr = 0, size = 256;
+    sscanf(arg, "%x %x", &amp;addr, &amp;size);
+    u8 req[10] = {
+        SID_REQUEST_DOWNLOAD, 0x44,
+        (addr &gt;&gt; 24) &amp; 0xFF, (addr &gt;&gt; 16) &amp; 0xFF, (addr &gt;&gt; 8) &amp; 0xFF, addr &amp; 0xFF,
+        (size &gt;&gt; 24) &amp; 0xFF, (size &gt;&gt; 16) &amp; 0xFF, (size &gt;&gt; 8) &amp; 0xFF, size &amp; 0xFF
+    };
+    printf("  --- RequestDownload (addr=0x%08X, size=%u) ---\n", addr, size);
+    send_and_recv(req, 10);
+}
+
+static void cmd_xfer_data(const char *arg)
+{
+    unsigned int seq = 1;
+    if (arg &amp;&amp; *arg) sscanf(arg, "%x", &amp;seq);
+    u8 buf[UDS_MAX_MSG_LEN];
+    buf[0] = SID_TRANSFER_DATA; buf[1] = (u8)seq;
+    u16 blk = 20;
+    memset(&amp;buf[2], 0xAA, blk);
+    send_and_recv(buf, 2 + blk);
+}
+
+static void cmd_xfer_exit(void)
+{
+    u8 req[] = {SID_REQUEST_TRANSFER_EXIT};
+    send_and_recv(req, 1);
+}
+</code></pre>
+<h2 id="工程实践shell-的可用性技巧"><a class="header" href="#工程实践shell-的可用性技巧">工程实践：Shell 的可用性技巧</a></h2>
+<ol>
+<li><strong>命令缩写</strong>——<code>tp</code> 代替 <code>testerpresent</code>，<code>read</code> 代替 <code>readdid</code>。短命令降低了输入阻力。</li>
+<li><strong>自动响应解析</strong>——<code>send_and_recv</code> 自动识别正/负响应并打印标识（✓ / ⚠）。</li>
+<li><strong>数字自适应的输入格式</strong>——<code>session 3</code>、<code>session 03</code>、<code>session 0x03</code> 都能被解析。</li>
+<li><strong>xfer 调试命令</strong>——<code>xfer [seq]</code> 和 <code>xexit</code> 让用户可以手动走遍下载三次握手。</li>
+</ol>
+<blockquote>
+<p><strong>核心洞察：</strong> 交互式终端的本质是把“协议规范“翻译成“人类语言“。<code>0x22 0xF1 0x90</code> 变成了 <code>read F190</code>，正响应 <code>0x62 0xF1 0x90 0x4C 0x53...</code> 变成了 <code>DID 0xF190 = "LSVNUDS1234567890"</code>。<strong>信息还是那些信息，但呈现方式决定了理解效率。</strong> 一个好的诊断工具的价值不在于它能请求多少 SID——而在于它将原始字节翻译成诊断语义的速度和质量。</p>
+</blockquote>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>交互式 shell 将 UDS 从“批处理协议“变成了“可对话的命令行“——约 300 行 C 代码</li>
+<li>核心架构：读命令 → 解析 → 构建请求 → <code>send_and_recv</code> → 自动解析响应</li>
+<li>命令拆分为独立 cmd_* 函数：<code>cmd_session</code>、<code>cmd_security</code>、<code>cmd_read</code>、<code>cmd_dtc</code> 等</li>
+<li>安全访问拆为两步：<code>security</code>（请求 seed）+ <code>sendkey &lt;hex4&gt;</code>（发送 key）</li>
+<li>下载命令演示完整的 0x34→0x36→0x37 三次握手，需先 <code>session 02</code> 进入编程会话</li>
+<li><code>dtcset on|off</code> 命令对应 0x85 ControlDTCSetting 服务</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：全部代码已经就绪。在最后一节，让 <code>uds_client</code> 一键跑完从会话切换到 ECU 复位的完整 8 步诊断流程——每一帧字节的请求/响应结构你都已在第 2 章读过、在 5.3 的代码中写过、在本节的 shell 命令中亲手敲过。<strong>现在，让它们自动跑一次。你写的 1000 行 C 代码，能否完成一次完整的诊断闭环？答案马上揭晓。</strong></p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/5.4-诊断仪端——逐服务发送与响应解析.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/5.6-全线测试——一次完整的诊断闭环.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/5.4-诊断仪端——逐服务发送与响应解析.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/5.6-全线测试——一次完整的诊断闭环.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

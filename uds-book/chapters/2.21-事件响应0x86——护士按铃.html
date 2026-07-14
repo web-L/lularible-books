@@ -1,0 +1,563 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>事件响应0x86——护士按铃 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="221-事件响应0x86护士按铃"><a class="header" href="#221-事件响应0x86护士按铃">2.21 事件响应(0x86)——护士按铃</a></h1>
+<blockquote>
+<p>医生查房是按时间表来的——早上八点、下午四点。但如果病人在凌晨两点心绞痛发作，他不能等到早上八点才说话。病房里有一个按钮，按下它，护士站就会响——不是医生来找病人，而是病人呼叫医生。UDS 的 0x86 就是这个按钮。</p>
+</blockquote>
+<hr>
+<h2 id="场景一万辆车的车队你不可能每秒都在问你出故障了吗"><a class="header" href="#场景一万辆车的车队你不可能每秒都在问你出故障了吗">场景：一万辆车的车队，你不可能每秒都在问“你出故障了吗“</a></h2>
+<p>晚上九点半，车队监控中心。</p>
+<p>你面前的屏幕上滚动着 10,000 辆物流卡车的实时状态。每辆车上都有一个 T-Box 通过 4G 连接到云端，T-Box 内部通过 CAN 与各 ECU 通信。你们的系统协议很直接：T-Box 每 30 秒向发动机 ECU 发一次 <code>0x19 0x01</code>（ReadDTCInformation by status mask），如果返回的 DTC 列表有变化，就把新故障码上报云端。</p>
+<p>10,000 辆车 × 30 秒间隔 = 每秒约 333 次诊断请求。正常运行时，99% 的 <code>0x19 0x01</code> 返回的是“没有新故障“——花这么多通信资源，绝大多数时间是空转。更糟的是，30 秒意味着一次偶发故障最多可能被延迟 30 秒才发现。</p>
+<p>你盯着屏幕，脑子里在算一笔账：如果轮询间隔缩短到 5 秒来降低延迟，每秒就是 2000 次请求——服务器的 DDoS、T-Box 的电量消耗、蜂窝流量费用……这些开销换来的只有偶尔在某个返回包里的一个非零 DTC。</p>
+<p>你想：<strong>能不能反过来？ECU 在发现新故障时，自己发消息给 T-Box，由 T-Box 转发到云端？</strong> 不轮询，不空转——只在有事情发生时才说话。</p>
+<p>这不是你的异想天开。ISO 14229-1 早就做好了这件事，它就是：<strong>事件响应 (ResponseOnEvent)</strong>，SID <code>0x86</code>。</p>
+<hr>
+<h2 id="为什么需要0x86从周期性查房到事件驱动呼叫"><a class="header" href="#为什么需要0x86从周期性查房到事件驱动呼叫">为什么需要0x86？——从周期性查房到事件驱动呼叫</a></h2>
+<p>我们不妨回顾一下 UDS 通信模式的演进：</p>
+<pre><code>【模式1: 同步请求-响应】（0x22, 0x19, 0x2E, ……）
+
+  测试仪 ──[请求]──→ ECU
+  测试仪 ←──[响应]── ECU
+  测试仪  (等待)     ECU (静默)
+  测试仪 ──[请求]──→ ECU
+  测试仪 ←──[响应]── ECU
+
+  特征：测试仪完全主导节奏。ECU 只在被问到时才回答。
+
+【模式2: 请求-周期上报】（0x2A）
+
+  测试仪 ──[注册]──→ ECU
+  测试仪 ←──[确认]── ECU
+  测试仪 ←──[数据]── ECU   [t=0ms]
+  测试仪 ←──[数据]── ECU   [t=100ms]
+  测试仪 ←──[数据]── ECU   [t=200ms]
+
+  特征：ECU 获得了通信节奏的主动权，但仍需测试仪先注册。
+       上报时机由时钟驱动，而非业务逻辑驱动。
+
+【模式3: 请求-事件上报】（0x86）
+
+  测试仪 ──[注册事件]──→ ECU   "当出现新DTC时通知我
+  测试仪 ←──[确认]───── ECU
+  ... (可能过了5分钟，也可能过了5小时) ...
+  测试仪 ←──[事件通知]── ECU   "DTC P0301 出现了！
+  测试仪 ←──[事件通知]── ECU   "DTC P0420 也出现了！
+
+  特征：ECU 获得了完全的发送主动权。并非按时钟，而是按业务事件。
+       测试仪的注册是"授权"而非"调度"。
+</code></pre>
+<p>0x86 是 UDS 中唯一一个<strong>ECU 主动发起数据传输</strong>的服务。它从根本上改变了通信双方的关系——从“主从“变成了“订阅发布“。</p>
+<p>但有一个关键限制：ECU 的“主动“是<strong>有限授权</strong>的。测试仪必须先通过 0x86 注册一个事件类型，ECU 不能在自己没被注册的情况下随便说话。这就像病人可以按铃呼叫护士，但前提是护士已经把呼叫铃放到了病人床头——没有铃，你不能指望病人用意念通知你。</p>
+<hr>
+<h2 id="请求报文事件类型决定一切"><a class="header" href="#请求报文事件类型决定一切">请求报文：事件类型决定一切</a></h2>
+<h3 id="基本结构"><a class="header" href="#基本结构">基本结构</a></h3>
+<pre><code>Byte 0: SID = 0x86
+Byte 1: SubFunction
+        · 0x01 = startResponseOnEvent（开始监听事件）
+        · 0x02 = stopResponseOnEvent（停止监听事件）
+Byte 2: eventType（事件类型标识）
+        · 0x01 = onDTCStatusChange（DTC状态变化时）
+        · 0x02 = onTimerInterrupt（定时器触发时）
+        · 0x03 = onChangeOfDataIdentifier（数据变化时）
+        · 0x04 = onComparisonOfValues（比较条件满足时）
+        · 0x05 = reportMostRecentDTC（上报最近DTC）
+        · 0x06 = onStartOfDiagnosticSession（会话启动时）
+Byte 3+: eventTypeSpecificParameters（与事件类型相关的额外参数）
+</code></pre>
+<h3 id="事件类型详解"><a class="header" href="#事件类型详解">事件类型详解</a></h3>
+<p>下图展示了每个事件类型的触发条件和典型应用场景：</p>
+<pre><code>┌──────────────────────────────────────────────────────────┐
+│                     事件类型全景                          │
+├──────────────┬───────────────┬────────────────────────────┤
+│ 事件类型      │ 触发条件       │ 典型应用                    │
+├──────────────┼───────────────┼────────────────────────────┤
+│ DTC状态变化   │ 任何 DTC 的   │ 车队远程故障告警             │
+│ (0x03)       │ statusByte 变  │ "P0301 出现了，请立即处理"  │
+│              │ 化（出现/消失) │                            │
+├──────────────┼───────────────┼────────────────────────────┤
+│ 定时器中断    │ 预设定时器到期  │ 周期性采集+存储到本地         │
+│ (0x04)       │               │ "每10秒记录一次关键参数"      │
+├──────────────┼───────────────┼────────────────────────────┤
+│ 数据标识符变化│ 指定 DID 的值  │ 监控关键阈值变化             │
+│ (0x05)       │ 发生变化       │ "当电池电压&lt;11.5V时通知我"   │
+├──────────────┼───────────────┼────────────────────────────┤
+│ 比较条件满足  │ 指定比较操作    │ 灵活的条件触发               │
+│ (0x06)       │ 为真           │ "当转速&gt;5000且油温&gt;120°C"  │
+├──────────────┼───────────────┼────────────────────────────┤
+│ 上报最近DTC   │ 事件触发时      │ 与其他事件组合               │
+│ (0x07)       │ 顺带上报DTC    │ "定时器触发时，顺便报DTC"    │
+├──────────────┼───────────────┼────────────────────────────┤
+│ 会话启动时    │ 新诊断会话      │ 会话级初始化                 │
+│ (0x08)       │ 被激活时       │ "进入扩展会话时自动开周期读取" │
+└──────────────┴───────────────┴────────────────────────────┘
+</code></pre>
+<h3 id="实战注册一个-dtc-状态变化事件"><a class="header" href="#实战注册一个-dtc-状态变化事件">实战：注册一个 DTC 状态变化事件</a></h3>
+<p>回到车队监控的场景。你想让发动机 ECU 在任何一个 DTC 的 statusByte 发生变化时主动上报。请求报文如下：</p>
+<pre><code>请求: 86 01 03 00 7F FF FF 00 00 00 00 01
+      │  │  │  │  └──────────┘  │  │  │
+      │  │  │  │   DTC mask     │  │  └─ eventWindowTime: 01=永久窗口
+      │  │  │  │                │  └──── serviceToRespondWith: 00=仅上报事件
+      │  │  │  └─ eventType:      └─────── eventWindowTime: 01
+      │  │  └──── (0x00 = 不使用, DTC事件类型自己定义在SubFunction中)
+      │  └─────── SubFunction: 0x03 = onDTCStatusChange
+      └────────── SID: 0x86
+</code></pre>
+<p>逐字段解析：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>字节</th><th>值</th><th>含义</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0x86</td><td>SID</td></tr>
+<tr><td>1</td><td>0x01</td><td>startResponseOnEvent（启动监听）</td></tr>
+<tr><td>2</td><td>0x03</td><td>onDTCStatusChange（事件类型：DTC状态变化）</td></tr>
+<tr><td>3</td><td>0x00</td><td>eventType 参数（DTC事件不使用此字段）</td></tr>
+<tr><td>4-7</td><td>0x7F 0xFF 0xFF 0x00</td><td>DTCStatusMask —— 0x7F=监控所有状态位，0xFFFF00=匹配所有DTC高3字节</td></tr>
+<tr><td>8</td><td>0x00</td><td>NumberOfStoredDTCRecords（上报多少条DTC，0=全部）</td></tr>
+<tr><td>9</td><td>0x00</td><td>serviceToRespondWith（0=仅上报事件本身，非0=事件触发后执行指定SID）</td></tr>
+<tr><td>10</td><td>0x01</td><td>eventWindowTime（0x01=永久激活窗口）</td></tr>
+</tbody>
+</table>
+</div>
+<p>ECU 正响应：</p>
+<pre><code>响应: C6 01
+      │  └─ 子功能回显
+      └─── 正响应 SID = 0x86 | 0x40
+</code></pre>
+<p>此后，每当 ECU 内部检测到一个 DTC 状态变化（例如 P0301 从“未激活“变为“已激活且待确认“），ECU 会主动发送一条 <strong>UUDT（Unacknowledged Unsegmented Data Transfer，无应答不分段数据传输）</strong>：</p>
+<pre><code>UUDT: 86 03 03 01 2F 01 2F
+       │  │  │  └───────── DTC P0301 (0x0301), statusByte=0x2F
+       │  │  └─ DTC 数量 = 1
+       │  └─ eventType = 0x03 (DTC状态变化)
+       └─── SID = 0x86
+</code></pre>
+<p>这里有一个容易混淆的点：<strong>UUDT 帧的 SID 编码规则——它是 <code>0x86 | 0x40 = 0xC6</code>，和正响应位规则一致。</strong> 但重要的是：它不是对某个请求的直接回复——它是自发消息。</p>
+<hr>
+<h2 id="事件窗口one-shot-还是-permanent"><a class="header" href="#事件窗口one-shot-还是-permanent">事件窗口：one-shot 还是 permanent？</a></h2>
+<p>0x86 有一个独特而优雅的设计：<strong>事件窗口（eventWindow）</strong>。</p>
+<pre><code>eventWindowTime 编码：
+· 0x00 = 无限期等待（事件永不过期）
+· 0x01 = 永久窗口（permanent，即使事件触发后仍保持激活）
+· 0x02 ~ 0xFF = 事件窗口时间（秒），超时后自动停止监听
+</code></pre>
+<p>这里有三个层次的时间语义：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>eventWindowTime</th><th>行为</th></tr>
+</thead>
+<tbody>
+<tr><td>0x01 (permanent)</td><td>注册后持续监听，触发一次上报一次，触发N次上报N次，直到测试仪发 stop</td></tr>
+<tr><td>0x00 (infinite)</td><td>和 permanent 类似，但在某些实现中“infinite“意味着“直到会话结束“</td></tr>
+<tr><td>0x02~0xFF (N秒)</td><td>注册后最多等待N秒。如果超时没有事件发生，ECU 发一条超时通知并自动停止。如果事件在窗口内发生，某些实现会在触发一次后自动停止</td></tr>
+</tbody>
+</table>
+</div>
+<p>最典型的使用模式是 <code>0x01</code>（permanent）——这正是车队监控场景需要的：注册一次，永久激活，每来一个故障就报一次。</p>
+<p>用一张状态迁移图来理解：</p>
+<pre><code>                  ┌─────────┐
+     注册事件     │  IDLE   │  (事件未注册)
+  ───────────────→│         │
+                  └────┬────┘
+                       │
+            0x86 0x01 (start)
+                       │
+                  ┌────▼────┐
+     timer触发     │ ACTIVE  │  事件条件满足
+   (time window)  │         │──────────────┐
+                  └────┬────┘              │
+                       │                   ▼
+                       │           ┌──────────────┐
+                       │           │  发送 UUDT    │
+                       │           │  0xC6 + event │
+                       │           └──────┬───────┘
+                       │                  │
+                       │    permanent?    │
+                       │   ┌── Yes ───────┘
+                       │   │ (回到 ACTIVE，继续等待)
+                       │   │
+                       │   └── No  → 自动回到 IDLE
+                       │
+            0x86 0x02 (stop) / 会话结束 / 窗口超时
+                       │
+                  ┌────▼────┐
+                  │  IDLE   │
+                  └─────────┘
+</code></pre>
+<hr>
+<h2 id="实现侧事件调度器的核心逻辑"><a class="header" href="#实现侧事件调度器的核心逻辑">实现侧：事件调度器的核心逻辑</a></h2>
+<p>在 ECU 的 DSP 层，0x86 需要一个<strong>事件管理器</strong>来处理事件的注册、监控、触发和清理。以下是一个简化的事件管理器骨架：</p>
+<pre><code class="language-c">#define MAX_EVENT_ENTRIES    4
+
+typedef enum {
+    EVENT_IDLE = 0,
+    EVENT_DTC_CHANGE,
+    EVENT_TIMER,
+    EVENT_DATA_CHANGE,
+    EVENT_COMPARISON,
+    EVENT_DIAG_SESSION_START
+} EventType;
+
+typedef struct {
+    uint8      active;           /* 此条目是否激活 */
+    EventType  eventType;        /* 事件类型 */
+    uint32     dtcStatusMask;    /* DTC事件的status mask */
+    uint32     dtcMaskHigh;      /* DTC事件的高位掩码 */
+    uint8      serviceToRespond; /* 触发后要执行的SID */
+    uint8      eventWindow;      /* 事件窗口类型 */
+    uint32     windowTimer;      /* 窗口计时器（毫秒） */
+    uint8      triggered;        /* 是否已被触发（one-shot判断） */
+} EventEntry;
+
+static EventEntry gEventTable[MAX_EVENT_ENTRIES];
+
+static void Dsp_Event_CheckAndFire(void)
+{
+    uint8 i;
+    for (i = 0; i &lt; MAX_EVENT_ENTRIES; i++)
+    {
+        if (gEventTable[i].active == 0x00)
+            continue;
+
+        switch (gEventTable[i].eventType)
+        {
+        case EVENT_DTC_CHANGE:
+            if (Dsp_Event_CheckDtcChange(&amp;gEventTable[i]))
+            {
+                Dsp_Event_SendUUDT(&amp;gEventTable[i]);
+                if (gEventTable[i].eventWindow != 0x01)
+                {
+                    /* 非 permanent：触发一次后自动停止 */
+                    gEventTable[i].active = 0x00;
+                }
+            }
+            break;
+
+        case EVENT_TIMER:
+            if (Dsp_Event_CheckTimer(&amp;gEventTable[i]))
+            {
+                Dsp_Event_SendUUDT(&amp;gEventTable[i]);
+            }
+            break;
+
+        case EVENT_DATA_CHANGE:
+            if (Dsp_Event_CheckDataChange(&amp;gEventTable[i]))
+            {
+                Dsp_Event_SendUUDT(&amp;gEventTable[i]);
+                if (gEventTable[i].eventWindow != 0x01)
+                {
+                    gEventTable[i].active = 0x00;
+                }
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+</code></pre>
+<p>这个函数被放在 ECU 主循环里周期调用（比如每 10ms 一次）。它遍历所有激活的事件条目，检查触发条件，条件满足时构造 UUDT 帧并发送。</p>
+<p>注意这里的关键性能约束：<strong>事件检查必须在 ECU 的主循环中执行</strong>，这意味着每个事件类型的检查函数必须轻量级。一个高效的实现会预计算比较值、用中断标记代替轮询扫描等方式优化。</p>
+<hr>
+<h2 id="与-0x2a-的微妙关系"><a class="header" href="#与-0x2a-的微妙关系">与 0x2A 的微妙关系</a></h2>
+<p>0x86 中的 <code>onTimerInterrupt</code>（0x04）从行为上看很像 <code>0x2A</code>（周期读取）。但它们有一个本质区别：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th>0x2A 周期读取</th><th>0x86 onTimerInterrupt</th></tr>
+</thead>
+<tbody>
+<tr><td>触发</td><td>时钟固定周期</td><td>时钟固定周期</td></tr>
+<tr><td>数据内容</td><td>固定 DID 列表的值</td><td>由 eventType + 附加参数决定</td></tr>
+<tr><td>发送格式</td><td><code>0x6A</code> + DID/Data 对</td><td>UUDT (<code>0xC6</code>) + 事件结果</td></tr>
+<tr><td>注册方式</td><td><code>0x2A 0x01</code></td><td><code>0x86 0x01</code> + eventType=0x04</td></tr>
+<tr><td>是否可和其他事件组合</td><td>否</td><td>是（可以和 onDTCStatusChange 等并存）</td></tr>
+</tbody>
+</table>
+</div>
+<p>简而言之：<code>0x2A</code> 是为“持续看一组参数“设计的专用通道，<code>0x86 onTimerInterrupt</code> 是为“在事件驱动框架下做定时触发“设计的通用机制。后者更灵活（可以指定 serviceToRespondWith，让定时器触发其他 UDS 服务），但前者的交互更简洁。两者各有适用场景。</p>
+<hr>
+<h2 id="医院隐喻护士呼叫铃"><a class="header" href="#医院隐喻护士呼叫铃">医院隐喻：护士呼叫铃</a></h2>
+<p>住院病房的床头都有一个按钮——<strong>护士呼叫铃</strong>。它的工作方式和 0x86 如出一辙：</p>
+<ul>
+<li><strong>注册（授权）</strong>：护士把呼叫铃放在病人床头，告诉病人“有事按这个“（<code>0x86 0x01 start</code>）</li>
+<li><strong>事件窗口</strong>：呼叫铃在整个住院期间都有效（<code>eventWindowTime = 0x01 permanent</code>）</li>
+<li><strong>事件触发</strong>：病人感到不适，按下按钮（ECU 检测到 DTC 状态变化）</li>
+<li><strong>主动上报</strong>：护士站的铃声响起，显示屏上出现病房号（ECU 发送 UUDT 报文）</li>
+<li><strong>解除注册</strong>：病人出院，护士收回呼叫铃（<code>0x86 0x02 stop</code>）</li>
+</ul>
+<p>医生查房（轮询 <code>0x19</code>）是定时制的——早上八点来一次，下午四点来一次。如果病人在凌晨两点出状况，他必须等到早上八点医生来才发现。这是轮询的天然局限性。而呼叫铃（0x86）解决的就是这个时间差——<strong>第一时间通知，第一时间响应</strong>。</p>
+<p>但这个比喻还有一个更深层的含义：<strong>呼叫铃是“病人主动“，但主动权是护士授予的。</strong> 如果没有护士把铃放在床头，病人无法呼叫护士——正如 ECU 不能在没有注册事件的情况下自行发送 UUDT。UDS 的设计者始终没有放弃“测试仪作为通信主导方“这一根本约束，0x86 只是在“主导方的授权窗口内“给了 ECU 一个有限的发言权。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>医院元素</th><th>UDS 对应</th></tr>
+</thead>
+<tbody>
+<tr><td>护士放铃 = 授权</td><td><code>0x86 0x01 startResponseOnEvent</code></td></tr>
+<tr><td>病人按铃 = 事件触发</td><td>DTC statusByte 变化 / 数据超阈值 / 定时器到期</td></tr>
+<tr><td>护士站响铃 = 上报</td><td>ECU 发送 UUDT (<code>0xC6</code>)</td></tr>
+<tr><td>铃的类型（疼痛/不适/需要帮助）</td><td>事件类型（DTC/DataChange/Timer/Comparison）</td></tr>
+<tr><td>收回铃 = 停止监听</td><td><code>0x86 0x02 stopResponseOnEvent</code></td></tr>
+<tr><td>铃只在住院期间有效 = 事件窗口</td><td>eventWindowTime = 会话生命周期</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<blockquote>
+<p><strong>核心洞察</strong>：</p>
+<p><strong>0x86 是 UDS 中唯一一个将通信不对称性翻转的服务。</strong> 在 25 个 UDS 服务中，24 个都是 “测试仪请求 → ECU 响应” 的传统客户端-服务器模式。唯有 0x86，让 ECU 在事先注册的条件下获得了“主动发言权“。这个设计不是对主从架构的背叛，而是对它的补充——它承认在某些诊断场景中，由被监控者（ECU）主动报告事件，比由监控者（测试仪）频繁轮询要高效得多。</p>
+<p>0x86 的 eventWindow 机制也是一个值得注意的设计：它用极少的字节（1 个）同时表达了“触发后是否自动停止“（one-shot vs permanent）、“超时怎么处理”（有限窗口 vs 无限窗口）以及“是否需要服务响应“（serviceToRespondWith）多层语义。这是在资源极度受限的 CAN 协议中做语义压缩的典型案例——不追求字段的可读性，而是追求信息的密度。</p>
+</blockquote>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li><strong>0x86 ResponseOnEvent</strong> 是 UDS 中唯一让 ECU 主动发起数据传输的服务，工作模式为“注册-监听-上报“</li>
+<li>与传统同步请求-响应模式不同，0x86 实现了<strong>事件驱动通信</strong>：ECU 在满足条件时推送消息，无需测试仪轮询</li>
+<li>两大控制操作：<code>0x01</code> startResponseOnEvent（启动监听）、<code>0x02</code> stopResponseOnEvent（停止监听）</li>
+<li>六大事件类型：DTC 状态变化、定时器中断、数据变化、比较条件满足、上报最近 DTC、会话启动</li>
+<li><strong>事件窗口</strong>（eventWindowTime）控制监听的生命周期：permanent（永久）、one-shot（触发一次即停）、有限秒数（超时自动停）</li>
+<li>ECU 上报使用 <strong>UUDT</strong>（Unacknowledged Unsegmented Data Transfer）格式，SID 为 <code>0x86 | 0x40 = 0xC6</code></li>
+<li>serviceToRespondWith 参数允许事件触发后自动执行指定 UDS 服务（如触发时顺便读取数据）</li>
+<li>医院隐喻：护士呼叫铃——病人（ECU）在护士授权下获得主动呼叫权，出事时立即通知而非等待查房</li>
+<li>0x86 和 0x2A 的 <code>onTimerInterrupt</code> 有功能交集但设计哲学不同：前者是通用事件框架中的定时器能力，后者是专用的周期数据推送通道</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：事件响应让ECU获得了主动发言权——但ECU内部的数据结构远不止DID和DTC。现代ECU运行着文件系统，存储着标定文件、日志记录、固件镜像……UDS有办法直接操作这些文件吗？0x38 RequestFileTransfer——把诊断仪变成ECU的文件管理器。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/2.20-动态定义DID-0x2C——自定义化验单.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/2.22-文件传输0x38——病历归档.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/2.20-动态定义DID-0x2C——自定义化验单.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/2.22-文件传输0x38——病历归档.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

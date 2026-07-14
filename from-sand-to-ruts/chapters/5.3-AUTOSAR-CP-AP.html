@@ -1,0 +1,528 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>AUTOSAR · CP · AP - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="53-autosar-cp--ap"><a class="header" href="#53-autosar-cp--ap">5.3 AUTOSAR CP &amp; AP</a></h1>
+<h3 id="2003-年一间会议室里的决定"><a class="header" href="#2003-年一间会议室里的决定">2003 年，一间会议室里的决定</a></h3>
+<p>2003 年，一群欧洲 OEM 和 Tier-1 的代表坐在会议室里。议题非常直接：</p>
+<p>“我们需要一个标准。一个汽车 ECU 软件的通用框架。”</p>
+<p>当时的情况是一盘散沙。每个 Tier-1 供应商为每个 OEM 单独开发 ECU 软件。标致-雪铁龙的发动机控制器和大众的发动机控制器硬件可以一模一样（比如都用英飞凌 TriCore 或瑞萨 RH850），但软件完全不兼容。</p>
+<p>同样的 CAN 驱动要重写五遍。同样的诊断栈要重写五遍。同样的安全组件（WDOG、MPU、锁步核管理）要重演五次。</p>
+<p><strong>这是软件成本膨胀的根本原因。</strong> 不是工程师不努力。是每一次都从零开始。</p>
+<p>与会者同意：定义一个标准。分层解耦。硬件无关的应用层可以在不同 ECU 上复用。基础的驱动层、通信栈、操作系统封装一次，用在所有 ECU 上。</p>
+<p>这个标准叫做 <strong>AUTOSAR</strong>（AUTomotive Open System ARchitecture）。</p>
+<hr>
+<h3 id="蓝图autosar-classic-platformcp的分层宇宙"><a class="header" href="#蓝图autosar-classic-platformcp的分层宇宙">蓝图：AUTOSAR Classic Platform（CP）的分层宇宙</a></h3>
+<p>CP 针对<strong>实时性高、资源有限</strong>的 ECU——发动机、变速箱、ABS、EPS、BCM 等。OS 是 OSEK/VDX 兼容的实时内核。</p>
+<p>想象一座大厦，从上到下五层楼：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">层</th><th style="text-align: left">名称</th><th style="text-align: left">角色</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">第 5 层</td><td style="text-align: left"><strong>应用层（SWC）</strong></td><td style="text-align: left">独立的应用逻辑：扭矩控制、轮速计算——不碰任何硬件</td></tr>
+<tr><td style="text-align: left">第 4 层</td><td style="text-align: left"><strong>RTE</strong></td><td style="text-align: left">SWC 的“软件总线“，连接 SWC 之间的数据交换</td></tr>
+<tr><td style="text-align: left">第 3 层</td><td style="text-align: left"><strong>服务层（Services）</strong></td><td style="text-align: left">系统状态管理、存储服务（NvM）、通信服务（DCM/COM）</td></tr>
+<tr><td style="text-align: left">第 2 层</td><td style="text-align: left"><strong>ECU 抽象层</strong></td><td style="text-align: left">把微控制器外设抽象成高层接口——CAN Interface 在这里</td></tr>
+<tr><td style="text-align: left">第 1 层</td><td style="text-align: left"><strong>MCAL</strong></td><td style="text-align: left">直接操作硬件寄存器——GPIO、ADC、PWM、SPI、CAN、GPT</td></tr>
+</tbody>
+</table>
+</div>
+<p>还有一层特殊的存在——<strong>复杂驱动（Complex Drivers）</strong>，用于那些不能套进标准框架的特殊硬件：轮速传感器的模拟信号调理、发动机喷油芯片的精确时序控制。</p>
+<p>关键原则：</p>
+<ul>
+<li>SWC 不能直接访问 BSW 或硬件。它只能通过 RTE 操作。</li>
+<li>BSW 层之间有严格的单向接口——COM → PduR → CanTp → CanIf → Can。</li>
+<li>每个层只能访问它的下层。依赖方向严格向下。</li>
+</ul>
+<hr>
+<h3 id="站在最底层mcal-的-can-驱动"><a class="header" href="#站在最底层mcal-的-can-驱动">站在最底层：MCAL 的 CAN 驱动</a></h3>
+<p>MCAL 是软件栈和硬件唯一的接触点。它直接读写外设寄存器。芯片厂商提供 MCAL——你是 ECU 集成工程师，通常不修改 MCAL 代码，但你必须理解它的接口。</p>
+<p>一个简化的 CAN 驱动 MCAL 模块看起来是这样的：</p>
+<pre><code class="language-c">/* Can.h - MCAL CAN驱动接口（简化） */
+#ifndef CAN_H
+#define CAN_H
+
+#include "Can_Types.h"
+
+/* 初始化CAN控制器 */
+void Can_Init(const Can_ConfigType *config);
+
+/* 发送一帧CAN报文 */
+Std_ReturnType Can_Write(Can_HwHandleType hoh, const Can_PduType *pdu);
+
+/* 接收中断回调——Can驱动调用，通知上层 */
+void CanIf_RxIndication(PduIdType pduId, const PduInfoType *pduInfo);
+
+/* 发送确认回调 */
+void CanIf_TxConfirmation(PduIdType pduId);
+
+#endif /* CAN_H */
+
+/* Can.c - MCAL CAN驱动实现（简化） */
+void Can_IrqHandler(uint8_t controller_id)
+{
+    Can_PduType rx_pdu;
+    PduInfoType pdu_info;
+
+    /* 从硬件CAN控制器的接收FIFO读出 */
+    rx_pdu.id = CAN0-&gt;sFIFOMailBox[0].RIR &gt;&gt; 21;
+    rx_pdu.length = CAN0-&gt;sFIFOMailBox[0].RDTR &amp; 0x0F;
+
+    uint32_t *src = (uint32_t *)&amp;CAN0-&gt;sFIFOMailBox[0].RDLR;
+    uint32_t *dst = (uint32_t *)rx_pdu.sdu;
+    dst[0] = src[0];
+    dst[1] = src[1];
+
+    CAN0-&gt;RF0R |= CAN_RF0R_RFOM0;
+
+    /* 匹配CAN ID到PDU ID——用配置表 */
+    PduIdType pdu_id = pdu_id_from_can_id(rx_pdu.id);
+
+    /* 构造PduInfo */
+    pdu_info.SduDataPtr = rx_pdu.sdu;
+    pdu_info.SduLength  = rx_pdu.length;
+
+    /* 通知上层——这是MCAL的唯一出口 */
+    CanIf_RxIndication(pdu_id, &amp;pdu_info);
+}
+</code></pre>
+<p>注意 <code>CanIf_RxIndication</code>——MCAL 不路由数据。它只是从硬件读出、包装好、递给上层。路由是上层的事。</p>
+<hr>
+<h3 id="追踪一个-can-报文从物理总线到应用逻辑的完整旅程"><a class="header" href="#追踪一个-can-报文从物理总线到应用逻辑的完整旅程">追踪：一个 CAN 报文从物理总线到应用逻辑的完整旅程</a></h3>
+<p>假设 SWC “VehicleSpeed” 从 CAN 总线上读取车速信号。让这个报文带你走一遍 AUTOSAR 的五层大厦。</p>
+<p><strong>第 1 层——MCAL（CAN 驱动）</strong></p>
+<p>硬件 CAN 控制器的接收 FIFO 满时，触发 CAN 接收中断。MCAL 中的 <code>Can_Irq.c</code> 从硬件寄存器读出帧，调用 <code>CanIf_RxIndication()</code>——通知上层有报文到达。芯片厂商提供 MCAL，你通常不修改它。</p>
+<p><strong>第 2 层——CAN Interface（CanIf）</strong></p>
+<p><code>CanIf_RxIndication()</code> 做的事：</p>
+<ul>
+<li>匹配接收到的 CAN ID 到配置表中定义的 PDU ID。</li>
+<li>把 CAN 帧的 8 字节数据拷贝到 PDU buffer 中。</li>
+<li>调用 <code>PduR_RxIndication(pduId, &amp;pduInfo)</code>。</li>
+</ul>
+<p><strong>第 3 层——PDU Router（PduR）</strong></p>
+<p>PDU Router 是通信栈的交换机。一条 PDU 从 CanIf 上来，PduR 根据 PDU ID 的配置决定路由到哪个上层模块。对于普通信号帧（不是诊断、不是 TP 分段），PduR 直接调用 <code>Com_RxIndication(pduId, &amp;pduInfo)</code>。</p>
+<p><strong>第 4 层——COM Stack（Com）</strong></p>
+<p>Com 模块负责把 PDU 的原始字节流拆包成独立信号。这是整个通信栈中最体现 AUTOSAR 设计哲学的一层——<strong>信号和帧的彻底解耦。</strong></p>
+<p>在裸机编程中，你直接解析 CAN 帧：</p>
+<pre><code class="language-c">/* 裸机方式：手工位掩码提取 */
+uint16_t speed_raw = (can_data[0] &lt;&lt; 8) | can_data[1];
+float speed = speed_raw * 0.05625f;
+</code></pre>
+<p>在 AUTOSAR 中，COM 从配置（ARXML）中读取每个信号的定义，在运行时自动完成信号提取：</p>
+<pre><code class="language-c">/* Com_SignalProcessing.c - COM信号提取（简化） */
+void Com_RxIndication(PduIdType pduId, const PduInfoType *pduInfo)
+{
+    ComPduIdType comPduId = Com_PduIdFromRouting(pduId);
+    const ComSignalConfig_t *signals = Com_GetSignalsForPdu(comPduId);
+
+    for (uint16_t i = 0; i &lt; signals-&gt;num_signals; i++) {
+        const ComSignal_t *sig = &amp;signals-&gt;signals[i];
+        uint8_t *data = pduInfo-&gt;SduDataPtr;
+
+        /* 从PDU字节流中提取信号的原始值 */
+        uint64_t raw = Com_ExtractBits(data,
+                                        sig-&gt;bitPosition,
+                                        sig-&gt;bitSize,
+                                        sig-&gt;endianness);
+
+        /* 物理值转换 */
+        float physical = (float)raw * sig-&gt;factor + sig-&gt;offset;
+
+        /* 更新RTE buffer */
+        Rte_Write_Signal(sig-&gt;handle, &amp;physical);
+    }
+}
+
+/* 位提取函数——处理跨字节边界、大小端、符号扩展 */
+uint64_t Com_ExtractBits(const uint8_t *buffer,
+                          uint16_t bitPos, uint8_t bitSize,
+                          Com_Endianness_t endian)
+{
+    /* 计算起始字节和位偏移 */
+    uint16_t byteIdx = bitPos / 8;
+    uint8_t  bitOff  = bitPos % 8;
+
+    /* 按字节读取并拼接——支持跨字节边界 */
+    uint64_t value = 0;
+    for (uint8_t i = 0; i &lt; (bitSize + bitOff + 7) / 8; i++) {
+        value |= (uint64_t)buffer[byteIdx + i] &lt;&lt; (i * 8);
+    }
+    value &gt;&gt;= bitOff;
+    value &amp;= (1ULL &lt;&lt; bitSize) - 1;
+
+    /* 符号扩展：如果最高位是1且信号是有符号的 */
+    if (endian == COM_SIGNED &amp;&amp; (value &amp; (1ULL &lt;&lt; (bitSize - 1)))) {
+        value |= ~((1ULL &lt;&lt; bitSize) - 1);
+    }
+
+    return value;
+}
+</code></pre>
+<p>这段代码是 COM 层存在的根本理由。在一个 ECU 中可能有 500+ 个 CAN 信号，分布在 50+ 个 PDU 中。让每个 SWC 应用工程师手工解析字节流不仅低效，更是 bug 的温床——信号布局的一个 bit 偏移错误可能导致错误的数据被分发到所有订阅的 SWC 中。</p>
+<p>COM 用配置驱动的方式实现了一劳永逸的信号提取——配置在 ARXML 中定义，COM 的生成代码根据配置自动生成，应用工程师永远不需要写位掩码。</p>
+<p><strong>第 5 层——RTE 和 SWC</strong></p>
+<p>RTE 是 SWC 看到的“世界“。对于 SWC 来说，硬件不存在。CAN 不存在。Flash 不存在。只有 RTE——一组可读取和写入的端口（Port）。</p>
+<pre><code class="language-c">/* SWC: VehicleSpeed_Implementation.c */
+#include "Rte_VehicleSpeed.h"
+
+/* 这个Runnable由RTE周期性触发——RTE根据OS schedule表调度它 */
+void VehicleSpeed_MainFunction(void)
+{
+    float speed = 0.0f;
+    boolean over_speed = FALSE;
+
+    /* 通过RTE读取端口——背后是COM层提供的信号值 */
+    Rte_Read_SpeedValue_VehicleSpeed(&amp;speed);
+
+    /* 应用逻辑：超速判断 */
+    if (speed &gt; 120.0f) {
+        over_speed = TRUE;
+    }
+
+    /* 通过RTE写入输出端口——RTE负责把值路由到订阅的SWC */
+    Rte_Write_OverSpeedWarning_VehicleSpeed(over_speed);
+
+    /* 如果需要触发诊断——调用RTE的客户端-服务器接口 */
+    if (over_speed) {
+        Rte_Call_SetEventStatus_OverSpeedMonitor(DTC_OVERSPEED, TRUE);
+    }
+}
+</code></pre>
+<p>SWC 的实现者不需要知道“车速信号从哪来“——它是 CAN 帧里的一个信号？是 SPI 传感器直接读的？是内部计算出来的？是另一颗芯片通过以太网传来的？SWC 不在乎。它只认 RTE 端口。这是 AUTOSAR 分层解耦的最高境界。</p>
+<p>整个路径：物理 CAN 总线 → MCAL 中断 → CanIf 匹配 → PduR 路由 → Com 拆包 → RTE 分发 → SWC 计算。<strong>每一层只做一件事，每一层只认识相邻的层。</strong></p>
+<hr>
+<h3 id="arxmlautosar-的灵魂用配置代替代码"><a class="header" href="#arxmlautosar-的灵魂用配置代替代码">ARXML：AUTOSAR 的灵魂——用配置代替代码</a></h3>
+<p>上面的 COM 信号提取不是靠硬编码，而是靠配置。AUTOSAR 的精髓不在 C 代码里——在 <strong>ARXML</strong> 文件里。ARXML 是 AUTOSAR 的配置语言，它用 XML 描述了 ECU 软件的每一个可配置参数。</p>
+<p>一个 CAN 信号的完整 ARXML 描述：</p>
+<pre><code>&lt;!-- 信号：车速，16位无符号，Big-Endian，位偏移0 --&gt;
+&lt;Signal name="ComSignal_VehicleSpeed"&gt;
+  &lt;bitPosition&gt;0&lt;/bitPosition&gt;
+  &lt;bitSize&gt;16&lt;/bitSize&gt;
+  &lt;endianness&gt;BIG_ENDIAN&lt;/endianness&gt;
+  &lt;type&gt;UINT16&lt;/type&gt;
+&lt;/Signal&gt;
+
+&lt;!-- IPDU：车速信号所属的接收PDU --&gt;
+&lt;IPdu name="ComIPdu_VehicleSpeedPdu"&gt;
+  &lt;signalRef&gt;/ComSignal_VehicleSpeed&lt;/signalRef&gt;
+  &lt;direction&gt;RECEIVE&lt;/direction&gt;
+&lt;/IPdu&gt;
+
+&lt;!-- 物理值转换：raw × 0.05625 + 0.0，范围 0-350 km/h --&gt;
+&lt;CompuMethod name="ComSignal_VehicleSpeed_CompuMethod"&gt;
+  &lt;factor&gt;0.05625&lt;/factor&gt;
+  &lt;offset&gt;0.0&lt;/offset&gt;
+  &lt;lowerLimit&gt;0.0&lt;/lowerLimit&gt;
+  &lt;upperLimit&gt;350.0&lt;/upperLimit&gt;
+&lt;/CompuMethod&gt;
+</code></pre>
+<p>这段 XML 告诉 BSW 配置生成器（如 Vector DaVinci Configurator 或 EB tresos Studio）：</p>
+<ul>
+<li>“车速信号“是一个 16 位的无符号整数，以 Big-Endian 排列，在 PDU 的第 0 位开始。</li>
+<li>物理值 = 原始值 × 0.05625。</li>
+<li>有效范围为 0-350 km/h——超出此范围的值将被 COM 标记为“无效信号“并触发 DEM（诊断事件管理器）。</li>
+</ul>
+<p><strong>BSW 配置生成器读取这段 XML，生成对应的 C 代码数据结构——ComSignal_t 结构体、信号提取参数表。</strong> 这就是 AUTOSAR 从“每个项目手写代码“到“配置驱动生成代码“的转变。你的手不再碰位掩码。你描述你想要什么，工具生成为你服务的代码。</p>
+<hr>
+<h3 id="autosar-的另一张面孔adaptive-platformap"><a class="header" href="#autosar-的另一张面孔adaptive-platformap">AUTOSAR 的另一张面孔：Adaptive Platform（AP）</a></h3>
+<p>CP 是为经典实时 ECU 设计的。OS 是 OSEK/VDX。配置是静态的——所有任务和通信时间表在编译期就固定好了。</p>
+<p>但汽车在变化。ADAS 域控制器、自动驾驶平台、V2X 通信单元——这些 ECU 需要：</p>
+<ul>
+<li>强大的算力（多核 CPU、GPU、AI 加速器）</li>
+<li>动态部署——任务可以在运行时启动或停止</li>
+<li>服务发现——SOME/IP 协议让新加入的组件被自动发现</li>
+<li>OTA 升级——局部更新固件而不影响整车</li>
+</ul>
+<p>AP 用 <strong>POSIX 操作系统</strong>（Linux、QNX）而不是 OSEK/VDX。支持 C++ 而不是纯 C。ARA（AUTOSAR Runtime for Adaptive）替代 RTE，提供面向服务的通信。</p>
+<pre><code>Application (C++) → ARA → Foundation Services → POSIX OS → Hardware
+</code></pre>
+<p>在 AP 中，SWC 之间的通信不是固定的“端口读/写“，而是<strong>服务调用</strong>（Service-Oriented Architecture, SOA）。一个 SWC 在启动时通过 SOME/IP 协议向网络中宣告自己提供的服务——例如“ADAS_SensorFusion 提供 SensorData 服务“。另一个 SWC 通过 SOME/IP 的服务发现机制找到这个服务，建立 TCP/UDP 连接，开始订阅数据流。</p>
+<p><strong>SOME/IP 服务发现流程：</strong></p>
+<pre><code>ECU-A (提供者)                    ECU-B (消费者)
+    |                                    |
+    |  Offer Service (SensorData, UDP)   |
+    |  ─────────────────────────────&gt;    |  (组播到整个子网)
+    |                                    |  "有人提供SensorData？我要了。"
+    |                                    |  Subscribe (SensorData, TCP)
+    |  &lt;─────────────────────────────    |
+    |  "好，开始给你发数据。"               |
+    |  SensorData stream =============&gt;    |
+</code></pre>
+<p>CP 是静态配置的。AP 是动态的。CP 面向高确定性——每一个 OS task 的执行周期和优先级在编译期完全固定。AP 面向高灵活性——ADAS 功能可以在车辆行驶中动态部署、动态升级、动态关联。</p>
+<p>一辆高端车同时跑着 CP（发动机控制）和 AP（自动驾驶感知）。两个世界在同一个 CAN 网关后面共存——网关的 CP 侧处理实时 CAN/CAN-FD 报文，AP 侧通过 SOME/IP 向 ADAS 应用提供车辆状态数据。</p>
+<hr>
+<h3 id="你在-r5-核心上实打实的工作流"><a class="header" href="#你在-r5-核心上实打实的工作流">你在 R5 核心上实打实的工作流</a></h3>
+<p>假设你的硬件是 <strong>SPC58NN84</strong>（PowerPC e200 核心，锁步），你需要在上面集成一个完整的 AUTOSAR CP 栈。典型的工作流是五个阶段。</p>
+<p><strong>阶段一：MCAL 配置。</strong> 在 Tresos Studio（EB）或 ISOLAR（Vector）中配置 MCAL 模块——CAN、SPI、GPT、ADC。这一步生成 MCAL 配置参数，告诉驱动每一个外设的具体设置。例如 CAN 控制器配置：波特率、每个邮箱的 CAN ID 过滤器、接收/发送类型。</p>
+<p><strong>阶段二：BSW 配置。</strong> 配置 ECU 状态管理（EcuM）、通信栈（Com/PduR/CanIf/CanTp）、诊断栈（DCM/DEM）。每个模块的参数通过 ARXML 文件定义。BSW 配置生成器把 ARXML 翻译成 C 配置结构体——你在编译时链接，而不是在运行时解析 XML。</p>
+<p><strong>阶段三：RTE 配置。</strong> 根据 SWC 的描述（SWC 有哪些端口，端口是发送还是接收，数据类型是什么），RTE 生成器为每个 SWC 生成 <code>Rte_&lt;SWC&gt;.h</code> 和 <code>Rte_&lt;SWC&gt;.c</code>。这些生成的文件把 SWC 的端口读写映射到 COM 的信号、NvM 的存储块、或操作系统的事件。</p>
+<p><strong>阶段四：SWC 编写。</strong> 应用工程师只写 SWC 的逻辑代码（C 语言或 MATLAB/Simulink 自动代码生成），不碰任何底层。SWC 的世界里只有 <code>Rte_Read_xxx()</code>、<code>Rte_Write_xxx()</code>、<code>Rte_Call_xxx()</code>——这些是 SWC 能做的唯一操作。</p>
+<p><strong>阶段五：系统集成。</strong> 将各部分编译链接——SWC 对象文件 + RTE 生成文件 + BSW 配置生成文件 + MCAL + OS——烧入 ECU，跑集成测试。</p>
+<p><strong>关键收益：</strong> 当你换另一个芯片平台时——比如从 SPC58NN84 换到英飞凌 TC399——应用 SWC 和大部分 BSW 可以复用。只需要重新做 MCAL 配置（不同的芯片不同的外设寄存器映射）和 OS 配置（不同的核数、不同的中断控制器）。这大幅降低了 Tier-1 的开发成本，也保证了跨 OEM 和跨硬件平台的软件一致性。</p>
+<hr>
+<h3 id="标准不是束缚是释放"><a class="header" href="#标准不是束缚是释放">标准：不是束缚，是释放</a></h3>
+<p>在没有 AUTOSAR 的时代，每个 Tier-1 和 OEM 各自为政。好的工程师做出好的系统，但他们的知识和代码无法传承、无法复用。汽车电子软件领域像是在“小农经济“——每家都在做自己的东西，努力但低效。</p>
+<p>AUTOSAR 做的事情是<strong>工业标准化</strong>。把 ECU 软件拆分成分层、分模块、可配置的组件——就像 ISO 把螺丝钉的螺纹规格标准化一样。这样一来：</p>
+<ul>
+<li>芯片厂商可以只做 MCAL，不用管上层的应用逻辑。</li>
+<li>Tier-1 可以跨平台、跨 OEM 地复用应用 SWC。</li>
+<li>OEM 可以在不同 Tier-1 之间竞标，不担心被锁定到某个供应商的专有平台。</li>
+</ul>
+<p><strong>标准化不是束缚创造力——是释放更大的创造力。</strong> 当你不用为每个 ECU 重新写 CAN 驱动时，你的精力可以用在更高级的问题上：混合动力模式的能量管理、ADAS 传感器融合算法、OTA 升级的安全架构。</p>
+<p>回头看这一章走过的路：</p>
+<ol>
+<li><strong>裸机</strong>：一个人掌控一切。简单、灵活、不可扩展。</li>
+<li><strong>RTOS</strong>：在有限资源下引入任务调度和通讯机制。扩展性提高，但需要更强的系统设计能力。</li>
+<li><strong>AUTOSAR</strong>：工业化、标准化、跨平台复用。释放整个行业的规模效应。</li>
+</ol>
+<p>你在其中任何一个阶段工作，都是这个行业文明进步的一部分。</p>
+<p>但 ECU 不只是“跑得动“。它还要能“说话“——当它出了问题，它要能告诉维修技师：我哪里不对、什么时候不对、附带什么上下文数据。</p>
+<p>这就是诊断。UDS——统一的诊断服务。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解AUTOSAR如何通过工业标准化，把一个Rte_Read()调用翻译成CAN总线上的物理帧——以及这种标准化如何释放整个行业的规模效应。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>AUTOSAR不是“又一个大框架“——是ECU软件的工业标准化</strong>：把ECU软件拆成分层、分模块、可配置的组件，像ISO把螺丝钉螺纹标准化一样。CAN驱动写一次，诊断栈写一次，安全组件封装一次——跨平台复用。</li>
+<li><strong>CP（经典平台）和AP（自适应平台）分治了汽车电子的两个世界</strong>：CP面向实时MCU（确定性延迟、静态配置），AP面向高性能MPU（POSIX OS、动态服务发现）。</li>
+<li><strong>AUTOSAR从裸机和RTOS的“手工经济“进化到“工业经济“</strong>：应用工程师只写SWC逻辑代码，不碰任何底层。换芯片平台时只需重配MCAL——释放出来的精力可以投向更高价值的系统级问题。</li>
+</ol>
+<p>下一节，第六部分——软件的灵魂。诊断让ECU能“说话“、安全让ECU不可被攻破、OTA让ECU持续进化。从DTC的浮栅电子到HSM的熔丝阵列——穿透所有抽象层。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>2012 年，一辆豪华车在高速上突然失去动力。熄火，溜到路边，再也打不着。维修技师接上诊断仪，读取故障码——P0001。UDS 诊断仪在 30 分钟内锁定了 2 号缸喷油器线束脱焊。没有 UDS，这辆车要被拆开一半才能找到问题。</p>
+<p>诊断不是“拆车“，而是“对话“。UDS 为 ECU 定义了一种语言——让一个沉默的金属疙瘩能够向世界报告自己的健康状况。每一个 DTC 不是一个简单的布尔值——它是一个有生命周期的状态机，从“当前操作周期检测到故障“，到“连续 3 个周期确认的真实故障“，到“写入非易失存储“，到最终被维修技师手动清除。它的旅程横跨了物理世界（传感器返回值）、AUTOSAR 软件栈（DEM/DCM）、和维修车间（诊断仪）。</p>
+<p>下一章，我们进入 Part 6——诊断、安全、存储。汽车不仅仅是速度和操控。它还要能自检、不被攻击、不掉失数据。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/5.2-实时操作系统.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/6.1-诊断的世界-UDS.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/5.2-实时操作系统.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/6.1-诊断的世界-UDS.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

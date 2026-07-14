@@ -1,0 +1,492 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>HSM的两种物理形态 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="22-hsm的两种物理形态独立保险箱-vs-内置保险箱"><a class="header" href="#22-hsm的两种物理形态独立保险箱-vs-内置保险箱">2.2 HSM的两种物理形态：独立保险箱 vs 内置保险箱</a></h2>
+<h3 id="两种不同的设计思路"><a class="header" href="#两种不同的设计思路">两种不同的设计思路</a></h3>
+<p>上一节我们用“银行保险箱“比喻了HSM。现在，让我们深入一点。</p>
+<p>银行保险箱有两种设计方式：</p>
+<p><strong>方式一：独立的保险箱库</strong></p>
+<p>银行大厅旁边有一个独立的保险箱库房。库房是一个单独的建筑，有自己的入口、监控、安保。客户通过一个服务窗口与库房交互。</p>
+<p><strong>方式二：内置的保险箱区</strong></p>
+<p>银行大厅内部划分出一个保险箱区域。这个区域和大厅用一道玻璃墙隔开，有自己的安保人员，但和大厅共享同一个建筑。</p>
+<p>这两种方式，对应了HSM的两种物理形态：</p>
+<ul>
+<li><strong>独立安全芯片</strong>：一个单独的芯片，通过外部接口（比如SPI/I2C）连接主机</li>
+<li><strong>片内集成HSM</strong>：集成在主芯片内部，形成一个独立的安全域</li>
+</ul>
+<hr>
+<h3 id="独立安全芯片真正的物理隔离"><a class="header" href="#独立安全芯片真正的物理隔离">独立安全芯片：真正的“物理隔离“</a></h3>
+<p>独立安全芯片是最经典的HSM形态。</p>
+<p>它是一个单独的芯片，有自己：</p>
+<ul>
+<li>CPU：通常是安全专用CPU（如ARM SC300）</li>
+<li>内存：内部RAM/ROM，存储密钥和中间数据</li>
+<li>存储：NVM（非易失性存储），持久保存密钥</li>
+<li>密码引擎：AES、RSA、ECC等算法硬件加速</li>
+<li>通信接口：SPI、I2C等</li>
+</ul>
+<p><strong>架构图</strong>：</p>
+<pre><code>独立安全芯片架构：
+
+┌─────────────────────────────────────┐
+│ 主机系统                            │
+│                                     │
+│  主CPU（如ARM Cortex-A53）          │
+│  ├─ 应用程序                        │
+│  ├─ 操作系统                        │
+│  └─ SDK（HSM厂商提供）              │
+│                                     │
+│         │                           │
+│         │ SPI/I2C                   │
+│         │ 总线                       │
+│         ▼                           │
+└─────────────────────────────────────┘
+
+┌─────────────────────────────────────┐
+│ 独立安全芯片（HSM）                 │
+│                                     │
+│  ┌──────────────────────────────┐  │
+│  │ 安全CPU                      │  │
+│  │ (ARM 或自定义核)        │  │
+│  └──────────────────────────────┘  │
+│         │                           │
+│         ▼                           │
+│  ┌──────────┐ ┌──────────┐         │
+│  │ 密码引擎 │ │ 密钥存储 │         │
+│  │ AES RSA  │ │ NVM      │         │
+│  │ ECC SM2  │ │ Flash    │         │
+│  └──────────┘ └──────────┘         │
+│                                     │
+│  ┌──────────────────────────────┐  │
+│  │ 通信接口                     │  │
+│  │ SPI I2C                    │  │
+│  └──────────────────────────────┘  │
+│                                     │
+│  物理防护层                         │
+│  ├─ 防篡改传感器                   │
+│  ├─ 金属屏蔽层                     │
+│  └─ 零化机制                       │
+│                                     │
+└─────────────────────────────────────┘
+</code></pre>
+<p><strong>典型产品</strong>：</p>
+<ul>
+<li><strong>华大电子CIU98_B系列</strong>：车规级安全芯片，AEC-Q100认证，SPI/I2C接口，支持国际+国密算法</li>
+<li><strong>NXP SE05x系列</strong>：车规级安全芯片，广泛用于车载</li>
+<li><strong>Infineon OPTIGA Trust</strong>：工业级安全芯片</li>
+<li><strong>Microchip ATECC608</strong>：低成本安全芯片</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ol>
+<li><strong>真正的物理隔离</strong>：HSM和主机是两个独立的芯片，物理上完全分开</li>
+<li><strong>独立供应链</strong>：HSM和主机可以来自不同厂商，避免供应链风险集中</li>
+<li><strong>独立认证</strong>：HSM可以单独进行安全认证（如FIPS 140-3）</li>
+<li><strong>独立升级</strong>：HSM固件可以独立升级，不影响主机</li>
+<li><strong>灵活选型</strong>：可以选择不同厂商的HSM，适配不同安全需求</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li><strong>额外成本</strong>：需要两个芯片，PCB面积增加，成本增加</li>
+<li><strong>通信开销</strong>：SPI/I2C通信有延迟，影响性能</li>
+<li><strong>接口复杂</strong>：需要SDK适配，开发工作量增加</li>
+<li><strong>功耗增加</strong>：两个芯片都有功耗</li>
+</ol>
+<hr>
+<h3 id="片内集成hsm逻辑隔离的高效方案"><a class="header" href="#片内集成hsm逻辑隔离的高效方案">片内集成HSM：逻辑隔离的高效方案</a></h3>
+<p>片内集成HSM是另一种设计思路。</p>
+<p>它不是独立的芯片，而是集成在主芯片内部的一个“安全域“。主芯片内部划分出一块区域，专门用于安全功能。</p>
+<p><strong>架构图</strong>：</p>
+<pre><code>片内集成HSM架构：
+
+┌─────────────────────────────────────┐
+│ 主芯片（如Infineon AURIX）          │
+│                                     │
+│  ┌──────────────────────────────┐  │
+│  │ 主CPU区域                    │  │
+│  │ (三个TriCore核心)            │  │
+│  │                              │  │
+│  │  Core0 ─┐                    │  │
+│  │  Core1 ─┼─► 运行应用程序     │  │
+│  │  Core2 ─┘                    │  │
+│  │                              │  │
+│  │  共享内存                    │  │
+│  │  外设接口                    │  │
+│  │                              │  │
+│  └──────────────┬───────────────┘  │
+│                 │                   │
+│                 │ 内部总线          │
+│                 │ (防火墙隔离)      │
+│                 ▼                   │
+│  ┌──────────────────────────────┐  │
+│  │ HSM安全域                    │  │
+│  │                              │  │
+│  │  ┌──────────────────────┐    │  │
+│  │  │ 安全CPU               │    │  │
+│  │  │ (ARM SC300)           │    │  │
+│  │  └──────────────────────┘    │  │
+│  │         │                     │  │
+│  │         ▼                     │  │
+│  │  ┌──────────┐ ┌──────────┐   │  │
+│  │  │ 密码引擎 │ │ 密钥存储 │   │  │
+│  │  └──────────┘ └──────────┘   │  │
+│  │                              │  │
+│  │  安全防火墙                  │  │
+│  │  ├─ 内存访问控制             │  │
+│  │  ├─ 外设访问控制             │  │
+│  │  └─ 代码执行隔离             │  │
+│  │                              │  │
+│  └──────────────────────────────┘  │
+│                                     │
+│  ┌──────────────────────────────┐  │
+│  │ 物理防护                     │  │
+│  │ (整芯片级别)                 │  │
+│  └──────────────────────────────┘  │
+│                                     │
+└─────────────────────────────────────┘
+</code></pre>
+<p><strong>典型产品</strong>：</p>
+<ul>
+<li><strong>Infineon AURIX TC3xx</strong>：车规MCU，内置HSM模块</li>
+<li><strong>NXP S32G/S32K</strong>：车规处理器，内置HSE（HSM Security Engine）</li>
+</ul>
+<p><strong>优点</strong>：</p>
+<ol>
+<li><strong>成本更低</strong>：只需要一个芯片，PCB面积减小</li>
+<li><strong>通信更快</strong>：内部总线通信，延迟更低</li>
+<li><strong>功耗更低</strong>：只有一个芯片，功耗更小</li>
+<li><strong>集成更高</strong>：安全域和主域紧密集成，协作更方便</li>
+<li><strong>开发更简单</strong>：厂商提供统一SDK，开发工作量更少</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li><strong>物理隔离程度较低</strong>：主域和HSM共享同一个硅片，物理隔离程度不如独立芯片</li>
+<li><strong>供应链风险集中</strong>：主芯片和HSM来自同一厂商，供应链风险集中</li>
+<li><strong>认证复杂</strong>：整芯片认证，HSM部分认证需要整芯片支持</li>
+<li><strong>升级风险</strong>：HSM固件升级可能影响主芯片</li>
+<li><strong>灵活性降低</strong>：HSM能力由主芯片厂商决定，无法灵活选型</li>
+</ol>
+<hr>
+<h3 id="车载场景的两种选择"><a class="header" href="#车载场景的两种选择">车载场景的两种选择</a></h3>
+<p>在车载场景中，两种形态都被使用。</p>
+<p><strong>独立安全芯片的应用</strong>：</p>
+<p>典型的车载独立安全芯片如华大电子CIU98_B系列（通过AEC-Q100 Grade1认证，累计出货超3000万颗）。</p>
+<p>应用场景：</p>
+<ul>
+<li><strong>车载诊断安全</strong>：存储诊断访问密钥，为UDS 27服务提供安全能力</li>
+<li><strong>车辆通信安全</strong>：存储V2X通信密钥</li>
+<li><strong>数据加密</strong>：存储数据加密密钥，加密车载敏感数据</li>
+</ul>
+<p>为什么选择独立芯片？</p>
+<ul>
+<li>真正的物理隔离，符合高安全要求</li>
+<li>可以独立认证，通过国密认证</li>
+<li>灵活选型，可以适配不同的主MCU</li>
+</ul>
+<p><strong>片内集成HSM的应用</strong>：</p>
+<p>典型的车载片内HSM是Infineon AURIX TC3xx的HSM模块。</p>
+<p>应用场景：</p>
+<ul>
+<li><strong>安全启动</strong>：HSM验证固件签名，确保启动链可信</li>
+<li><strong>运行时安全</strong>：HSM提供密钥保护，运行时密码服务</li>
+<li><strong>调试安全</strong>：HSM控制调试接口访问</li>
+</ul>
+<p>为什么选择片内HSM？</p>
+<ul>
+<li>成本更低，适合量产车型</li>
+<li>集成度高，与主MCU协作方便</li>
+<li>功耗更低，适合电池供电场景</li>
+</ul>
+<p><strong>两种形态的对比</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">特性</th><th style="text-align: left">独立安全芯片</th><th style="text-align: left">片内集成HSM</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>物理隔离</strong></td><td style="text-align: left">完全隔离（两个芯片）</td><td style="text-align: left">逻辑隔离（共享硅片）</td></tr>
+<tr><td style="text-align: left"><strong>安全等级</strong></td><td style="text-align: left">更高</td><td style="text-align: left">较高</td></tr>
+<tr><td style="text-align: left"><strong>成本</strong></td><td style="text-align: left">较高（两芯片）</td><td style="text-align: left">较低（一芯片）</td></tr>
+<tr><td style="text-align: left"><strong>通信延迟</strong></td><td style="text-align: left">较高（SPI/I2C）</td><td style="text-align: left">较低（内部总线）</td></tr>
+<tr><td style="text-align: left"><strong>功耗</strong></td><td style="text-align: left">较高</td><td style="text-align: left">较低</td></tr>
+<tr><td style="text-align: left"><strong>开发复杂度</strong></td><td style="text-align: left">较高（SDK适配）</td><td style="text-align: left">较低（统一SDK）</td></tr>
+<tr><td style="text-align: left"><strong>认证复杂度</strong></td><td style="text-align: left">较低（独立认证）</td><td style="text-align: left">较高（整芯片认证）</td></tr>
+<tr><td style="text-align: left"><strong>灵活性</strong></td><td style="text-align: left">高（可选厂商）</td><td style="text-align: left">低（绑定主芯片）</td></tr>
+<tr><td style="text-align: left"><strong>典型应用</strong></td><td style="text-align: left">高安全场景、后装</td><td style="text-align: left">量产车型、安全启动</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="一个类比独立保险箱库-vs-内置保险箱区"><a class="header" href="#一个类比独立保险箱库-vs-内置保险箱区">一个类比：独立保险箱库 vs 内置保险箱区</a></h3>
+<p>让我们回到银行的比喻。</p>
+<p><strong>独立安全芯片 = 独立的保险箱库</strong></p>
+<p>银行大厅旁边有一个独立的保险箱库房。库房有自己的建筑、入口、监控、安保。</p>
+<p>客户从大厅通过一个服务窗口进入库房。</p>
+<p>如果大厅被入侵了（root权限攻击），库房仍然安全。因为库房是独立的建筑，入侵大厅的人无法进入库房。</p>
+<p><strong>片内集成HSM = 内置的保险箱区</strong></p>
+<p>银行大厅内部划分出一个保险箱区域。这个区域和大厅用一道玻璃墙隔开，有自己的安保人员。</p>
+<p>客户从大厅通过一道门进入保险箱区。</p>
+<p>如果大厅被入侵了，保险箱区的玻璃墙仍然提供保护。但因为保险箱区和大厅共享同一个建筑，入侵者可能找到绕过玻璃墙的方法（比如通过通风管道）。</p>
+<p>这就是“物理隔离“和“逻辑隔离“的差异：</p>
+<ul>
+<li>物理隔离：两栋独立的建筑，安全边界更坚固</li>
+<li>逻辑隔离：同一建筑内的分区，安全边界相对脆弱</li>
+</ul>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们分析了HSM的两种物理形态。</p>
+<p><strong>独立安全芯片</strong>：</p>
+<ul>
+<li>真正的物理隔离，两个独立芯片</li>
+<li>安全等级更高，可以独立认证</li>
+<li>成本较高，开发较复杂</li>
+<li>适合高安全场景、后装场景</li>
+</ul>
+<p><strong>片内集成HSM</strong>：</p>
+<ul>
+<li>逻辑隔离，共享硅片</li>
+<li>成本较低，开发较简单</li>
+<li>功耗较低，通信更快</li>
+<li>适合量产车型、安全启动</li>
+</ul>
+<p>车载场景中，两种形态都有应用。独立芯片用于高安全场景（如诊断安全、通信安全），片内HSM用于量产场景（如安全启动）。</p>
+<p>下一节，我们将看看HSM的标准生态——PKCS#11、FIPS 140-3、EVITA等标准如何定义HSM的世界。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>HSM有很多标准。</p>
+<p>PKCS#11定义了“怎么用“——应用接口标准。</p>
+<p>FIPS 140-3定义了“怎么造“——安全认证标准。</p>
+<p>EVITA定义了“怎么装“——车载架构标准。</p>
+<p>这些标准形成一个“工“字形结构。</p>
+<p>下一节，标准生态全景。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/2.1-HSM是什么-从数字保险箱说起.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/2.3-HSM标准生态全景.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/2.1-HSM是什么-从数字保险箱说起.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/2.3-HSM标准生态全景.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

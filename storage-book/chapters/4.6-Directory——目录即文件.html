@@ -1,0 +1,530 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Directory——目录即文件 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="46-directory目录即文件"><a class="header" href="#46-directory目录即文件">4.6 Directory——目录即文件</a></h2>
+<h3 id="你的文件夹和你想象的完全不一样"><a class="header" href="#你的文件夹和你想象的完全不一样">你的文件夹和你想象的完全不一样</a></h3>
+<p>先做一个实验。打开你的终端，输入 <code>ls -l /usr/bin</code>。你看到了几百个文件条目——名字、大小、权限、时间戳——整齐地排列。你以为“目录“是一个特殊的结构，里面有格子，每个格子里装着一个文件。</p>
+<p>这是一个便利的谎言。</p>
+<p>在 LittleFS 里，目录不是“装着文件的容器“。目录<strong>就是一个文件</strong>。更精确地说，目录是一个被标记了 <code>LFS_TYPE_DIR</code> 类型的 metadata pair——和普通文件一样存储在某个块上，一样用两块的日志机制做原子更新，一样在数据块的底层没有特权。</p>
+<pre><code>你以为的目录：                  LittleFS 的真相：
+┌─────────────────┐           ┌─────────────────┐
+│   目录容器        │           │ metadata pair   │
+│  ┌───┐ ┌───┐    │           │  [revision=5]   │
+│  │ A │ │ B │    │           │  name="foo" REG │
+│  └───┘ └───┘    │           │  name="bar" DIR │
+│  ┌───┐          │           │  name="baz" REG │
+│  │ C │          │           │  [checksum]     │
+│  └───┘          │           └─────────────────┘
+└─────────────────┘
+                                           ↑
+                              就是一个有特殊 tag 的文件
+</code></pre>
+<p>这个设计极其优雅。目录不需要独立的存储结构、分配器或掉电保护——处理文件的所有代码（日志追加、垃圾回收、CRC 校验）全部复用在目录上。Less code, less bugs。</p>
+<p>那目录怎么知道“谁在这个文件夹里“呢？答案藏在 metadata pair 的 entry 里。</p>
+<hr>
+<h3 id="metadata-pair-里的名字游戏"><a class="header" href="#metadata-pair-里的名字游戏">Metadata Pair 里的名字游戏</a></h3>
+<p>回忆一下数据块的格式。每个 metadata pair 是一个两块的日志结构，里面存储着若干 entries。每个 entry 是一个 tag + data 的组合。</p>
+<p>当一个 entry 的 tag 类型是 <code>LFS_TYPE_NAME</code>（类型编号 <code>0x0xx</code>）时，它的 data 部分存储的是一个<strong>文件名</strong>。而 tag 里的 id 字段（10 bits）把这个名字和后续的结构信息关联起来。</p>
+<pre><code>一个目录条的完整构成：
+
+tag: LFS_TYPE_CREATE, id=3
+     → "创造者"标签，声明文件 id=3 的存在
+
+tag: LFS_TYPE_NAME, id=3, type=REG, data="hello.txt"
+     → 名字是 "hello.txt"，这是一个普通文件
+
+tag: LFS_TYPE_CTZSTRUCT, id=3, data={head=0x2A, size=4096}
+     → CTZ skip-list 的头部块和文件大小
+
+tag: LFS_TYPE_CRC
+     → 提交结束，CRC 校验盖章
+</code></pre>
+<p>这就是 LittleFS 目录的全部秘密：<strong>目录就是一个 metadata pair，目录项就是 metadata pair 里的几个 entries</strong>。</p>
+<p>目录没有独立的“目录条目结构体“。文件名存在 name tag 里。文件类型存在 name tag 的 chunk 字段里。文件数据的位置存在 struct tag 里（CTZSTRUCT 或者 DIRSTRUCT 或者 INLINESTRUCT）。id 把这些散落的 tags 串在一起。</p>
+<p>这就是“tag 系统“——LittleFS 里最天才的发明之一——的威力：<strong>32 位的 tag 既是类型，又是索引，又是长度</strong>。一个 <code>LFS_TYPE_DIRSTRUCT</code> tag 后面跟着 8 个字节的 metadata pair 指针（两个 32-bit block number），指向子目录在磁盘上的位置。</p>
+<pre><code>                    root directory (metadata pair at block 0,1)
+                    ┌──────────────────────────┐
+                    │ revision = 3              │
+                    │ name="subdir", id=1, DIR  │ ← 声明 id=1 是目录
+                    │ struct=DIRSTRUCT, id=1,   │ ← 指向子目录的 metadata pair
+                    │   pair={block=14,block=27}│
+                    │ name="readme.txt", id=2   │
+                    │ struct=CTZSTRUCT, id=2,   │
+                    │   head=40, size=1024      │
+                    │ CRC                       │
+                    └──────────────────────────┘
+                              │
+                              v
+                    sub directory (metadata pair at block 14,27)
+                    ┌──────────────────────────┐
+                    │ revision = 1              │
+                    │ name="config.json", id=1  │
+                    │ struct=INLINESTRUCT, id=1,│
+                    │   data="{...}"            │
+                    │ CRC                       │
+                    └──────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="lfs_dir_find在-metadata-pair-的海洋里找一条鱼"><a class="header" href="#lfs_dir_find在-metadata-pair-的海洋里找一条鱼">lfs_dir_find：在 metadata pair 的海洋里找一条鱼</a></h3>
+<p><code>lfs_dir_find()</code> 是 LittleFS 里被调用次数最多的函数之一。<code>lfs_file_open()</code> 调用它，<code>lfs_mkdir()</code> 调用它，<code>lfs_remove()</code> 调用它，<code>lfs_stat()</code> 调用它。几乎所有文件系统操作的第一步都是“找到目标文件的目录条目“。</p>
+<p>它的核心逻辑非常简单：</p>
+<ol>
+<li>从 root directory 开始，拿着路径 <code>"/subdir/hello.txt"</code>。</li>
+<li>找到第一段名字 <code>"subdir"</code>，在 root 的 metadata pair 里遍历所有 name tag，做字符串比较。</li>
+<li>找到后，从对应的 struct tag 里提取出子目录的 metadata pair 指针。</li>
+<li><code>lfs_dir_fetch()</code> 把子目录的 metadata pair 从磁盘加载到 RAM。</li>
+<li>重复第 2 步，直到路径最后一段。</li>
+</ol>
+<pre><code>    "/subdir/hello.txt"
+     ↓
+    root pair (block 0,1)
+     │  遍历 name tags，找 "subdir"
+     │  找到 → 提取 pair={14,27}
+     ↓
+    subdir pair (block 14,27)
+     │  遍历 name tags，找 "hello.txt"
+     │  找到 → 返回 tag（包含 id 和类型信息）
+     ↓
+    调用者拿着返回的 tag 继续操作
+</code></pre>
+<p>但 LittleFS 的实现比这个概述要精巧得多。看 <code>lfs.c:1483</code> 的源码：</p>
+<pre><code class="language-c">static lfs_stag_t lfs_dir_find(lfs_t *lfs, lfs_mdir_t *dir,
+        const char **path, uint16_t *id) {
+    const char *name = *path;
+    lfs_stag_t tag = LFS_MKTAG(LFS_TYPE_DIR, 0x3ff, 0);
+    dir-&gt;tail[0] = lfs-&gt;root[0];
+    dir-&gt;tail[1] = lfs-&gt;root[1];
+    // ...
+</code></pre>
+<p>函数一开始就把 dir 指向了 root，设置 tag 为 DIR 类型。然后进入一个无限循环，逐级解析路径。在这个循环里，LittleFS 做了几件非常聪明的事：</p>
+<p><strong>第一件事：用 <code>strspn + strcspn</code> 逐段解析路径，但不是简单地 split。</strong></p>
+<p>它用 <code>strspn(name, "/")</code> 跳过斜杠，用 <code>strcspn(name, "/")</code> 找到名字的结束位置。然后它还会<strong>向前看</strong>路径的剩余部分，处理 <code>..</code> 和 <code>.</code>。如果剩余路径里有对称的 <code>..</code> 可以抵消当前路径段，它就直接跳过当前段——不需要真的读取父目录。</p>
+<pre><code class="language-c">        // skip if matched by '..' in name
+        const char *suffix = name + namelen;
+        lfs_size_t sufflen;
+        int depth = 1;
+        while (true) {
+            suffix += strspn(suffix, "/");
+            sufflen = strcspn(suffix, "/");
+            if (sufflen == 0) break;
+            if (sufflen == 2 &amp;&amp; memcmp(suffix, "..", 2) == 0) {
+                depth -= 1;
+                if (depth == 0) {
+                    name = suffix + sufflen;
+                    goto nextname;
+                }
+            } // ...
+</code></pre>
+<p>这段代码的含义是：如果路径是 <code>"a/../b"</code>，LittleFS 在解析 <code>"a"</code> 时就会发现后面的 <code>".."</code> 可以抵消 <code>"a"</code>，于是直接把 name 指针跳到 <code>"b"</code> 的位置——一次磁盘读取都不需要。</p>
+<p>这是极致的优化思维。在一个 32 MHz 的 Cortex-M0 上，少一次 Flash 读取就是少几百微秒的延迟。</p>
+<p><strong>第二件事：<code>lfs_dir_fetchmatch()</code> —— 带着回调函数去匹配。</strong></p>
+<p><code>lfs_dir_fetchmatch()</code> 是 LittleFS 里又一个精妙的设计。它加载 metadata pair，遍历里面的所有 tags，然后调用一个用户提供的回调函数（这里是 <code>lfs_dir_find_match</code>）来比较当前 tag 的数据和目标名字。</p>
+<pre><code class="language-c">            tag = lfs_dir_fetchmatch(lfs, dir, dir-&gt;tail,
+                    LFS_MKTAG(0x780, 0, 0),
+                    LFS_MKTAG(LFS_TYPE_NAME, 0, namelen),
+                    id,
+                    lfs_dir_find_match, &amp;(struct lfs_dir_find_match){
+                        lfs, name, namelen});
+</code></pre>
+<p>这个方法之所以精妙，是因为 <code>lfs_dir_fetchmatch</code> 不只是在一个 metadata pair 里查找——如果当前 pair 有 split（尾部指针指向下一个 pair），它会<strong>自动跨 pair 追踪</strong>。开发者不用关心“文件可能在链表上的第几个 pair“，一个函数调用全部搞定。</p>
+<p><strong>第三件事：当 tag 的 id 是 <code>0x3ff</code> 时表示全局标签。</strong></p>
+<p><code>0x3ff</code>（10 bits 全 1）是一个特殊 id，表示这个 entry 不关联任何具体文件。Root directory 本身的 tag 就是 <code>LFS_MKTAG(LFS_TYPE_DIR, 0x3ff, 0)</code>——类型是 DIR，id 是 <code>0x3ff</code>。这意味着 root 并不是一个“文件“，它只是系统的起点标记。</p>
+<p>当 <code>lfs_dir_find</code> 遍历到一个非 <code>0x3ff</code> 的 id 时，意味着它找到了一个真实的子目录。这时候它调用 <code>lfs_dir_get()</code> 从 struct tag 里提取出 metadata pair 指针，然后继续递归。</p>
+<p>如果遍历完所有的 split pair 都没有找到匹配的名字，函数返回 <code>LFS_ERR_NOENT</code> —— “No Entry”。这不是错误，这是“文件不存在“的正常语义。</p>
+<hr>
+<h3 id="lfs_dir_read遍历目录就像翻书"><a class="header" href="#lfs_dir_read遍历目录就像翻书">lfs_dir_read：遍历目录就像翻书</a></h3>
+<p><code>lfs_dir_read</code> 是目录的“翻页“操作。每次调用返回一个 <code>lfs_info</code> 结构，包含文件名、类型、大小。返回 0 表示目录到底了。</p>
+<pre><code class="language-c">static int lfs_dir_read_(lfs_t *lfs, lfs_dir_t *dir, struct lfs_info *info) {
+    memset(info, 0, sizeof(*info));
+    if (dir-&gt;pos == 0) {
+        info-&gt;type = LFS_TYPE_DIR;
+        strcpy(info-&gt;name, ".");
+        dir-&gt;pos += 1;
+        return true;
+    } else if (dir-&gt;pos == 1) {
+        info-&gt;type = LFS_TYPE_DIR;
+        strcpy(info-&gt;name, "..");
+        dir-&gt;pos += 1;
+        return true;
+    }
+    while (true) {
+        if (dir-&gt;id == dir-&gt;m.count) {
+            if (!dir-&gt;m.split) return false;
+            int err = lfs_dir_fetch(lfs, &amp;dir-&gt;m, dir-&gt;m.tail);
+            if (err) return err;
+            dir-&gt;id = 0;
+        }
+        int err = lfs_dir_getinfo(lfs, &amp;dir-&gt;m, dir-&gt;id, info);
+        dir-&gt;id += 1;
+        if (err != LFS_ERR_NOENT) break;
+    }
+    dir-&gt;pos += 1;
+    return true;
+}
+</code></pre>
+<p>这种设计有几个值得注意的地方：</p>
+<p><strong>虚拟的 <code>.</code> 和 <code>..</code></strong>。这两个条目不是存在磁盘上的。它们是 Read 的第一个位置（pos=0）和第二个位置（pos=1）由代码直接生成的。这样做省掉了磁盘上的两个 entry，也省掉了每次目录更新时维护这两个条目的麻烦。</p>
+<p><strong>跨越 split pair</strong>。当 <code>dir-&gt;id</code> 走到当前 metadata pair 的边界（<code>dir-&gt;m.count</code>）时，函数检查 <code>dir-&gt;m.split</code>。如果 split 为真，说明这个目录的数据跨了多个 metadata pair（因为当前 pair 满了），函数自动加载下一个 pair 并重置 id 为 0。</p>
+<p><strong>跳过已删除条目</strong>。<code>lfs_dir_getinfo</code> 对已删除的 entry 返回 <code>LFS_ERR_NOENT</code>。<code>lfs_dir_read_</code> 的 while 循环会跳过这些条目，继续寻找有效条目。这就是为什么用户永远看不到已删除的文件：它们在遍历时被自动过滤。</p>
+<hr>
+<h3 id="lfs_mkdir创建目录就是创建文件"><a class="header" href="#lfs_mkdir创建目录就是创建文件">lfs_mkdir：创建目录就是创建文件</a></h3>
+<p><code>lfs_mkdir</code> 的实现进一步证明了“目录即文件“的理念。</p>
+<pre><code class="language-c">static int lfs_mkdir_(lfs_t *lfs, const char *path) {
+    int err = lfs_fs_forceconsistency(lfs);  // 先做孤儿清理
+    struct lfs_mlist cwd;
+    uint16_t id;
+    err = lfs_dir_find(lfs, &amp;cwd.m, &amp;path, &amp;id);
+    if (!(err == LFS_ERR_NOENT &amp;&amp; lfs_path_islast(path))) {
+        return (err &lt; 0) ? err : LFS_ERR_EXIST;
+    }
+    // ...分配新 directory pair...
+    err = lfs_dir_alloc(lfs, &amp;dir);
+    // ...在父目录中提交新条目...
+    err = lfs_dir_commit(lfs, &amp;cwd.m, LFS_MKATTRS(
+            {LFS_MKTAG(LFS_TYPE_CREATE, id, 0), NULL},
+            {LFS_MKTAG(LFS_TYPE_DIR, id, nlen), path},
+            {LFS_MKTAG(LFS_TYPE_DIRSTRUCT, id, 8), dir.pair},
+            {LFS_MKTAG_IF(!cwd.m.split,
+                LFS_TYPE_SOFTTAIL, 0x3ff, 8), dir.pair}));
+    return 0;
+}
+</code></pre>
+<p>这段代码做了四件事：</p>
+<ol>
+<li>
+<p><strong>孤儿清理</strong>：<code>lfs_fs_forceconsistency()</code>。这是每次写操作前的安全检查——如果上次掉电留下了半成品，这次先把烂摊子收拾干净。</p>
+</li>
+<li>
+<p><strong>检查名字不冲突</strong>：调用 <code>lfs_dir_find</code> 找目标名字。如果找到了（不是 <code>LFS_ERR_NOENT</code>），说明文件已存在，返回 <code>LFS_ERR_EXIST</code>。</p>
+</li>
+<li>
+<p><strong>分配新的 metadata pair</strong>：<code>lfs_dir_alloc</code> 分配一个空的 metadata pair。这个 pair 以后就是这个新目录的“肉身“。</p>
+</li>
+<li>
+<p><strong>在父目录里 commit</strong>：一次原子提交三个 tags：</p>
+<ul>
+<li><code>LFS_TYPE_CREATE</code>：标记文件 id 的存在</li>
+<li><code>LFS_TYPE_DIR</code>：名字 + 类型（目录）</li>
+<li><code>LFS_TYPE_DIRSTRUCT</code>：子目录的 metadata pair 指针</li>
+</ul>
+</li>
+</ol>
+<p>注意 <code>LFS_MKATTRS</code> 宏——它把这三个 tags 打包成一次原子提交。这就是 metadata pair 的核心承诺：要么三个 tags 全部落地，要么一个都不写。掉电不会留下“只有名字没有结构“的半残目录。</p>
+<hr>
+<h3 id="lfs_remove删除目录也是删除文件"><a class="header" href="#lfs_remove删除目录也是删除文件">lfs_remove：删除目录也是删除文件</a></h3>
+<pre><code class="language-c">static int lfs_remove_(lfs_t *lfs, const char *path) {
+    int err = lfs_fs_forceconsistency(lfs);
+    lfs_mdir_t cwd;
+    lfs_stag_t tag = lfs_dir_find(lfs, &amp;cwd, &amp;path, NULL);
+    // ...目录必须为空...
+    if (lfs_tag_type3(tag) == LFS_TYPE_DIR) {
+        lfs_block_t pair[2];
+        lfs_stag_t res = lfs_dir_get(lfs, &amp;cwd, ...);
+        err = lfs_dir_fetch(lfs, &amp;dir.m, pair);
+        if (dir.m.count &gt; 0 || dir.m.split) {
+            return LFS_ERR_NOTEMPTY;
+        }
+        err = lfs_fs_preporphans(lfs, +1);  // 标记孤儿状态
+    }
+    // 删除条目
+    err = lfs_dir_commit(lfs, &amp;cwd, LFS_MKATTRS(
+            {LFS_MKTAG(LFS_TYPE_DELETE, lfs_tag_id(tag), 0), NULL}));
+</code></pre>
+<p>删除目录的过程和删除普通文件几乎一样，唯一的区别是目录必须为空（<code>dir.m.count &gt; 0 || dir.m.split</code>）。LittleFS 通过 <code>LFS_ERR_NOTEMPTY</code> 拒绝删除非空目录——这个经典的 POSIX 语义在 32 KiB Flash 的文件系统里也被忠实地实现了。</p>
+<p>另一个细节是 <code>lfs_fs_preporphans(lfs, +1)</code>。当删除一个目录时，如果父目录的 metadata pair 在提交时发生了 split，被删除的子目录可能暂时留在 threaded linked-list 里成为“孤儿“。<code>preporphans</code> 增加了一个全局计数器，这样 mount 时文件系统就知道需要做孤儿清理。</p>
+<hr>
+<h3 id="和-knotfs-的对比一棵树和一张白纸"><a class="header" href="#和-knotfs-的对比一棵树和一张白纸">和 KnotFS 的对比：一棵树和一张白纸</a></h3>
+<p>LittleFS 有完整的目录树。KnotFS 没有目录——它是<strong>平面文件系统</strong>。</p>
+<pre><code>LittleFS 的目录树：              KnotFS 的平面结构：
+/                                ┌──────────────────────┐
+├── config/                      │  hello.txt     4KB   │
+│   ├── can.json                 │  can_config    512B  │
+│   └── lidar.json               │  firmware.bin  128KB │
+├── logs/                        │  diag.log      64KB  │
+│   └── diag.log                 └──────────────────────┘
+└── hello.txt
+</code></pre>
+<p>KnotFS 没有 <code>mkdir</code>。所有文件都在一个扁平的命名空间里，通过 32 字节的名字直接索引。文件表（File Table）是一个固定 8 槽的数组，每个槽要么存一个文件条目，要么是 <code>0xFFFFFFFF</code>（已删除）。</p>
+<p>这种设计源于 KnotFS 的目标场景：车载MCU上跑的功能不需要多层目录。几个配置文件、一个日志文件、一个固件升级包——8 个槽位绰绰有余。平面的文件表结构消除了目录遍历的所有复杂性——没有递归解析路径，没有 split pair 的链表追踪，没有 <code>..</code> 和 <code>.</code> 的语义处理。</p>
+<p>但平面结构也牺牲了组织性。如果你有 30 个不同类型的配置文件（CAN 矩阵、LIDAR 参数、传感器校准……），你只能在文件名里加前缀——<code>can_matrix_v2.bin</code>, <code>lidar_calib_v1.bin</code>——没有真正的方式把它们分组。</p>
+<p>LittleFS 的目录设计还有一个 KnotFS 根本不涉及的问题：<strong>名字排序</strong>。在 LittleFS 的目录 metadata pair 里，文件条目是按字母顺序排列的。这得益于 <code>LFS_TYPE_CREATE</code> 和 <code>LFS_TYPE_DELETE</code> 两个 splice tag——它们允许在有序列表中插入和删除条目而不需要重写整个列表。</p>
+<pre><code>目录条目在 metadata pair 中的存储（按名字排序）：
+
+[name="apple", id=1]  [name="banana", id=2]  [name="cherry", id=3]
+                                                    ↑
+                   插入 "blueberry" 时，CREATE tag 把 id=2.5 插入到
+                   banana 和 cherry 之间，其他条目的 id 相对位置移动
+</code></pre>
+<p>这种插入机制非常巧妙。id 不是固定的，而是可以在 10-bit 空间内任意分配。插入一个新文件时，只需要给新文件分配一个虚拟的 id（在相邻两个文件 id 的中间值），然后在提交时附上 <code>LFS_TYPE_CREATE</code> tag 来告诉扫描器“这个 id 在这里“。</p>
+<p>KnotFS 的文件表不需要排序——8 个槽的顺序就是文件的物理存储顺序，find 操作简单地遍历数组做字符串比较。</p>
+<hr>
+<h3 id="目录遍历的秘密threaded-linked-list"><a class="header" href="#目录遍历的秘密threaded-linked-list">目录遍历的秘密：Threaded Linked-List</a></h3>
+<p>LittleFS 的目录树有一个附加结构：<strong>threaded linked-list</strong>。这个链表穿过文件系统里的每一个 metadata pair，让遍历整个文件系统变为可能。</p>
+<pre><code>            .--------.
+           .| root   |-.
+           ||        | |        ← soft tail
+    .------||        |-'
+    |      |'--------'
+    |      '---|--|-'
+    |       .-'    '-------------------------.
+    |      v                                  v
+    |  .--------.        .--------.        .--------.
+    '-&gt;| dir A  |-------&gt;| dir A  |-------&gt;| dir B  |
+      ||        |       ||        |       ||        |
+      ||        |       ||        |       ||        |
+      |'--------'       |'--------'       |'--------'
+      '---|--|-'        '----|---'        '---|--|-'
+       .-'    '-.            |             .-'    '-.
+      v          v           v            v          v
+ .--------.  .--------.  .--------.  .--------.  .--------.
+ | file C |  | file D |  | file E |  | file F |  | file G |
+ |        |  |        |  |        |  |        |  |        |
+ '--------'  '--------'  '--------'  '--------'  '--------'
+</code></pre>
+<p>每个 metadata pair 都有一个 soft tail 指针，指向链表上的下一个 pair。这个链表的存在有两个原因：</p>
+<ol>
+<li>
+<p><strong>Bounded RAM 遍历</strong>：LittleFS 承诺 O(1) 的内存使用。你不可能在 RAM 里维护一个目录树。threaded linked-list 让遍历可以在只记住“当前位置“的状态下一步步进行。</p>
+</li>
+<li>
+<p><strong>孤儿检测</strong>：mount 时遍历这个链表，检查每个 pair 是否在目录树中有父节点。没有父节点的就是孤儿——可能是上次掉电留下的。</p>
+</li>
+</ol>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>六节走完，LittleFS 的核心数据结构你已经看全了。Metadata Pair 的原子元数据更新、CTZ Skip-List 的 O(log n) 文件数据管理、lookahead 分配器在 4MB Flash 上的飞驰——这些都是工业级代码经过十年打磨的成果。</p>
+<p>但你读 LittleFS 不是为了照抄它。你读它是为了明白一件事：<strong>当设计约束不同时，同样的理论可以长出完全不同的实现。</strong> LittleFS 选择同步 API 是因为它面向有 RTOS 的 MCU——调用者可以接受阻塞。而我们在第三章做的思想实验告诉你：在裸机/RTOS 场景下，文件系统不能“阻塞等待 Flash 擦除完毕“。200ms 的擦除延迟里，CPU 有更重要的事要做。</p>
+<p>所以下一章我们不照搬 LittleFS。我们拿它验证过的核心理念——Metadata Pair 的原子提交、日志结构化的元数据、Copy-on-Write 的掉电安全——装进一个完全不同的外壳：<strong>异步状态机 + 协作式事件循环</strong>。这就是 KnotFS。</p>
+<p>没有操作系统，没有动态内存分配，只有 ~845 行 C 代码和 64KB 的“纸上 Flash“。看看第三章的理论、第四章的工业实践，能不能在 16 个块的棋盘上全部兑现。</p>
+<p><strong>悬念留给：LittleFS 的所有操作都是同步的——<code>lfs_file_write()</code> 调用会阻塞到 Flash 擦除完成。而在一个没有操作系统的裸机循环里，你不能“等着“——你得把 100ms 的擦除拆成几十个 tick 的协作式状态机。KnotFS 怎么做到“不阻塞“？</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/4.5-Block-Allocator——lookahead与磨损均衡.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/5.1-KnotFS项目概述——教学级异步日志结构化文件系统.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/4.5-Block-Allocator——lookahead与磨损均衡.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/5.1-KnotFS项目概述——教学级异步日志结构化文件系统.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

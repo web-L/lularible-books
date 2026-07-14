@@ -1,0 +1,889 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>端口状态机 · 200行代码驾驭9种状态 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="33-端口状态机200行代码驾驭9种状态"><a class="header" href="#33-端口状态机200行代码驾驭9种状态">3.3 端口状态机：200行代码驾驭9种状态</a></h1>
+<h2 id="状态机的艺术"><a class="header" href="#状态机的艺术">状态机的艺术</a></h2>
+<p>PTP端口有9种状态，状态转换规则复杂。</p>
+<p>但LinuxPTP只用<strong>337行代码</strong>就实现了完整的状态机。</p>
+<p>这是如何做到的？</p>
+<hr>
+<h2 id="状态机概述"><a class="header" href="#状态机概述">状态机概述</a></h2>
+<h3 id="ieee-1588定义的状态"><a class="header" href="#ieee-1588定义的状态">IEEE 1588定义的状态</a></h3>
+<p>第二章我们详细讲解了PTP端口的9种状态：</p>
+<pre><code>1. INITIALIZING   - 初始化
+2. FAULTY         - 故障
+3. DISABLED       - 禁用
+4. LISTENING      - 监听
+5. PRE_MASTER     - 预备主
+6. MASTER         - 主时钟
+7. PASSIVE        - 被动
+8. UNCALIBRATED   - 未校准
+9. SLAVE          - 从时钟
+</code></pre>
+<h3 id="linuxptp的状态定义"><a class="header" href="#linuxptp的状态定义">LinuxPTP的状态定义</a></h3>
+<pre><code class="language-c">/* fsm.h, 第24-35行 */
+
+enum port_state {
+    PS_INITIALIZING = 1,
+    PS_FAULTY,
+    PS_DISABLED,
+    PS_LISTENING,
+    PS_PRE_MASTER,
+    PS_MASTER,
+    PS_PASSIVE,
+    PS_UNCALIBRATED,
+    PS_SLAVE,
+    PS_GRAND_MASTER,  /* 非标准扩展 */
+};
+</code></pre>
+<p><strong>PS_GRAND_MASTER的由来</strong>：</p>
+<pre><code>IEEE 1588只定义了PS_MASTER状态。
+
+但LinuxPTP添加了PS_GRAND_MASTER状态：
+
+区别：
+- PS_MASTER：端口处于主时钟状态
+- PS_GRAND_MASTER：端口是整个网络的主时钟
+
+为什么需要这个扩展？
+
+便于判断：
+if (port_state(port) == PS_GRAND_MASTER) {
+    /* 我就是网络主时钟，可以安全地宣告 */
+}
+</code></pre>
+<h3 id="状态机事件"><a class="header" href="#状态机事件">状态机事件</a></h3>
+<pre><code class="language-c">/* fsm.h, 第38-56行 */
+
+enum fsm_event {
+    EV_NONE,                              /* 无事件 */
+    EV_POWERUP,                           /* 上电 */
+    EV_INITIALIZE,                        /* 初始化 */
+    EV_DESIGNATED_ENABLED,                /* 被启用 */
+    EV_DESIGNATED_DISABLED,               /* 被禁用 */
+    EV_FAULT_CLEARED,                     /* 故障清除 */
+    EV_FAULT_DETECTED,                    /* 故障检测 */
+    EV_STATE_DECISION_EVENT,              /* 状态决策事件 */
+    EV_QUALIFICATION_TIMEOUT_EXPIRES,     /* 资格超时 */
+    EV_ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES,  /* Announce超时 */
+    EV_SYNCHRONIZATION_FAULT,             /* 同步故障 */
+    EV_MASTER_CLOCK_SELECTED,             /* 主时钟选中 */
+    EV_INIT_COMPLETE,                     /* 初始化完成 */
+    EV_RS_MASTER,                         /* 推荐状态：主时钟 */
+    EV_RS_GRAND_MASTER,                   /* 推荐状态：网络主时钟 */
+    EV_RS_SLAVE,                          /* 推荐状态：从时钟 */
+    EV_RS_PASSIVE,                        /* 推荐状态：被动 */
+};
+</code></pre>
+<p><strong>事件分类</strong>：</p>
+<pre><code>第一类：基础事件
+- EV_POWERUP：设备上电
+- EV_INITIALIZE：重新初始化
+- EV_INIT_COMPLETE：初始化完成
+
+第二类：控制事件
+- EV_DESIGNATED_ENABLED：管理员启用端口
+- EV_DESIGNATED_DISABLED：管理员禁用端口
+
+第三类：故障事件
+- EV_FAULT_DETECTED：检测到故障
+- EV_FAULT_CLEARED：故障已清除
+- EV_SYNCHRONIZATION_FAULT：同步故障
+
+第四类：定时器事件
+- EV_ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES：Announce超时
+- EV_QUALIFICATION_TIMEOUT_EXPIRES：资格超时
+
+第五类：BMCA事件
+- EV_STATE_DECISION_EVENT：状态决策
+- EV_MASTER_CLOCK_SELECTED：主时钟选中
+- EV_RS_*：BMCA推荐状态
+</code></pre>
+<hr>
+<h2 id="主状态机实现"><a class="header" href="#主状态机实现">主状态机实现</a></h2>
+<h3 id="ptp_fsm函数"><a class="header" href="#ptp_fsm函数">ptp_fsm函数</a></h3>
+<pre><code class="language-c">/* fsm.c, 第21-220行 */
+
+enum port_state ptp_fsm(enum port_state state, enum fsm_event event, int mdiff)
+{
+    enum port_state next = state;
+
+    /* 特殊处理：初始化事件 */
+    if (EV_INITIALIZE == event || EV_POWERUP == event)
+        return PS_INITIALIZING;
+
+    /* 状态转换表 */
+    switch (state) {
+    case PS_INITIALIZING:
+        /* ... */
+        break;
+    
+    case PS_FAULTY:
+        /* ... */
+        break;
+    
+    /* ... 其他状态 */
+    }
+    
+    return next;
+}
+</code></pre>
+<p><strong>设计亮点</strong>：</p>
+<pre><code>亮点一：函数式设计
+
+状态机是一个纯函数：
+- 输入：当前状态 + 事件 + mdiff
+- 输出：下一状态
+- 无副作用
+
+好处：
+- 可测试性强
+- 易于理解
+- 便于调试
+
+亮点二：默认保持当前状态
+
+enum port_state next = state;
+
+如果事件不被处理，状态保持不变。
+这避免了复杂的错误处理。
+
+亮点三：快速路径处理
+
+if (EV_INITIALIZE == event || EV_POWERUP == event)
+    return PS_INITIALIZING;
+
+无论当前什么状态，初始化事件都回到INITIALIZING。
+避免在每个case中重复处理。
+</code></pre>
+<h3 id="状态转换详解"><a class="header" href="#状态转换详解">状态转换详解</a></h3>
+<h4 id="initializing状态"><a class="header" href="#initializing状态">INITIALIZING状态</a></h4>
+<pre><code class="language-c">/* fsm.c, 第29-40行 */
+
+case PS_INITIALIZING:
+    switch (event) {
+    case EV_FAULT_DETECTED:
+        next = PS_FAULTY;
+        break;
+    case EV_INIT_COMPLETE:
+        next = PS_LISTENING;
+        break;
+    default:
+        break;
+    }
+    break;
+</code></pre>
+<p><strong>状态转换图</strong>：</p>
+<pre><code>INITIALIZING
+    │
+    ├─ EV_FAULT_DETECTED ──→ PS_FAULTY
+    │
+    └─ EV_INIT_COMPLETE ──→ PS_LISTENING
+
+说明：
+- 初始化过程中检测到故障 → 进入故障状态
+- 初始化完成 → 进入监听状态，开始接收Announce
+</code></pre>
+<h4 id="listening状态"><a class="header" href="#listening状态">LISTENING状态</a></h4>
+<pre><code class="language-c">/* fsm.c, 第60-86行 */
+
+case PS_LISTENING:
+    switch (event) {
+    case EV_DESIGNATED_DISABLED:
+        next = PS_DISABLED;
+        break;
+    case EV_FAULT_DETECTED:
+        next = PS_FAULTY;
+        break;
+    case EV_ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES:
+        next = PS_MASTER;
+        break;
+    case EV_RS_MASTER:
+        next = PS_PRE_MASTER;
+        break;
+    case EV_RS_GRAND_MASTER:
+        next = PS_GRAND_MASTER;
+        break;
+    case EV_RS_SLAVE:
+        next = PS_UNCALIBRATED;
+        break;
+    case EV_RS_PASSIVE:
+        next = PS_PASSIVE;
+        break;
+    default:
+        break;
+    }
+    break;
+</code></pre>
+<p><strong>状态转换图</strong>：</p>
+<pre><code>LISTENING
+    │
+    ├─ EV_DESIGNATED_DISABLED ──────→ PS_DISABLED
+    │
+    ├─ EV_FAULT_DETECTED ───────────→ PS_FAULTY
+    │
+    ├─ EV_ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES ──→ PS_MASTER
+    │   （长时间没收到Announce，自己当主时钟）
+    │
+    ├─ EV_RS_MASTER ────────────────→ PS_PRE_MASTER
+    │   （BMCA建议当主时钟）
+    │
+    ├─ EV_RS_GRAND_MASTER ──────────→ PS_GRAND_MASTER
+    │   （BMCA建议当网络主时钟）
+    │
+    ├─ EV_RS_SLAVE ─────────────────→ PS_UNCALIBRATED
+    │   （BMCA建议当从时钟）
+    │
+    └─ EV_RS_PASSIVE ───────────────→ PS_PASSIVE
+        （BMCA建议保持被动）
+</code></pre>
+<h4 id="pre_master状态"><a class="header" href="#pre_master状态">PRE_MASTER状态</a></h4>
+<pre><code class="language-c">/* fsm.c, 第88-108行 */
+
+case PS_PRE_MASTER:
+    switch (event) {
+    case EV_DESIGNATED_DISABLED:
+        next = PS_DISABLED;
+        break;
+    case EV_FAULT_DETECTED:
+        next = PS_FAULTY;
+        break;
+    case EV_QUALIFICATION_TIMEOUT_EXPIRES:
+        next = PS_MASTER;
+        break;
+    case EV_RS_SLAVE:
+        next = PS_UNCALIBRATED;
+        break;
+    case EV_RS_PASSIVE:
+        next = PS_PASSIVE;
+        break;
+    default:
+        break;
+    }
+    break;
+</code></pre>
+<p><strong>PRE_MASTER的作用</strong>：</p>
+<pre><code>为什么需要PRE_MASTER状态？
+
+防止网络震荡：
+- 端口决定当主时钟
+- 先进入PRE_MASTER等待一段时间
+- 确认没有更好的主时钟
+- 超时后才进入MASTER状态
+
+等待时间：
+- 由qualificationTimeout决定
+- 通常是announceInterval的几倍
+- 确保Announce信息充分传播
+</code></pre>
+<h4 id="master和grand_master状态"><a class="header" href="#master和grand_master状态">MASTER和GRAND_MASTER状态</a></h4>
+<pre><code class="language-c">/* fsm.c, 第110-128行 */
+
+case PS_MASTER:
+case PS_GRAND_MASTER:  /* 两个状态处理相同 */
+    switch (event) {
+    case EV_DESIGNATED_DISABLED:
+        next = PS_DISABLED;
+        break;
+    case EV_FAULT_DETECTED:
+        next = PS_FAULTY;
+        break;
+    case EV_RS_SLAVE:
+        next = PS_UNCALIBRATED;
+        break;
+    case EV_RS_PASSIVE:
+        next = PS_PASSIVE;
+        break;
+    default:
+        break;
+    }
+    break;
+</code></pre>
+<p><strong>代码合并技巧</strong>：</p>
+<pre><code class="language-c">case PS_MASTER:
+case PS_GRAND_MASTER:
+    /* 两个状态共享同一套处理逻辑 */
+
+这是C语言的switch特性：
+- 多个case可以共享同一个代码块
+- 减少代码重复
+- 提高可维护性
+</code></pre>
+<h4 id="slave状态"><a class="header" href="#slave状态">SLAVE状态</a></h4>
+<pre><code class="language-c">/* fsm.c, 第186-216行 */
+
+case PS_SLAVE:
+    switch (event) {
+    case EV_DESIGNATED_DISABLED:
+        next = PS_DISABLED;
+        break;
+    case EV_FAULT_DETECTED:
+        next = PS_FAULTY;
+        break;
+    case EV_ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES:
+        next = PS_MASTER;
+        break;
+    case EV_SYNCHRONIZATION_FAULT:
+        next = PS_UNCALIBRATED;
+        break;
+    case EV_RS_MASTER:
+        next = PS_PRE_MASTER;
+        break;
+    case EV_RS_GRAND_MASTER:
+        next = PS_GRAND_MASTER;
+        break;
+    case EV_RS_SLAVE:
+        if (mdiff)  /* 主时钟变化了 */
+            next = PS_UNCALIBRATED;
+        break;
+    case EV_RS_PASSIVE:
+        next = PS_PASSIVE;
+        break;
+    default:
+        break;
+    }
+    break;
+</code></pre>
+<p><strong>mdiff参数的意义</strong>：</p>
+<pre><code class="language-c">case EV_RS_SLAVE:
+    if (mdiff)
+        next = PS_UNCALIBRATED;
+    break;
+
+mdiff = "master difference"（主时钟差异）
+
+含义：
+- mdiff = 0：主时钟没变
+- mdiff = 1：主时钟变了
+
+行为：
+- 如果收到EV_RS_SLAVE且主时钟没变（mdiff=0）
+  → 保持SLAVE状态，不需要重新校准
+  
+- 如果收到EV_RS_SLAVE且主时钟变了（mdiff=1）
+  → 进入UNCALIBRATED，重新同步
+
+这是优化：
+- 主时钟切换是常见情况
+- 避免不必要的状态切换
+</code></pre>
+<hr>
+<h2 id="仅从时钟状态机"><a class="header" href="#仅从时钟状态机">仅从时钟状态机</a></h2>
+<h3 id="ptp_slave_fsm函数"><a class="header" href="#ptp_slave_fsm函数">ptp_slave_fsm函数</a></h3>
+<pre><code class="language-c">/* fsm.c, 第222-337行 */
+
+enum port_state ptp_slave_fsm(enum port_state state, enum fsm_event event,
+                              int mdiff)
+{
+    /* ... 与ptp_fsm类似，但限制了部分状态转换 */
+}
+</code></pre>
+<p><strong>与主状态机的区别</strong>：</p>
+<pre><code>ptp_fsm（完整状态机）：
+- 可以成为主时钟
+- 可以成为从时钟
+- 可以进入所有状态
+
+ptp_slave_fsm（仅从状态机）：
+- 永远不能成为主时钟
+- 忽略EV_RS_MASTER和EV_RS_GRAND_MASTER事件
+- 只能在SLAVE、UNCALIBRATED、LISTENING之间切换
+
+适用场景：
+- slaveOnly = TRUE的设备
+- 不想参与BMCA的终端设备
+</code></pre>
+<h3 id="关键区别示例"><a class="header" href="#关键区别示例">关键区别示例</a></h3>
+<pre><code class="language-c">/* ptp_slave_fsm中的LISTENING状态 */
+
+case PS_LISTENING:
+    switch (event) {
+    case EV_ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES:
+    case EV_RS_MASTER:
+    case EV_RS_GRAND_MASTER:
+    case EV_RS_PASSIVE:
+        next = PS_LISTENING;  /* 保持LISTENING，不当主时钟 */
+        break;
+    case EV_RS_SLAVE:
+        next = PS_UNCALIBRATED;
+        break;
+    }
+    break;
+</code></pre>
+<p><strong>对比主状态机</strong>：</p>
+<pre><code class="language-c">/* ptp_fsm中的LISTENING状态 */
+
+case PS_LISTENING:
+    switch (event) {
+    case EV_ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES:
+        next = PS_MASTER;  /* 可以成为主时钟 */
+        break;
+    case EV_RS_MASTER:
+        next = PS_PRE_MASTER;  /* 可以成为主时钟 */
+        break;
+    case EV_RS_GRAND_MASTER:
+        next = PS_GRAND_MASTER;  /* 可以成为主时钟 */
+        break;
+    }
+    break;
+</code></pre>
+<hr>
+<h2 id="状态机的使用"><a class="header" href="#状态机的使用">状态机的使用</a></h2>
+<h3 id="在端口中调用状态机"><a class="header" href="#在端口中调用状态机">在端口中调用状态机</a></h3>
+<pre><code class="language-c">/* port.c中的状态决策（简化） */
+
+void port_dispatch(struct port *p, enum fsm_event event, int mdiff)
+{
+    enum port_state next;
+    
+    /* 调用状态机 */
+    if (port_slave_only(p)) {
+        next = ptp_slave_fsm(p-&gt;state, event, mdiff);
+    } else {
+        next = ptp_fsm(p-&gt;state, event, mdiff);
+    }
+    
+    /* 状态变化 */
+    if (next != p-&gt;state) {
+        /* 退出旧状态 */
+        port_state_exit(p);
+        
+        /* 更新状态 */
+        p-&gt;state = next;
+        
+        /* 进入新状态 */
+        port_state_enter(p);
+    }
+}
+</code></pre>
+<h3 id="状态进入退出动作"><a class="header" href="#状态进入退出动作">状态进入/退出动作</a></h3>
+<pre><code class="language-c">/* port.c中的状态进入动作（简化） */
+
+static void port_state_enter(struct port *p)
+{
+    switch (p-&gt;state) {
+    case PS_INITIALIZING:
+        port_init(p);
+        break;
+    
+    case PS_LISTENING:
+        port_start_listening(p);
+        break;
+    
+    case PS_MASTER:
+    case PS_GRAND_MASTER:
+        port_start_master(p);
+        break;
+    
+    case PS_SLAVE:
+        port_start_slave(p);
+        break;
+    
+    /* ... */
+    }
+}
+</code></pre>
+<p><strong>状态进入动作详解</strong>：</p>
+<pre><code>PS_INITIALIZING：
+- 初始化端口数据结构
+- 检查网络链路状态
+- 设置初始参数
+
+PS_LISTENING：
+- 启动Announce接收定时器
+- 清空外部时钟列表
+- 开始监听网络
+
+PS_MASTER/PS_GRAND_MASTER：
+- 启动Announce发送定时器
+- 启动Sync发送定时器
+- 准备响应Delay_Req
+
+PS_SLAVE：
+- 清空同步状态
+- 准备接收Sync和Announce
+- 启动Delay_Req发送
+</code></pre>
+<hr>
+<h2 id="状态机可视化"><a class="header" href="#状态机可视化">状态机可视化</a></h2>
+<h3 id="完整状态转换图"><a class="header" href="#完整状态转换图">完整状态转换图</a></h3>
+<pre><code>                              ┌───────────────────┐
+                              │  PS_INITIALIZING  │
+                              └───────────────────┘
+                              │    │           ▲
+                    EV_FAULT_DETECTED    EV_FAULT_CLEARED
+                              │    │           │
+                              ▼    │    ┌─────────────┐
+                         ┌─────────┐ │    │  PS_FAULTY  │
+                         │         │ └────┤             │
+                         │  ┌──────┴──────┴──────┐      │
+                         │  │                     │      │
+                         │  │ EV_DESIGNATED_DISABLED     │
+                         │  │                     │      │
+                         │  ▼                     ▼      │
+                         │  ┌─────────────────────────┐  │
+                         │  │      PS_DISABLED        │  │
+                         │  └─────────────────────────┘  │
+                         │                               │
+                         │  EV_DESIGNATED_ENABLED        │
+                         │                               │
+                         ▼                               │
+                    ┌──────────────┐                    │
+                    │ PS_LISTENING │◄───────────────────┤
+                    └──────────────┘                    │
+                         │  │                           │
+        EV_ANNOUNCE_TIMEOUT│  │EV_RS_SLAVE              │
+                         │  │                           │
+                         │  ▼                           │
+         ┌───────────────┴───────────────┐             │
+         │                               │             │
+         │  ┌─────────────┐    ┌──────────────┐       │
+         │  │ PS_PRE_MASTER│    │PS_UNCALIBRATED│       │
+         │  └─────────────┘    └──────────────┘       │
+         │         │                    │              │
+         │  EV_QUAL_TIMEOUT             │ EV_MASTER_SELECTED
+         │         │                    │              │
+         │         ▼                    ▼              │
+         │  ┌──────────────┐    ┌──────────────┐      │
+         │  │  PS_MASTER   │    │   PS_SLAVE   │──────┘
+         │  └──────────────┘    └──────────────┘
+         │                               ▲
+         │                               │
+         └───────────────────────────────┘
+                   EV_SYNCHRONIZATION_FAULT
+
+         ┌──────────────┐
+         │  PS_PASSIVE  │ (环路检测后进入)
+         └──────────────┘
+</code></pre>
+<hr>
+<h2 id="设计模式分析"><a class="header" href="#设计模式分析">设计模式分析</a></h2>
+<h3 id="状态模式"><a class="header" href="#状态模式">状态模式</a></h3>
+<p>LinuxPTP的状态机实现了经典的状态模式：</p>
+<pre><code>状态模式的要素：
+1. 状态枚举（enum port_state）
+2. 事件枚举（enum fsm_event）
+3. 状态转换表（switch-case嵌套）
+4. 状态进入/退出动作
+
+优点：
+- 状态转换逻辑集中在一处
+- 易于添加新状态
+- 易于添加新事件
+- 状态转换清晰可见
+</code></pre>
+<h3 id="表驱动-vs-嵌套switch"><a class="header" href="#表驱动-vs-嵌套switch">表驱动 vs 嵌套switch</a></h3>
+<p>LinuxPTP选择<strong>嵌套switch</strong>而不是<strong>状态转换表</strong>：</p>
+<pre><code>状态转换表方式（伪代码）：
+struct {
+    enum port_state from;
+    enum fsm_event event;
+    enum port_state to;
+} state_table[] = {
+    {PS_INITIALIZING, EV_INIT_COMPLETE, PS_LISTENING},
+    {PS_LISTENING, EV_RS_SLAVE, PS_UNCALIBRATED},
+    // ...
+};
+
+嵌套switch方式：
+switch (state) {
+    case PS_INITIALIZING:
+        switch (event) {
+            case EV_INIT_COMPLETE:
+                next = PS_LISTENING;
+        }
+}
+
+为什么选择嵌套switch？
+
+优点：
+- 代码紧凑
+- 编译器优化好
+- 无需额外数据结构
+- 易于调试（可以在case中加日志）
+
+缺点：
+- 添加状态需要修改多处代码
+- 不如表驱动直观
+
+LinuxPTP的考虑：
+- 状态数量固定（9个）
+- 事件数量固定（17个）
+- 状态转换规则稳定
+- 选择嵌套switch更高效
+</code></pre>
+<hr>
+<h2 id="小结状态机的设计智慧"><a class="header" href="#小结状态机的设计智慧">小结：状态机的设计智慧</a></h2>
+<p><strong>函数式设计</strong>：</p>
+<ul>
+<li>纯函数，无副作用</li>
+<li>易于测试和调试</li>
+</ul>
+<p><strong>默认保持状态</strong>：</p>
+<ul>
+<li>未处理的事件不改变状态</li>
+<li>避免意外状态转换</li>
+</ul>
+<p><strong>快速路径处理</strong>：</p>
+<ul>
+<li>特殊事件提前返回</li>
+<li>减少嵌套深度</li>
+</ul>
+<p><strong>状态合并</strong>：</p>
+<ul>
+<li>相似状态共享代码</li>
+<li>减少代码重复</li>
+</ul>
+<p><strong>两种状态机</strong>：</p>
+<ul>
+<li>完整状态机（ptp_fsm）</li>
+<li>仅从状态机（ptp_slave_fsm）</li>
+<li>满足不同需求</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>状态机决定端口“要做什么“，BMCA决定端口“要当什么“。</p>
+<p>下一节，我们将分析<strong>BMCA算法实现</strong>——看看LinuxPTP如何选择主时钟。</p>
+<blockquote>
+<p><strong>【悬念留给3.4】</strong></p>
+<p>BMCA是PTP协议的核心算法。</p>
+<p>它需要比较两个数据集，决定谁更适合当主时钟。</p>
+<p>LinuxPTP的BMCA实现只有175行，包括：</p>
+<ul>
+<li>数据集比较函数</li>
+<li>状态决策函数</li>
+</ul>
+<p>它是如何在这么少的代码中实现完整的BMCA？</p>
+<p>下一节，我们详细解读。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/3.2-数据集与消息结构-PTP数据的编码艺术.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/3.4-BMCA算法实现-民主选举的代码艺术.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/3.2-数据集与消息结构-PTP数据的编码艺术.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/3.4-BMCA算法实现-民主选举的代码艺术.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

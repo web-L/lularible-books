@@ -1,0 +1,567 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>SLC · MLC · TLC——越多越不靠谱 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="23-slcmlctlc越多越不靠谱"><a class="header" href="#23-slcmlctlc越多越不靠谱">2.3 SLC/MLC/TLC——越多越不靠谱</a></h2>
+<h3 id="一个晶体管能装几个比特"><a class="header" href="#一个晶体管能装几个比特">一个晶体管能装几个比特</a></h3>
+<p>上一节我们讨论了 NOR 和 NAND 两种架构——那是在问：几十亿个晶体管在硅片上怎么连线。现在回到一个更基本的物理问题：<strong>单个浮栅晶体管到底能存几个比特？</strong></p>
+<p>前面讲浮栅晶体管读写原理时，我们默认了最朴素的方式：浮栅里有电子 = “0”，没电子 = “1”。一个单元只区分两种状态。这叫 <strong>SLC（Single-Level Cell，单层单元）</strong>。</p>
+<p>但工程师们不满足于此。他们问：如果我不只判断“有没有电子“，而是精确控制电子数量——让浮栅里的电子量分成 4 个等级、8 个等级、甚至 16 个等级——不就能在一个晶体管里存更多比特吗？</p>
+<p>这就是 MLC（Multi-Level Cell，多层单元，2 bit/cell）、TLC（Triple-Level Cell，三层单元，3 bit/cell）、QLC（Quad-Level Cell，四层单元，4 bit/cell）的逻辑。</p>
+<p>但物理不是免费的。每多一个比特，你就在用更小的电压窗口承载同样的逻辑信息。让我们看实际的测量数据。</p>
+<p>芯片测试设备会对每一个存储单元做一件事：反复编程、读取、擦除，然后画出一条曲线——<strong>阈值电压分布曲线</strong>。</p>
+<p>横轴是电压（0到3.3V），纵轴是这个电压下读到的单元数量。对于一颗 SLC 芯片，你看到的曲线是这样的：</p>
+<pre><code>SLC 阈值电压分布
+=======================
+
+单元数量
+  ↑
+  │
+  │    ┌──────┐                          ┌──────┐
+  │    │      │                          │      │
+  │    │  1   │                          │  0   │
+  │    │(擦除态)                          │(编程态)
+  │    │      │                          │      │
+  │    └──────┘                          └──────┘
+  └──────────────────────────────────────────────→ 电压
+         0V         1.0V        2.0V        3.3V
+         ←────────── 参考电压 ──────────→
+                     ~1.5V
+</code></pre>
+<p>你知道这意味着什么吗？</p>
+<p>这颗SLC芯片的存储单元只有两个状态。“1”（擦除态）的分布峰值大约在1.0V左右，“0”（编程态）的分布峰值大约在2.5V左右。中间的参考电压定在大约1.5V。读的时候，电压低于1.5V的判为“1“，高于1.5V的判为“0“。</p>
+<p>两个分布之间，有一大片开阔地。这片开阔地叫做<strong>感测裕度（sensing margin）</strong>。在这个SLC的例子里，感测裕度大约是1.0V。这意味着即使擦除态的电子泄漏了一些、阈值电压飘移了0.3V，它仍然稳稳地在“1“的区间里，不会被误判为“0“。</p>
+<p>这就是SLC可靠性的根基：<strong>足够的容错空间</strong>。</p>
+<p>现在，测试机切换到一颗MLC芯片。你看到的曲线变了：</p>
+<pre><code>MLC 阈值电压分布
+=======================
+
+单元数量
+  ↑
+  │
+  │  ┌──┐    ┌──┐    ┌──┐    ┌──┐
+  │  │  │    │  │    │  │    │  │
+  │  │11│    │10│    │00│    │01│
+  │  │  │    │  │    │  │    │  │
+  │  └──┘    └──┘    └──┘    └──┘
+  └────────────────────────────────────→ 电压
+     0V   1.0V   1.8V   2.3V   3.3V
+             ←─→  ←─→  ←─→
+             感测裕度 ~0.3V
+</code></pre>
+<p>四个状态：11、10、00、01。不是简单的二进制顺序——你注意到编码是格雷码（Gray Code），相邻状态之间只变化一位。这是故意的：如果一个单元从“10“误读为“00“，只有一位出错，ECC纠错码可以纠正。</p>
+<p>四个状态挤在同样的3.3V电压范围内。每个状态之间的感测裕度从SLC的1.0V骤降到大约0.3V。<strong>仅仅多存了一个bit，容错空间被压缩了70%。</strong></p>
+<p>你继续按按钮，测试机切到TLC模式：</p>
+<pre><code>TLC 阈值电压分布
+=======================
+
+单元数量
+  ↑
+  │
+  │ ┌┐┌┐┌┐┌┐┌┐┌┐┌┐┌┐
+  │ │││││││││││││││││
+  │ │││││││││││││││││  8个状态，密密麻麻
+  │ └┘└┘└┘└┘└┘└┘└┘└┘
+  └────────────────────────────────────→ 电压
+     0V                            3.3V
+     ←──────── 感测裕度 ~0.15V ────────→
+</code></pre>
+<p>八个状态。感测裕度进一步压缩到大约0.15V。八个分布之间的边界，肉眼几乎分不清了。但测试机的ADC（模数转换器）还必须分清——它需要足够高的精度（至少8位ADC），才能可靠地区分这8个电平。</p>
+<p>如果再切到QLC——16个状态——感测裕度大约0.08V，不到SLC的十分之一。</p>
+<p>你现在明白你的工作有多难了吗？</p>
+<hr>
+<h3 id="02v能干什么"><a class="header" href="#02v能干什么">0.2V能干什么？</a></h3>
+<p>让我们把这个感测裕度的问题具象化。</p>
+<p>一颗3.3V供电的NAND Flash芯片，内部有一个电荷泵（Charge Pump）电路，能把3.3V升压到大约20V，用于编程和擦除操作。但读取的时候，它只在3.3V范围内工作。</p>
+<p>对于QLC来说，16个状态均匀分布在3.3V的电压窗口里，每个状态分到的“领地“是：</p>
+<pre><code>3.3V ÷ 16 = 约0.206V
+</code></pre>
+<p><strong>每个状态只有0.2V的空间。</strong> 而且这还不是全部——你还得留出分布之间的间隙（guard band），防止两个相邻状态的尾巴重叠。实际的可用窗口更小。</p>
+<p>0.2V是什么概念？</p>
+<p>你手机充电器输出的5V，波动范围大约是±0.25V——这已经是相当稳定的电源了。但Flash内部的电荷泵、参考电压电路、读出放大器（Sense Amplifier），它们必须在这个量级的电压上，精确地判断一个浮栅晶体管里几十个电子的去留。</p>
+<p>这里有一件事必须讲清楚：<strong>Flash存储单元不是数字器件，它是模拟器件。</strong></p>
+<p>你写代码的时候，<code>write(fd, "A", 1)</code> 看起来是一个数字操作——你写了一个确定的字节。但在物理层，编程电路在做的事情是：向浮栅注入一串精确控制的电压脉冲，每打完一个脉冲就读取一次阈值电压，和目标阈值比较，不够再加一个脉冲，够了就停。</p>
+<p>这个技术叫<strong>增量步进脉冲编程（ISPP，Incremental Step Pulse Programming）</strong>。它的核心是一串反复迭代：</p>
+<pre><code>ISPP 算法伪代码
+=======================
+
+target_vth = lookup_table[data_value]   // 查表：这个数据对应的目标阈值电压
+current_vth = sense(cell)               // 读取当前阈值电压
+pulse_voltage = V_START                 // 从起始电压开始
+
+while current_vth &lt; target_vth:
+    apply_program_pulse(pulse_voltage)  // 打一个编程脉冲
+    current_vth = sense(cell)           // 读回当前状态
+    pulse_voltage += V_STEP             // 步进增加脉冲电压
+    
+    if pulse_count &gt; MAX_PULSES:        // 超过最大脉冲数，这个单元可能坏了
+        mark_bad_block()
+        break
+</code></pre>
+<p>对于SLC，只有两个目标电压，脉冲可以大步前进——可能5到10个脉冲就完成编程。对于TLC，有8个精细的目标电压，每个脉冲的步长必须极小（可能0.1V的步进），需要几十个甚至上百个脉冲才能精确命中目标。</p>
+<p><strong>这也是为什么TLC的写入速度比SLC慢3到5倍。</strong> 不是因为物理速度慢了，而是因为编程算法需要更多的精细操作来抵达准确的目标。</p>
+<hr>
+<h3 id="电子逃亡记"><a class="header" href="#电子逃亡记">电子逃亡记</a></h3>
+<p>现在我们来聊更可怕的事：<strong>电子不会永远待在浮栅里。</strong></p>
+<p>Flash存储单元的结构像一个微型的电容器。浮栅（Floating Gate）被一层大约8-10纳米厚的二氧化硅（SiO₂）隧道氧化层包裹着。编程的时候，你用Fowler-Nordheim隧穿效应（在氧化层两端加一个强电场，电子直接“穿墙“进入浮栅），把电子赶进了这个微型牢笼。</p>
+<p>但量子力学告诉我们：<strong>没有任何墙是绝对不透的。</strong></p>
+<pre><code>电子泄漏模型（简化）
+=======================
+
+      控制栅 (Control Gate)
+      ════════════════════════
+      ║   ONO介质层          ║
+      ╠══════════════════════╣
+      ║   ██ 浮栅 ██         ║  ← 电子被关在这里
+      ║   ██████████         ║     但它们在慢慢逃逸
+      ╠══════════════════════╣
+      ║   隧道氧化层 ~10nm   ║  ← 最薄弱的环节
+      ╠══════════════════════╣
+      ║  沟道 (Channel)      ║
+      ════════════════════════
+      源极 (Source)    漏极 (Drain)
+
+
+电子逃逸速率 ∝ e^(-tox)   ← tox = 氧化层厚度
+                     ↑
+                 氧化层越薄，逃逸越快。
+                 10nm不是一个巧合——它是工艺和物理的妥协。
+                 太厚了编程需要太高电压，太薄了电子全跑了。
+</code></pre>
+<p>电子逃逸的数学模型大致遵循阿伦尼乌斯方程（Arrhenius Equation）：</p>
+<pre><code>逃逸速率 = A × e^(-Ea / kT)
+
+其中：
+  Ea = 激活能（约1.1eV，与氧化层质量和陷阱密度有关）
+  k  = 玻尔兹曼常数
+  T  = 绝对温度（开尔文）
+</code></pre>
+<p>注意那个<code>T</code>在指数的分母里。<strong>温度越高，逃逸越快。</strong></p>
+<p>对于SLC来说，这个问题不算致命。假设SLC的“1“状态阈值电压大约1.0V，“0“状态大约2.5V，参考电压1.5V。即使浮栅泄漏了0.4V的电荷量，“1“可能在读出来时变成了1.4V——但仍低于1.5V的参考线，依然判为“1”。没有问题。</p>
+<p>对于TLC来说——感测裕度只有0.15V。泄漏0.1V，你已经跨过了边界。</p>
+<pre><code>泄漏对不同cell类型的影响
+=======================
+
+SLC:
+  ┌──────────────┐              ┌──────────────┐
+  │  "1" 状态    │    ←─0.4V─→  │  "0" 状态    │
+  │  (0.5~1.5V)  │   安全余量    │  (1.5~3.0V)  │
+  └──────────────┘              └──────────────┘
+                      ↑
+                  参考电压=1.5V
+  泄漏0.4V后：1.0V→1.4V，仍然判为"1"  ✓ 安全
+
+
+TLC:
+  ┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐
+  │状态0 ││状态1 ││状态2 ││状态3 ││状态4 ││状态5 ││状态6 ││状态7 │
+  └──────┘└──────┘└──────┘└──────┘└──────┘└──────┘└──────┘└──────┘
+           ←─0.15V→
+  泄漏0.1V后：状态3的单元可能被误读为状态4  ✗ 比特错误！
+</code></pre>
+<p>这就是核心矛盾：<strong>每个单元存的bit越多，单个状态的电压窗口越小，对电荷泄漏的容忍度就越低。</strong> 你要么接受更短的保存时间，要么想办法纠错。</p>
+<hr>
+<h3 id="ecc那个帮你擦屁股的数学"><a class="header" href="#ecc那个帮你擦屁股的数学">ECC：那个帮你擦屁股的数学</a></h3>
+<p>所谓“想办法纠错“，就是<strong>纠错码（ECC，Error Correction Code）</strong>。</p>
+<p>TLC和QLC能做到商用，靠的不是物理上减少电荷泄漏——物理上我们已经撞到量子隧穿的墙了——而是靠数学。在数据写进去之前，先附加上冗余信息；读出来的时候，用这些冗余信息来检测和纠正错误。</p>
+<p>SLC产品通常只需要简单的1-bit纠错（汉明码）。MLC需要BCH码（Bose-Chaudhuri-Hocquenghem），可以纠正每个码字中的多个bit错误。TLC和QLC则需要<strong>LDPC（低密度奇偶校验码，Low-Density Parity-Check）</strong>——一种软判决解码算法，它不只是看“0还是1“，而是读出“这一位有多大可能是0，多大可能是1“，然后通过迭代概率推断来纠错。</p>
+<pre><code>Flash 纠错技术演进
+=======================
+
+SLC (2 states)
+  │
+  ├── ECC需求：1-bit 纠错/512B
+  │   技术：汉明码 (Hamming Code)
+  │   开销：~13 bit/512B (~0.3%)
+  │
+MLC (4 states)
+  │
+  ├── ECC需求：4~8 bit 纠错/512B
+  │   技术：BCH码 (Bose-Chaudhuri-Hocquenghem)
+  │   开销：~60 bit/512B (~1.5%)
+  │
+TLC (8 states)
+  │
+  ├── ECC需求：40+ bit 纠错/1KB
+  │   技术：LDPC (Low-Density Parity-Check)
+  │   开销：~10% 的存储空间
+  │
+QLC (16 states)
+  │
+  ├── ECC需求：100+ bit 纠错/2KB
+  │   技术：LDPC + 多次重读 + 机器学习校准
+  │   开销：~15%~20% 的存储空间
+  │
+PLC (32 states) ← 实验室阶段
+  │
+  └── 业界正在尝试，但目前良率极低。
+      即使做成，写入速度可能慢到令人绝望。
+</code></pre>
+<p>ECC的开销不是免费的。BCH码占用大约1.5%的额外存储空间，LDPC码占用10%甚至更多。这意味着你买的1TB TLC SSD，实际上有大约1.1TB的原始NAND容量，其中100GB被ECC和坏块管理消耗掉了。</p>
+<p>而且ECC不是万能的。LDPC软判决解码需要多次读取同一个单元（用不同的参考电压），读出多个样本，然后做概率推断。这个过程叫做<strong>read retry（读重试）</strong>。在消费级SSD上，你可能感觉不到——因为控制器在后台悄悄做了这一切，只用了微秒级的时间。但如果出错太多，LDPC也救不了，控制器会标记这个块为坏块，把数据迁移走，再也不用了。</p>
+<p><strong>这就是你在买“便宜的TLC SSD“时正在购买的东西：不是更好的物理介质，而是更聪明的数学。</strong></p>
+<hr>
+<h3 id="85c的温度实验"><a class="header" href="#85c的温度实验">85°C的温度实验</a></h3>
+<p>2020年，一份来自某头部NAND厂商的可靠性白皮书披露了这样一组数据：</p>
+<p>在室温（25°C）下，一块全新的TLC NAND Flash在经历3000次P/E循环后，数据保存时间（data retention）大约为1年。但注意——这是<strong>冷断电存储</strong>条件下的数据。芯片在未通电状态下，浮栅里的电子只能靠那10纳米氧化层挡着。</p>
+<p>现在把温度升高到85°C——这是汽车ECU在引擎舱里的常见工作温度。</p>
+<p>同样的芯片，在同样的3000次P/E循环后，数据保存时间从1年骤降到<strong>不到1个月</strong>。</p>
+<p>到125°C——这是某些极端工业应用和汽车级的高温认证温度——保存时间可能降到几天。</p>
+<pre><code>温度对数据保持时间的影响（TLC NAND，典型值）
+=======================
+
+工作温度      P/E=0 (全新)        P/E=3000 (寿命中期)     P/E=5000 (寿命末期)
+─────────────────────────────────────────────────────────────
+25°C          10 年               1 年                    3 个月
+55°C          3 年                3 个月                  2 周
+85°C          1 年                1 个月                  3 天
+125°C         3 个月              1 周                    1 天
+
+注：以上为数量级估算，具体数值因厂商和工艺节点而异。
+     但趋势是确定的：温度每升高10°C，保存时间大约减半（阿伦尼乌斯定律）。
+</code></pre>
+<p>这回答了为什么你车载导航仪的SD卡在夏天暴晒后会莫名其妙地丢数据。也回答了为什么汽车行业几乎<strong>全面拒绝TLC/QLC NAND</strong>作为ECU的主要存储介质。</p>
+<hr>
+<h3 id="温度物理的加速器"><a class="header" href="#温度物理的加速器">温度：物理的加速器</a></h3>
+<p>85°C 实验的数据说明了一切：温度每升高 10°C，数据保存时间大约减半（阿伦尼乌斯定律的直接推论）。对于 SLC——感测裕度 1.0V——一块芯片在 125°C 下仍能保持数据数年。对于 TLC——感测裕度只有 0.15V——同样温度下数据可能在几天内就开始出错。</p>
+<p>这不是工程偏好的问题。这是物理的必然结论：<strong>每多一个比特，温度就把你推向熵增的速度加快一档。</strong> 当数据损坏的后果是刹车失灵而不是照片丢失时，你只能选择感测裕度最大的那条路。</p>
+<p>这也就是为什么汽车 ECU 几乎全部使用 SLC NOR——不是因为 NOR 的架构更可靠（架构优势是 2.2 的话题），而是因为 SLC 的感测裕度能扛住引擎舱的 125°C。</p>
+<hr>
+<h3 id="读干扰你不写也会破坏数据"><a class="header" href="#读干扰你不写也会破坏数据">读干扰：你不写，也会破坏数据</a></h3>
+<p>还有一个容易被忽略的问题：读干扰（Read Disturb）。</p>
+<p>你可能会想：我只读不写，数据总不会坏吧？</p>
+<p>不。</p>
+<p>当你读取一个Flash存储单元时，你需要在控制栅上加一个读取电压（通常大约5V），在源极和漏极之间检测电流。这个读取电压虽然远低于编程电压（~20V），但它确实会影响<strong>同一个字线（word line）上的其他单元</strong>。</p>
+<p>在NAND Flash中，一个块（block）内的所有单元共享字线和位线。读一个页的时候，同一字线上的其他页也会感受到这个读取电压。反复读取——比如你的行车记录仪反复回放视频文件——会导致那些“只是被读取“的单元慢慢被软编程（soft program），阈值电压轻微上移。</p>
+<pre><code>NAND 读干扰机制
+=======================
+
+        位线0    位线1    位线2    ...  位线N
+         │        │        │             │
+    ─────┼────────┼────────┼─────────────┼── 字线0（选中，加读电压~5V）
+         │        │        │             │
+    ─────┼────────┼────────┼─────────────┼── 字线1（未选中，但也感受到电场）
+         │  ↑受干扰  ↑受干扰  ↑受干扰     │
+    ─────┼────────┼────────┼─────────────┼── 字线2（同上）
+         │        │        │             │
+
+
+反复读字线0上的不同位线
+       ↓
+字线1、字线2上所有单元
+阈值电压缓慢上移
+       ↓
+擦除态("1")的单元
+电压升高，跨过参考线
+被误读为编程态("0")
+       ↓
+读干扰引起的比特错误
+</code></pre>
+<p>NOR Flash在读干扰方面比NAND好得多。原因有三：一是NOR的读取电压更低（~3-5V vs NAND的~5-6V）；二是NOR的单元结构不会像NAND串联链那样累积“软编程”效应；三是NOR做XIP时读操作分散在不同地址，而NAND读同一页会反复干扰共享同一字线的邻居单元。这也是汽车偏爱NOR的又一个原因——ECU的大部分操作是读固件代码（XIP，Execute-In-Place），读操作占比极高，对读干扰的抵抗力至关重要。</p>
+<hr>
+<h3 id="图书馆"><a class="header" href="#图书馆">图书馆</a></h3>
+<p>在告别这一节之前，我想给你一个隐喻——一个你永远忘不掉的隐喻。</p>
+<p>想象你在编排一面书架：</p>
+<p><strong>SLC = 厚木板书架。</strong> 每层书架，要么满满地放着书（“1”），要么空着（“0”）。你隔老远就能看清：这格有书，那格没书。不需要尺子，不需要精密仪器，肉眼足够。如果有人偷偷抽走半本书，你根本看不出来——因为书足够厚，抽走半本剩下半本依然是“有书“。<strong>这就是SLC：两种状态，极大裕度，肉眼可辨。</strong></p>
+<p><strong>MLC = 薄板书架。</strong> 每层书架有四种状态：满架、半架、三本、空架。你需要走近一些才能区分。光线暗一点，半架看起来可能像三本。你需要一把尺子。<strong>感测裕度不是多余的——它是你在模糊现实中的判断依据。</strong></p>
+<p><strong>TLC = 纸板书架。</strong> 每层书架有八种可能的书脊厚度。你无法用肉眼区分——你需要一台游标卡尺。你不只是在判断“有没有书“，你是在测量“书脊有多厚“。而且纸板会随着时间流逝慢慢受潮变软（电荷泄漏），你可能今天测得它是3.5mm，三个月后变成3.1mm，而3.0mm是边界。<strong>你已经不是在“存书“了，你是在做精密测量。</strong></p>
+<p><strong>QLC = 你还想往上叠？</strong> 每层书架有十六种书脊厚度。你的卡尺必须是实验室级别。每一次测量都伴随着不可避免的误差。而且书架还在不停地受潮变形，变形的速度取决于温度、湿度、上一次你调整它的时间……<strong>你管的不是书架，是一座物理测量实验室。</strong></p>
+<pre><code>SLC:  [▓▓▓▓▓▓▓▓▓▓] [          ]        ← 二值判断，谁都能做
+MLC:  [▓▓▓▓▓▓▓▓▓▓] [▓▓▓▓▓    ] [▓▓      ] [          ]  ← 需要目测
+TLC:  [▓▓▓▓▓▓▓▓▓▓] [▓▓▓▓▓▓▓  ] [▓▓▓▓▓   ] [▓▓▓▓    ] [▓▓▓     ] [▓▓      ] [▓       ] [          ]
+                  ← 需要卡尺 →
+QLC:  [████████████][███████████][██████████][█████████][████████][███████][██████][█████][████][███][██][█][  ]
+                        ← 需要干涉仪 →
+</code></pre>
+<p>你明白了核心命题吗？</p>
+<p><strong>每增加一个bit，你就在用一个更易碎的物理现实来承载同样的逻辑信息。</strong> 你可以用数学（ECC）来修补物理，但数学也是有限度的。香农定理不是建议，是物理定律。</p>
+<p>如果有一天，有人告诉你，“我们做出了八层单元（OLC），每单元存8个bit”——你不需要去读白皮书。你只需要问他一个问题：</p>
+<p><strong>“感测裕度是多少？”</strong></p>
+<p>如果他支支吾吾，答案就是：“已经低于热噪声水平了。”</p>
+<hr>
+<h3 id="plc和3d-nand物理极限上的舞蹈"><a class="header" href="#plc和3d-nand物理极限上的舞蹈">PLC和3D NAND：物理极限上的舞蹈</a></h3>
+<p>说到这里，你可能会问：既然QLC已经把16个状态塞得满满当当，感测裕度只剩0.08V，为什么业界还在推进PLC（Penta-Level Cell，五层单元，32个状态）？</p>
+<p>答案是：<strong>他们不在同一个维度上解决问题。</strong></p>
+<p>传统的平面NAND（2D NAND）到大约15nm制程节点就走不下去了——光刻精度逼近了量子极限，单元之间的串扰（cell-to-cell interference）大到无法忽略。一个单元的编程状态变化，会通过寄生电容耦合影响到相邻单元，造成“邻居干扰“。这就像一排人挤在窄巷子里，任何一个人动一下，他两边的人都会感受到。</p>
+<p>于是业界转向了<strong>3D NAND</strong>——把存储单元从平面排列变成了垂直堆叠，像盖摩天大楼一样一层一层往上盖。</p>
+<pre><code>2D NAND → 3D NAND 的维度跃升
+=======================
+
+2D NAND (平面):
+  ┌──┬──┬──┬──┬──┐   ← 所有单元在同一平面
+  │  │  │  │  │  │      随着制程缩小，单元间距越来越小
+  ├──┼──┼──┼──┼──┤      串扰加剧，感测裕度恶化
+  │  │  │  │  │  │      
+  └──┴──┴──┴──┴──┘      
+
+3D NAND (垂直):
+         ↑
+    ┌───┴───┐
+    │ Layer N│   ← 第N层
+    ├───────┤
+    │ Layer  │   ← ...
+    │  ...   │
+    ├───────┤
+    │ Layer 3│   ← 第3层
+    ├───────┤
+    │ Layer 2│   ← 第2层
+    ├───────┤
+    │ Layer 1│   ← 第1层（衬底上）
+    └───────┘
+         ↓
+
+好处：每个单元可以做得更大（因为单元在同一层上的间距大了），
+      感测裕度反而比2D同密度更好。
+      用大尺寸单元+垂直堆叠，换取密度提升。
+</code></pre>
+<p>3D NAND目前已经堆叠到232层甚至更高（美光2023年量产232层，三星推进到300层以上）。每一层之间的连接通过垂直穿透的“通道孔“（channel hole）——这是一个深宽比超过100:1的恐怖蚀刻工艺工程。</p>
+<p>3D NAND的单元不再是平面晶体管，而是一种叫做<strong>电荷陷阱闪存（Charge Trap Flash, CTF）</strong> 的结构。它不用浮栅多晶硅层存储电子，而是在氮化硅（Si₃N₄）层中捕获电子——像一个陷阱阵列。CTF的好处是：电荷被固定在陷阱中，不会像浮栅那样自由移动，因此相邻单元之间的串扰更小，感测裕度可以做得更宽。</p>
+<p>但即使有3D NAND和CTF，物理定律仍然在惩罚多bit存储。TLC 3D NAND的P/E寿命通常比QLC 3D NAND高3到5倍。而且随着层数增加，上层的单元和下层的单元存在工艺偏差，存储特性不一致，会进一步压缩感测裕度。</p>
+<p>这个行业陷入了一个有趣的矛盾：<strong>NAND厂商疯狂追求每单元多存bit来降低每GB成本，但Flash文件系统工程师则被迫用更强的ECC和更复杂的FTL来掩盖这些bit的不可靠。</strong> 一场攻防战，双方都以物理极限为参照系，努力从石头里再挤出一滴水。</p>
+<p>而我们的生产系统，反其道而行之——它使用的是SLC NOR，容量小、成本高、但可靠。这种选择背后，不是一个技术判断，而是一个价值判断：<strong>当数据损坏的后果是刹车失灵而不是照片丢失时，可靠性的优先级压倒一切。</strong></p>
+<hr>
+<h3 id="熵增是存储永恒的对手"><a class="header" href="#熵增是存储永恒的对手">熵增，是存储永恒的对手</a></h3>
+<p>在物理学的视角下，包含信息的任何物理系统，都在走向混乱。这是热力学第二定律的直接推论。</p>
+<p>你编程一个SLC单元——你用强电场把几千个电子赶进了浮栅。这是一个<strong>低熵状态</strong>：电子被精确地限制在一个小小的空间里。信息被编码为“0“。</p>
+<p>但你一松手——编程脉冲停止了——熵增就开始了。电子通过氧化层的陷阱慢慢泄漏，浮栅里的电子数量从几千降到几百、几十。阈值电压从明确的“0“状态向模糊的“1“状态漂移。最终，你的“0“变成了“1“——信息被抹掉了。</p>
+<p><strong>不是被人抹掉的。是被时间抹掉的。是被熵抹掉的。</strong></p>
+<p>你给一个TLC单元编程8个状态之一——你在对抗更大的熵增压力。因为这个状态的电压窗口只有SLC的八分之一，任何轻微的物理扰动都可能把一个状态变成另一个。你就像在沙滩上画了一条细线，海浪一来就没了。</p>
+<p>ECC是你对抗熵增的工具——用冗余信息来纠正物理错误。但ECC本身也消耗空间（意味着更多的物理单元），而更多的物理单元也受熵增影响。这是一个递归的悖论：对抗熵增的工具本身也在熵增。</p>
+<p><strong>这就是存储最深刻的哲学命题：你永远无法彻底战胜熵。你只能拖延它。Flash文件系统工程的全部智慧，就是在有限的时间和有限的资源里，让信息比它“自然应该“活得更久。</strong></p>
+<hr>
+<p>熵，永远是一个不等式，不是一个建议。</p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>我们聊了SLC/MLC/TLC/QLC的信息密度之争。但无论你把几个bit塞进一个单元，Flash作为一种存储介质，还有三个与生俱来、无法绕过的“原罪“。这三个原罪——写前擦除、单向编程、有限寿命——决定了Flash文件系统的全部设计哲学。</p>
+<p>下一节，我们来给Flash办一场“原罪审判“。</p>
+<p><strong>悬念留给：为什么你不能直接修改Flash里的一个字节？为什么每次修改都像搬家一样？为什么你的SSD明明还有空间，写速度却越来越慢？答案都在那三个原罪里。</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../storage-book/chapters/2.2-NOR与NAND——存储世界的两条路.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../storage-book/chapters/2.4-Flash的三原罪——写前擦除-单向编程-有限寿命.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../storage-book/chapters/2.2-NOR与NAND——存储世界的两条路.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../storage-book/chapters/2.4-Flash的三原罪——写前擦除-单向编程-有限寿命.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

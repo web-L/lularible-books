@@ -1,0 +1,576 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>实时操作系统 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="52-实时操作系统"><a class="header" href="#52-实时操作系统">5.2 实时操作系统</a></h1>
+<h3 id="离开了一个人的部落"><a class="header" href="#离开了一个人的部落">离开了“一个人的部落“</a></h3>
+<p>裸机编程的世界是一个人的世界。你亲自调度一切，你亲自管理每一个寄存器。这种绝对的控制感让人上瘾——但也让人疲惫。</p>
+<p>现在，想象你离开了这个部落，来到一个中型企业。</p>
+<p>企业里有多个部门同时在运转。研发部必须在下午 3 点前交付图纸。质检部必须在每批产品下线后 10 分钟内完成抽检。安保部必须 24 小时不间断巡逻。</p>
+<p>你不能像裸机编程那样“一个一个顺序做“——让研发部等质检部做完了再开始？不可能。</p>
+<p>你需要一个<strong>管理者</strong>。它负责决定每一个时刻哪个任务获得 CPU，哪个任务挂起，哪个任务被抢占。</p>
+<p>这个管理者就是 <strong>RTOS（Real-Time Operating System）内核</strong>。</p>
+<hr>
+<h3 id="调度表谁先跑谁等着"><a class="header" href="#调度表谁先跑谁等着">调度表：谁先跑，谁等着</a></h3>
+<p>RTOS 做的第一件事，就是把应用拆成多个任务（task），每个任务有自己的栈、自己的寄存器上下文、自己的优先级。你可以想象一张调度表：</p>
+<pre><code>优先级 5 → 发动机扭矩控制 （100μs 周期，硬实时）
+优先级 4 → ABS 轮速处理    （1ms 周期，硬实时）
+优先级 3 → CAN 发送队列管理 （软实时）
+优先级 2 → 诊断 UDS 响应   （软实时）
+优先级 1 → 背景任务        （数据记录、状态监控）
+</code></pre>
+<p>这张表就是你的“企业组织架构图“。优先级越高的任务，对其时间约束的要求越严格——毫秒级的延迟是绝对不能接受的。</p>
+<p>但光有优先级还不够。RTOS 的核心魔法是<strong>抢占</strong>。</p>
+<hr>
+<h3 id="抢占最高优先级的就绪任务总是赢"><a class="header" href="#抢占最高优先级的就绪任务总是赢">抢占：最高优先级的就绪任务总是赢</a></h3>
+<p>任何时候，<strong>最高优先级的就绪任务获得 CPU</strong>。这是 RTOS 调度的铁律。</p>
+<p>场景是这样的：</p>
+<ol>
+<li>低优先级的诊断任务 T2 正在跑。</li>
+<li>突然，CAN 控制器的接收中断触发。ISR 把一帧底盘报文推进消息队列，唤醒高优先级的 ABS 任务 T4。</li>
+<li>ISR 返回时，调度器检查就绪队列——发现 T4 优先级高于 T2。</li>
+<li><strong>立即抢占。</strong> T2 的寄存器上下文被保存到 T2 的栈里。T4 的上下文从 T4 的栈中恢复。T4 开始运行。</li>
+</ol>
+<p>这个过程叫做<strong>零延迟抢占</strong>——高优先级任务从就绪到执行的时间 ≤ 调度器的上下文切换时间。在 Cortex-M4 上，这通常是几个微秒。</p>
+<p>让我们放大看一次上下文切换到底发生了什么。</p>
+<hr>
+<h3 id="显微镜下的上下文切换"><a class="header" href="#显微镜下的上下文切换">显微镜下的上下文切换</a></h3>
+<p>以 FreeRTOS on Cortex-M4 为例，一次完整上下文切换的时间线：</p>
+<ol>
+<li>SysTick 中断触发（或 PendSV 异常）：<strong>12 cycles</strong>（中断 latency）。</li>
+<li>CPU 自动入栈 xPSR, PC, LR, R12, R3, R2, R1, R0：<strong>8 个字 = 8 个总线周期</strong>。</li>
+<li>中断向量表跳转到 PendSV_Handler。</li>
+<li>PendSV 手工入栈剩余的寄存器 R4-R11：<strong>8 个字 = 8 个总线周期</strong>。</li>
+<li>保存当前任务栈指针到 TCB（Task Control Block）。</li>
+<li>选择最高优先级的就绪任务：读取就绪列表头指针（2-3 个总线周期）。</li>
+<li>从新 TCB 恢复新任务栈指针。</li>
+<li>出栈 R4-R11：<strong>8 个总线周期</strong>。</li>
+<li>异常返回：CPU 自动出栈 R0-R3, R12, LR, PC, xPSR。</li>
+</ol>
+<p><strong>总开销在 Cortex-M4@112MHz 下大约 1-2μs。</strong></p>
+<p>在 100μs 的控制周期内，这不到周期的 2%。你用一个周期 2% 的时间，换来了多任务并行的能力。这是极其划算的交易。</p>
+<hr>
+<h3 id="穿透-pendsv上下文切换的真实汇编"><a class="header" href="#穿透-pendsv上下文切换的真实汇编">穿透 PendSV：上下文切换的真实汇编</a></h3>
+<p>FreeRTOS 在 Cortex-M 上使用 <strong>PendSV（可挂起的系统服务）</strong> 异常来实现上下文切换。PendSV 的优先级被设为最低——这确保了上下文切换永远不会打断正在运行的 ISR。当 SysTick 中断触发并发现有更高优先级的任务就绪时，它不直接切换——它只是<strong>挂起 PendSV 异常</strong>。SysTick ISR 退出后，CPU 在退出中断上下文回归任务上下文之前，才执行 PendSV。</p>
+<p>这是 FreeRTOS 的 PendSV_Handler 汇编代码（简化但保留核心逻辑）：</p>
+<pre><code class="language-asm">PendSV_Handler:
+    /* 检查是否从异常中返回（CONTROL.FPCA等标志） */
+    MRS  R0, PSP              ; 获取当前任务的进程栈指针
+    CBZ  R0, no_save          ; 如果是首次运行，没有旧上下文
+
+    /* 手工保存浮点寄存器（如果使用了FPU） */
+    TST  R14, #0x10           ; 检查 EXC_RETURN 的 bit4
+    IT   EQ
+    VSTMDBeq R0!, {S16-S31}   ; 保存 FPU 高半区
+
+    /* 保存整数寄存器 R4-R11 */
+    STMDB R0!, {R4-R11}       ; 寄存器组入栈，R0递减
+
+    /* 保存当前任务栈指针到TCB（通过R3间接） */
+    LDR  R1, =pxCurrentTCB
+    LDR  R1, [R1]             ; R1 = 当前TCB指针
+    STR  R0, [R1]             ; 写回新栈顶到TCB
+
+no_save:
+    /* 调用调度器选下一个任务 */
+    PUSH {R14}
+    BL   vTaskSwitchContext
+    POP  {R14}
+
+    /* 加载新任务的栈指针 */
+    LDR  R1, =pxCurrentTCB
+    LDR  R1, [R1]             ; R1 = 新TCB指针
+    LDR  R0, [R1]             ; R0 = 新任务的栈顶
+
+    /* 恢复整数寄存器 R4-R11 */
+    LDMIA R0!, {R4-R11}       ; 出栈，R0递增
+
+    /* 恢复浮点寄存器（如果使用了FPU） */
+    TST  R14, #0x10
+    IT   EQ
+    VLDMIAeq R0!, {S16-S31}
+
+    /* 更新PSP为新栈指针，异常返回 */
+    MSR  PSP, R0
+    BX   R14                   ; 异常返回——CPU自动弹出R0-R3,R12,LR,PC,xPSR
+</code></pre>
+<p>这段汇编里有几个精妙的设计：</p>
+<ol>
+<li><strong>FB CBZ R0, no_save</strong>：如果 PSP 为零，说明这是任务第一次被调度——没有旧上下文需要保存。直接跳到选新任务的逻辑。这省了一半的入栈操作。</li>
+<li><strong>VB VSTMDBeq/VLDMIAeq</strong>：浮点寄存器的保存是<strong>懒加载</strong>——只有在当前任务确实用过 FPU 时才保存。EXC_RETURN 的 bit4 由硬件自动维护——如果任务执行过浮点指令，bit4=0；否则 bit4=1。不需要软件维护 FPU 使用标志。</li>
+<li><strong>VB 异常返回的处理</strong>：<code>BX R14</code> 使用的 EXC_RETURN 值自动告诉 CPU“返回后使用 PSP（进程栈指针）还是 MSP（主栈指针）“。任务上下文总是在 PSP 上。中断上下文总是在 MSP 上。这个硬件特性让 FreeRTOS 只需要管理一个 PSP。</li>
+</ol>
+<hr>
+<h3 id="物理连接上下文切换的时间花在哪"><a class="header" href="#物理连接上下文切换的时间花在哪">物理连接：上下文切换的时间花在哪</a></h3>
+<p><strong>上下文切换的 1-2μs 开销中，大部分时间花在总线周期上——出栈和入栈寄存器对 SRAM 的读写。</strong> Cortex-M4 的 AHB 总线在 112MHz 下每个总线周期约 9ns。16 个字的入栈 + 16 个字的出栈 = 32 个总线周期 = 约 288ns。加上中断延迟（12 cycles = 约 107ns）、TCB 读写（几个总线周期）、就绪列表操作（查找最高优先级 = O(1) on Cortex-M with CLZ 指令）——加起来就是 1-2μs。</p>
+<p>这里的<strong>每一个纳秒都是物理世界的约束</strong>。SRAM 的访问延迟不是无限小的——电容充电、信号传播、灵敏放大器稳定输出——每一个纳秒都是晶体管开关和金属连线 RC 延迟的总和。你在做操作系统设计，但你的约束来自 CMOS 物理。</p>
+<hr>
+<h3 id="创建任务freertos-的任务生命"><a class="header" href="#创建任务freertos-的任务生命">创建任务：FreeRTOS 的任务生命</a></h3>
+<p>你不是自己管理上下文切换。FreeRTOS 帮你管。你只需要告诉它“创建这几个任务“：</p>
+<pre><code class="language-c">#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
+
+/* 任务句柄 */
+TaskHandle_t xTorqueTask;
+TaskHandle_t xCANProcessTask;
+TaskHandle_t xDiagTask;
+TaskHandle_t xBackgroundTask;
+
+/* 同步对象 */
+QueueHandle_t xCANRxQueue;
+SemaphoreHandle_t xDTCSemaphore;
+
+/* 任务栈——裸机时代你担心栈溢出，现在FreeRTOS帮你监控 */
+static StackType_t torque_task_stack[512];
+static StackType_t can_task_stack[1024];
+static StackType_t diag_task_stack[512];
+static StackType_t bg_task_stack[256];
+
+static StaticTask_t torque_task_tcb;
+static StaticTask_t can_task_tcb;
+static StaticTask_t diag_task_tcb;
+static StaticTask_t bg_task_tcb;
+
+void app_create_tasks(void)
+{
+    /* 创建消息队列——CAN ISR → CAN处理任务 */
+    xCANRxQueue = xQueueCreate(32, sizeof(can_frame_t));
+
+    /* 创建信号量——DTC更新互斥 */
+    xDTCSemaphore = xSemaphoreCreateMutex();
+
+    /* 创建任务——最高优先级(5): 扭矩控制，100μs周期 */
+    xTorqueTask = xTaskCreateStatic(
+        vTorqueControlTask,
+        "Torque",
+        torque_task_stack, 512,
+        NULL,
+        tskIDLE_PRIORITY + 5,
+        torque_task_stack,
+        &amp;torque_task_tcb);
+
+    /* 优先级(4): CAN报文处理，由队列唤醒 */
+    xCANProcessTask = xTaskCreateStatic(
+        vCANProcessTask,
+        "CANProc",
+        can_task_stack, 1024,
+        NULL,
+        tskIDLE_PRIORITY + 4,
+        can_task_stack,
+        &amp;can_task_tcb);
+
+    /* 优先级(2): 诊断任务，由UDS请求唤醒 */
+    xDiagTask = xTaskCreateStatic(
+        vDiagTask,
+        "Diag",
+        diag_task_stack, 512,
+        NULL,
+        tskIDLE_PRIORITY + 2,
+        diag_task_stack,
+        &amp;diag_task_tcb);
+
+    /* 优先级(1): 后台任务——最低优先级 */
+    xBackgroundTask = xTaskCreateStatic(
+        vBackgroundTask,
+        "BG",
+        bg_task_stack, 256,
+        NULL,
+        tskIDLE_PRIORITY + 1,
+        bg_task_stack,
+        &amp;bg_task_tcb);
+
+    vTaskStartScheduler();
+    /* 调度器启动后，这行代码永远不会执行到 */
+}
+</code></pre>
+<hr>
+<h3 id="从-isr-到任务can-处理的完整-freertos-流程"><a class="header" href="#从-isr-到任务can-处理的完整-freertos-流程">从 ISR 到任务：CAN 处理的完整 FreeRTOS 流程</a></h3>
+<p>你看到了在裸机章节中 CAN ISR 直接操作环形缓冲。在 FreeRTOS 下，ISR 和任务之间的通信通过<strong>消息队列</strong>解耦：</p>
+<pre><code class="language-c">/* CAN 接收中断 —— 只在 ISR 中做最小工作量 */
+void CAN1_RX0_IRQHandler(void)
+{
+    can_frame_t frame;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
+    /* 从硬件FIFO读出一帧——越快越好 */
+    frame.id  = (CAN1-&gt;sFIFOMailBox[0].RIR &gt;&gt; 21);
+    frame.dlc = CAN1-&gt;sFIFOMailBox[0].RDTR &amp; 0x0F;
+    frame.data[0] = CAN1-&gt;sFIFOMailBox[0].RDLR &amp; 0xFF;
+    frame.data[1] = (CAN1-&gt;sFIFOMailBox[0].RDLR &gt;&gt; 8) &amp; 0xFF;
+    frame.data[2] = (CAN1-&gt;sFIFOMailBox[0].RDLR &gt;&gt; 16) &amp; 0xFF;
+    frame.data[3] = (CAN1-&gt;sFIFOMailBox[0].RDLR &gt;&gt; 24) &amp; 0xFF;
+    frame.data[4] = CAN1-&gt;sFIFOMailBox[0].RDHR &amp; 0xFF;
+    frame.data[5] = (CAN1-&gt;sFIFOMailBox[0].RDHR &gt;&gt; 8) &amp; 0xFF;
+    frame.data[6] = (CAN1-&gt;sFIFOMailBox[0].RDHR &gt;&gt; 16) &amp; 0xFF;
+    frame.data[7] = (CAN1-&gt;sFIFOMailBox[0].RDHR &gt;&gt; 24) &amp; 0xFF;
+
+    CAN1-&gt;RF0R |= CAN_RF0R_RFOM0;
+
+    /* 把帧推进队列 —— 唤醒等待该队列的CAN处理任务 */
+    xQueueSendFromISR(xCANRxQueue, &amp;frame, &amp;xHigherPriorityTaskWoken);
+
+    /* 如果队列发送唤醒了一个更高优先级的任务，
+     * 请求在ISR退出后立即进行上下文切换 */
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
+
+/* CAN 处理任务 —— 在任务上下文中处理 */
+void vCANProcessTask(void *pvParameters)
+{
+    can_frame_t frame;
+
+    while (1) {
+        /* 阻塞等待队列中的数据 —— ISR把帧推进来后立即唤醒 */
+        if (xQueueReceive(xCANRxQueue, &amp;frame, portMAX_DELAY) == pdTRUE) {
+            switch (frame.id) {
+            case 0x100: /* ABS轮速 */
+                process_abs_wheel_speed(&amp;frame);
+                break;
+            case 0x200: /* 发动机转速 */
+                process_engine_speed(&amp;frame);
+                break;
+            case 0x300: /* 进气温度 */
+                process_intake_temp(&amp;frame);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+}
+</code></pre>
+<p>ISR 的延迟被降到最低——只把帧推进队列然后立即退出。任务处理在任务上下文中执行——可以被抢占，可以阻塞在别的队列上，可以使用浮点运算而不用担心 FPU 上下文保存（FreeRTOS 自动管理）。</p>
+<hr>
+<h3 id="调度理论rate-monotonic-scheduling"><a class="header" href="#调度理论rate-monotonic-scheduling">调度理论：Rate Monotonic Scheduling</a></h3>
+<p>你给任务分配优先级，不能凭感觉。<strong>速率单调调度（Rate Monotonic Scheduling, RMS）</strong> 是实时系统调度理论的基石。</p>
+<p>RMS 的规则极其简单：<strong>周期越短的任务，优先级越高。</strong> 不根据“重要性“——根据“频率“。理由很直接：周期短的任务 deadline 也短，必须优先调度。</p>
+<p>但你给所有任务都分配了优先级，总得确保它们都能在截止时间前完成。这里有一个可调度性测试——<strong>利用率上界</strong>：</p>
+<p>对于 n 个周期任务，如果它们的 CPU 利用率总和 U 满足：</p>
+<pre><code>U = Σ(Ci/Ti) ≤ n × (2^(1/n) - 1)
+</code></pre>
+<p>其中 Ci 是任务 i 的最坏执行时间，Ti 是它的周期。那么这组任务在 RMS 下是<strong>一定可调度</strong>的——不管它们的相对相位关系如何。</p>
+<p>这个公式的渐近值：当 n → ∞ 时，上界趋近于 ln(2) ≈ 0.693。也就是说，在 RMS 下，CPU 利用率只要不超过 69.3%，任务集就一定可调度。这不是“大概可以“——是数学定理。</p>
+<p>回到你的发动机 ECU。扭矩控制 100μs 周期、50μs 执行（利用率 0.5）。ABS 轮速 1ms 周期、200μs 执行（利用率 0.2）。CAN 处理 5ms 周期、1ms 执行（利用率 0.2）。总利用率 0.9 &gt; 0.693——RMS 可调度性定理不能保证。你需要更精确的可调度性分析——或者用 EDF（最早截止时间优先）调度，它在利用率 ≤ 1.0 时保证可调度——但 EDF 在过载时的行为不稳定，在汽车 ECU 中很少使用。</p>
+<p>RMS 是你在裸机时直觉做的事——“最重要的任务跑得最频繁”——但它给了你这个直觉一个数学上严格的形式化。</p>
+<hr>
+<h3 id="rtos-不是免费的午餐三个经典的炸膛场景"><a class="header" href="#rtos-不是免费的午餐三个经典的炸膛场景">RTOS 不是免费的午餐——三个经典的“炸膛“场景</a></h3>
+<p>调度器是你最忠实的助手，也可以是你最危险的定时炸弹。你迟早会遇到下面这三个问题。</p>
+<h4 id="场景一优先级反转"><a class="header" href="#场景一优先级反转">场景一：优先级反转</a></h4>
+<p>这是 RTOS 世界最臭名昭著的 bug。想象一个具体的时间线：</p>
+<pre><code>t=0ms:   T3 (低优先级, prio=2) 开始执行。
+t=1ms:   T3 获取 Mutex M（保护DTC记录表）。T3 仍在执行。
+t=2ms:   T1 (高优先级, prio=5) 就绪。抢占 T3。T1 开始执行。
+t=3ms:   T1 尝试获取 Mutex M。发现已被 T3 持有。T1 阻塞。
+         T3 恢复执行——T3 持有 Mutex，需要完成工作才能释放。
+t=4ms:   T2 (中优先级, prio=3) 就绪。T2 不需要 Mutex。
+         调度器看到 T2 优先级高于当前运行的 T3。抢占 T3。T2 开始执行。
+t=10ms:  T2 完成。T3 恢复。
+t=11ms:  T3 完成工作，释放 Mutex M。
+t=11ms:  T1 获得 Mutex M，恢复执行。
+</code></pre>
+<p>T1 从 t=3ms 阻塞到 t=11ms——<strong>8 毫秒</strong>。它的 deadline 可能只有 500μs。高优先级任务被饿死了——不是因为 T3（持有锁的人）太慢，而是因为 T2（不持有锁、不需要锁的人）总是抢占 T3。T2 和 T1 之间没有竞争关系——T2 是真正无辜的一方——但它造成了灾难性的后果。</p>
+<p><strong>解决：优先级继承（Priority Inheritance）。</strong> 当 T1 阻塞在 T3 持有的 Mutex 上时，RTOS 暂时把 T3 的优先级提升到 T1 的级别（prio=5）。T2 只有 prio=3，无法再抢占 T3。T3 以高优先级快速完成工作、释放 Mutex，T1 得以继续。T3 完成释放后优先级降回原始设置。</p>
+<p>FreeRTOS 默认的 Mutex 不支持优先级继承——你需要用特殊的互斥量类型。而 OSEK/VDX（AUTOSAR CP 使用的 OS）在规范层面强制要求优先级继承。这不是可选功能——是安全关键系统的基本保障。</p>
+<p>这个 bug 在裸机代码中不可能存在——裸机没有抢占式多任务。RTOS 在提供便利的同时，也引入了全新类别的问题。</p>
+<h4 id="场景二任务栈溢出hardfault-从何而来"><a class="header" href="#场景二任务栈溢出hardfault-从何而来">场景二：任务栈溢出——HardFault 从何而来</a></h4>
+<p>症状：系统不定期 HardFault。无法复现。</p>
+<p>你给 T3 分配了 512 字节的栈空间。正常控制周期中只用 420 字节——看起来绰绰有余。但在特定条件——比如故障处理（记录 DTC 到 NVM + 发送故障通知 CAN 报文）——调用链深入 5 层，局部变量和函数参数把栈使用量推到 560 字节。栈溢出到相邻任务（T4）的栈空间——覆盖了 T4 的栈帧。T4 在下一次调度时恢复到一个被破坏的上下文 → HardFault。</p>
+<p><strong>栈溢出检测——魔法数字法：</strong></p>
+<pre><code class="language-c">/* FreeRTOS 栈溢出检测钩子——魔法数字技术 */
+#define STACK_MAGIC_NUMBER  0xA5A5A5A5UL
+
+void vApplicationStackOverflowHook(TaskHandle_t xTask,
+                                    char *pcTaskName)
+{
+    /* 栈溢出发生了！记录故障，尝试安全关闭 */
+    record_dtc(DTC_STACK_OVERFLOW);
+
+    /* 打印任务名——至少知道是谁越界了 */
+    while (1) {
+        /* 无法安全恢复——不要再调度 */
+    }
+}
+
+/* FreeRTOS 内部：每次上下文切换时检查栈顶的魔法数字 */
+/* 这段逻辑在 FreeRTOS 内核中（port.c），但你可以理解它 */
+void vPortCheckStack(void)
+{
+    TaskHandle_t task = pxCurrentTCB;
+    StackType_t *stack_start = task-&gt;pxStack;
+    StackType_t *stack_top;
+
+    /* 检查栈顶的魔法数字是否被覆盖 */
+    if (*stack_start != STACK_MAGIC_NUMBER) {
+        /* 魔法数字被破坏了——栈溢出 */
+        vApplicationStackOverflowHook(task, task-&gt;pcTaskName);
+    }
+}
+
+/* 在 FreeRTOSConfig.h 中启用 */
+#define configCHECK_FOR_STACK_OVERFLOW    2
+/* 方法2：检查栈顶魔法数字 + 检查当前栈指针是否越界 */
+</code></pre>
+<p>在任务栈创建时，FreeRTOS 把整个栈空间填充为 0xA5（方法1），或在栈起始位置写入 0xA5A5A5A5（魔法数字方法）。每次上下文切换时检查这个数字是否被破坏。同时，<code>uxTaskGetStackHighWaterMark()</code> 返回栈使用峰值——高水位标记越接近零，越危险。低于零——已经溢出了。</p>
+<p>栈溢出的排查有个残酷的现实：<strong>栈溢出的后果（HardFault）往往发生在栈溢出之后很久——在另一个完全无关的任务被调度时。</strong> 你看到的故障现场（T4 的 HardFault）和故障根源（T3 的栈溢出）之间可能隔了数十次上下文切换。这是嵌入式调试中最让人崩溃的场面之一。</p>
+<h4 id="场景三空闲任务饿死"><a class="header" href="#场景三空闲任务饿死">场景三：空闲任务饿死</a></h4>
+<p>症状：系统心跳定时器（SysTick）的中断处理时间逐渐变长，最终超过 SysTick 周期（典型 1ms），出现 SysTick 溢出。</p>
+<p>你引以为傲的高优先级任务 T1（100μs 周期）在每次运行时获取一个自旋锁。T1 周期 100μs，每次运行 50μs——CPU 利用率 50%。剩下的 50μs 被中低优先级任务占满。但<strong>空闲任务（Idle Task）永远不会获得 CPU——因为至少有一个任务一直就绪。</strong></p>
+<p>空闲任务有一项重要职责：释放被删除任务的内存。当你调用 <code>vTaskDelete(NULL)</code> 删除任务自身时，任务的内存不是立即释放的——任务还在运行中，不能释放自己的栈。被删除任务的 TCB 和栈被放进一个“待回收列表“中。是空闲任务——当 CPU 没有其他事可做时——逐一释放这些内存。如果空闲任务永远得不到 CPU，内存越积越多，最终堆耗尽、<code>pvPortMalloc</code> 返回 NULL、系统崩溃。</p>
+<p>空闲任务不是浪费。<strong>它是系统的垃圾回收工。</strong> 如果你发现空闲任务 CPU 利用率永远为 0%，你的系统设计有问题——要么有任务在忙等（busy-wait），要么总利用率超过 100%。</p>
+<hr>
+<h3 id="调度计算机系统最底层也最核心的问题"><a class="header" href="#调度计算机系统最底层也最核心的问题">调度：计算机系统最底层也最核心的问题</a></h3>
+<p>实时操作系统的本质是：<strong>在有限资源下，对时间做最优分配。</strong></p>
+<p>你有 1 个 CPU（或在多核上是 N 个 CPU），但有很多任务都在抢它。RTOS 的任务是确保每个任务在它的 deadline 之前得到必要的 CPU 时间。</p>
+<p>这和 SPI/CAN 的仲裁、AMBA 总线的仲裁、以太网交换机的优先级队列调度——是<strong>同一个问题</strong>的不同实例。就是：如何在多方竞争中，按优先级和最坏延迟来调度共享资源。</p>
+<p>从逻辑门在硅片上的信号竞争，到 CAN 总线的 ID 仲裁，到 RTOS 的任务调度，到互联网路由器的 QoS 策略——<strong>这些都是调度的不同面貌。</strong> 你解决了一个，理解了它们全部。</p>
+<p>但自己做 RTOS 可以，自定义调度策略很灵活——整个汽车行业却需要一个标准。如果一个 Tier-1 为标致-雪铁龙写的发动机控制器，和一个为大众写的发动机控制器，硬件一样但软件完全不能共用——同样的 CAN 驱动要重写五遍，同样的诊断栈要重写五遍。软件的规模效应被完全吞噬了。</p>
+<p>2003 年，一群欧洲 OEM 和 Tier-1 的代表坐在会议室里，决定改变这一切。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解实时操作系统的本质——在有限资源下对时间做最优分配，以及这种分配出错时系统如何崩溃。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>RTOS的本质是调度问题——和SPI仲裁、CAN ID仲裁、AMBA总线仲裁是同一个问题的不同实例</strong>：如何在多方竞争中按优先级和最坏延迟分配共享资源。你解决了一个，理解了它们全部。</li>
+<li><strong>信号量、互斥量、优先级继承不是“设计模式“——是对物理竞争条件的精确建模</strong>：优先级反转让高优先级任务无限期等待——优先级继承通过在持锁时临时提高优先级来打破等锁链。</li>
+<li><strong>栈溢出是RTOS世界里最危险的定时炸弹</strong>：故障现场（某任务的HardFault）和故障根源（另一任务的栈溢出）之间可能隔了数十次上下文切换。栈水印检测和高水位标记是唯一的侦查手段。</li>
+</ol>
+<p>下一节，当整个汽车行业需要一个统一的ECU软件标准——AUTOSAR应运而生。一个Rte_Read()调用穿越5层软件栈，最终变成CAN总线上8字节的物理帧。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>“我们需要一个标准。一个汽车 ECU 软件的通用框架。”</p>
+<p>这个标准叫做 AUTOSAR。它把 ECU 软件拆成分层、分模块、可配置的组件——就像 ISO 把螺丝钉的螺纹规格标准化一样。CAN 驱动写一次。诊断栈写一次。安全组件封装一次。软件不再依附于特定的芯片平台或 OEM 架构——它是可配置、可复用、可交换的。</p>
+<p>下一节，你将看到 AUTOSAR 的两张面孔：CP（经典平台，面向实时 ECU）和 AP（自适应平台，面向自动驾驶）。一个 SWC 发出的 Rte_Read() 调用，会在 5 层软件栈中穿越 MCAL、CanIf、PduR、COM、RTE——最终变成一个 CAN 总线上 8 字节的物理帧。你会看到这段旅程的每一站，包括那些在 ARXML 配置文件中被定义的信号布局。</p>
+<p>从裸机到 RTOS 再到 AUTOSAR——这是汽车软件工程的三个进化阶段。你已经走完了前两个。现在是第三个。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/5.1-裸机编程-一人独掌天下.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/5.3-AUTOSAR-CP-AP.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/5.1-裸机编程-一人独掌天下.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/5.3-AUTOSAR-CP-AP.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

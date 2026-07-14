@@ -1,0 +1,668 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>初始化与Slot管理函数 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="310-初始化与slot管理函数打开密码世界的大门"><a class="header" href="#310-初始化与slot管理函数打开密码世界的大门">3.10 初始化与Slot管理函数：打开密码世界的“大门“</a></h2>
+<h3 id="函数的调用序列"><a class="header" href="#函数的调用序列">函数的调用序列</a></h3>
+<p>使用PKCS#11有一个固定的调用序列：</p>
+<pre><code>PKCS#11标准调用序列：
+
+1. C_Initialize()      初始化库
+   ↓
+2. C_GetSlotList()     获取Slot列表
+   ↓
+3. C_GetSlotInfo()     查询Slot信息（可选）
+   C_GetTokenInfo()    查询Token信息（可选）
+   ↓
+4. C_OpenSession()     打开Session
+   ↓
+5. C_Login()           登录（可选，取决于Token）
+   ↓
+6. 密码操作...
+   C_FindObjects()     查找密钥
+   C_Sign()            签名
+   C_Encrypt()         加密
+   ...
+   ↓
+7. C_Logout()          注销
+   ↓
+8. C_CloseSession()    关闭Session
+   ↓
+9. C_Finalize()        清理库
+</code></pre>
+<p>这个序列像打开一扇大门的步骤：先敲门、再进门、登记身份、办事、离开、关门。</p>
+<hr>
+<h3 id="c_initialize敲门"><a class="header" href="#c_initialize敲门">C_Initialize：敲门</a></h3>
+<p><strong>功能</strong>：初始化PKCS#11库，为后续操作做准备。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_Initialize(CK_VOID_PTR pInitArgs);
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>pInitArgs</code>：初始化参数，可以为NULL_PTR（单线程应用）</li>
+<li>多线程应用需要传入CK_C_INITIALIZE_ARGS结构</li>
+</ul>
+<p><strong>返回值</strong>：</p>
+<ul>
+<li>CKR_OK：成功</li>
+<li>CKR_CRYPTOKI_ALREADY_INITIALIZED：已经初始化</li>
+<li>CKR_ARGUMENTS_BAD：参数无效</li>
+<li>其他错误码</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">/* 单线程应用初始化 */
+
+CK_RV rv;
+rv = C_Initialize(NULL_PTR);
+if (rv != CKR_OK) {
+    printf("初始化失败：%08x\n", rv);
+    return rv;
+}
+
+/* 多线程应用初始化 */
+
+CK_C_INITIALIZE_ARGS initArgs = {NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR,
+                                  CKF_OS_LOCKING_OK, NULL_PTR};
+rv = C_Initialize(&amp;initArgs);
+if (rv != CKR_OK) {
+    printf("初始化失败：%08x\n", rv);
+    return rv;
+}
+</code></pre>
+<p><strong>注意事项</strong>：</p>
+<ul>
+<li>C_Initialize只能调用一次，重复调用返回CKR_CRYPTOKI_ALREADY_INITIALIZED</li>
+<li>多线程应用必须设置CKF_OS_LOCKING_OK标志</li>
+<li>在调用任何其他PKCS#11函数之前，必须先调用C_Initialize</li>
+</ul>
+<hr>
+<h3 id="c_finalize关门"><a class="header" href="#c_finalize关门">C_Finalize：关门</a></h3>
+<p><strong>功能</strong>：清理PKCS#11库，释放资源。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_Finalize(CK_VOID_PTR pReserved);
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>pReserved</code>：保留参数，必须为NULL_PTR</li>
+</ul>
+<p><strong>返回值</strong>：</p>
+<ul>
+<li>CKR_OK：成功</li>
+<li>CKR_CRYPTOKI_NOT_INITIALIZED：库未初始化</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_RV rv;
+rv = C_Finalize(NULL_PTR);
+if (rv != CKR_OK) {
+    printf("清理失败：%08x\n", rv);
+}
+</code></pre>
+<p><strong>注意事项</strong>：</p>
+<ul>
+<li>所有Session必须先关闭（C_CloseSession）</li>
+<li>所有Object必须先销毁（如果不再需要）</li>
+<li>C_Finalize之后不能再调用任何PKCS#11函数（除了C_Initialize）</li>
+</ul>
+<hr>
+<h3 id="c_getinfo查看图书馆目录"><a class="header" href="#c_getinfo查看图书馆目录">C_GetInfo：查看图书馆目录</a></h3>
+<p><strong>功能</strong>：获取PKCS#11库的信息。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetInfo(CK_INFO_PTR pInfo);
+</code></pre>
+<p><strong>CK_INFO结构</strong>：</p>
+<pre><code class="language-c">typedef struct CK_INFO {
+    CK_VERSION    cryptokiVersion;      /* Cryptoki版本 */
+    CK_UTF8CHAR   manufacturerID[32];   /* 厂商ID */
+    CK_FLAGS      flags;                /* 标志 */
+    CK_UTF8CHAR   libraryDescription[32]; /* 库描述 */
+    CK_VERSION    libraryVersion;       /* 库版本 */
+} CK_INFO;
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_INFO info;
+CK_RV rv;
+
+rv = C_GetInfo(&amp;info);
+if (rv == CKR_OK) {
+    printf("Cryptoki版本：%d.%d\n", info.cryptokiVersion.major, info.cryptokiVersion.minor);
+    printf("厂商：%s\n", info.manufacturerID);
+    printf("库描述：%s\n", info.libraryDescription);
+}
+</code></pre>
+<hr>
+<h3 id="c_getslotlist查找可用窗口"><a class="header" href="#c_getslotlist查找可用窗口">C_GetSlotList：查找可用窗口</a></h3>
+<p><strong>功能</strong>：获取Slot列表。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetSlotList(CK_BBOOL tokenPresent,
+                    CK_SLOT_ID_PTR pSlotList,
+                    CK_ULONG_PTR pulCount);
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>tokenPresent</code>：TRUE=只返回有Token的Slot，FALSE=返回所有Slot</li>
+<li><code>pSlotList</code>：Slot ID数组（可以为NULL_PTR，先获取数量）</li>
+<li><code>pulCount</code>：Slot数量</li>
+</ul>
+<p><strong>调用模式</strong>：</p>
+<pre><code class="language-c">/* 两步调用模式：先获取数量，再获取列表 */
+
+CK_ULONG ulSlotCount;
+CK_SLOT_ID_PTR pSlotList;
+CK_RV rv;
+
+// 第一步：获取Slot数量
+rv = C_GetSlotList(CK_TRUE, NULL_PTR, &amp;ulSlotCount);
+if (rv != CKR_OK) {
+    printf("获取Slot数量失败\n");
+    return rv;
+}
+
+if (ulSlotCount == 0) {
+    printf("没有Token\n");
+    return CKR_NO_TOKEN;
+}
+
+// 第二步：分配内存，获取Slot列表
+pSlotList = (CK_SLOT_ID_PTR)malloc(ulSlotCount * sizeof(CK_SLOT_ID));
+rv = C_GetSlotList(CK_TRUE, pSlotList, &amp;ulSlotCount);
+if (rv != CKR_OK) {
+    free(pSlotList);
+    printf("获取Slot列表失败\n");
+    return rv;
+}
+
+// 使用Slot列表
+for (CK_ULONG i = 0; i &lt; ulSlotCount; i++) {
+    printf("Slot %lu: ID = %lu\n", i, pSlotList[i]);
+}
+
+free(pSlotList);
+</code></pre>
+<hr>
+<h3 id="c_getslotinfo查看窗口详情"><a class="header" href="#c_getslotinfo查看窗口详情">C_GetSlotInfo：查看窗口详情</a></h3>
+<p><strong>功能</strong>：获取Slot的详细信息。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetSlotInfo(CK_SLOT_ID slotID,
+                    CK_SLOT_INFO_PTR pInfo);
+</code></pre>
+<p><strong>CK_SLOT_INFO结构</strong>：</p>
+<pre><code class="language-c">typedef struct CK_SLOT_INFO {
+    CK_UTF8CHAR   slotDescription[64];  /* Slot描述 */
+    CK_UTF8CHAR   manufacturerID[32];   /* 厂商ID */
+    CK_FLAGS      flags;                /* Slot标志 */
+    CK_VERSION    hardwareVersion;      /* 硬件版本 */
+    CK_VERSION    firmwareVersion;      /* 固件版本 */
+} CK_SLOT_INFO;
+
+/* flags可能值 */
+#define CKF_TOKEN_PRESENT    0x00000001  /* Token存在 */
+#define CKF_REMOVABLE_DEVICE 0x00000002  /* 可移除设备 */
+#define CKF_HW_SLOT          0x00000004  /* 硬件Slot */
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_SLOT_INFO slotInfo;
+CK_RV rv;
+
+rv = C_GetSlotInfo(slotID, &amp;slotInfo);
+if (rv == CKR_OK) {
+    printf("Slot描述：%s\n", slotInfo.slotDescription);
+    printf("厂商：%s\n", slotInfo.manufacturerID);
+    printf("Token存在：%s\n", (slotInfo.flags &amp; CKF_TOKEN_PRESENT) ? "是" : "否");
+    printf("可移除：%s\n", (slotInfo.flags &amp; CKF_REMOVABLE_DEVICE) ? "是" : "否");
+    printf("硬件Slot：%s\n", (slotInfo.flags &amp; CKF_HW_SLOT) ? "是" : "否");
+}
+</code></pre>
+<hr>
+<h3 id="c_gettokeninfo查看保险箱详情"><a class="header" href="#c_gettokeninfo查看保险箱详情">C_GetTokenInfo：查看保险箱详情</a></h3>
+<p><strong>功能</strong>：获取Token的详细信息。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_GetTokenInfo(CK_SLOT_ID slotID,
+                     CK_TOKEN_INFO_PTR pInfo);
+</code></pre>
+<p><strong>CK_TOKEN_INFO结构</strong>：</p>
+<pre><code class="language-c">typedef struct CK_TOKEN_INFO {
+    CK_UTF8CHAR   label[32];               /* Token标签 */
+    CK_UTF8CHAR   manufacturerID[32];      /* 厂商ID */
+    CK_UTF8CHAR   model[16];               /* 型号 */
+    CK_UTF8CHAR   serialNumber[16];        /* 序列号 */
+    CK_FLAGS      flags;                   /* Token标志 */
+    CK_ULONG      ulMaxSessionCount;       /* 最大Session数 */
+    CK_ULONG      ulSessionCount;          /* 当前Session数 */
+    CK_ULONG      ulMaxRwSessionCount;     /* 最大读写Session数 */
+    CK_ULONG      ulRwSessionCount;        /* 当前读写Session数 */
+    CK_ULONG      ulMaxPinLen;             /* 最大PIN长度 */
+    CK_ULONG      ulMinPinLen;             /* 最小PIN长度 */
+    CK_ULONG      ulTotalPublicMemory;     /* 公共内存总量 */
+    CK_ULONG      ulFreePublicMemory;      /* 公共内存空闲 */
+    CK_ULONG      ulTotalPrivateMemory;    /* 私有内存总量 */
+    CK_ULONG      ulFreePrivateMemory;     /* 私有内存空闲 */
+    CK_VERSION    hardwareVersion;         /* 硬件版本 */
+    CK_VERSION    firmwareVersion;         /* 固件版本 */
+    CK_CHAR      utcTime[16];             /* UTC时间 */
+} CK_TOKEN_INFO;
+
+/* flags重要值 */
+#define CKF_RNG                 0x00000001  /* 有随机数生成器 */
+#define CKF_WRITE_PROTECTED     0x00000002  /* 写保护 */
+#define CKF_LOGIN_REQUIRED      0x00000004  /* 需要登录 */
+#define CKF_USER_PIN_INITIALIZED 0x00000008  /* 用户PIN已初始化 */
+#define CKF_TOKEN_INITIALIZED   0x00000400  /* Token已初始化 */
+#define CKF_SO_PIN_TO_BE_CHANGED 0x00000800  /* SO PIN需要修改 */
+#define CKF_USER_PIN_TO_BE_CHANGED 0x00001000  /* 用户PIN需要修改 */
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_TOKEN_INFO tokenInfo;
+CK_RV rv;
+
+rv = C_GetTokenInfo(slotID, &amp;tokenInfo);
+if (rv == CKR_OK) {
+    printf("Token标签：%s\n", tokenInfo.label);
+    printf("厂商：%s\n", tokenInfo.manufacturerID);
+    printf("型号：%s\n", tokenInfo.model);
+    printf("序列号：%s\n", tokenInfo.serialNumber);
+    printf("需要登录：%s\n", (tokenInfo.flags &amp; CKF_LOGIN_REQUIRED) ? "是" : "否");
+    printf("PIN长度范围：%lu-%lu\n", tokenInfo.ulMinPinLen, tokenInfo.ulMaxPinLen);
+}
+</code></pre>
+<hr>
+<h3 id="c_inittoken初始化保险箱"><a class="header" href="#c_inittoken初始化保险箱">C_InitToken：初始化保险箱</a></h3>
+<p><strong>功能</strong>：初始化Token，设置SO PIN和标签。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_InitToken(CK_SLOT_ID slotID,
+                   CK_UTF8CHAR_PTR pSOPin,
+                   CK_ULONG ulSOPinLen,
+                   CK_UTF8CHAR_PTR pLabel);
+</code></pre>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>slotID</code>：Slot ID</li>
+<li><code>pSOPin</code>：Security Officer PIN（安全管理员PIN）</li>
+<li><code>ulSOPinLen</code>：SO PIN长度</li>
+<li><code>pLabel</code>：Token标签（32字节）</li>
+</ul>
+<p><strong>注意事项</strong>：</p>
+<ul>
+<li>只能由SO执行</li>
+<li>Token未初始化时调用</li>
+<li>会清除Token中的所有Object</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_UTF8CHAR soPin[] = "12345678";
+CK_UTF8CHAR label[] = "MySecureToken";
+CK_RV rv;
+
+rv = C_InitToken(slotID, soPin, sizeof(soPin)-1, label);
+if (rv == CKR_OK) {
+    printf("Token初始化成功\n");
+} else if (rv == CKR_TOKEN_ALREADY_INITIALIZED) {
+    printf("Token已初始化\n");
+} else {
+    printf("Token初始化失败：%08x\n", rv);
+}
+</code></pre>
+<hr>
+<h3 id="c_initpin设置用户pin"><a class="header" href="#c_initpin设置用户pin">C_InitPIN：设置用户PIN</a></h3>
+<p><strong>功能</strong>：初始化用户PIN。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_InitPIN(CK_SESSION_HANDLE hSession,
+                 CK_UTF8CHAR_PTR pPin,
+                 CK_ULONG ulPinLen);
+</code></pre>
+<p><strong>注意事项</strong>：</p>
+<ul>
+<li>必须在读写Session中调用</li>
+<li>必须以SO身份登录后调用</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_UTF8CHAR userPin[] = "123456";
+CK_RV rv;
+
+// SO登录后
+rv = C_Login(hSession, CKU_SO, soPin, soPinLen);
+
+// 初始化用户PIN
+rv = C_InitPIN(hSession, userPin, sizeof(userPin)-1);
+if (rv == CKR_OK) {
+    printf("用户PIN初始化成功\n");
+}
+</code></pre>
+<hr>
+<h3 id="c_setpin修改pin"><a class="header" href="#c_setpin修改pin">C_SetPIN：修改PIN</a></h3>
+<p><strong>功能</strong>：修改当前登录用户的PIN。</p>
+<p><strong>原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_SetPIN(CK_SESSION_HANDLE hSession,
+                CK_UTF8CHAR_PTR pOldPin,
+                CK_ULONG ulOldPinLen,
+                CK_UTF8CHAR_PTR pNewPin,
+                CK_ULONG ulNewPinLen);
+</code></pre>
+<p><strong>示例</strong>：</p>
+<pre><code class="language-c">CK_UTF8CHAR oldPin[] = "123456";
+CK_UTF8CHAR newPin[] = "newpass";
+CK_RV rv;
+
+rv = C_SetPIN(hSession, oldPin, sizeof(oldPin)-1, newPin, sizeof(newPin)-1);
+if (rv == CKR_OK) {
+    printf("PIN修改成功\n");
+}
+</code></pre>
+<hr>
+<h3 id="一个完整的初始化流程示例"><a class="header" href="#一个完整的初始化流程示例">一个完整的初始化流程示例</a></h3>
+<pre><code class="language-c">CK_RV rv;
+CK_C_INITIALIZE_ARGS initArgs = {NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR,
+                                  CKF_OS_LOCKING_OK, NULL_PTR};
+CK_ULONG ulSlotCount;
+CK_SLOT_ID_PTR pSlotList;
+CK_SLOT_ID slotID;
+CK_TOKEN_INFO tokenInfo;
+
+// 1. 初始化库
+rv = C_Initialize(&amp;initArgs);
+if (rv != CKR_OK) {
+    fprintf(stderr, "C_Initialize失败：%08x\n", rv);
+    return -1;
+}
+
+// 2. 获取Slot列表
+rv = C_GetSlotList(CK_TRUE, NULL_PTR, &amp;ulSlotCount);
+if (rv != CKR_OK || ulSlotCount == 0) {
+    fprintf(stderr, "没有可用的Token\n");
+    C_Finalize(NULL_PTR);
+    return -1;
+}
+
+pSlotList = malloc(ulSlotCount * sizeof(CK_SLOT_ID));
+rv = C_GetSlotList(CK_TRUE, pSlotList, &amp;ulSlotCount);
+if (rv != CKR_OK) {
+    free(pSlotList);
+    C_Finalize(NULL_PTR);
+    return -1;
+}
+
+// 3. 选择第一个Slot
+slotID = pSlotList[0];
+free(pSlotList);
+
+// 4. 查询Token信息
+rv = C_GetTokenInfo(slotID, &amp;tokenInfo);
+if (rv == CKR_OK) {
+    printf("Token：%s\n", tokenInfo.label);
+    printf("需要登录：%s\n", (tokenInfo.flags &amp; CKF_LOGIN_REQUIRED) ? "是" : "否");
+}
+
+// 后续：打开Session、登录、执行操作...
+
+// 清理
+C_Finalize(NULL_PTR);
+return 0;
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>初始化与Slot管理函数是PKCS#11的“入门“操作：</p>
+<p><strong>函数序列</strong>：</p>
+<ul>
+<li>C_Initialize → C_GetSlotList → C_OpenSession → C_Login → 操作 → C_Logout → C_CloseSession → C_Finalize</li>
+</ul>
+<p><strong>核心函数</strong>：</p>
+<ul>
+<li><strong>C_Initialize/C_Finalize</strong>：库的初始化和清理</li>
+<li><strong>C_GetSlotList</strong>：获取Slot列表（两步调用模式）</li>
+<li><strong>C_GetSlotInfo/C_GetTokenInfo</strong>：查询Slot/Token信息</li>
+<li><strong>C_InitToken/C_InitPIN/C_SetPIN</strong>：Token初始化和PIN管理</li>
+</ul>
+<p><strong>重要概念</strong>：</p>
+<ul>
+<li>Slot：HSM的物理/逻辑接口</li>
+<li>Token：HSM的逻辑实例，存储密钥和证书</li>
+<li>SO PIN：安全管理员PIN，用于初始化Token</li>
+<li>User PIN：普通用户PIN，用于日常使用</li>
+</ul>
+<p>下一节，我们将深入Session管理函数——如何与Token建立交互会话。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<ul>
+<li>
+<p>C_OpenSession：如何打开Session？</p>
+</li>
+<li>
+<p>C_CloseSession：如何关闭？</p>
+</li>
+<li>
+<p>C_Login/C_Logout：如何登录注销？</p>
+</li>
+<li>
+<p>Session状态：读/写、登录/未登录</p>
+</li>
+</ul>
+<p>下一节，Session管理函数。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/3.9-硬件特征对象.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/3.11-Session管理函数.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/3.9-硬件特征对象.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/3.11-Session管理函数.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>时间同步与PTP - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="45-时间同步与-ptp"><a class="header" href="#45-时间同步与-ptp">4.5 时间同步与 PTP</a></h1>
+<h3 id="一百个ecu一百种现在"><a class="header" href="#一百个ecu一百种现在">一百个ECU，一百种“现在“</a></h3>
+<p>你的车上有100个ECU。发动机控制单元、ABS控制器、ADAS域控制器、仪表盘、T-Box、网关——每个都有一颗晶振。每颗晶振都在用自己独立的物理节拍振荡。</p>
+<p>晶振的标称精度是±20ppm（百万分之二十）。两颗同样的晶振装在相邻ECU上——因为PCB温度不同（发动机舱95°C vs 座舱25°C）、负载电容微小差异（22pF vs 22.5pF）、老化速度不同——实际频率差可能在±30ppm。</p>
+<p>这意味着什么？1秒钟后，两ECU的时钟偏差约30微秒。1分钟后，接近2毫秒。1小时后——0.1秒。</p>
+<p>曲轴每转一圈产生一个同步脉冲。在6000RPM下，齿脉冲间隔约100微秒。如果喷油ECU和点火ECU的时间偏差超过100微秒——火花塞在排气行程点火而不是压缩行程顶点——气缸失火。对于ADAS传感器融合——前视摄像头在第T_camera时刻拍到行人，毫米波雷达在第T_radar时刻扫到目标。如果两个时间戳不同步到微秒级，融合算法会得到错误的关联。</p>
+<p>在100km/h（≈28m/s）的车速下，1微秒的时间偏差 ≈ 28微米的位置偏差——可忽略。1毫秒的时间偏差 ≈ 28毫米的位置偏差——后保险杠还是前保险杠？在自动紧急制动（AEB）的决策算法中，28毫米可能决定“撞上“还是“在10厘米外停下来“。</p>
+<p><strong>分布式系统最底层的共识，不是数据，是时间。</strong> 在所有ECU对“主缸压力是30bar“达成共识之前，它们必须先对“现在是几点几分几秒几微秒“达成共识。</p>
+<h3 id="四个时间戳的魔法"><a class="header" href="#四个时间戳的魔法">四个时间戳的魔法</a></h3>
+<p>PTP（Precision Time Protocol，IEEE 1588）的核心理念，用一段话讲完：</p>
+<p>主时钟（Grandmaster）周期性发送Sync报文。在Sync报文的第一个bit离开MII接口的瞬间，主时钟的硬件时间戳单元捕获当前时间t1。从时钟收到Sync时，在第一个bit进入MII接口的瞬间捕获接收时间t2。主时钟随后在Follow_Up报文中把t1告诉从时钟（或者在Sync报文本身的修正字段中携带t1——这叫one-step模式）。</p>
+<p>从时钟也主动向主时钟发送Delay_Req报文，捕获发出时间t3。主时钟收到后，捕获接收时间t4，在Delay_Resp报文中把t4发回给从时钟。</p>
+<pre><code>主时钟                                   从时钟
+  |                                       |
+  |------- Sync (t1 捕获) ---------------&gt;|  (t2 捕获)
+  |------- Follow_Up (携带 t1) ----------&gt;|
+  |                                       |
+  |&lt;------ Delay_Req (t3 捕获) ----------|  (t3 捕获)
+  |------- Delay_Resp (携带 t4) ---------&gt;|
+   |                                       |
+</code></pre>
+<p>这四个时间戳不是“某个软件在某个时刻读到的时间“。t1是主时钟的PHC在Sync报文离开MII接口的瞬间被D触发器锁存的值——精确到纳秒。t2是从时钟的PHC在Sync报文到达MII接口的瞬间被同样方式锁存的值。两个硬件快照，由两个独立的自由运行的计数器在同一个以太网帧的两个端点上分别捕捉。它们之间的差值(t2-t1)包含了两个信息：主从时钟之间的偏移，和网络传输延迟。PTP的数学就是要把这两个信息分离。</p>
+<p>假设往返路径对称（上行延迟 = 下行延迟），从时钟算出：</p>
+<pre><code>mean_path_delay = [(t2 - t1) + (t4 - t3)] / 2
+offset_from_master = (t2 - t1) - mean_path_delay
+                   = [(t2 - t1) - (t4 - t3)] / 2
+                   = (t2 - t1 - t4 + t3) / 2
+</code></pre>
+<p>简化后的经典公式：</p>
+<pre><code>offset = (t2 - t1 - t4 + t3) / 2
+delay  = [(t2 - t1) + (t4 - t3)] / 2
+</code></pre>
+<p>从时钟把自己当前的时钟值减去<code>offset</code>——就和主时钟对齐了。</p>
+<p><strong>四个时间戳。两个报文（Sync+Follow_Up算一次交互，Delay_Req+Delay_Resp算一次交互）。一次假设（路径对称）。</strong> 这就是PTP的全部数学核心。剩下的协议规范——BMCA选举主时钟、端口状态机、TLV扩展、profile定义——都是围绕这四句话建起来的工程支撑。</p>
+<p>路径不对称是PTP最大的误差源。如果上行延迟=1μs，下行延迟=2μs（比如因为上行光纤波长和下行光纤波长不同，色散不同），那么offset计算会引入0.5μs的系统偏差。PTP协议本身无法检测路径不对称——它只能相信物理层是（近似）对称的。对于车载以太网——网段通常在15m以内，延迟在几十纳秒量级，路径不对称在亚微秒量级——可接受。</p>
+<h3 id="pi伺服从对一次到持续对"><a class="header" href="#pi伺服从对一次到持续对">PI伺服：从“对一次“到“持续对“</a></h3>
+<p>offset算出来后——你直接把从时钟拨回offset？太粗暴了。如果你的时钟是发动机ECU的时基——一个突然的时间跳跃会导致定时器输出跳变、喷油时间错位、CAN消息周期乱掉。你需要的是“平滑校正“——而不是“跳变“。</p>
+<p>PTP从时钟内部有一个<strong>PI伺服控制器</strong>（Proportional-Integral Servo）。它的输入是每次sync周期（通常0.125秒，即8Hz）算出来的offset。输出是<strong>频率校正值</strong>——施加到本地时钟的压控振荡器（或在软件实现中，施加到时钟速率的乘数因子）。</p>
+<p>PI控制器的两个分量：</p>
+<p><strong>比例项（P_term）</strong>：与当前offset成正比。offset越大，校正力度越大。P项负责快速收敛——它让从时钟“迅速靠拢“主时钟。</p>
+<p><strong>积分项（I_term）</strong>：与offset的历史累积和成正比。如果offset总是正值（从时钟比主时钟快），I_term会积累一个负的频率偏移——让从时钟的频率永久性地慢一点。I项负责消除稳态偏差——它让从时钟的频率与主时钟“精确同步“。</p>
+<p>PI的控制方程（离散形式）：</p>
+<pre><code>P_term = Kp × offset
+I_sum  = I_sum + Ki × offset
+freq_correction = P_term + I_sum
+</code></pre>
+<p>其中Kp和Ki是增益系数，需要根据实际网络条件调试。Kp太大→过冲和振荡。Ki太大→响应慢，跟不上快速变化。Kp和Ki的最优值取决于sync周期的长度、网络的抖动特性、晶振的稳定性。</p>
+<p>Kp=0.7意味着什么？如果当前offset是1微秒，每次Follow_Up到达时，伺服直接把时钟减去0.7微秒。如果offset是负数（从时钟比主时钟快），就加上0.7微秒。这是“比例“——立即响应，不拖沓。Ki=0.3意味着什么？如果offset一直在正方向（从时钟一直慢），积分项就持续累积，产生一个越来越强的“拉回“力。就像你开车时发现车一直往右偏——Kp是你手动拧一下方向盘（一次性的），Ki是你发现偏了之后持续往左打着方向盘（持续的力）。</p>
+<p><strong>PI控制器是自动控制理论最简洁也最广泛的应用之一。</strong> 它不需要知道被控对象的精确模型，不需要复杂的系统辨识。只两个参数，一个反馈环——就能实现从时钟的持续收敛。从自动温控器到汽车定速巡航到PTP时钟同步——PI控制器无处不在。</p>
+<h3 id="穿透一个简化的ptp伺服循环"><a class="header" href="#穿透一个简化的ptp伺服循环">穿透：一个简化的PTP伺服循环</a></h3>
+<p>下面是一段简化到极致的PTP从时钟伺服代码。它不依赖任何真实PHY硬件时间戳——只是用软件模拟offset的计算过程。但它的PI逻辑和真实的PTP从时钟伺服循环是完全一致的：</p>
+<pre><code class="language-c">// ========== 简化版 PTP 从时钟伺服 ==========
+#include &lt;stdint.h&gt;
+#include &lt;math.h&gt;
+
+typedef struct {
+    int64_t  local_time;
+    double   freq_ratio;
+    double   Kp, Ki;
+    double   I_sum;
+    int64_t  last_sync_time;
+} ptp_slave_t;
+
+void ptp_slave_init(ptp_slave_t *s)
+{
+    s-&gt;local_time = 0;
+    s-&gt;freq_ratio = 1.0;
+    s-&gt;Kp    = 0.3;
+    s-&gt;Ki    = 0.001;
+    s-&gt;I_sum = 0.0;
+    s-&gt;last_sync_time = 0;
+}
+</code></pre>
+<pre><code class="language-c">// 每次收到 Sync+Follow_Up+Delay_Resp 后调用
+// 所有时间戳单位: 纳秒 (ns)
+void ptp_slave_update(ptp_slave_t *s,
+                       int64_t t1, int64_t t2,
+                       int64_t t3, int64_t t4)
+{
+    int64_t t2_minus_t1 = t2 - t1;
+    int64_t t4_minus_t3 = t4 - t3;
+
+    int64_t offset = (t2_minus_t1 - t4_minus_t3) / 2;
+    int64_t delay  = (t2_minus_t1 + t4_minus_t3) / 2;
+</code></pre>
+<p>这四个时间戳——t1、t2、t3、t4——每一个都是一个80bit的PTP Timestamp。在硬件里，当时钟捕捉到MII接口上的RX_DV信号跳变时，一组D触发器（就是3.2章讲的那个电路）瞬间锁存PHC计数器的当前值。所以你读到的t2，不是一个“软件记下的时间“——它是一个硬件的快照，精确到纳秒。</p>
+<pre><code class="language-c">    if (offset &gt;  1000000L) offset =  1000000L;
+    if (offset &lt; -1000000L) offset = -1000000L;
+
+    double offset_d = (double)offset;
+    double P_term = s-&gt;Kp * offset_d;
+    s-&gt;I_sum     += s-&gt;Ki * offset_d;
+
+    if (s-&gt;I_sum &gt;  100000.0) s-&gt;I_sum =  100000.0;
+    if (s-&gt;I_sum &lt; -100000.0) s-&gt;I_sum = -100000.0;
+
+    double freq_correction_ns = P_term + s-&gt;I_sum;
+    int64_t sync_interval_ns  = t2 - s-&gt;last_sync_time;
+    if (sync_interval_ns &lt;= 0) sync_interval_ns = 125000000L;
+
+    double freq_ratio_adjust = freq_correction_ns / (double)sync_interval_ns;
+
+    s-&gt;freq_ratio -= freq_ratio_adjust;
+
+    if (s-&gt;freq_ratio &gt; 1.000200) s-&gt;freq_ratio = 1.000200;
+    if (s-&gt;freq_ratio &lt; 0.999800) s-&gt;freq_ratio = 0.999800;
+
+    s-&gt;last_sync_time = t2;
+}
+</code></pre>
+<p><code>offset = (t2-t1 - t4+t3) / 2</code> 这个公式有一个隐含假设：网络延迟对称。但现实中，上行和下行延迟可能差几个微秒——因为交换机的队列深度在两个方向上可能不同。这就是为什么gPTP（IEEE 802.1AS）要求对等延迟测量，而不是E2E——逐链路测量消除了路径不对称。但在你的软件时间戳方案中，E2E已经是“有限资源下的最优解“了。</p>
+<p><strong>这段代码虽然简化，但PI伺服的核心逻辑——offset计算、P_term、I_sum累积、freq_ratio校正——和真实的ptp_lite源码（见《PTP技术书》附录）完全一致。</strong> 生产代码还会加上：滤波（中值滤波或卡尔曼滤波去除网络抖动尖峰）、状态机（LISTENING→UNCALIBRATED→SLAVE→MASTER）、BMCA参与的主时钟切换处理、硬件时间戳的延迟补偿。</p>
+<h3 id="为什么必须硬件时间戳"><a class="header" href="#为什么必须硬件时间戳">为什么必须硬件时间戳</a></h3>
+<p>软件时间戳：你在驱动的接收中断里调用<code>clock_gettime()</code>来“记录“报文到达的时刻。问题是从报文的前导码到达PHY → PHY解析完帧 → DMA把帧搬到内存 → CPU响应中断 → 中断延迟（取决于当前执行的指令是否是长延迟指令如除法、中断优先级）→ 你的ISR执行到<code>clock_gettime()</code>——这中间经过了数微秒的不确定延迟。中断嵌套、cache miss、总线争用，每一个都让时间戳飘移。</p>
+<p>PTP的目标精度是纳秒级。纳秒级意味着——你需要知道帧的第一个bit到达MII接口引脚的精确时刻。</p>
+<p>现代以太网PHY（如NXP TJA1101、Broadcom BCM89811）内置硬件时间戳单元。在MII的RX_CLK上升沿检测到有效帧起始定界符（SFD）时，PHY立即锁存硬件计数器的当前值。这个计数器由PHY内部的压控晶振驱动，不受CPU负载、中断延迟、总线争用的影响。时间戳被写入PHY的timestamp寄存器，驱动通过MDIO或SPI接口读出。</p>
+<p>硬件时间戳的不确定性：几十纳秒（主要由PHY内部的PLL jitter和信号传播延迟引起）。软件时间戳的不确定性：几十微秒。<strong>差了一千倍。</strong></p>
+<p>这一千倍——就是PTP能从“实验室论文“变成“生产线部署“的根本原因。IEEE 1588标准发布于2002年。但直到1588v2（2008年），以及2010年后支持硬件时间戳的以太网PHY大规模量产——PTP才真正进入工业自动化、电信、汽车领域。</p>
+<p><strong>标准是思想。硅片是物理。两者缺一不可。</strong></p>
+<p>PTP的硬件时间戳捕捉，就是3.2章讲的D触发器的直接应用。MII接口上的RX_DV信号跳变就是时钟沿，PHC计数器的当前值就是D输入。PTP没有发明新的硬件——它只是把数字逻辑课上最基础的电路，用在了正确的地方。而PTP伺服里的PI控制器，和你在5.2章会看到的RTOS任务调度共享同一个数学骨架——比例积分微分（PID）控制，只是PTP控制的是时钟频率，RTOS控制的是CPU占用率。</p>
+<h3 id="bmca让100个ecu自己选出时官"><a class="header" href="#bmca让100个ecu自己选出时官">BMCA：让100个ECU自己选出“时官“</a></h3>
+<p>PTP网络中的时间不是人配置的——是BMCA（Best Master Clock Algorithm，最佳主时钟算法）自动选举的。</p>
+<p>BMCA的核心规则很简单：每个PTP节点把自己的时钟质量和收到的其他节点的Announce报文中的时钟质量对比。如果自己的时钟更好——自己成为Master。如果别人的更好——自己成为Slave。如果一样好——比clockIdentity（通常是MAC地址），ID更小的获胜。</p>
+<p>“时钟质量“由一个数据结构定义——<code>clockQuality</code>，包含：<code>clockClass</code>（时钟类别，如“普通晶振”、“GPS锁定”、“原子钟”）、<code>clockAccuracy</code>（精度，如“&lt;100ns“、“&gt;10μs”）、<code>offsetScaledLogVariance</code>（统计稳定性）。</p>
+<p>BMCA的网络效应：每个节点持续周期性地发Announce报文（通常1Hz），宣告自己的时钟质量。启动阶段——所有节点都是Master候选，互相发Announce。数秒后，网络中质量最高的节点被所有其他节点识别出来——它成为Grandmaster。其他节点自动降为Slave。如果Grandmaster故障（Announce超时，通常3个周期没收到），它的直接下游会发现Announce超时——触发BMCA重新运行——第二个质量最好的节点接管Grandmaster角色。</p>
+<p><strong>整个过程没有中央控制器，没有人工配置，完全自组织。</strong> 这就是分布式系统的优雅——单点故障不影响整体。BMCA让100个ECU在几秒内自己“找出“谁是时间权威。</p>
+<p>来走一个具体的选举。网络里有三个候选主时钟：A（接了GPS，clockClass=6，priority1=128），B（接了北斗，clockClass=6，priority1=100），C（自由运行，clockClass=52）。BMCA依次比较：priority1（B的100&lt;A的128→B领先）→clockClass（B=6，C=52→C出局）→clockAccuracy→offsetScaledLogVariance→priority2→clockIdentity。最终B获胜，因为它有最低的priority1。A虽然有GPS，但priority1不如B，退出竞选。C的clockClass太差，连竞选的资格都没有。</p>
+<h3 id="gptpieee-8021as汽车定制的ptp-profile"><a class="header" href="#gptpieee-8021as汽车定制的ptp-profile">gPTP（IEEE 802.1AS）：汽车定制的PTP Profile</a></h3>
+<p>通用PTP（IEEE 1588）是为工业自动化和电信设计的。它有太多选项（二层/三层、one-step/two-step、单播/多播、各种profile），对汽车来说太重了。</p>
+<p>IEEE 802.1AS（gPTP——generalized Precision Time Protocol）是IEEE 802.1音视频桥接（AVB）工作组在2009年定义的PTP Profile。它是PTP的“精简增强版“——去掉汽车不需要的选项，增强汽车需要的特性。</p>
+<p>gPTP与标准1588的区别：</p>
+<ol>
+<li>
+<p><strong>强制二层、多播、one-step或two-step。</strong> 不支持三层（IP），因为车载网络不需要IP路由来传时间同步报文。所有时间同步报文通过以太网组播发送。</p>
+</li>
+<li>
+<p><strong>强制Peer-to-Peer延迟测量。</strong> 标准PTP的Delay_Req/Delay_Resp机制只适用于主时钟和从时钟之间的端到端（E2E）延迟。gPTP改用Pdelay_Req/Pdelay_Resp/Pdelay_Resp_Follow_Up——在每一对相邻节点之间测量链路延迟。这是“逐跳“延迟测量，更适合交换网络拓扑——因为车载以太网的中间节点（交换机）会引入可变延迟，E2E测量无法分离出每段链路的贡献。</p>
+</li>
+<li>
+<p><strong>Grandmaster冗余。</strong> 标准PTP在Grandmaster故障时，BMCA可能需要数秒重新选举——在ADAS场景中，数秒没有融合的时间戳是不可接受的。gPTP支持“热备份“Grandmaster——两个Grandmaster候选同时工作，从时钟在Announce报文中看到两个GM时自动切换到时钟质量次好的那个。切换时间&lt;100ms。</p>
+</li>
+<li>
+<p><strong>更强的媒体无关性。</strong> 802.1AS的时钟同步独立于底层物理介质——它定义了“媒体无关的时间同步服务“，运行在以太网（100BASE-T1/1000BASE-T1）、Wi-Fi、甚至MOST总线之上。</p>
+</li>
+</ol>
+<p>gPTP的设计者核心理念是：<strong>“让时间同步成为基础设施，而不是应用的负担。”</strong> 应用软件只需要调用gPTP提供的时钟API——其余的（BMCA、逐跳延迟测量、频率同步、时间同步）由gPTP协议栈自动完成。</p>
+<h3 id="汽车里的ptp三个场景更深的细节"><a class="header" href="#汽车里的ptp三个场景更深的细节">汽车里的PTP：三个场景，更深的细节</a></h3>
+<p><strong>一、ADAS传感器融合。</strong></p>
+<p>前视摄像头（Mobileye EyeQ4）、前向毫米波雷达（Bosch MRR）、四个角雷达、十二个超声波的测量帧，通过时间戳绑定到共同的gPTP时基上。不是“对准到毫秒“——是对准到<strong>微秒</strong>。</p>
+<p>在高速公路上，车速100km/h（≈28m/s），两辆相邻的车距在0.5秒内可能缩短14米。如果前摄像头的目标时间戳和角雷达的目标时间戳差1ms——两车的相对位置就差了28mm。在决定是“跟车“还是“超车“还是“紧急制动“的融合算法中，28mm的误差可能让目标落入错误的目标列表中——融合算法把前雷达看到的目标A匹配给摄像头看到的目标B——结果：车在正确的时刻做了正确的反应——但针对的是错误的障碍物。</p>
+<p>目前ADAS传感器的gPTP同步精度要求：&lt;1μs（通常是±500ns）。在100BASE-T1网络上，通过硬件时间戳，这是可达到的。</p>
+<p><strong>二、车载音频（AVB/TSN）。</strong></p>
+<p>7.1声道数字音频，每个扬声器由独立放大器ECU驱动。如果左前声道的信号和右后声道的信号播放时间偏差超过10μs——人耳在定位声源时能感知到声像漂移（precedence effect / Haas effect）。IEEE 802.1AS让全车所有音频放大器ECU的DAC时钟同步到同一时间基准——确保“现在播放“在物理上就是“同时播放“。</p>
+<p>具体要求：采样率48kHz → 采样周期≈20.8μs。12个音频通道之间的时间对准精度&lt;5μs。</p>
+<p><strong>三、XCP标定与数据记录。</strong></p>
+<p>标定工程师在台架上调试发动机Map——点火提前角、喷油脉宽、增压压力。ECU内部的高频变量（爆震强度、缸压峰值、喷油欠量补偿值）以100Hz到1kHz的速率打上时间戳，通过XCP（CAN/Ethernet）上传到标定工具。如果ECU_A的爆震记录和ECU_B的喷油修正时间戳不同步——标定工程师在分析数据时会看到“爆震发生在喷油修正之后“——但实际上可能是“喷油修正来不及响应，爆震就发生了“——这就是数据关联错误。基于这个错误数据调整的Map参数，可能会把发动机推离最优工作点。</p>
+<h3 id="没有共同的物理时钟但创造了共同的逻辑时钟"><a class="header" href="#没有共同的物理时钟但创造了共同的逻辑时钟">没有共同的物理时钟——但创造了共同的逻辑时钟</a></h3>
+<p>PTP做的事情，在哲学层面非常深刻。</p>
+<p>你有一组分布式的ECU。它们各自有自己的晶振——各自在物理上以略微不同的频率振荡。这是物理事实，不可改变。你无法让两个独立的晶振完全同频——即使来自同一块晶圆的相邻位置，也有ppm级差异。</p>
+<p>PTP的解法不是“消除差异“——而是<strong>通过不断的协议交换，创造出共同的逻辑时钟。</strong></p>
+<p>每一个从时钟每隔一定周期收到t1/t2/t3/t4时间戳，计算offset，通过PI伺服校正本地时钟的频率。校正不是一次性——是持续的闭环控制。PI伺服过滤掉网络抖动的噪声，只追踪真实的频率偏差。主时钟和从时钟之间的时间差被不断压缩到纳秒级——不是“把它们调成一样“，而是“让它们不断地互相拉近“。</p>
+<p><strong>这和区块链的分布式共识有相同的模式。</strong> 区块链要的是“同一个账本“——每个节点各自维护一份副本，通过不断交换和验证，达成共同的状态。PTP要的是“同一个时钟“——每个节点各自维护一个晶振，通过不断交换和校正，达成共同的时间。</p>
+<p>两者都是：在一个不完美的分布式网络中，通过交换和校正，达成一个完美的共识。区块链共识的是<strong>状态</strong>。PTP共识的是<strong>时间</strong>。</p>
+<p>汽车ECU的数量从20个增长到100个——分布式系统的规模在扩大，但底层共识的机制没有变。无论多少个ECU，只要它们周期性地交换时间戳、运行PI伺服——全车就能共享一道时间轴。100颗晶振，一道时轴。</p>
+<h3 id="从惠更斯到硅片"><a class="header" href="#从惠更斯到硅片">从惠更斯到硅片</a></h3>
+<p>1665年，荷兰物理学家惠更斯做了一个实验。</p>
+<p>他把两个摆钟挂在同一根横梁上。几十分钟后他发现：两个钟的摆动完全同步了——方向相反，但频率完全一致。横梁的极其微小的振动成为它们之间的耦合通道。这是人类第一次观测到“自发同步“（spontaneous synchronization）。</p>
+<p>400年后——你的ECU上跑的PTP协议，本质上在做同一件事。但不是用机械横梁——而是用四个时间戳、PI控制器、硬件时间戳、100BASE-T1以太网帧。精度也从惠更斯的秒级，跨越了九个数量级——到了纳秒级。</p>
+<p>惠更斯看到两个摆钟会同步，但他不会知道：400年后，几十亿颗晶体管封装的芯片，会把他那根横梁的逻辑——反馈、耦合、收敛——在硅片里完美重演。</p>
+<p>惠更斯的横梁是机械的物理耦合。PTP的Sync报文是电磁波的逻辑耦合。它们的核心数学是同一道：<strong>反馈 + 收敛 = 同步。</strong></p>
+<p><strong>从思想实验到硅片——这就是工程史。</strong> 后之视今，亦犹今之视昔。惠更斯在1673年出版的《摆钟论》里写下他的发现时，他不会知道自己的思想将在2020年代的车载以太网上以100Mbps的速率传播。而你今天在MCU里调PI增益时的每一行代码——400年后的工程师回头看，也会和你看惠更斯一样惊讶。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>回答“什么是同时“——在一组各自拥有独立晶振的ECU之间，通过协议交换创造出共同的逻辑时钟。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>PTP不消除物理差异，而是通过持续交换时间戳来创建共同逻辑时钟</strong>：t1/t2/t3/t4四个时间戳，PI伺服环路持续校正本地时钟频率——100颗晶振，一道时轴。</li>
+<li><strong>硬件时间戳是精度的关键</strong>：软件时间戳受中断延迟和协议栈抖动影响，精度在微秒级。硬件时间戳在MAC层打标，精度可达纳秒级——9个数量级的跨越。</li>
+<li><strong>PTP的核心数学与惠更斯的摆钟同步是同一道</strong>：反馈 + 收敛 = 同步。从1665年的机械横梁到2020年代的100BASE-T1以太网帧——思想不变，介质变了。</li>
+</ol>
+<p>下一节，所有通信协议最终都要落地：传感器是ECU的“眼睛“，执行器是ECU的“手脚“。从热敏电阻到ADC采样值，从PWM占空比到喷油器开阀——这是物理世界与数字世界之间的桥。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>通信协议讲到这——从片内总线到SPI/I2C，从CAN到以太网，再到PTP时间同步。这六个章节覆盖了“计算的连接“的全谱。但所有这些，最终都要落在一个东西上：<strong>传感器和执行器。</strong></p>
+<p>ECU的电路板上，MCU在正中央。但在PCB的边缘——在那一排排端子上——连接着方向盘角度传感器、油门踏板位置传感器、喷油器电磁阀、ABS液压阀。这是ECU的“眼睛“和“手脚“。</p>
+<p>没有它们——ECU只是一个在时间同步和协议栈中运转的计算机，触碰不到任何物理事物。</p>
+<p>这就引出下一个问题：<strong>物理世界和数字世界之间的桥——信号链。</strong> 一条温度信号从冷却液里的热敏电阻，经过分压器、运放缓冲器、ADC采样、DMA传输、中断服务程序——最后变成你C代码里的<code>float temperature = 85.0f</code>。反过来，你写的<code>TIM1-&gt;CCR3 = 2350</code>，经过定时器比较单元、GPIO输出缓冲器、MOSFET栅极驱动器、功率MOSFET、喷油器线圈——变成缸内5mg的精准喷油。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/4.4-车载以太网与DoIP.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/4.6-传感器与执行器接口.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/4.4-车载以太网与DoIP.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/4.6-传感器与执行器接口.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

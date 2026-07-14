@@ -1,0 +1,730 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Handle管理模块 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="47-handle管理模块对象的身份证发放"><a class="header" href="#47-handle管理模块对象的身份证发放">4.7 Handle管理模块：对象的“身份证发放“</a></h2>
+<h3 id="一个问题handle怎么分配"><a class="header" href="#一个问题handle怎么分配">一个问题：Handle怎么分配？</a></h3>
+<p>假设你刚刚理解了SessionManager的“窗口调度员“角色。</p>
+<p>应用程序打开Session后，得到一个Session Handle（比如“3“）。</p>
+<p>创建密钥后，得到一个Object Handle（比如“5“）。</p>
+<p>你可能会想：</p>
+<ul>
+<li>Handle的数字是怎么来的？</li>
+<li>Handle能被理解吗？</li>
+<li>Handle和内部对象怎么关联？</li>
+</ul>
+<p>更深层的问题是：</p>
+<p><strong>Handle就像“身份证号“，身份证系统如何发放和管理？</strong></p>
+<hr>
+<h3 id="身份证系统的设计意图"><a class="header" href="#身份证系统的设计意图">“身份证系统“的设计意图</a></h3>
+<p>HandleManager就像身份证发放系统：</p>
+<pre><code>身份证系统类比：
+
+身份证发放系统（HandleManager）
+│
+├── 职责：
+│   ├── 发放身份证号（分配Handle）
+│   ├── 记录身份证→人映射（Handle→Object映射）
+│   ├── 验证身份证有效性（Handle有效性检查）
+│   ├── 回收身份证（Handle回收）
+│   └── 保证唯一性（Handle不重复）
+│   │
+│   ├── 身份证号特点：
+│   │   ├── 唯一：每个号码唯一
+│   │   ├── 不透明：号码本身不透露信息
+│   │   ├── 可验证：可以验证是否有效
+│   │   └── 可映射：号码对应具体人
+│   │
+│   ├── 身份证类型：
+│   │   ├── Session身份证（CK_SESSION_HANDLE）
+│   │   │   ├── 窗口编号
+│   │   │   └── 用于所有后续操作
+│   │   │
+│   │   └── Object身份证（CK_OBJECT_HANDLE）
+│   │   │   ├── 密钥/证书编号
+│   │   │   ├── 用于密钥操作
+│   │   │
+│   │   └── 注意：两者是不同的类型！
+│   │   │   ├── Session Handle：窗口编号
+│   │   │   └── Object Handle：密钥编号
+│   │   │   └── 不能混用
+│   │
+│   └── 身份证分配规则：
+│   │   ├── 从1开始递增
+│   │   ├── 不回收（不复用）
+│   │   ├── 32位整数
+│   │   └── 可以无限增长（直到溢出）
+│   │
+│   └── 身份证→人映射：
+│   │   ├── map&lt;Handle, Object&gt;
+│   │   ├── 查找：通过Handle找到Object
+│   │   ├── 验证：检查Handle是否有效
+│   │   └── 删除：删除Object时清除映射
+│   │
+└── 关键设计：
+    ├── Handle是32位整数
+    ├── Handle不透明（不透露内部信息）
+    ├── Handle→Object映射表
+    └── Handle不复用（简化设计）
+</code></pre>
+<hr>
+<h3 id="handlemanager的地位"><a class="header" href="#handlemanager的地位">HandleManager的地位</a></h3>
+<p>HandleManager负责分配和管理PKCS#11中的各种Handle：</p>
+<pre><code>Handle概念：
+
+PKCS#11 Handle类型：
+┌─────────────────────────────────────┐
+│ CK_SESSION_HANDLE                   │
+│ ├─ Session句柄                     │
+│ ├─ OpenSession返回                 │
+│ └─ 用于后续所有操作                │
+│                                     │
+│ CK_OBJECT_HANDLE                    │
+│ ├─ 对象句柄                         │
+│ ├─ CreateObject返回                 │
+│ ├─ FindObjects返回                  │
+│ ├─ GenerateKey返回                  │
+│ └─ 用于密钥操作                    │
+│                                     │
+│ Handle特性：                         │
+│ ├─ 32位整数                        │
+│ ├─ 不透明（应用程序不理解）          │
+│ ├─ 映射到内部对象                   │
+│ └─ 会话关闭后失效                   │
+└─────────────────────────────────────┘
+
+HandleManager职责：
+┌─────────────────────────────────────┐
+│ ├─ 分配新Handle                     │
+│ ├─ Handle→Object映射               │
+│ ├─ Handle有效性验证                 │
+│ ├─ Handle回收                       │
+│ └─ Handle唯一性保证                 │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="handlemanager类设计教学简化说明"><a class="header" href="#handlemanager类设计教学简化说明">HandleManager类设计（教学简化说明）</a></h3>
+<blockquote>
+<p><strong>注意</strong>：本章为教学目的简化了Handle管理机制。实际SoftHSM2源码使用统一的handles map管理所有类型句柄，而非分开的sessionHandles和objectHandles。SoftHSM2使用递增整数分配句柄，由Session和Token分别管理各自的对象句柄。</p>
+</blockquote>
+<pre><code class="language-cpp">/* HandleManager类结构（简化模型） */
+
+class HandleManager {
+public:
+    // Handle映射表（教学简化：分开存储便于理解）
+    // 实际源码：统一的handles map
+    std::map&lt;CK_SESSION_HANDLE, Session*&gt; sessionHandles;
+    std::map&lt;CK_OBJECT_HANDLE, Object*&gt; objectHandles;
+    
+    // 下一个Handle值
+    CK_SESSION_HANDLE nextSessionHandle;
+    CK_OBJECT_HANDLE nextObjectHandle;
+    
+    // Handle分配
+    CK_SESSION_HANDLE allocateSessionHandle(Session* session);
+    CK_OBJECT_HANDLE allocateObjectHandle(Object* object);
+    
+    // Handle查询
+    Session* getSession(CK_SESSION_HANDLE hSession);
+    Object* getObject(CK_OBJECT_HANDLE hObject);
+    
+    // Handle验证
+    bool isValidSessionHandle(CK_SESSION_HANDLE hSession);
+    bool isValidObjectHandle(CK_OBJECT_HANDLE hObject);
+    
+    // Handle释放
+    void releaseSessionHandle(CK_SESSION_HANDLE hSession);
+    void releaseObjectHandle(CK_OBJECT_HANDLE hObject);
+    
+    // Session关闭时清理
+    void cleanupSessionObjects(CK_SESSION_HANDLE hSession);
+};
+
+/* Handle分配实现 */
+
+CK_SESSION_HANDLE HandleManager::allocateSessionHandle(Session* session)
+{
+    // 分配新Handle
+    CK_SESSION_HANDLE handle = nextSessionHandle;
+    nextSessionHandle++;
+    
+    // 避免Handle为0（无效值）
+    if (handle == 0) {
+        handle = nextSessionHandle;
+        nextSessionHandle++;
+    }
+    
+    // 存储映射
+    sessionHandles[handle] = session;
+    
+    return handle;
+}
+
+CK_OBJECT_HANDLE HandleManager::allocateObjectHandle(Object* object)
+{
+    // 分配新Handle
+    CK_OBJECT_HANDLE handle = nextObjectHandle;
+    nextObjectHandle++;
+    
+    // 避免Handle为0（无效值）
+    if (handle == 0) {
+        handle = nextObjectHandle;
+        nextObjectHandle++;
+    }
+    
+    // 存储映射
+    objectHandles[handle] = object;
+    
+    return handle;
+}
+
+/* Handle查询实现 */
+
+Session* HandleManager::getSession(CK_SESSION_HANDLE hSession)
+{
+    // 查找映射表
+    auto it = sessionHandles.find(hSession);
+    if (it == sessionHandles.end()) {
+        return NULL;
+    }
+    
+    return it-&gt;second;
+}
+
+Object* HandleManager::getObject(CK_OBJECT_HANDLE hObject)
+{
+    // 查找映射表
+    auto it = objectHandles.find(hObject);
+    if (it == objectHandles.end()) {
+        return NULL;
+    }
+    
+    return it-&gt;second;
+}
+
+/* Handle验证实现 */
+
+bool HandleManager::isValidSessionHandle(CK_SESSION_HANDLE hSession)
+{
+    // 检查Handle是否存在
+    return sessionHandles.find(hSession) != sessionHandles.end();
+}
+
+bool HandleManager::isValidObjectHandle(CK_OBJECT_HANDLE hObject)
+{
+    // 检查Handle是否存在
+    return objectHandles.find(hObject) != objectHandles.end();
+}
+
+/* Handle释放实现 */
+
+void HandleManager::releaseSessionHandle(CK_SESSION_HANDLE hSession)
+{
+    // 从映射表删除
+    sessionHandles.erase(hSession);
+}
+
+void HandleManager::releaseObjectHandle(CK_OBJECT_HANDLE hObject)
+{
+    // 从映射表删除
+    objectHandles.erase(hObject);
+}
+</code></pre>
+<hr>
+<h3 id="handle的生命周期"><a class="header" href="#handle的生命周期">Handle的生命周期</a></h3>
+<pre><code>Handle生命周期：
+
+Session Handle生命周期：
+┌─────────────────────────────────────┐
+│                                     │
+│ C_OpenSession                       │
+│     │                               │
+│     │ Session创建                   │
+│     │                               │
+│     ▼                               │
+│ HandleManager::allocateSessionHandle │
+│     │                               │
+│     │ 分配Handle                    │
+│     │ hSession = 1                  │
+│     │                               │
+│     ├─────────────────────────────→ │
+│     │                               │
+│     │ 使用Handle                    │
+│     │ C_Login(hSession, ...)        │
+│     │ C_SignInit(hSession, ...)     │
+│     │ C_Sign(hSession, ...)         │
+│     │                               │
+│     ├─────────────────────────────→ │
+│     │                               │
+│ C_CloseSession                      │
+│     │                               │
+│     │ Session删除                   │
+│     │                               │
+│     ▼                               │
+│ HandleManager::releaseSessionHandle │
+│     │                               │
+│     │ Handle失效                    │
+│     │                               │
+│     └─→ Handle=1不再有效             │
+│                                     │
+│ 后续使用Handle=1：                   │
+│ C_Login(1, ...) → CKR_SESSION_HANDLE_INVALID │
+│                                     │
+└─────────────────────────────────────┘
+
+Object Handle生命周期：
+┌─────────────────────────────────────┐
+│                                     │
+│ C_GenerateKey                       │
+│     │                               │
+│     │ Object创建                    │
+│     │                               │
+│     ▼                               │
+│ HandleManager::allocateObjectHandle │
+│     │                               │
+│     │ 分配Handle                    │
+│     │ hKey = 100                    │
+│     │                               │
+│     ├─────────────────────────────→ │
+│     │                               │
+│     │ 使用Handle                    │
+│     │ C_SignInit(hSession, hKey)    │
+│     │ C_EncryptInit(hSession, hKey) │
+│     │                               │
+│     ├─────────────────────────────→ │
+│                                     │
+│ Token对象：持久                      │
+│ Session对象：随Session关闭失效       │
+│                                     │
+│ C_DestroyObject                     │
+│     │                               │
+│     │ Object删除                    │
+│     │                               │
+│     ▼                               │
+│ HandleManager::releaseObjectHandle  │
+│     │                               │
+│     │ Handle失效                    │
+│                                     │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="session关闭时的handle清理"><a class="header" href="#session关闭时的handle清理">Session关闭时的Handle清理</a></h3>
+<pre><code class="language-cpp">/* Session关闭时清理Object */
+
+void HandleManager::cleanupSessionObjects(CK_SESSION_HANDLE hSession)
+{
+    // 获取Session
+    Session* session = getSession(hSession);
+    if (session == NULL) {
+        return;
+    }
+    
+    // 获取Session的Object列表
+    std::vector&lt;Object*&gt; sessionObjects = session-&gt;getSessionObjects();
+    
+    // 释放所有Session Object Handle
+    for (auto obj : sessionObjects) {
+        // 找到Object的Handle
+        for (auto it = objectHandles.begin(); it != objectHandles.end(); ++it) {
+            if (it-&gt;second == obj) {
+                // 释放Handle
+                objectHandles.erase(it);
+                break;
+            }
+        }
+        
+        // 删除Object
+        delete obj;
+    }
+}
+
+/* Session关闭完整流程 */
+
+CK_RV SoftHSM::C_CloseSession(CK_SESSION_HANDLE hSession)
+{
+    // 1. 获取Session
+    Session* session = sessionManager-&gt;getSession(hSession);
+    if (session == NULL) {
+        return CKR_SESSION_HANDLE_INVALID;
+    }
+    
+    // 2. 清理Session Objects
+    handleManager-&gt;cleanupSessionObjects(hSession);
+    
+    // 3. 清除Session操作状态
+    session-&gt;clearAllOperations();
+    
+    // 4. 删除Session
+    sessionManager-&gt;deleteSession(hSession);
+    
+    // 5. 释放Session Handle
+    handleManager-&gt;releaseSessionHandle(hSession);
+    
+    return CKR_OK;
+}
+</code></pre>
+<hr>
+<h3 id="handle映射冲突处理"><a class="header" href="#handle映射冲突处理">Handle映射冲突处理</a></h3>
+<pre><code class="language-cpp">/* Handle冲突检查 */
+
+CK_SESSION_HANDLE HandleManager::allocateSessionHandle(Session* session)
+{
+    // 循环直到找到未使用的Handle
+    while (true) {
+        CK_SESSION_HANDLE handle = nextSessionHandle;
+        nextSessionHandle++;
+        
+        // Handle为0无效
+        if (handle == 0) {
+            continue;
+        }
+        
+        // 检查Handle是否已存在
+        if (sessionHandles.find(handle) == sessionHandles.end()) {
+            // Handle可用，存储映射
+            sessionHandles[handle] = session;
+            return handle;
+        }
+        
+        // Handle冲突，继续尝试下一个
+        // 这种情况很少发生，但理论上可能
+    }
+}
+</code></pre>
+<hr>
+<h3 id="handlemanager在车载hsm中的应用"><a class="header" href="#handlemanager在车载hsm中的应用">HandleManager在车载HSM中的应用</a></h3>
+<pre><code>车载HSM Handle管理差异：
+
+软件HSM（SoftHSM2）：
+┌─────────────────────────────────────┐
+│ Handle分配方式：                     │
+│                                     │
+│ ├─ 简单整数递增                     │
+│ ├─ std::map存储映射                 │
+│ ├─ Handle可以很大                   │
+│ └─ 无硬件限制                       │
+│                                     │
+│ Handle验证：                         │
+│ ├─ 查map表                          │
+│ ├─ 无硬件交互                       │
+│ └─ 快速返回                         │
+└─────────────────────────────────────┘
+
+硬件HSM（车规级）：
+┌─────────────────────────────────────┐
+│ Handle分配方式：                     │
+│                                     │
+│ ├─ HSM内部分配                      │
+│ ├─ 可能映射到Key ID                 │
+│ ├─ Handle范围有限                   │
+│ └─ 需要APDU交互                    │
+│                                     │
+│ Handle验证：                         │
+│ ├─ 发送APDU检查                     │
+│ ├─ HSM返回有效性                   │
+│ └─ 有通信开销                       │
+│                                     │
+│ Handle特殊性：                       │
+│ ├─ 可能与Key ID绑定                 │
+│ ├─ HSM内部管理                      │
+│ ├─ Host只持有Handle                │
+│ └─ 不能推测Handle含义               │
+└─────────────────────────────────────┘
+
+车规级HSM实例：
+┌─────────────────────────────────────┐
+│ Key ID vs Handle                    │
+│                                     │
+│ SDK层面：                            │
+│ ├─ api_create_key() → key_id        │
+│ ├─ key_id = 0x01, 0x02, ...         │
+│ └─ 固定范围                         │
+│                                     │
+│ PKCS#11封装：                        │
+│ ├─ key_id映射到CK_OBJECT_HANDLE     │
+│ ├─ Handle = 0x01, 0x02              │
+│ └─ 简单映射                         │
+│                                     │
+│ 限制：                               │
+│ ├─ Key ID有限（取决于HSM）          │
+│ ├─ Handle不能超出Key ID范围          │
+│ └─ 不是无限递增                     │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="小结handle管理要点"><a class="header" href="#小结handle管理要点">小结：Handle管理要点</a></h3>
+<pre><code>Handle管理要点回顾：
+
+1. Handle概念
+   32位整数
+   不透明标识符
+   映射到内部对象
+
+2. HandleManager职责
+   分配新Handle
+   Handle→Object映射
+   Handle验证
+   Handle回收
+
+3. Handle分配算法
+   简单递增
+   避免为0
+   检查冲突
+   唯一性保证
+
+4. Handle生命周期
+   创建时分配
+   使用时验证
+   关闭/销毁时释放
+   Session关闭影响Session Objects
+
+5. 车载HSM差异
+   软件HSM：简单映射
+   硬件HSM：Key ID绑定
+   Handle范围可能有限
+
+6. 关键验证
+   所有PKCS#11函数验证Handle
+   CKR_SESSION_HANDLE_INVALID
+   CKR_KEY_HANDLE_INVALID
+   Handle失效后必须重新创建
+</code></pre>
+<p>HandleManager是对象管理的“身份证发放中心“，确保Handle的唯一性和有效性。</p>
+<p>下一节，我们将深入存储模块——看Object如何被持久化。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>Object怎么存储？</p>
+<p>文件存储和数据库存储有什么区别？</p>
+<p>ObjectFile是什么结构？</p>
+<p>下一节，Object存储架构。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/4.6-Session管理模块.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/4.8-Object存储架构.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/4.6-Session管理模块.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/4.8-Object存储架构.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

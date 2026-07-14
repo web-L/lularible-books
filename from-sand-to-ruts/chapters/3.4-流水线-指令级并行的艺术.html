@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>流水线 · 指令级并行的艺术 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="34-流水线指令级并行的艺术"><a class="header" href="#34-流水线指令级并行的艺术">3.4 流水线：指令级并行的艺术</a></h1>
+<h2 id="快餐店里的四重奏"><a class="header" href="#快餐店里的四重奏">快餐店里的四重奏</a></h2>
+<p>你在快餐店里做三明治。每个三明治四个步骤：切面包（2 秒）→ 涂酱料（3 秒）→ 放馅料（4 秒）→ 包装（2 秒）。</p>
+<p>如果你一个人从头做到尾：每个三明治 11 秒，一小时 327 个。</p>
+<p>现在你雇了 4 个人，排成一排。第一个人只切面包，切完递给第二个人涂酱料，同时第一个人开始切下一个面包。第二个人涂完递给第三个放馅料……以此类推。</p>
+<p>第一个三明治还是要等 11 秒。但从第二个开始——每个三明治只需 4 秒（最慢那一步的时间）。</p>
+<p><strong>一小时 900 个——效率翻了近 3 倍。</strong></p>
+<p>你没有让任何人切得更快，没有多买一把刀。你只是把“等待“的时间利用了起来。这就是<strong>流水线</strong>（Pipeline）。</p>
+<h2 id="经典五级流水线"><a class="header" href="#经典五级流水线">经典五级流水线</a></h2>
+<p>David Patterson 和 John Hennessy 在他们经典的 MIPS 处理器中确立了五级流水线，后续绝大多数 RISC 处理器都效仿了这个设计：</p>
+<ol>
+<li><strong>IF</strong>（Instruction Fetch）：PC 驱动地址，从指令存储器取指。</li>
+<li><strong>ID</strong>（Instruction Decode）：译码，读出寄存器文件中的源操作数。</li>
+<li><strong>EX</strong>（Execute）：ALU 执行算术/逻辑/地址计算。</li>
+<li><strong>MEM</strong>（Memory）：访问数据存储器（Load 或 Store）。</li>
+<li><strong>WB</strong>（Write Back）：把结果写回寄存器文件。</li>
+</ol>
+<pre><code>时钟周期:  1    2    3    4    5    6    7    8    9
+指令1:    IF   ID   EX   MEM  WB
+指令2:         IF   ID   EX   MEM  WB
+指令3:              IF   ID   EX   MEM  WB
+指令4:                   IF   ID   EX   MEM  WB
+指令5:                        IF   ID   EX   MEM  WB
+</code></pre>
+<p>在第 5 个时钟周期之后，每个周期都有一条指令完成。理想情况下，<strong>IPC（Instructions Per Cycle）= 1</strong>。相比单周期处理器，五级流水线的吞吐率提高了约 5 倍——不是靠让单条指令跑得更快，而是让多条指令在时间上重叠。</p>
+<p>ARM Cortex-M4 采用<strong>三级流水线</strong>（Fetch → Decode → Execute）。所以理想情况下也在接近 IPC=1，但实际上达不到。因为——重叠会带来冲突。</p>
+<h2 id="用-c-模拟一个五级流水线"><a class="header" href="#用-c-模拟一个五级流水线">用 C 模拟一个五级流水线</a></h2>
+<p>让我们通过手工追踪一条指令序列在流水线中的执行过程，来直观理解流水线的运作。下面的追踪展示了三条核心机制：<strong>流水线寄存器</strong>（IF/ID、ID/EX、EX/MEM、MEM/WB）保存每条指令在各个阶段的状态；<strong>转发逻辑</strong>把 EX 或 MEM 阶段的 ALU 结果直接旁路回 ID 阶段的读操作数——不需要等 WB 写完寄存器文件；<strong>气泡逻辑</strong>在 Load-Use 冒险时插入一个 NOP，让使用 Load 结果的指令在 ID 阶段多等一拍。</p>
+<h2 id="追踪一段指令序列"><a class="header" href="#追踪一段指令序列">追踪一段指令序列</a></h2>
+<p>用这段 ARM 汇编追踪流水线的精确行为：</p>
+<pre><code class="language-asm">ADD R1, R2, R3       ; (1)
+SUB R4, R1, R5       ; (2) ← RAW on R1
+LDR R6, [R7, #4]     ; (3)
+ADD R8, R6, R9       ; (4) ← Load-Use on R6
+</code></pre>
+<p><strong>第 1 周期</strong>：指令(1) IF。流水线里只有一个人在工作。</p>
+<p><strong>第 2 周期</strong>：指令(1) ID，指令(2) IF。</p>
+<p><strong>第 3 周期</strong>：指令(1) EX（ALU 正在算 R2+R3），指令(2) ID（准备读 R1 和 R5）。</p>
+<p>此时指令(2) 需要 R1——但 R1 的值正由指令(1) 在 EX 阶段算出，在 EX/MEM 流水线寄存器中尚未写回。<strong>转发路径激活</strong>：R1 的值直接从 EX/MEM.alu_result 拉回到指令(2) 的 EX 阶段操作数输入——绕过寄存器文件，零气泡。</p>
+<p><strong>第 4 周期</strong>：指令(1) MEM（空白），指令(2) EX（用转发的 R1 值做 SUB），指令(3) ID。</p>
+<p><strong>第 5 周期</strong>：指令(1) WB（R1 正式写入 reg_file），指令(2) MEM，指令(3) EX（算 R7+4 得到有效地址），指令(4) IF。</p>
+<p><strong>第 6 周期</strong>：指令(2) WB，指令(3) MEM（从 memory[addr] 读出数据），指令(4) ID（准备读 R6 和 R9）。</p>
+<p>此时指令(4) 需要 R6——但它来自 Load 指令(3)，数据要到 MEM 阶段结束才能拿到。而指令(4) 的 EX 阶段在第 7 周期就要开始了——只有一拍的间隔。转发逻辑无法拯救：Load 的结果要到第 6 周期结束时才进入 MEM/WB 流水线寄存器，而第 7 周期初指令(4) 的 EX 阶段就开始需要它。<strong>一个气泡插入</strong>：</p>
+<p><strong>第 7 周期</strong>：指令(3) WB，指令(4) ID（重复——气泡），流水线插入 NOP。（指令(5) 或其他指令被延后。）</p>
+<p><strong>第 8 周期</strong>：指令(3) WB 完成，R6 可用。指令(4) EX，用转发的 R6 值做 ADD。</p>
+<p>这段追踪让你看到：4 条指令执行 5 条指令的事情（因为有 1 个气泡），IPC 不是 1.0，而是 0.8。数据冒险——特别是 Load-Use 冒险——是实际 IPC 低于理想 IPC 的主因之一。</p>
+<h2 id="重叠的代价三种冒险"><a class="header" href="#重叠的代价三种冒险">重叠的代价：三种冒险</a></h2>
+<p>重叠不是免费的。当多条指令同时在流水线中飞行，“依赖关系“会让事情变得复杂。</p>
+<p>假设CPU正在执行以下三条指令：</p>
+<pre><code class="language-asm">ADD R1, R2, R3   ; R1 = R2 + R3
+SUB R4, R1, R5   ; R4 = R1 - R5  ← RAW on R1
+BEQ R1, R0, target ; if R1==R0 goto target
+</code></pre>
+<p>在五级流水线中追踪这三条指令：</p>
+<p><strong>第1周期</strong>：ADD IF。流水线里只有一条指令在飞。</p>
+<p><strong>第2周期</strong>：ADD ID, SUB IF。</p>
+<p><strong>第3周期</strong>：ADD EX（ALU正在算R2+R3），SUB ID（需要读R1和R5），BEQ IF。</p>
+<p>此时SUB需要R1——但ADD的EX阶段还没算出R1的最终结果。这是<strong>数据冒险</strong>（RAW——Read After Write）。但ADD在EX阶段结束时R1就已经从ALU输出——不需要等WB写完寄存器文件。解决方案是<strong>转发（Forwarding / Bypassing）</strong>：ADD在EX阶段一算出R1，就立刻旁路给下一周期SUB的EX阶段输入——绕过寄存器文件，零气泡。</p>
+<p><strong>第4周期</strong>：ADD MEM, SUB EX（用转发的R1值做减法），BEQ ID。</p>
+<p><strong>第5周期</strong>：ADD WB, SUB MEM, BEQ EX（决定是否跳转）。</p>
+<p>BEQ在EX阶段算出：跳还是不跳？如果跳——第6周期应该取target地址的指令。但第5周期已经取了下一条顺序指令进了IF/ID。这是<strong>控制冒险</strong>。如果BEQ跳转——IF/ID中的指令必须被<strong>flush（清除）</strong>，流水线从target重新取指，浪费一个周期——这就是分支惩罚。</p>
+<p>最后考虑另一种情况：如果SUB是Store指令（MEM阶段写内存），而BEQ同时在IF阶段读指令存储器。如果它们共享同一组总线——这就是<strong>结构冒险</strong>。哈佛架构通过独立指令/数据总线解决了这个问题。ARM Cortex-M系列大多采用哈佛架构或修改型哈佛（统一地址空间但独立总线接口），所以结构冒险在Cortex-M上相对少见。</p>
+<p>三条指令——ADD、SUB、BEQ——只有三条，却展示了流水线的全部三种冒险。下面逐一深入。</p>
+<h3 id="数据冒险你还没算完我已经需要了"><a class="header" href="#数据冒险你还没算完我已经需要了">数据冒险：你还没算完，我已经需要了</a></h3>
+<p>RAW（Read After Write）是最常见的数据冒险。在五级流水线中，第一条指令的WB要等到第5个周期才写完R1，但第二条指令在第3个周期的EX阶段就需要R1的值——差了两个周期。其他两种——WAW（Write After Write）和WAR（Write After Read）——在顺序流水线中不会发生（因为没有乱序写回），但在乱序执行中是主要问题。</p>
+<p>在物理上，转发路径就是一根MUX前面加的一组导线——它把EX/MEM流水线寄存器的alu_result字段引出，连到ALU输入MUX的一个额外输入端。控制信号“forward_a“和“forward_b“决定ALU的输入是来自寄存器文件还是来自转发总线。这个设计零时钟开销——转发操作和ALU运算在同一个周期完成。</p>
+<p>Cortex-M4有转发逻辑。但不是所有冒险都能转发。Load指令在MEM阶段才拿到数据，而紧跟其后的使用者（Load-Use冒险）不能靠转发解决——必须插入一个<strong>气泡</strong>（bubble），让流水线空转一拍。</p>
+<h3 id="控制冒险你猜对了方向吗"><a class="header" href="#控制冒险你猜对了方向吗">控制冒险：你猜对了方向吗</a></h3>
+<p>分支指令在EX阶段才知道跳不跳。但在这之前，已经有两条后续指令进入了IF和ID阶段。如果分支发生——这两条必须被<strong>清除</strong>（flush）。</p>
+<pre><code>时钟周期:  1    2    3    4    5    6
+B指令:     IF   ID   EX   MEM  WB    ← 第3周期才知道跳不跳
+下一条:         IF   ID   X    X      ← 已被fetch，但在ID后被清空
+目标:                     IF   ID   EX
+</code></pre>
+<p>Cortex-M4用<strong>静态分支预测</strong>来缓解：总是假设向后跳转（<code>BEQ back</code>）会跳（因为通常是循环），向前跳转不跳（因为通常是if-else）。</p>
+<p>但这是“静态“预测——对所有向后跳转一视同仁。<strong>动态分支预测</strong>则不一样——它学习每条分支指令的过去行为：</p>
+<h3 id="2位饱和计数器的预测"><a class="header" href="#2位饱和计数器的预测">2位饱和计数器的预测</a></h3>
+<p>最简单的动态预测器是一个2位饱和计数器。每个分支指令在BTB（Branch Target Buffer）中有一个对应的2位状态：</p>
+<pre><code>  强不跳           弱不跳           弱跳            强跳
+  [00]  ──不跳──→ [01]  ──不跳──→ [10]  ──跳转──→ [11]
+   ↑                │                ↑                │
+   └──跳转──────────┘                └──不跳──────────┘
+</code></pre>
+<p>状态00和01预测“不跳“，状态10和11预测“跳“。分支实际发生时，状态向右侧移动；不发生时向左侧移动。</p>
+<p>效果：一个交替跳转/不跳转的分支（比如循环的最后一次迭代），2位计数器会犯错约50%；但一个总是跳转的分支（99%循环体），预测准确率接近100%。</p>
+<h3 id="锦标赛预测器和返回地址栈"><a class="header" href="#锦标赛预测器和返回地址栈">锦标赛预测器和返回地址栈</a></h3>
+<p>现代高性能CPU（Cortex-A系列）用更复杂方案：</p>
+<p><strong>锦标赛预测器</strong>（Tournament Predictor）：同时运行两个预测器——一个基于局部历史（“这条分支自己最近几次怎样”），一个基于全局历史（“最近所有分支的整体模式怎样”）——然后用一个第三方的“选择器“来动态学习哪个预测器更准。Intel在Pentium Pro时代引入，至今仍是高性能分支预测的主流方案。</p>
+<p><strong>返回地址栈</strong>（Return Address Stack, RAS）：返回地址栈（RAS）是一个极小巧的硬件栈——通常只有8-16项深度。当CPU执行BL（函数调用）指令时，硬件自动把返回地址（当前PC+4）压入RAS。当执行BX LR（函数返回）时，CPU不从分支预测器猜测目标地址——它直接从RAS栈顶弹出。因为函数调用和返回是严格配对的，RAS的预测准确率在大多数代码中超过99%。这个8项的微型SRAM，就嵌在取指单元旁边——离流水线只有几十微米的物理距离。你在C代码里的每一次函数调用和返回，都在和这个比你头发丝直径小一千倍的硬件结构对话。</p>
+<h3 id="结构冒险两条指令一个资源"><a class="header" href="#结构冒险两条指令一个资源">结构冒险：两条指令，一个资源</a></h3>
+<p>当两条指令同时需要同一个硬件资源时发生。如上所述，哈佛架构天然解决了取指和Load/Store的总线冲突。但在高性能乱序执行CPU中，结构冒险重返舞台——不是因为总线的冲突，而是因为<strong>执行单元</strong>（执行端口）的冲突。如果CPU只有两个整数执行端口，而第三周期同时有3条整数指令就绪——必须有一条等待。</p>
+<h2 id="乱序执行让就绪的指令先走"><a class="header" href="#乱序执行让就绪的指令先走">乱序执行：让就绪的指令先走</a></h2>
+<p>流水线的本质是“时间重叠“。但你如果只能<strong>顺序</strong>发射指令到流水线——那么一条指令的 stall 会堵死后面所有指令，即使后面的指令不依赖被堵死的那条。这就像超市收银台：一个人翻包找零钱，后面所有人都得等。</p>
+<p>乱序执行（Out-of-Order Execution）打破了顺序限制。核心思想：</p>
+<ol>
+<li><strong>发射</strong>：指令按程序顺序进入<strong>重排序缓冲区</strong>（Reorder Buffer, ROB）。</li>
+<li><strong>就绪检测</strong>：每条指令监测自己的源操作数是否就绪。一旦就绪，进入执行单元。</li>
+<li><strong>完成</strong>：执行结果写入 ROB 条目，但<strong>不写回寄存器文件</strong>。</li>
+<li><strong>退休</strong>（Retire）：指令到达 ROB 头部时，它的结果才正式写入架构寄存器文件，ROB 条目被释放。</li>
+</ol>
+<p>在 ROB 的中间，指令是乱序执行的——哪条先就绪哪条先走。但在 ROB 的尾部（退休端），它们严格按程序顺序提交——保证了<strong>精确例外</strong>（precise exception）：如果指令 3 出了 page fault，指令 1 和指令 2 已经退休、结果可见，而指令 4 和指令 5 即使已经执行完毕也不会退休——它们会被丢弃、程序状态回到指令 3 之前。</p>
+<p><strong>寄存器重命名</strong>（Register Renaming）是乱序执行的前提。如果指令 1 写 R3 而指令 5 也写 R3——这是 WAW 冒险。解决方案是：把 R3 映射到一个物理寄存器池中的不同物理寄存器。指令 1 实际写到 P23，指令 5 实际写到 P41。指令 2-4 如果读 R3——在读的是 P23 还是 P41？取决于它们在程序顺序中的位置。硬件重命名表跟踪“当前哪个物理寄存器持有架构寄存器 R3 的最新值“。</p>
+<p>乱序执行 + 寄存器重命名 + 转发逻辑 + 分支预测——这些是现代高性能 CPU 的四大支柱。</p>
+<h2 id="流水线的物理极限"><a class="header" href="#流水线的物理极限">流水线的物理极限</a></h2>
+<p>流水线的级数受限于每一级的关键路径延迟。而关键路径延迟又受限于晶体管的驱动能力和互联线的 RC 延迟。</p>
+<p>把 5 级流水线拆成 15 级，每一级的关键路径变短了——单级只要做原来 1/3 的工作，时钟频率可以提高到原来的近 3 倍。这是 Pentium 4 的思路：31 级流水线，目标频率 10GHz。</p>
+<p>但过深的流水线有三个物理代价：</p>
+<ol>
+<li>
+<p><strong>流水线寄存器的开销</strong>：每加一级流水线，就要插一组 D 触发器（几十到几百个）。时钟频率提高了，但每个触发器都在翻转——动态功耗线性上升。Pentium 4 的 31 级流水线中，流水线寄存器本身的功耗占了总功耗的近 15%。</p>
+</li>
+<li>
+<p><strong>互联线 RC 延迟不随晶体管缩放</strong>：从 90nm 到 28nm，晶体管门延迟缩小了近 10 倍。但顶层金属的每微米电阻几乎没有变化（铜的电阻率是物理常数），而线间距缩小使电容耦合增加。到 7nm 节点，互联线延迟已经超过门延迟成为关键路径的主导因素。你加再深的流水线，数据传输本身的延迟无法被“流水化“——因为数据必须在两级寄存器之间物理上移动。</p>
+</li>
+<li>
+<p><strong>分支预测失败惩罚</strong>：31 级流水线意味着 31 个周期的 flush 惩罚。假设分支比例 20%、预测准确率 95%——有效 IPC = 1 / (1 + 0.2 × 0.05 × 31) = 1 / 1.31 ≈ 0.76。而 8 级流水线的同样分支惩罚是 8 个周期——有效 IPC = 1 / (1 + 0.2 × 0.05 × 8) = 1 / 1.08 ≈ 0.93。<strong>流水线越深，分支预测失败的损失越大，实际收益越被侵蚀。</strong></p>
+</li>
+</ol>
+<p>这就是为什么 Pentium 4 之后，Intel 放弃深度流水线路线，转向 Core 微架构（14 级流水线）。也是 ARM 的 Cortex-A 系列稳在 8-15 级之间、没有继续加深的根本物理原因。</p>
+<h2 id="确定性-vs-性能实时系统里的流水线"><a class="header" href="#确定性-vs-性能实时系统里的流水线">确定性 vs 性能：实时系统里的流水线</a></h2>
+<p>你的发动机控制器需要在固定<strong>时间窗</strong>内完成燃烧计算。曲轴位置传感器每转一个齿就触发一次中断。6000 RPM 下，每个齿间隔只有几十微秒。你的 ISR 必须在几微秒内完成。</p>
+<p>现在考虑流水线的影响：branch prediction 可能预测错，数据转发可能引入不确定的气泡，Flash 访问等待周期数可能在不同电压和温度下变化。</p>
+<p><strong>对于硬实时系统，确定性比峰值性能更重要。</strong></p>
+<p>这就是为什么 ARM Cortex-R 系列（用于功能安全实时控制）做了这些特殊设计：</p>
+<ul>
+<li><strong>紧耦合存储器（TCM）</strong>：和 Cache 不同，TCM 的内容由软件显式管理，不存在 cache miss 的不确定性。ISR 代码和数据直接锁在 TCM 里，访问延迟是确定的单周期。</li>
+<li><strong>MPU（存储器保护单元）</strong>：不是 MMU——不涉及页表翻译的不确定延迟。用固定区域保护属性的方式做内存隔离。</li>
+<li><strong>锁步双核（Lockstep）</strong>：两个 Cortex-R5 核运行同一段代码，硬件在 cycle 级别比较它们的输出。一个核出错，另一个立即发现。</li>
+</ul>
+<p>还有一个关键点：<strong>Cortex-R5 可以禁用分支预测。</strong> 对于安全关键代码路径，确定性高于一切。如果分支预测带来了不可预测的 flush 延迟，那不如完全不用——让分支采用固定的静态策略（always not-taken），延迟可精确计算。WCET 分析的核心诉求就是“每一段代码的执行时间有确定的上界“——如果分支预测的失误概率不可忽略，WCET 就必须假设它每次都失误。这样算出来的 WCET 比静态策略还要大——禁用分支预测反而更优。</p>
+<h2 id="时间重叠从-cpu-到分布式系统"><a class="header" href="#时间重叠从-cpu-到分布式系统">时间重叠：从 CPU 到分布式系统</a></h2>
+<p>流水线的本质很简单：把一个大任务拆成小步骤，让多条指令的步骤在时间上重叠。没有变出更多资源——只是把空闲的硬件利用了起来。</p>
+<p>这其实是所有高效系统的共同设计逻辑：</p>
+<ul>
+<li><strong>CPU 流水线</strong>：一条指令在执行，下一条在译码，下下条在取指——时间重叠。</li>
+<li><strong>DMA</strong>：CPU 在计算，DMA 在搬数——时间重叠。</li>
+<li><strong>CAN 控制器的硬件缓冲</strong>：CPU 在发第 N 帧，CAN 控制器在收第 N+1 帧——时间重叠。</li>
+<li><strong>FreeRTOS 任务切换</strong>：一个任务被 I/O 挂起，另一个就绪任务立即抢占——时间重叠。</li>
+</ul>
+<p><strong>你设计的系统在多大程度上利用了时间重叠，就在多大程度上发挥了硬件的能力。</strong></p>
+<p>但“重叠“有代价——就是冒险（hazards）。冒险的本质是<strong>并行执行导致的信息不一致</strong>。你得设计转发逻辑、气泡清理、仲裁机制。这和分布式系统（比如 CAN 网络）中设计时间同步的逻辑是完全同构的：各 ECU 高重叠度工作（同时发报文）→ 冲突（CAN 的 ID 仲裁解决）→ 时间漂移（PTP 同步解决）。</p>
+<p><strong>从 CPU 流水线冒险到分布式系统的时间漂移——“管理重叠“是同一类问题在不同尺度上的投影。</strong></p>
+<h3 id="保证比最优更重要"><a class="header" href="#保证比最优更重要">保证，比最优更重要</a></h3>
+<p>在设计中运行硬实时任务（ABS、转向、发动机管理），流水线是你的<strong>助手</strong>——但要永远记住：它的“最优情况“不是它的“保证情况“。</p>
+<p>你写的是刹车控制代码。不是“大多数情况下来得及“——是“每一毫秒都必须来得及“。流水线的最坏执行时间（WCET）分析要求你假设所有cache miss、所有分支预测失败、所有load-use气泡在最坏路径上都会发生。</p>
+<p>这是汽车嵌入式软件和互联网软件最根本的分歧：他们要的是“峰值性能“，你要的是“最坏保证“。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解了流水线——把大任务拆成小步骤，让多条指令在时间上重叠。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>五级流水线让IPC接近1</strong>：IF→ID→EX→MEM→WB，第5周期后每周期完成一条指令——不是让单条更快，是让多条重叠。</li>
+<li><strong>三种冒险是重叠的代价</strong>：数据冒险靠转发解决，控制冒险靠分支预测缓解，Load-Use冒险只能插入气泡——实际IPC永远低于1。</li>
+<li><strong>硬实时系统要的是确定性，不是峰值性能</strong>：WCET分析假设所有cache miss、所有分支预测失败——刹车代码每毫秒都必须来得及。</li>
+</ol>
+<p>下一节，存储层次。为什么“快“和“大“不可兼得——以及我们是怎么骗过这个限制的。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>计算能力有了。但数据存在哪？</p>
+<p>你的 CPU 寄存器只有几十个，加起来不到 1KB。下一个能用的存储是几十 KB 的 SRAM，再往下是几百 MB 的外部 DRAM，再往下是 GB 级的 Flash。每一层之间，速度差一个数量级。</p>
+<p>你是个图书管理员，读者排队等你从地下仓库取书，来回 10 分钟。你想了个办法——在借阅台后面放一个小书架，只放最常用的 50 本书。这就是 Cache。</p>
+<p>下一节，存储层次。为什么“快“和“大“不可兼得——以及我们是怎么骗过这个限制的。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/3.3-数据通路与控制器的双人舞.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/3.5-存储层次.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/3.3-数据通路与控制器的双人舞.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/3.5-存储层次.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

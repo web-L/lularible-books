@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>组合逻辑 · 没有记忆的计算 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="31-组合逻辑没有记忆的计算"><a class="header" href="#31-组合逻辑没有记忆的计算">3.1 组合逻辑：没有记忆的计算</a></h1>
+<h2 id="一排开关一颗-led"><a class="header" href="#一排开关一颗-led">一排开关，一颗 LED</a></h2>
+<p>你面前有一排开关和一颗 LED。</p>
+<p>规则是：LED 只有在某两个特定开关同时按下时才亮。这俩开关——比如第 2 个和第 5 个——它们不挨着。你要怎么设计这个电路？</p>
+<p>最简单的想法：用 AND 门把这两个开关信号 AND 在一起。但 AND 门只能接收两个输入。你有 8 个开关。</p>
+<p>你需要<strong>组合逻辑</strong>。</p>
+<p>把 8 个开关的信号，经过若干层逻辑门处理后，驱动最终的 LED。这个电路的输出只取决于<strong>当前</strong>的开关状态——和之前的开关状态无关。你松开第 2 个开关，LED 立刻灭。你再按下，它立刻亮。不存在“刚才 LED 是亮的所以现在还是亮的“这种说法。</p>
+<p>输出 = f(当前输入)。这就是组合逻辑——<strong>没有记忆的计算</strong>。</p>
+<p>组合逻辑是“没有记忆的计算“。就像阳光下的影子——它是实时投射的，不会记住5秒前你的姿势。你挡住光 → 影子立刻变。没有历史，没有上下文。</p>
+<h2 id="从真值表到硅片"><a class="header" href="#从真值表到硅片">从真值表到硅片</a></h2>
+<h3 id="门级基础"><a class="header" href="#门级基础">门级基础</a></h3>
+<p>CMOS 工艺下，最基础的门不是 AND 和 OR，而是 <strong>NAND</strong>（与非）和 <strong>NOR</strong>（或非）。原因很物理：PMOS 和 NMOS 天然就是反相输出的。一个 NAND 或 NOR 用 4 个 MOSFET 就搭出来了。如果做 AND，得先 NAND 再反相——6 个 MOSFET，多出三分之一。</p>
+<p>反过来用这个事实理解现代芯片：为什么 NAND Flash 叫“NAND“？因为它的存储单元阵列使用了 NAND 门结构来组织——本质上是在 CMOS 最省晶体管的结构上构建存储。名字不是随便取的。</p>
+<h3 id="and-与-nand-的物理本质"><a class="header" href="#and-与-nand-的物理本质">AND 与 NAND 的物理本质</a></h3>
+<p>如果你用 C 来模拟逻辑门的行为，AND 和 NAND 的区别不过是一行取反：</p>
+<pre><code class="language-c">int nand(int a, int b) { return !(a &amp;&amp; b); }
+int and_gate(int a, int b) { return nand(nand(a, b), nand(a, b)); }
+</code></pre>
+<p>注意——我们用两个 NAND 接出了一个 AND。这在硅上意味着什么？每个 NAND 是 4 个 MOSFET，两个 NAND 是 8 个 MOSFET，外加连接一个 NAND 输出到另一个 NAND 输入的金属线。而如果我们直接在 CMOS 工艺里做 AND，标准做法是一个 NAND（4 个 MOSFET）后面跟一个反相器（2 个 MOSFET），共 6 个。为什么不是 8 个？因为 CMOS 反相器比 NAND 省晶体管——NAND 是串联两个 NMOS，反相器只需要一个 NMOS 和一个 PMOS。</p>
+<p>这个细节给你一个直觉：<strong>用 NAND 和 NOR 作为基本门库，综合出来的电路通常比用 AND/OR 省面积</strong>。所有的 EDA 综合工具——Synopsys Design Compiler、Cadence Genus——在内部都是先把你写的 RTL 转成 NAND/NOR 门级网表，再做逻辑优化，最后映射到标准单元库。你写的是 <code>assign y = a &amp; b;</code>，工具看到的是两个 NAND 加一个 NOR 的某种拓扑。</p>
+<h3 id="全加器二进制计算的原子"><a class="header" href="#全加器二进制计算的原子">全加器：二进制计算的原子</a></h3>
+<p>二进制加法的基本单元是一位全加器（Full Adder）。它吃三个输入——A、B、进位输入 C_in——吐出两个输出：和（Sum）与进位输出（C_out）。</p>
+<p>你要把两个32位数加起来。但芯片不认识32——它只认识0和1。怎么用0和1做加法？先从最简单的开始：两个1位数相加，再加一个进位。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>A</th><th>B</th><th>C_in</th><th>Sum</th><th>C_out</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</tbody>
+</table>
+</div>
+<p>用逻辑表达式：</p>
+<pre><code>Sum   = A ⊕ B ⊕ C_in
+C_out = (A AND B) OR (A AND C_in) OR (B AND C_in)
+</code></pre>
+<p>现在用 C 把它实现出来——不是为了在芯片上跑，是为了理解它的行为：</p>
+<pre><code class="language-c">void full_adder(int a, int b, int c_in, int *sum, int *c_out) {
+    *sum   = (a ^ b) ^ c_in;   // XOR 两次
+    *c_out = (a &amp;&amp; b) || (a &amp;&amp; c_in) || (b &amp;&amp; c_in);
+}
+
+// 测试所有 8 种输入
+void test_full_adder() {
+    int sum, c_out;
+    for (int i = 0; i &lt; 8; i++) {
+        int a = (i &gt;&gt; 2) &amp; 1;
+        int b = (i &gt;&gt; 1) &amp; 1;
+        int c_in = i &amp; 1;
+        full_adder(a, b, c_in, &amp;sum, &amp;c_out);
+        printf("A=%d B=%d Cin=%d → Sum=%d Cout=%d\n",
+               a, b, c_in, sum, c_out);
+    }
+}
+</code></pre>
+<p>在硅片上，一个全加器的关键路径是从C_in→Sum——经过两级XOR门，大约3级门延迟。在40nm工艺下，一级门延迟约15-20ps，所以一个全加器从进位输入到和输出需要约50ps。而32位行波进位加法器——32个全加器串联——最坏情况下进位要从bit 0一路传到bit 31，总延迟约32×50ps=1.6ns。这就是为什么CPU里有超前进位加法器——用更多的逻辑门换更短的路径。这也是“有限资源“的第一个具体例子：面积换速度。</p>
+<p>在硅上，一个全加器的关键路径是从 C_in → Sum 的标准门延迟大约 3 级（XOR → XOR）。从 C_in → C_out 更快，约 2 级（AND → OR）。这意味着进位在串联的全加器中传播时，每一级的延迟约为 2 个门延迟——这是行波进位加法器慢的根本原因。</p>
+<p>把 N 个全加器串联——低位的 C_out 接到高位的 C_in——你就得到了<strong>行波进位加法器</strong>（Ripple Carry Adder）。它工作，但有问题：高位必须等低位的进位像波浪一样传播过来。N 位加法，N 级门延迟。</p>
+<p>用 C 实现一个 4 位行波进位加法器：</p>
+<pre><code class="language-c">void ripple_carry_adder(int a[4], int b[4], int c_in,
+                        int sum[4], int *c_out) {
+    int carry = c_in;
+    for (int i = 0; i &lt; 4; i++) {
+        int s, c;
+        full_adder(a[i], b[i], carry, &amp;s, &amp;c);
+        sum[i] = s;
+        carry = c;
+    }
+    *c_out = carry;
+}
+
+// 演示：3 + 5 = 8
+void demo_4bit_add() {
+    int a[4] = {1, 1, 0, 0};  // 3 (LSB first): 0011
+    int b[4] = {1, 0, 1, 0};  // 5 (LSB first): 0101
+    int sum[4], c_out;
+    ripple_carry_adder(a, b, 0, sum, &amp;c_out);
+    // sum = 0001, c_out=0 → 8
+}
+</code></pre>
+<p>LSB first 的意思是第 0 位是最低位——这是在模仿硬件里比特的排列方式。在硅片上，加法器的进位方向是固定的：从 LSB 向 MSB 传播。你不能倒过来。</p>
+<p>这就是为什么现代 CPU 改用<strong>超前进位加法器</strong>（Carry Look-ahead Adder）：提前并行计算每一级的进位，用更多逻辑门换取更短的路径。用面积换速度——这个 trade-off 你会在整个计算机体系结构里反复遇见。</p>
+<h3 id="mux-和译码器数据流动的路由器"><a class="header" href="#mux-和译码器数据流动的路由器">MUX 和译码器：数据流动的路由器</a></h3>
+<p><strong>多路选择器</strong>（MUX）做一件事：从多个输入中选一个。</p>
+<pre><code>if (S == 0) OUT = A; else OUT = B;    // 2-1 MUX
+</code></pre>
+<p>用两个选择信号 S1、S0，从 A、B、C、D 四个输入中选一个——4-1 MUX。</p>
+<p>MUX 在 CPU 里无处不在。ALU 的操作选择是 MUX，寄存器文件写回的源选择是 MUX，跳转地址的选择是 MUX。把 CPU 的结构拆散了看，大部分硅面积都在 MUX 和导线上。</p>
+<p>用 C 实现一个 8-to-1 多路选择器：</p>
+<pre><code class="language-c">int mux_8to1(int d[8], int s[3]) {
+    int sel = (s[2] &lt;&lt; 2) | (s[1] &lt;&lt; 1) | s[0];  // 3-bit select
+    return d[sel];   // 这和硬件里的一级译码逻辑完全等价
+}
+</code></pre>
+<p>你可能会说：“这不就是个数组下标吗？“对——但硬件里没有“数组”。硬件里的 8-to-1 MUX 是三级的 2-to-1 MUX 树：第一层把 8 路选成 4 路，第二层把 4 路选成 2 路，第三层把 2 路选成 1 路。每级 2-to-1 MUX 由两个 CMOS 传输门组成。整个 8-to-1 MUX 消耗约 30～40 个 MOSFET。而你上面那行 C 代码 <code>d[sel]</code> ——如果编译器不优化——实际上隐含了地址计算、内存访问、寄存器 load 等数十条机器指令。在硬件里，MUX 就是直通的导线——零延迟的“选择“在物理上就是一组开关网络。</p>
+<p><strong>译码器</strong>（Decoder）做反向的事情：n 位输入 → 2^n 位输出。3-8 译码器：输入是 3 位地址，输出是 8 根线中唯一一根被拉高。用在指令译码（操作码 → 使能对应的功能单元）、寄存器选择、内存芯片选择（chip select）。</p>
+<pre><code class="language-c">void decoder_3to8(int addr[3], int out[8]) {
+    for (int i = 0; i &lt; 8; i++)
+        out[i] = 0;           // 全部清零
+
+    int sel = (addr[2] &lt;&lt; 2) | (addr[1] &lt;&lt; 1) | addr[0];
+    out[sel] = 1;             // 只有选中那根线拉高
+}
+</code></pre>
+<p>译码器在物理上由一个 AND 门阵列实现：输入是 3 位地址信号及其反信号（共 6 根线），输出是 8 个 3 输入 AND 门。每个 AND 门选通不同的地址组合。比如输出线 5（二进制 101）的 AND 门取反相后的 addr[1] 和原样的 addr[2] 和 addr[0]——只有地址 = 101 时这三个条件同时满足。这是“查找表“在门级的最纯粹形态。你的控制器就是一个巨型译码器——操作码进去，控制信号出来。</p>
+<h3 id="从-rtl-到门级网表"><a class="header" href="#从-rtl-到门级网表">从 RTL 到门级网表</a></h3>
+<p>你写 Verilog 的时候写的是这样的：</p>
+<pre><code class="language-verilog">module alu (
+  input  [7:0] a, b,
+  input  [2:0] op,
+  output reg [7:0] y
+);
+  always @(*) begin
+    case (op)
+      3'b000: y = a + b;
+      3'b001: y = a - b;
+      3'b010: y = a &amp; b;
+      3'b011: y = a | b;
+      3'b100: y = a ^ b;
+      default: y = 0;
+    endcase
+  end
+endmodule
+</code></pre>
+<p>综合工具（比如 Design Compiler）把这一段 RTL 变成什么？大体过程是：</p>
+<ol>
+<li>解析 <code>case</code> 语句 → 识别为一个 5-to-1 MUX（选加/减/与/或/异或的结果）加一个默认情况。</li>
+<li>加法器 → 展开为全加器阵列，然后用超前进位或行波进位结构实现。</li>
+<li>MUX → 用标准单元库中的 MUX 单元（一组传输门或 AND-OR 逻辑）替换。</li>
+<li>最终输出：一个门级网表——一堆 NAND、NOR、INV、MUX、FA（全加器标准单元）的实例，以及它们之间用金属线（net）连接的拓扑。</li>
+</ol>
+<p>从 <code>y = a + b</code> 这一行 RTL，到最终硅片上几千个 MOSFET 的门级网表——中间经过了逻辑综合、技术映射、布局布线。你写的那行代码从来没有直接出现在硅片上，但它的<strong>语义</strong>被完整保留了。</p>
+<h2 id="物理缺陷如何变成逻辑错误"><a class="header" href="#物理缺陷如何变成逻辑错误">物理缺陷如何变成逻辑错误</a></h2>
+<p>在芯片物理层，一个 NAND 门由 4 个 MOSFET 组成——两个 PMOS 并联上拉，两个 NMOS 串联下拉。</p>
+<p>假设在制造过程中，有一颗亚微米级颗粒落在某个 NMOS 的栅极和衬底之间。在测试向量运行到涉及这个 NAND 门的路径时，会发生什么？</p>
+<p>这颗颗粒可能在栅极氧化层中形成一个阻抗路径——等效于在栅极和衬底之间并联了一个大电阻。低频时，栅极电容还能正常充放电，NAND 门行为正常。但频率升高后，充放电时间不够，栅极电压到不了阈值——这个 NMOS 可能永远不导通，或者导通电阻变大。</p>
+<p>于是这个 NAND 门就“退化“了——不是完全坏掉，而是在特定条件下输出错误。更隐蔽的是，它可能在 25°C 正常、-40°C 正常、125°C 时出错；可能在 VCC=3.3V 正常、VCC=3.0V 时出错；可能在相邻信号线没有翻转时正常、翻转时因串扰而出错。</p>
+<p>这就是为什么车规芯片要做三温测试（-40°C、25°C、125°C）、做电压拉偏测试（VCC ±5%）、做 MBIST（Memory Built-In Self-Test）和 LBIST（Logic BIST）。做这些不是因为“质量要求高所以多测几遍“，而是因为<strong>物理缺陷的显现是有条件的</strong>——一个潜伏的颗粒污染可能在某个特定的频率、温度、电压组合下才暴露为逻辑错误。</p>
+<p><strong>组合逻辑没有记忆——但如果门本身坏了，“没有记忆“的计算也会算出错误的结果。</strong></p>
+<h2 id="关键路径那条最慢的路"><a class="header" href="#关键路径那条最慢的路">关键路径：那条最慢的路</a></h2>
+<p>回到行波进位加法器。假设每个 AND 门延迟 20ps，每个 OR 门延迟 20ps，每个 XOR 门延迟 40ps。</p>
+<p>在 4 位加法器中，进位 C_out 从第 0 位传到第 3 位需要穿过 4 个全加器的进位链。每位进位链的延迟大约为 AND（20ps）+ OR（20ps）= 40ps。4 级串起来——160ps 的进位传播延迟。再加上最后一轮 XOR 产生最终的 Sum[3]（40ps），总路径延迟 ≈ 200ps。</p>
+<p>而 Sum[0] 只需要 XOR → XOR 两级（共 80ps）就稳定了。</p>
+<p>200ps vs 80ps——同一个加法器的不同输出位，稳定的时间不同。最慢的那条路径——从 C_in 到 Sum[3]——决定了这个加法器可以跑的最高频率：<code>1 / 200ps = 5GHz</code>。理论上可以跑到5GHz——但实际芯片还要考虑驱动、连线、时钟偏斜，所以真实的加法器频率低得多。</p>
+<p>这还只是一个 4 位加法器。如果是 32 位加法器，进位需要传播 32 级，纯行波进位的关键路径延迟将超过 1.2ns——最高频率不到 800MHz。这就是为什么没有人用 32 位行波进位加法器来跑 CPU。超前进位加法器把进位提前并行计算出来，将 32 位的关键路径压缩到大约 log2(32) = 5 级逻辑深度，延迟压缩到约 300ps——3GHz 以上可以跑。</p>
+<p><strong>关键路径（critical path）就是组合逻辑电路中从任意输入到任意输出最慢的那条路。整个电路的最高运行频率由这条最慢的路决定。</strong></p>
+<p>你的 ECU 上的 CPU 之所以标称 300MHz 但实际只跑 200MHz——不是厂商定价策略决定的，是物理决定的。最坏情况下（最高温度、最低电压、最慢工艺角），那条关键路径延迟会从典型值的 3ns 膨胀到 5ns。你要为最坏情况留出足够的时序裕度——否则在那条关键路径上的某个全加器就会在进入下一级寄存器之前没算出正确结果。</p>
+<h2 id="你的车速是怎么算出来的"><a class="header" href="#你的车速是怎么算出来的">你的车速是怎么算出来的</a></h2>
+<p>让我们接地气一点。</p>
+<p>你的车上 ABS/ESP 控制器怎么知道车速？每个轮子上有一个<strong>轮速传感器</strong>——通常是霍尔效应或磁阻传感器，面对一个带齿的音轮。轮子转一圈，传感器吐出 48 个脉冲（典型齿数）。</p>
+<p>ECU 内部发生的是一连串事件：</p>
+<ol>
+<li><strong>边沿检测</strong>：捕捉脉冲的上升沿和下降沿——<strong>纯组合逻辑</strong>。</li>
+<li><strong>定时计数</strong>：硬件定时器在两个相邻脉冲沿之间统计时钟周期个数——<strong>时序逻辑</strong>（后面会讲）。</li>
+<li><strong>速度计算</strong>：轮子周长已知，齿间角度已知。速度 = 齿间角度增量 / 两脉冲沿间时间。这是算术——全加器、乘法器在干活。</li>
+<li><strong>滤波</strong>：单次测量有噪声、齿槽机械公差、路面振动。需要滑动平均或低通滤波——<strong>MAC 运算</strong>（Multiply-Accumulate）。在 DSP 核上，单周期 MAC 是直接由一个组合逻辑块完成的。</li>
+</ol>
+<p>一个看似简单的“车速 = XX km/h“，在 ECU 内部经历了一条完整流水线——从模拟脉冲，到边沿检测，到定时器捕获，到 MAC 运算，再到 CAN 总线上的一帧报文。</p>
+<p><strong>如果任何一个全加器的进位链超时了——轮速就算不对。轮速不对，ABS 就可能误触发。</strong></p>
+<p>这就是为什么车规 MCU 要跑在远低于标称频率的实际频率上（留 timing margin），要做最坏执行时间分析（WCET），要给你看门狗来兜底。你在数据手册上看到的那颗 300MHz 的 Cortex-R5，在实际的发动机控制器里可能只跑 200MHz——因为 ASIL-D 要求的是确定性，不是峰值性能。</p>
+<h2 id="没有记忆就没有上下文"><a class="header" href="#没有记忆就没有上下文">没有记忆，就没有上下文</a></h2>
+<p>但真正的“智能“——判断一个脉冲序列中有没有缺齿、判断车速是否在异常波动、判断 CAN 报文是否有重发——都需要<strong>记忆</strong>。需要把过去的输入和当前的输入联合处理。</p>
+<p>在进入“记忆“之前，先致敬一下：<strong>加法器、多路器、译码器——这些东西，在 1950-60 年代是被当成“巨型计算机“的核心组件来设计的。</strong> 当时用真空管或分立晶体管搭的加法器，一个就占好几块电路板。今天，你的 Cortex-M4 里有几十万个加法器、几十万个 MUX，缩在一颗 5mm × 5mm 的硅片上。</p>
+<p>60 年，从一间房到一片指甲盖。</p>
+<p>从真空管加法器到你的Cortex-M4里的几十万个逻辑门——这是60年的接力。每一代工程师把逻辑化简方案递交给下一代，下一代在这个基础上搭出更复杂的逻辑。你现在用Verilog写下的每一行RTL，手里握着的就是这根接力棒的前端。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解了组合逻辑——输出只取决于当前的输入，没有记忆的计算。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>NAND/NOR才是物理基础</strong>：CMOS工艺下，最基础的门是NAND和NOR，AND/OR是由它们拼接出来的——这是物理对逻辑的反向塑造。</li>
+<li><strong>全加器是二进制计算的原子</strong>：一个全加器用5个逻辑门实现1位加法，32个串联构成行波进位加法器——最慢的那条进位路径决定了CPU能跑多快。</li>
+<li><strong>物理缺陷会变成逻辑错误</strong>：一颗亚微米的颗粒，在特定温度/电压/频率下，能把一个NAND门变成间歇性出错的“退化门“——组合逻辑没记忆，但门本身会“坏“。</li>
+</ol>
+<p>下一节，时序逻辑。我们从D触发器开始，给计算加上“记忆“。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>你盯着示波器，通道 2 上的数据信号在疯狂翻转。你说：“在下一个时钟上升沿，把这个 bit 存下来。”</p>
+<p>这一刻，你在要求电路具有<strong>记忆</strong>。而“记忆“最基本单元，不过是用两个反相器首尾相接做成的那个小环——触发器。</p>
+<p>下一节，时序逻辑。我们从 D 触发器开始。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/2.6-从晶圆到ECU核心.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/3.2-时序逻辑-有记忆的计算.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/2.6-从晶圆到ECU核心.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/3.2-时序逻辑-有记忆的计算.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

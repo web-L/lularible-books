@@ -1,0 +1,595 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CAN传输层CanTp实现 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="49-cantpiso-15765-2的实现"><a class="header" href="#49-cantpiso-15765-2的实现">4.9 CanTp——ISO 15765-2的实现</a></h1>
+<h3 id="1747行的帧拆解机从can报文到uds报文"><a class="header" href="#1747行的帧拆解机从can报文到uds报文">1747行的帧拆解机——从CAN报文到UDS报文</a></h3>
+<p>打开<code>CanTp.c</code>的第1行。你面前不是一篇代码，而是一条流水线——CAN控制器每收到一个8字节的报文，就把它送进这条流水线，经过<strong>帧类型判别</strong>、<strong>状态机路由</strong>、<strong>缓冲区组装</strong>三个工位，最终产出一个完整的、连续的UDS诊断报文，交给PduR——再从PduR进入DCM的诊断世界。</p>
+<p>但这条流水线有个隐藏的设计哲学：<strong>它不知道UDS的存在</strong>。对CanTp而言，它处理的只是“长度超过CAN一帧承载上限的连续数据块“。至于这些数据块是UDS请求还是OBD报文，CanTp概不关心。</p>
+<p><strong>为什么CanTp要独立于DCM？</strong> 因为ISO 15765-2是一个通用传输协议——不仅UDS用它，SAE J1939的诊断、网络管理、甚至某些标定系统也用。AUTOSAR把它抽出来作为独立的通信服务层，让上层（PduR→DCM）只需面对<code>PduIdType</code>——一个抽象的ID，而不需要知道下面的CAN帧是怎么拼起来的。</p>
+<hr>
+<h3 id="pci字节帧类型的判据"><a class="header" href="#pci字节帧类型的判据">PCI字节——帧类型的判据</a></h3>
+<p>在CAN总线上，每帧最多8个字节（经典CAN）或64个字节（CAN FD）。那些超过8字节的UDS报文怎么传？ISO 15765-2的答案：<strong>拆成多帧，用第一个字节的bit 7-4编码帧类型</strong>。</p>
+<pre><code class="language-c">#define ISO15765_TPCI_MASK      0x30
+#define ISO15765_TPCI_SF        0x00  /* Single Frame */
+#define ISO15765_TPCI_FF        0x10  /* First Frame */
+#define ISO15765_TPCI_CF        0x20  /* Consecutive Frame */
+#define ISO15765_TPCI_FC        0x30  /* Flow Control */
+</code></pre>
+<p>这0x30的掩码就像一个快速血检——取出第一个字节的高4位，立刻知道这个帧属于哪种类型：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>PCI值</th><th>帧类型</th><th>含义</th><th>携带的数据量</th></tr>
+</thead>
+<tbody>
+<tr><td>0x00</td><td>Single Frame (SF)</td><td>一帧足矣，不用拆</td><td>最多7字节（标准寻址）</td></tr>
+<tr><td>0x10</td><td>First Frame (FF)</td><td>第一帧，后续还有</td><td>6字节数据 + 2字节总长度</td></tr>
+<tr><td>0x20</td><td>Consecutive Frame (CF)</td><td>跟进帧</td><td>最多7字节（标准寻址）</td></tr>
+<tr><td>0x30</td><td>Flow Control (FC)</td><td>流控帧</td><td>控制信息，3字节</td></tr>
+</tbody>
+</table>
+</div>
+<p>CanTp的<code>getFrameType</code>函数就是这个血检的执行者：</p>
+<pre><code class="language-c">static ISO15765FrameType getFrameType(
+    const CanTp_AddressingFormantType *formatType,
+    const PduInfoType *CanTpRxPduPtr) {
+    ISO15765FrameType res = INVALID_FRAME;
+    uint8 tpci = 0;
+    boolean validFrameType = TRUE;
+
+    switch (*formatType) {
+        case CANTP_STANDARD:
+            tpci = CanTpRxPduPtr-&gt;SduDataPtr[0];
+            break;
+        case CANTP_EXTENDED:
+            tpci = CanTpRxPduPtr-&gt;SduDataPtr[1];
+            break;
+        default:
+            validFrameType = FALSE;
+            break;
+    }
+
+    if (validFrameType) {
+        switch (tpci &amp; ISO15765_TPCI_MASK) {
+            case ISO15765_TPCI_SF:
+                res = SINGLE_FRAME;
+                break;
+            case ISO15765_TPCI_FF:
+                res = FIRST_FRAME;
+                break;
+            case ISO15765_TPCI_CF:
+                res = CONSECUTIVE_FRAME;
+                break;
+            case ISO15765_TPCI_FC:
+                res = FLOW_CONTROL_FRAME;
+                break;
+            default:
+                break;
+        }
+    }
+    return res;
+}
+</code></pre>
+<p><strong>为什么要把<code>CANTP_STANDARD</code>和<code>CANTP_EXTENDED</code>分开？</strong> 因为扩展寻址模式在第一个字节放目标地址（TA），PCI信息在第二个字节。如果不区分，你会把目标地址当成帧类型码来解析——那就像把快递地址当货物清单来看，全乱套了。</p>
+<hr>
+<h3 id="帧长度解码sf的4-bit长度-vs-ff的12-bit长度"><a class="header" href="#帧长度解码sf的4-bit长度-vs-ff的12-bit长度">帧长度解码——SF的4-bit长度 vs FF的12-bit长度</a></h3>
+<p>单帧只能携带0-7字节的有效载荷，这个长度编码在PCI字节的<strong>低4位</strong>（SF_DL）。但首帧可能携带4095字节（12-bit），需要从PCI字节的<strong>低4位</strong>（高4位）加第二个字节的<strong>8位</strong>（低8位）拼接而成。<code>getPduLength</code>函数处理了这个差异：</p>
+<pre><code class="language-c">static PduLengthType getPduLength(
+        const CanTp_AddressingFormantType *formatType,
+        const ISO15765FrameType iso15765Frame,
+        const PduInfoType *CanTpRxPduPtr) {
+    PduLengthType res = 0;
+
+    switch (iso15765Frame) {
+    case SINGLE_FRAME:
+        if(CanTpRxPduPtr-&gt;SduLength &gt; MAX_SEGMENT_DATA_SIZE){
+            // CAN FD: 单帧长度在第二个字节
+            res = CanTpRxPduPtr-&gt;SduDataPtr[tpci_offset+1] &amp; ISO15765_TPCI_DL_FD;
+        }else{
+            // 经典CAN: 单帧长度在第一个字节的低4位
+            res = CanTpRxPduPtr-&gt;SduDataPtr[tpci_offset] &amp; ISO15765_TPCI_DL;
+        }
+        break;
+    case FIRST_FRAME:
+        // 12-bit总长度：(PCI低4位 &lt;&lt; 8) + 第二字节
+        res = CanTpRxPduPtr-&gt;SduDataPtr[tpci_offset + 1]
+            + ((PduLengthType)((CanTpRxPduPtr-&gt;SduDataPtr[tpci_offset]) &amp; 0xf) &lt;&lt; 8);
+        break;
+    }
+    return res;
+}
+</code></pre>
+<blockquote>
+<p><strong>核心洞察</strong>：Single Frame使用<strong>4-bit长度</strong>（0-7字节范围），但Frame N_PCI的第一个nybble已经足够。First Frame需要<strong>12-bit长度</strong>（覆盖ISO 15765-2的4095字节上限），拆成4-bit高+8-bit低拼接。这不是设计缺陷——这是CAN每帧只有8字节约束下的<strong>最优编码密度</strong>。</p>
+</blockquote>
+<hr>
+<h3 id="状态机全貌从uninitialized到idle"><a class="header" href="#状态机全貌从uninitialized到idle">状态机全貌——从UNINITIALIZED到IDLE</a></h3>
+<p>CanTp的整个生命周期由<code>ISO15765TransferStateTypes</code>枚举定义：</p>
+<pre><code class="language-c">typedef enum {
+    UNINITIALIZED,
+    IDLE,
+    SF_OR_FF_RECEIVED_WAITING_PDUR_BUFFER,
+    RX_WAIT_CONSECUTIVE_FRAME,
+    RX_WAIT_SF_SDU_BUFFER,
+    RX_WAIT_CF_SDU_BUFFER,
+    TX_WAIT_STMIN,
+    TX_WAIT_TRANSMIT,
+    TX_WAIT_FLOW_CONTROL,
+    TX_WAIT_TX_CONFIRMATION
+} ISO15765TransferStateTypes;
+</code></pre>
+<p>这是接收方向和发送方向的<strong>双状态机</strong>，但它们共享同一个枚举。让我们画出接收端的状态机：</p>
+<pre><code>UNINITIALIZED
+    │ CanTp_Init()
+    ▼
+IDLE ──────────────────────────────────────┐
+    │ CanIf_RxIndication → SF              │
+    ▼                                      │
+SF_OR_FF_RECEIVED_WAITING_PDUR_BUFFER      │
+    │ PduR_StartOfReception → BUFREQ_OK    │ 传输完成
+    │ → 直接交付PduR_RxIndication          │
+    ▼                                      │
+RX_WAIT_CONSECUTIVE_FRAME                  │
+    │ CanIf_RxIndication → CF              │
+    ├──→ 每帧copySegmentToPduRRxBuffer     │
+    ├──→ BS计数到0 → sendFlowControlFrame  │
+    ├──→ 最后一帧 → PduR_RxIndication ────┘
+    │
+    ├──→ 缓冲区满 → RX_WAIT_CF_SDU_BUFFER
+    │      │ 等待上层缓冲区空闲
+    │      └──→ 缓冲区可用 → RX_WAIT_CONSECUTIVE_FRAME
+    │
+RX_WAIT_SF_SDU_BUFFER
+    │ PduR缓冲区忙，SF数据暂存本地
+    └──→ 缓冲区可用 → IDLE → PduR_RxIndication
+</code></pre>
+<p>发送端更简单：</p>
+<pre><code>IDLE
+    │ CanTp_Transmit()
+    ▼
+TX_WAIT_TRANSMIT
+    │ sendNextTxFrame → CanIf_Transmit
+    ▼
+TX_WAIT_TX_CONFIRMATION
+    │ CanIf_TxConfirmation
+    ├──→ 还有帧 → TX_WAIT_STMIN (延时) → TX_WAIT_TRANSMIT
+    ├──→ BS计数到0 → TX_WAIT_FLOW_CONTROL → handleFlowControlFrame
+    └──→ 传输完成 → IDLE → PduR_TxConfirmation
+</code></pre>
+<p><strong>为什么Send接收FC的状态叫<code>TX_WAIT_FLOW_CONTROL</code>，而不是<code>TX_WAIT_FC</code>？</strong> 这是AUTOSAR的命名规范——宁可长但要含义明确。<code>TX_WAIT_FLOW_CONTROL</code>让人一看就知道是在等待流量控制帧，而不是别的什么。</p>
+<hr>
+<h3 id="flow-control帧的构建我还能收多少"><a class="header" href="#flow-control帧的构建我还能收多少">Flow Control帧的构建——“我还能收多少</a></h3>
+<p>当接收端收到FF后，它向发送端回应一个Flow Control帧，告知：</p>
+<ol>
+<li><strong>Flow State（FS）</strong>：0=CTS继续发送、1=WAIT等待、2=OVFLW溢出</li>
+<li><strong>Block Size（BS）</strong>：一次最多连续发送多少帧CF再等下一个FC</li>
+<li><strong>Separation Time（STmin）</strong>：连续两帧CF之间的最小间隔</li>
+</ol>
+<pre><code class="language-c">static void sendFlowControlFrame(
+    const CanTp_RxNSduType *rxConfig,
+    CanTp_SimplexChannelPrivateType *rxRuntime,
+    BufReq_ReturnType flowStatus) {
+
+    PduInfoType pduInfo;
+    uint8 sduData[8]; // 栈上声明8字节缓冲区
+
+    pduInfo.SduDataPtr = &amp;sduData[0];
+    if (rxConfig-&gt;CanTpAddressingFormant == CANTP_EXTENDED) {
+        sduData[indexCount++] = rxRuntime-&gt;iso15765.extendedAddress;
+    }
+    switch (flowStatus) {
+    case BUFREQ_OK:
+        sduData[indexCount++] = ISO15765_TPCI_FC | ISO15765_FLOW_CONTROL_STATUS_CTS;
+        // 计算Block Size
+        if (rxConfig-&gt;CanTpAddressingFormant == CANTP_EXTENDED) {
+            computedBs = (rxRuntime-&gt;sizeBuffer / MAX_PAYLOAD_SF_EXT_ADDR) + 1;
+        } else {
+            computedBs = (rxRuntime-&gt;sizeBuffer / MAX_PAYLOAD_SF_STD_ADDR) + 1;
+        }
+        if (computedBs &gt; rxConfig-&gt;CanTpBs) {
+            computedBs = rxConfig-&gt;CanTpBs;
+        }
+        sduData[indexCount++] = rxRuntime-&gt;iso15765.BS;
+        sduData[indexCount++] = (uint8) rxConfig-&gt;CanTpSTmin;
+        break;
+    case BUFREQ_E_BUSY:
+        sduData[indexCount++] = ISO15765_TPCI_FC | ISO15765_FLOW_CONTROL_STATUS_WAIT;
+        break;
+    case BUFREQ_E_OVFL:
+        sduData[indexCount++] = ISO15765_TPCI_FC | ISO15765_FLOW_CONTROL_STATUS_OVFLW;
+        break;
+    }
+    canReceivePaddingHelper(rxConfig, rxRuntime, &amp;pduInfo);
+}
+</code></pre>
+<p>BS的计算很有意思：它用<code>sizeBuffer</code>（PduR上层缓冲区剩余容量）除以每帧有效载荷字节数，得到还能接收的帧数。如果算出来的值超过了配置的<code>CanTpBs</code>上限，就取上限——<strong>这是一种流量自限机制，防止上层缓冲区被淹没</strong>。</p>
+<hr>
+<h3 id="stmin发送端的时间纪律"><a class="header" href="#stmin发送端的时间纪律">STmin——发送端的时间纪律</a></h3>
+<p><code>STmin</code>（Separation Time minimum）是接收端要求的连续两帧CF之间的<strong>最小间隔</strong>。CanTp在发送端这样处理：</p>
+<pre><code class="language-c">if (txRuntime-&gt;iso15765.STmin == 0) {
+    // STmin=0，立即发送下一帧！
+    resp = sendNextTxFrame(txConfig, txRuntime);
+} else {
+    // 需要等待STmin后再发送
+    if (txRuntime-&gt;iso15765.STmin &lt; 0x80) {
+        // 0x01-0x7F: 毫秒值
+        txRuntime-&gt;iso15765.stateTimeoutCount =
+            ConvertMsToMainCycles(txRuntime-&gt;iso15765.STmin) + 1;
+    } else if (txRuntime-&gt;iso15765.STmin &gt; 0xF0 &amp;&amp; txRuntime-&gt;iso15765.STmin &lt; 0xFA) {
+        // 0xF1-0xF9: 100微秒步进
+        txRuntime-&gt;iso15765.stateTimeoutCount = 1;
+    } else {
+        // 0x80-0xF0: 保留，用127ms兜底
+        txRuntime-&gt;iso15765.stateTimeoutCount =
+            ConvertMsToMainCycles(0x7F) + 1;
+    }
+    txRuntime-&gt;iso15765.state = TX_WAIT_STMIN;
+}
+</code></pre>
+<p><code>ConvertMsToMainCycles</code>把毫秒转换成MainFunction的周期数：</p>
+<pre><code class="language-c">static uint32 ConvertMsToMainCycles(uint32 ms) {
+    return (ms/CanTp_ConfigPtr-&gt;CanTpGeneral-&gt;main_function_period);
+}
+</code></pre>
+<p>假设MainFunction周期是5ms，STmin=10ms，就是2个周期后发送下一帧。</p>
+<hr>
+<h3 id="与pdur的通信三个核心回调"><a class="header" href="#与pdur的通信三个核心回调">与PduR的通信——三个核心回调</a></h3>
+<p>CanTp与上层PduR之间的接口只有<strong>三个回调</strong>：</p>
+<p><strong>接收方向</strong>：</p>
+<pre><code class="language-c">// 1. 告知PduR：新的接收开始了，总长度是多少
+ret = PduR_CanTpStartOfReception(rxConfig-&gt;PduR_PduId,
+    rxRuntime-&gt;transferTotal, &amp;rxRuntime-&gt;sizeBuffer);
+
+// 2. 把收到的数据拷贝到PduR分配的缓冲区
+ret = PduR_CanTpCopyRxData(rxConfig-&gt;PduR_PduId, &amp;tempPdu,
+    &amp;rxRuntime-&gt;sizeBuffer);
+
+// 3. 接收完成，通知PduR
+PduR_CanTpRxIndication(rxConfig-&gt;PduR_PduId, NTFRSLT_OK);
+</code></pre>
+<p><strong>发送方向</strong>：</p>
+<pre><code class="language-c">// 1. 从PduR的上层缓冲区拷贝待发送的数据
+ret = PduR_CanTpCopyTxData(txConfig-&gt;PduR_PduId, &amp;pduInfo,
+    NULL_PTR, &amp;txRuntime-&gt;sizeBuffer);
+
+// 2. 通知PduR发送结果
+PduR_CanTpTxConfirmation(txConfig-&gt;PduR_PduId, NTFRSLT_OK);
+</code></pre>
+<p><strong>为什么PduR要参与缓冲区管理？</strong> 因为AUTOSAR的设计原则是：传输层（CanTp）只负责帧的拆解和组装，不负责数据的最终存储位置。上层（PduR→DCM）决定数据放在哪里、用多大缓冲区——这就是经典的<strong>分层解耦</strong>。</p>
+<hr>
+<h3 id="cantp_mainfunction每一毫秒的巡回查房"><a class="header" href="#cantp_mainfunction每一毫秒的巡回查房">CanTp_MainFunction——每一毫秒的巡回查房</a></h3>
+<pre><code class="language-c">void CanTp_MainFunction(void)
+{
+    if( CanTpRunTimeData.internalState != CANTP_ON ) {
+        return;
+    }
+
+    for( uint32 i=0; i &lt; CANTP_MAX_NO_CHANNELS; i++ ) {
+        // 检查每个通道的TX状态
+        if (pduTxId != INVALID_PDU_ID) {
+            txSduStateMachine(txConfigListItem, txRuntimeListItem);
+        }
+        // 检查每个通道的RX状态
+        if (pduRxId != INVALID_PDU_ID) {
+            rxPhySduStateMachine(rxConfigListItem, rxRuntimeListItem);
+        }
+        // 检查功能寻址接收
+        if (pduRxFuncId != INVALID_PDU_ID) {
+            rxFncSduStateMachine(rxConfigListItem, rxRuntimeListItem);
+        }
+    }
+}
+</code></pre>
+<p>这里有一个微妙的细节：<strong>物理寻址和功能寻址的接收使用了不同的状态机函数</strong>——<code>rxPhySduStateMachine</code>处理所有的CF超时、缓冲区等待，而<code>rxFncSduStateMachine</code>只处理<code>RX_WAIT_SF_SDU_BUFFER</code>状态（因为功能寻址只接收单帧）。这种精简化避免了功能寻址通道上不必要的超时检查。</p>
+<hr>
+<h3 id="rxindication当can报文到达时"><a class="header" href="#rxindication当can报文到达时">RxIndication——当CAN报文到达时</a></h3>
+<p>CanIf每收到一个CAN报文，调用<code>CanTp_RxIndication</code>，把报文交给CanTp处理：</p>
+<pre><code class="language-c">void CanTp_RxIndication(PduIdType CanTpRxPduId,
+        PduInfoType *CanTpRxPduPtr)
+{
+    frameType = getFrameType(addressingFormat, CanTpRxPduPtr);
+
+    switch (frameType) {
+        case SINGLE_FRAME:
+            handleSingleFrame(rxConfigParams, runtimeParams,
+                CanTpRxPduPtr, CanTpRxNSduId);
+            break;
+        case FIRST_FRAME:
+            handleFirstFrame(rxConfigParams, runtimeParams,
+                CanTpRxPduPtr, CanTpRxNSduId);
+            break;
+        case CONSECUTIVE_FRAME:
+            handleConsecutiveFrame(rxConfigParams, runtimeParams,
+                CanTpRxPduPtr);
+            break;
+        case FLOW_CONTROL_FRAME:
+            handleFlowControlFrame(txConfigParams, runtimeParams,
+                CanTpRxPduPtr);
+            break;
+    }
+}
+</code></pre>
+<p>四条分支对应四种帧类型。但要注意：<strong>Flow Control帧被路由到发送端的处理函数</strong>——因为FC是发送端正在等待的回应。这就像一个精明的快递分拣员把收到的“OK继续发“确认件投递到发货窗口，而不是收货窗口。</p>
+<hr>
+<h3 id="cantp_init开机复位"><a class="header" href="#cantp_init开机复位">CanTp_Init——开机复位</a></h3>
+<pre><code class="language-c">void CanTp_Init( const CanTp_ConfigType* CfgPtr)
+{
+    CanTp_ConfigPtr = CfgPtr;
+
+    for (uint8 i=0; i &lt; CANTP_MAX_NO_CHANNELS; i++) {
+        initTx15765RuntimeData(
+            &amp;CanTpRunTimeData.runtimeDataList[i].SimplexChnlList[CANTP_TX_CHANNEL]);
+        initRx15765RuntimeData(
+            &amp;CanTpRunTimeData.runtimeDataList[i].SimplexChnlList[CANTP_RX_CHANNEL]);
+        initRx15765RuntimeData(
+            &amp;CanTpRunTimeData.runtimeDataList[i].functionalChnl);
+    }
+    CanTpRunTimeData.internalState = CANTP_ON;
+}
+</code></pre>
+<p>每个通道有三个单工信道：TX物理、RX物理、RX功能。全部复位到IDLE状态——就像一个医院早上清空所有病房，准备接收新病人。</p>
+<hr>
+<h3 id="定时参数n_asn_arn_bsn_brn_csn_cr"><a class="header" href="#定时参数n_asn_arn_bsn_brn_csn_cr">定时参数——N_As/N_Ar/N_Bs/N_Br/N_Cs/N_Cr</a></h3>
+<p>CanTp定义了6个关键定时参数，在<code>CanTp_SimplexChannelPrivateType</code>中通过<code>stateTimeoutCount</code>和<code>NasNarTimeoutCount</code>实现：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>参数</th><th>含义</th><th>实现位置</th></tr>
+</thead>
+<tbody>
+<tr><td>N_As</td><td>发送方等待CAN总线确认的超时</td><td><code>TX_WAIT_TX_CONFIRMATION</code>状态下递减</td></tr>
+<tr><td>N_Ar</td><td>接收方等待CAN总线确认的超时</td><td>通过<code>NasNarPending</code>标志控制</td></tr>
+<tr><td>N_Bs</td><td>发送方等待Flow Control的超时</td><td><code>TX_WAIT_FLOW_CONTROL</code>状态下递减</td></tr>
+<tr><td>N_Br</td><td>接收方等待向PduR请求缓冲区的超时</td><td><code>RX_WAIT_CF_SDU_BUFFER</code>状态下递减</td></tr>
+<tr><td>N_Cs</td><td>发送方等待连续帧发送的超时</td><td><code>TX_WAIT_TRANSMIT</code>状态下递减</td></tr>
+<tr><td>N_Cr</td><td>接收方等待连续帧接收的超时</td><td><code>RX_WAIT_CONSECUTIVE_FRAME</code>状态下递减</td></tr>
+</tbody>
+</table>
+</div>
+<p>每个定时器都是递减计数器，单位是MainFunction周期。当计数器归零时，触发超时错误，通过<code>PduR_CanTpRxIndication</code>或<code>PduR_CanTpTxConfirmation</code>报告失败。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>CanTp通过<code>getFrameType</code>函数解码PCI字节（bit 7-4），区分SF/FF/CF/FC四种帧类型，是ISO 15765-2的帧级路由器。</li>
+<li>状态机覆盖接收和发送两个方向共10个状态，用<code>ISO15765TransferStateTypes</code>统一管理，每个MainFunction周期推进一次。</li>
+<li>Flow Control帧由接收端根据PduR缓冲区容量动态构建，BS取配置上限与实际容量的较小值，实现流量自限。</li>
+<li>STmin的编码用了三段区间：0直接发送、1-127毫秒、241-249百微秒，体现了CAN时间精度（毫秒级）的可应用范围。</li>
+<li>与PduR通过<code>StartOfReception/CopyRxData/RxIndication</code>三回调解耦，CanTp不管理数据存储位置。</li>
+<li>六种超时参数（N_As/N_Ar/N_Bs/N_Br/N_Cs/N_Cr）覆盖了通信的所有等待点，防止无限阻塞。</li>
+<li>物理寻址和功能寻址的接收状态机分离，功能通道只处理单帧，节省CPU。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：硬件传输层看完了——现在看软件架构的基石。DCM的所有行为都依赖于一套静态配置表：DspDid[]定义每个DID的数据端口和回调，DsdServiceTable[]定义每个SID的路由。这些const数组在编译期锁定，在运行期不可变——这是AUTOSAR配置艺术的核心。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/4.8-DSP-DTC与上传下载0x19与0x34-37.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/4.10-配置系统Dcm_Lcfg.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/4.8-DSP-DTC与上传下载0x19与0x34-37.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/4.10-配置系统Dcm_Lcfg.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

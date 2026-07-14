@@ -1,0 +1,887 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>核心对象模型 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="32-核心对象模型slottokensessionobject的四重奏"><a class="header" href="#32-核心对象模型slottokensessionobject的四重奏">3.2 核心对象模型：Slot、Token、Session、Object的“四重奏“</a></h2>
+<h3 id="银行保险箱系统的四重奏"><a class="header" href="#银行保险箱系统的四重奏">银行保险箱系统的“四重奏“</a></h3>
+<p>让我们继续用银行保险箱的比喻。</p>
+<p>一个完整的银行保险箱系统，有四个关键概念：</p>
+<ol>
+<li><strong>服务窗口</strong>：客户与保险箱系统交互的入口。窗口可以有多个，每个窗口可以服务不同的保险箱库。</li>
+<li><strong>保险箱库</strong>：存储客户物品的物理空间。一个窗口对应一个库。</li>
+<li><strong>访问记录</strong>：客户每次访问库时，建立一条记录。记录包含访问时间、访问权限、操作类型。</li>
+<li><strong>保险箱内容</strong>：库里存储的具体物品（文件、珠宝、证书等）。</li>
+</ol>
+<p>这四个概念，对应了PKCS#11的核心对象：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">银行概念</th><th style="text-align: left">PKCS#11概念</th><th style="text-align: left">含义</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>服务窗口</strong></td><td style="text-align: left"><strong>Slot</strong></td><td style="text-align: left">HSM的物理插槽/逻辑接口</td></tr>
+<tr><td style="text-align: left"><strong>保险箱库</strong></td><td style="text-align: left"><strong>Token</strong></td><td style="text-align: left">HSM的逻辑实例/密钥存储区</td></tr>
+<tr><td style="text-align: left"><strong>访问记录</strong></td><td style="text-align: left"><strong>Session</strong></td><td style="text-align: left">与Token的交互会话</td></tr>
+<tr><td style="text-align: left"><strong>保险箱内容</strong></td><td style="text-align: left"><strong>Object</strong></td><td style="text-align: left">密钥、证书等密码对象</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="slot密码世界的服务窗口"><a class="header" href="#slot密码世界的服务窗口">Slot：密码世界的“服务窗口“</a></h3>
+<p>Slot是PKCS#11的第一个概念。</p>
+<p><strong>Slot的定义</strong>：</p>
+<p>Slot（插槽）是一个逻辑概念，代表一个密码令牌可以插入的位置。</p>
+<p>Slot可以是：</p>
+<ul>
+<li><strong>物理Slot</strong>：HSM硬件的实际插槽（如智能卡读卡器的插槽）</li>
+<li><strong>逻辑Slot</strong>：HSM软件模拟的逻辑接口（如SoftHSM的虚拟Slot）</li>
+</ul>
+<p><strong>Slot的特点</strong>：</p>
+<ol>
+<li><strong>Slot有编号</strong>：Slot ID，通常是0、1、2…的整数</li>
+<li><strong>Slot可以包含Token</strong>：一个Slot可以插入一个Token（也可以没有Token）</li>
+<li><strong>Slot有状态</strong>：Token存在或Token不存在</li>
+<li><strong>Slot有信息</strong>：厂商信息、Slot描述、硬件版本等</li>
+</ol>
+<p><strong>Slot的结构</strong>：</p>
+<pre><code>Slot信息结构（CK_SLOT_INFO）：
+
+typedef struct CK_SLOT_INFO {
+    CK_UTF8CHAR manufacturerID[32];      // 厂商ID
+    CK_UTF8CHAR slotDescription[64];     // Slot描述
+    CK_FLAGS    flags;                    // Slot标志
+    CK_VERSION  hardwareVersion;         // 硬件版本
+    CK_VERSION  firmwareVersion;         // 固件版本
+} CK_SLOT_INFO;
+
+flags可能的值：
+- CKF_TOKEN_PRESENT：Token存在
+- CKF_REMOVABLE_DEVICE：可移除设备
+- CKF_HW_SLOT：硬件Slot
+</code></pre>
+<p><strong>Slot的典型场景</strong>：</p>
+<pre><code>Slot的典型场景：
+
+场景一：独立HSM（车规级安全芯片）
+
+Slot 0 → Token存在（独立HSM）
+Slot 1 → Token不存在
+Slot 2 → Token不存在
+...
+
+场景二：智能卡读卡器
+
+Slot 0 → Token存在（插入的智能卡）
+Slot 1 → Token不存在（空插槽）
+
+场景三：软件HSM（SoftHSM2）
+
+Slot 0 → Token存在（虚拟Token 0）
+Slot 1 → Token存在（虚拟Token 1）
+Slot 2 → Token不存在
+...
+</code></pre>
+<p><strong>获取Slot列表的代码</strong>：</p>
+<pre><code class="language-c">CK_RV rv;
+CK_SLOT_ID_PTR pSlotList;
+CK_ULONG ulCount;
+
+// 获取Slot数量
+rv = C_GetSlotList(FALSE, NULL_PTR, &amp;ulCount);
+if (rv != CKR_OK) {
+    printf("获取Slot数量失败：%08x\n", rv);
+    return;
+}
+
+// 分配内存
+pSlotList = (CK_SLOT_ID_PTR)malloc(ulCount * sizeof(CK_SLOT_ID));
+
+// 获取Slot列表
+rv = C_GetSlotList(FALSE, pSlotList, &amp;ulCount);
+if (rv != CKR_OK) {
+    printf("获取Slot列表失败：%08x\n", rv);
+    free(pSlotList);
+    return;
+}
+
+// 打印Slot信息
+for (CK_ULONG i = 0; i &lt; ulCount; i++) {
+    CK_SLOT_INFO slotInfo;
+    rv = C_GetSlotInfo(pSlotList[i], &amp;slotInfo);
+    printf("Slot %lu: %s\n", pSlotList[i], slotInfo.slotDescription);
+}
+
+free(pSlotList);
+</code></pre>
+<hr>
+<h3 id="token密码世界的保险箱库"><a class="header" href="#token密码世界的保险箱库">Token：密码世界的“保险箱库“</a></h3>
+<p>Token是PKCS#11的第二个概念。</p>
+<p><strong>Token的定义</strong>：</p>
+<p>Token（令牌）是存储密码对象的逻辑实体。</p>
+<p>Token代表：</p>
+<ul>
+<li>一个HSM实例（如车规级独立安全芯片）</li>
+<li>一个智能卡（如插入读卡器的卡片）</li>
+<li>一个虚拟Token（如SoftHSM2的虚拟Token）</li>
+</ul>
+<p><strong>Token的特点</strong>：</p>
+<ol>
+<li><strong>Token存储密码对象</strong>：密钥、证书、数据对象都存储在Token中</li>
+<li><strong>Token有访问控制</strong>：需要PIN码登录才能访问私有对象</li>
+<li><strong>Token有状态</strong>：初始化状态、正常状态、锁定状态等</li>
+<li><strong>Token有信息</strong>：厂商信息、Token描述、序列号等</li>
+</ol>
+<p><strong>Token的结构</strong>：</p>
+<pre><code>Token信息结构（CK_TOKEN_INFO）：
+
+typedef struct CK_TOKEN_INFO {
+    CK_UTF8CHAR label[32];               // Token标签
+    CK_UTF8CHAR manufacturerID[32];      // 厂商ID
+    CK_UTF8CHAR model[16];               // 型号
+    CK_UTF8CHAR serialNumber[16];        // 序列号
+    CK_FLAGS    flags;                    // Token标志
+    CK_ULONG    ulMaxSessionCount;       // 最大会话数
+    CK_ULONG    ulSessionCount;          // 当前会话数
+    CK_ULONG    ulMaxRwSessionCount;     // 最大读写会话数
+    CK_ULONG    ulRwSessionCount;        // 当前读写会话数
+    CK_ULONG    ulMaxPinLen;             // 最大PIN长度
+    CK_ULONG    ulMinPinLen;             // 最小PIN长度
+    CK_ULONG    ulTotalPublicMemory;     // 公共内存总量
+    CK_ULONG    ulFreePublicMemory;      // 公共内存空闲量
+    CK_ULONG    ulTotalPrivateMemory;    // 私有内存总量
+    CK_ULONG    ulFreePrivateMemory;     // 私有内存空闲量
+    CK_VERSION  hardwareVersion;         // 硬件版本
+    CK_VERSION  firmwareVersion;         // 固件版本
+    CK_CHAR     utcTime[16];             // UTC时间（可选）
+} CK_TOKEN_INFO;
+
+flags可能的值：
+- CKF_RNG：有随机数生成器
+- CKF_WRITE_PROTECTED：写保护
+- CKF_LOGIN_REQUIRED：需要登录
+- CKF_USER_PIN_INITIALIZED：用户PIN已初始化
+- CKF_TOKEN_INITIALIZED：Token已初始化
+</code></pre>
+<p><strong>Token的用户角色</strong>：</p>
+<p>Token有两个用户角色：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">角色</th><th style="text-align: left">描述</th><th style="text-align: left">权限</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>Security Officer (SO)</strong></td><td style="text-align: left">安全管理员</td><td style="text-align: left">初始化Token、设置用户PIN、解锁Token</td></tr>
+<tr><td style="text-align: left"><strong>User</strong></td><td style="text-align: left">普通用户</td><td style="text-align: left">使用密钥、执行密码操作</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Token的初始化流程</strong>：</p>
+<pre><code>Token初始化流程：
+
+1. 获取Slot列表
+   C_GetSlotList()
+
+2. 选择一个Slot
+   slotID = pSlotList[0]
+
+3. 初始化Token（需要SO PIN）
+   C_InitToken(slotID, soPin, soPinLen, label)
+
+4. 打开会话
+   C_OpenSession(slotID, CKF_SERIAL_SESSION | CKF_RW_SESSION, ...)
+
+5. 登录为SO
+   C_Login(hSession, CKU_SO, soPin, soPinLen)
+
+6. 初始化用户PIN
+   C_InitPIN(hSession, userPin, userPinLen)
+
+7. 注销
+   C_Logout(hSession)
+
+8. 关闭会话
+   C_CloseSession(hSession)
+</code></pre>
+<hr>
+<h3 id="session密码世界的访问记录"><a class="header" href="#session密码世界的访问记录">Session：密码世界的“访问记录“</a></h3>
+<p>Session是PKCS#11的第三个概念。</p>
+<p><strong>Session的定义</strong>：</p>
+<p>Session（会话）是应用程序与Token的一次交互过程。</p>
+<p>每次应用程序与Token交互时，需要：</p>
+<ol>
+<li>打开一个Session</li>
+<li>在Session中执行操作</li>
+<li>关闭Session</li>
+</ol>
+<p><strong>Session的特点</strong>：</p>
+<ol>
+<li><strong>Session绑定Token</strong>：Session与特定的Token绑定</li>
+<li><strong>Session有状态</strong>：读/写、登录/未登录</li>
+<li><strong>Session有权限</strong>：基于登录状态决定可执行的操作</li>
+<li><strong>Session可以并发</strong>：一个Token可以有多个Session</li>
+</ol>
+<p><strong>Session的状态</strong>：</p>
+<pre><code>Session状态：
+
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│   ┌─────────────────────────────────────────────┐      │
+│   │读写会话                       │      │
+│   │                                             │      │
+│   │  ┌─────────────────┐ ┌─────────────────┐  │      │
+│   │  │R/W Public       │ │R/W User         │  │      │
+│   │  │Session          │ │Functions        │  │      │
+│   │  │(未登录)         │ │(登录为User)     │  │      │
+│   │  └─────────────────┘ └─────────────────┘  │      │
+│   │                                             │      │
+│   │  ┌─────────────────┐ ┌─────────────────┐  │      │
+│   │  │R/W SO           │ │R/W SO           │  │      │
+│   │  │Functions        │ │Functions        │  │      │
+│   │  │(登录为SO)       │ │(登录为SO)       │  │      │
+│   │  └─────────────────┘ └─────────────────┘  │      │
+│   │                                             │      │
+│   └─────────────────────────────────────────────┘      │
+│                                                         │
+│   ┌─────────────────────────────────────────────┐      │
+│   │只读会话                       │      │
+│   │                                             │      │
+│   │  ┌─────────────────┐ ┌─────────────────┐  │      │
+│   │  │R/O Public       │ │R/O User         │  │      │
+│   │  │Session          │ │Functions        │  │      │
+│   │  │(未登录)         │ │(登录为User)     │  │      │
+│   │  └─────────────────┘ └─────────────────┘  │      │
+│   │                                             │      │
+│   └─────────────────────────────────────────────┘      │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Session的打开方式</strong>：</p>
+<pre><code class="language-c">CK_SESSION_HANDLE hSession;
+CK_FLAGS flags = CKF_SERIAL_SESSION | CKF_RW_SESSION;
+
+// 打开读写会话
+rv = C_OpenSession(slotID, flags, NULL_PTR, NULL_PTR, &amp;hSession);
+
+// 打开只读会话
+flags = CKF_SERIAL_SESSION;
+rv = C_OpenSession(slotID, flags, NULL_PTR, NULL_PTR, &amp;hSession);
+</code></pre>
+<p><strong>Session状态转换</strong>：</p>
+<pre><code>Session状态转换：
+
+未登录
+    │
+    │ C_Login(CKU_USER, pin, pinLen)
+    ▼
+已登录User
+    │
+    │ C_Login(CKU_SO, soPin, soPinLen)  ← 只有R/W会话可以
+    ▼
+已登录SO
+    │
+    │ C_Logout()
+    ▼
+未登录
+</code></pre>
+<hr>
+<h3 id="object密码世界的保险箱内容"><a class="header" href="#object密码世界的保险箱内容">Object：密码世界的“保险箱内容“</a></h3>
+<p>Object是PKCS#11的第四个概念。</p>
+<p><strong>Object的定义</strong>：</p>
+<p>Object（对象）是存储在Token中的密码资源。</p>
+<p>Object可以是：</p>
+<ul>
+<li><strong>密钥</strong>：公钥、私钥、对称密钥</li>
+<li><strong>证书</strong>：X.509证书</li>
+<li><strong>数据</strong>：用户数据对象</li>
+</ul>
+<p><strong>Object的类型</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">Object类型</th><th style="text-align: left">常量</th><th style="text-align: left">描述</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKO_PUBLIC_KEY</strong></td><td style="text-align: left">公钥对象</td><td style="text-align: left">RSA/ECC公钥</td></tr>
+<tr><td style="text-align: left"><strong>CKO_PRIVATE_KEY</strong></td><td style="text-align: left">私钥对象</td><td style="text-align: left">RSA/ECC私钥</td></tr>
+<tr><td style="text-align: left"><strong>CKO_SECRET_KEY</strong></td><td style="text-align: left">对称密钥对象</td><td style="text-align: left">AES/DES密钥</td></tr>
+<tr><td style="text-align: left"><strong>CKO_CERTIFICATE</strong></td><td style="text-align: left">证书对象</td><td style="text-align: left">X.509证书</td></tr>
+<tr><td style="text-align: left"><strong>CKO_DATA</strong></td><td style="text-align: left">数据对象</td><td style="text-align: left">用户数据</td></tr>
+<tr><td style="text-align: left"><strong>CKO_MECHANISM</strong></td><td style="text-align: left">机制对象</td><td style="text-align: left">密码机制描述</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Object的属性</strong>：</p>
+<p>每个Object有一组属性。属性定义了Object的特征和行为。</p>
+<p>常见的属性：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">属性</th><th style="text-align: left">常量</th><th style="text-align: left">描述</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>CKA_CLASS</strong></td><td style="text-align: left">Object类型</td><td style="text-align: left">公钥/私钥/对称密钥等</td></tr>
+<tr><td style="text-align: left"><strong>CKA_KEY_TYPE</strong></td><td style="text-align: left">密钥类型</td><td style="text-align: left">RSA/ECC/AES等</td></tr>
+<tr><td style="text-align: left"><strong>CKA_LABEL</strong></td><td style="text-align: left">标签</td><td style="text-align: left">用户定义的标签</td></tr>
+<tr><td style="text-align: left"><strong>CKA_ID</strong></td><td style="text-align: left">ID</td><td style="text-align: left">用户定义的ID</td></tr>
+<tr><td style="text-align: left"><strong>CKA_TOKEN</strong></td><td style="text-align: left">是否存储在Token中</td><td style="text-align: left">TRUE=持久存储</td></tr>
+<tr><td style="text-align: left"><strong>CKA_PRIVATE</strong></td><td style="text-align: left">是否私有</td><td style="text-align: left">TRUE=需要登录才能访问</td></tr>
+<tr><td style="text-align: left"><strong>CKA_SENSITIVE</strong></td><td style="text-align: left">是否敏感</td><td style="text-align: left">TRUE=不可导出</td></tr>
+<tr><td style="text-align: left"><strong>CKA_EXTRACTABLE</strong></td><td style="text-align: left">是否可导出</td><td style="text-align: left">FALSE=不能导出</td></tr>
+<tr><td style="text-align: left"><strong>CKA_MODIFIABLE</strong></td><td style="text-align: left">是否可修改</td><td style="text-align: left">TRUE=属性可修改</td></tr>
+<tr><td style="text-align: left"><strong>CKA_DESTROYABLE</strong></td><td style="text-align: left">是否可销毁</td><td style="text-align: left">TRUE=可以销毁</td></tr>
+<tr><td style="text-align: left"><strong>CKA_VALUE</strong></td><td style="text-align: left">密钥值</td><td style="text-align: left">密钥的实际值</td></tr>
+<tr><td style="text-align: left"><strong>CKA_MODULUS</strong></td><td style="text-align: left">RSA模数</td><td style="text-align: left">RSA密钥的模数</td></tr>
+<tr><td style="text-align: left"><strong>CKA_PUBLIC_EXPONENT</strong></td><td style="text-align: left">RSA公钥指数</td><td style="text-align: left">RSA公钥的指数</td></tr>
+<tr><td style="text-align: left"><strong>CKA_PRIVATE_EXPONENT</strong></td><td style="text-align: left">RSA私钥指数</td><td style="text-align: left">RSA私钥的指数</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Object的安全属性组合</strong>：</p>
+<p>这些属性的组合决定了Object的安全行为：</p>
+<pre><code>Object安全属性组合示例：
+
+组合一：不可导出的私钥（最安全）
+- CKA_SENSITIVE = TRUE（敏感，不可导出）
+- CKA_EXTRACTABLE = FALSE（不可导出）
+- CKA_PRIVATE = TRUE（私有，需要登录）
+
+组合二：可导出的对称密钥（可备份）
+- CKA_SENSITIVE = FALSE（不敏感）
+- CKA_EXTRACTABLE = TRUE（可导出）
+- CKA_PRIVATE = TRUE（私有）
+
+组合三：公开的公钥（可自由访问）
+- CKA_SENSITIVE = FALSE（不敏感）
+- CKA_EXTRACTABLE = TRUE（可导出）
+- CKA_PRIVATE = FALSE（公开）
+</code></pre>
+<p><strong>创建Object的代码</strong>：</p>
+<pre><code class="language-c">CK_OBJECT_HANDLE hKey;
+CK_ATTRIBUTE template[] = {
+    {CKA_CLASS, &amp;keyClass, sizeof(keyClass)},
+    {CKA_KEY_TYPE, &amp;keyType, sizeof(keyType)},
+    {CKA_TOKEN, &amp;bTrue, sizeof(bTrue)},
+    {CKA_PRIVATE, &amp;bTrue, sizeof(bTrue)},
+    {CKA_SENSITIVE, &amp;bTrue, sizeof(bTrue)},
+    {CKA_EXTRACTABLE, &amp;bFalse, sizeof(bFalse)},
+    {CKA_LABEL, "MyKey", 5},
+};
+
+rv = C_CreateObject(hSession, template, 6, &amp;hKey);
+</code></pre>
+<hr>
+<h3 id="四重奏的完整关系"><a class="header" href="#四重奏的完整关系">四重奏的完整关系</a></h3>
+<p>现在让我们把这四个概念组合起来。</p>
+<p><strong>完整的层次结构</strong>：</p>
+<pre><code>PKCS#11对象模型层次结构：
+
+Library（PKCS#11库）
+    │
+    ├── Slot 0
+    │   ├── Token（存在）
+    │   │   ├── Session 0
+    │   │   │   ├── Object 0（公钥）
+    │   │   │   ├── Object 1（私钥）
+    │   │   │   ├── Object 2（对称密钥）
+    │   │   │   └── Object 3（证书）
+    │   │   └── Session 1
+    │   │       ├── Object 4（数据）
+    │   │       └── Object 5（证书）
+    │   └── Token（不存在）
+    │
+    ├── Slot 1
+    │   └── Token（存在）
+    │       └── Session 2
+    │           ├── Object 0
+    │           └── Object 1
+    │
+    └── Slot 2
+        └── Token（不存在）
+</code></pre>
+<p><strong>关系的要点</strong>：</p>
+<ol>
+<li><strong>Slot与Token</strong>：Slot是位置，Token是内容。一个Slot可以有一个Token，也可以没有。</li>
+<li><strong>Token与Session</strong>：Session是Token的交互。一个Token可以有多个Session。</li>
+<li><strong>Session与Object</strong>：Object通过Session访问。Session决定了Object的访问权限。</li>
+<li><strong>Object与Token</strong>：Object存储在Token中。Token是Object的容器。</li>
+</ol>
+<p><strong>访问流程</strong>：</p>
+<pre><code>访问Object的完整流程：
+
+应用程序
+    │
+    │ C_Initialize()
+    ▼
+Library初始化
+    │
+    │ C_GetSlotList()
+    ▼
+获取Slot列表 → 选择Slot 0
+    │
+    │ C_OpenSession(slotID, ...)
+    ▼
+打开Session → Session绑定到Slot 0的Token
+    │
+    │ C_Login(hSession, CKU_USER, ...)
+    ▼
+登录 → Session变为已登录状态
+    │
+    │ C_FindObjectsInit(hSession, ...)
+    │ C_FindObjects(hSession, ...)
+    │ C_FindObjectsFinal(hSession)
+    ▼
+查找Object → 找到Object（私钥）
+    │
+    │ C_SignInit(hSession, mechanism, hKey)
+    │ C_Sign(hSession, ...)
+    ▼
+使用Object → 执行签名操作
+    │
+    │ C_Logout(hSession)
+    │ C_CloseSession(hSession)
+    │ C_Finalize()
+    ▼
+清理 → 结束会话
+</code></pre>
+<hr>
+<h3 id="一个类比完整的银行流程"><a class="header" href="#一个类比完整的银行流程">一个类比：完整的银行流程</a></h3>
+<p>让我用一个完整的银行类比来理解这个四重奏。</p>
+<p><strong>银行保险箱系统流程</strong>：</p>
+<pre><code>银行保险箱系统流程：
+
+1. 客户进入银行大厅
+   = 应用程序初始化 C_Initialize()
+
+2. 客户查看窗口列表
+   = 获取Slot列表 C_GetSlotList()
+
+3. 客户选择一个窗口
+   = 选择Slot
+
+4. 客户通过窗口请求访问保险箱库
+   = 打开Session C_OpenSession()
+
+5. 客户出示身份证明，工作人员核验
+   = 登录 C_Login()
+
+6. 工作人员带客户进入库房
+   = Session绑定到Token
+
+7. 客户查找自己的保险箱
+   = 查找Object C_FindObjects()
+
+8. 客户打开保险箱，取出/存入物品
+   = 使用Object C_Sign/C_Encrypt等
+
+9. 客户离开库房，工作人员注销访问记录
+   = 注销 C_Logout()
+
+10. 客户离开窗口
+    = 关闭Session C_CloseSession()
+
+11. 客户离开银行大厅
+    = 清理 C_Finalize()
+</code></pre>
+<p>这个类比清晰地对应了PKCS#11的每个概念和流程。</p>
+<hr>
+<h3 id="实际代码示例完整的签名流程"><a class="header" href="#实际代码示例完整的签名流程">实际代码示例：完整的签名流程</a></h3>
+<p>现在，让我们看一个完整的PKCS#11签名流程代码：</p>
+<pre><code class="language-c">CK_RV rv;
+CK_C_INITIALIZE_ARGS initArgs = {NULL_PTR, NULL_PTR, NULL_PTR, NULL_PTR, CKF_OS_LOCKING_OK, NULL_PTR};
+CK_SLOT_ID slotID;
+CK_SLOT_ID_PTR pSlotList;
+CK_ULONG ulSlotCount;
+CK_SESSION_HANDLE hSession;
+CK_OBJECT_HANDLE hKey;
+CK_BYTE data[] = "Hello, PKCS#11!";
+CK_ULONG ulDataLen = sizeof(data);
+CK_BYTE signature[256];
+CK_ULONG ulSigLen = 256;
+CK_CHAR userPin[] = "12345678";
+CK_ULONG ulUserPinLen = sizeof(userPin);
+
+// 1. 初始化
+rv = C_Initialize(&amp;initArgs);
+if (rv != CKR_OK) {
+    printf("初始化失败：0x%08x\n", rv);
+    return rv;
+}
+
+// 2. 获取Slot列表
+rv = C_GetSlotList(CK_TRUE, NULL_PTR, &amp;ulSlotCount);
+if (rv != CKR_OK) {
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+pSlotList = malloc(ulSlotCount * sizeof(CK_SLOT_ID));
+rv = C_GetSlotList(CK_TRUE, pSlotList, &amp;ulSlotCount);
+if (rv != CKR_OK) {
+    free(pSlotList);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+slotID = pSlotList[0];  // 选择第一个Slot
+free(pSlotList);
+
+// 3. 打开Session
+rv = C_OpenSession(slotID, CKF_SERIAL_SESSION | CKF_RW_SESSION, NULL_PTR, NULL_PTR, &amp;hSession);
+if (rv != CKR_OK) {
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+// 4. 登录
+rv = C_Login(hSession, CKU_USER, userPin, ulUserPinLen);
+if (rv != CKR_OK) {
+    C_CloseSession(hSession);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+// 5. 查找私钥
+CK_OBJECT_CLASS keyClass = CKO_PRIVATE_KEY;
+CK_KEY_TYPE keyType = CKK_RSA;
+CK_ATTRIBUTE findTemplate[] = {
+    {CKA_CLASS, &amp;keyClass, sizeof(keyClass)},
+    {CKA_KEY_TYPE, &amp;keyType, sizeof(keyType)},
+};
+
+rv = C_FindObjectsInit(hSession, findTemplate, 2);
+if (rv != CKR_OK) {
+    C_Logout(hSession);
+    C_CloseSession(hSession);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+CK_ULONG ulCount;
+rv = C_FindObjects(hSession, &amp;hKey, 1, &amp;ulCount);
+if (rv != CKR_OK || ulCount == 0) {
+    C_FindObjectsFinal(hSession);
+    C_Logout(hSession);
+    C_CloseSession(hSession);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+rv = C_FindObjectsFinal(hSession);
+if (rv != CKR_OK) {
+    C_Logout(hSession);
+    C_CloseSession(hSession);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+// 6. 签名
+CK_MECHANISM mechanism = {CKM_RSA_PKCS, NULL_PTR, 0};
+rv = C_SignInit(hSession, &amp;mechanism, hKey);
+if (rv != CKR_OK) {
+    C_Logout(hSession);
+    C_CloseSession(hSession);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+rv = C_Sign(hSession, data, ulDataLen, signature, &amp;ulSigLen);
+if (rv != CKR_OK) {
+    C_Logout(hSession);
+    C_CloseSession(hSession);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+printf("签名成功，长度：%lu字节\n", ulSigLen);
+
+// 7. 注销
+rv = C_Logout(hSession);
+if (rv != CKR_OK) {
+    C_CloseSession(hSession);
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+// 8. 关闭Session
+rv = C_CloseSession(hSession);
+if (rv != CKR_OK) {
+    C_Finalize(NULL_PTR);
+    return rv;
+}
+
+// 9. 清理
+rv = C_Finalize(NULL_PTR);
+
+return rv;
+</code></pre>
+<p>这个代码完整展示了PKCS#11的使用流程：</p>
+<ul>
+<li>初始化 → 获取Slot → 打开Session → 登录 → 查找密钥 → 签名 → 注销 → 关闭Session → 清理</li>
+</ul>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们分析了PKCS#11的核心对象模型——四重奏。</p>
+<p><strong>Slot（服务窗口）</strong>：</p>
+<ul>
+<li>密码令牌的插入位置</li>
+<li>可以包含Token，也可以不包含</li>
+<li>有编号、状态、信息</li>
+</ul>
+<p><strong>Token（保险箱库）</strong>：</p>
+<ul>
+<li>存储密码对象的逻辑实体</li>
+<li>有访问控制（SO和User）</li>
+<li>有状态（初始化、正常、锁定）</li>
+</ul>
+<p><strong>Session（访问记录）</strong>：</p>
+<ul>
+<li>与Token的交互会话</li>
+<li>有状态（读/写、登录/未登录）</li>
+<li>有权限（基于登录状态）</li>
+</ul>
+<p><strong>Object（保险箱内容）</strong>：</p>
+<ul>
+<li>存储在Token中的密码资源</li>
+<li>有类型（公钥、私钥、对称密钥、证书、数据）</li>
+<li>有属性（安全属性定义行为）</li>
+</ul>
+<p>这四个概念形成完整的层次结构：Library → Slot → Token → Session → Object。</p>
+<p>下一节，我们将深入PKCS#11的安全哲学——属性如何定义安全边界，密钥如何被保护。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>PKCS#11的安全哲学是什么？</p>
+<p>“提供机制而非策略”——这是PKCS#11的核心设计原则。</p>
+<p>但机制如何转化为安全？属性如何定义边界？</p>
+<p>CKA_SENSITIVE、CKA_EXTRACTABLE、CKA_PRIVATE这些属性如何工作？</p>
+<p>下一节，安全哲学。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/3.1-PKCS11的设计哲学.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/3.3-PKCS11的安全哲学.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/3.1-PKCS11的设计哲学.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/3.3-PKCS11的安全哲学.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>板级通信 · CAN · CAN · FD - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="43-板级通信can--can-fd"><a class="header" href="#43-板级通信can--can-fd">4.3 板级通信：CAN / CAN-FD</a></h1>
+<h3 id="1983年博世工程师的够了"><a class="header" href="#1983年博世工程师的够了">1983年，博世工程师的“够了“</a></h3>
+<p>1983年。奔驰W126的线束，超过了50公斤。</p>
+<p>发动机控制、ABS、仪表盘、空调、电动窗——每个新增的电子功能，都要拉一对信号线到另一个ECU。线束像藤蔓一样在车身里疯长。博世的工程师算了一笔账：照这个趋势，到1990年，豪华车的线束会吃掉整车成本的15%。</p>
+<p>他们说：<strong>够了。我们需要一条总线。</strong></p>
+<p>不是更快，不是更大——是“够用“。一对双绞线，把所有ECU挂上去。带宽1Mbps就够了——当时最复杂的实时信号也不过几百个字节每秒。节点成本必须极低——每个ECU的MCU只有几KB RAM，没有处理复杂协议栈的余力。</p>
+<p>他们的答案是CAN（Controller Area Network）。1986年首次在SAE大会上发表。今天，地球上每辆车出厂时都装着至少一条CAN总线。</p>
+<p>1983年的博世工程师递出了一根接力棒。40年后，你还在用它。你写的每一行CAN驱动代码，都在接过这根棒继续跑。</p>
+<h3 id="显性能覆盖隐性这是物理层的核心秘密"><a class="header" href="#显性能覆盖隐性这是物理层的核心秘密">显性能覆盖隐性——这是物理层的核心秘密</a></h3>
+<p>CAN用一对差分线：CAN_H和CAN_L。总线两端各接120Ω终端电阻。</p>
+<p>发送“显性“位（逻辑0）：收发器驱动CAN_H到约3.5V、CAN_L到约1.5V。差分电压ΔV≈2V。收发器的驱动能力典型值是能向60Ω负载（两个120Ω终端并联+线缆损耗）注入至少1.5V差分电压——相当于至少25mA的驱动电流。</p>
+<p>发送“隐性“位（逻辑1）：收发器释放总线。两个120Ω终端电阻并联等效60Ω，把CAN_H和CAN_L都拉到约2.5V（VCC/2，通常VCC=5V）。差分电压ΔV≈0V。</p>
+<p><strong>关键是：显性能覆盖隐性。</strong> 如果有两个节点同时发，一个发显性(0)另一个发隐性(1)，总线上一定是显性。这不是协议规则——是物理定律。差分驱动器主动向60Ω负载注入电流，电流在终端电阻上产生电压降——这是欧姆定律。终端电阻的被动上拉无法对抗主动驱动。</p>
+<p>这个物理特性让CAN实现了<strong>CSMA/CR</strong>——载波侦听多路访问/冲突解决。与以太网的CSMA/CD不同：CAN在冲突时<strong>不丢数据、无退避延时</strong>。仲裁失败者自动退出发送、转为接收。帧不损坏。这是CAN区别于所有其他总线的核心特性——它让总线利用率在理论上可以接近100%（实际工程中通常&lt;60%以达到可接受的延时）。</p>
+<h3 id="差分信号的物理直觉"><a class="header" href="#差分信号的物理直觉">差分信号的物理直觉</a></h3>
+<p>为什么用差分信号？因为汽车是一个电磁地狱。</p>
+<p>火花塞放电——击穿电压10-30kV，放电电流可达安培级，上升时间小于1ns。PWM驱动的电机——di/dt可达1A/ns。大电流在车身金属结构上产生磁场，磁通变化耦合到任何附近的导体上。</p>
+<p><strong>单端信号（如SPI的MOSI——一根线对地）：</strong> 外部磁场在信号线上感应的噪声电压直接叠加在信号上。如果噪声幅度超过VIL/VIH阈值——bit错误。</p>
+<p><strong>差分信号（CAN_H和CAN_L）：</strong> 外部电磁场在两根线上感应出几乎相等的共模噪声。因为两根线绞在一起，在空间的每个点上它们到噪声源的距离几乎相等。差分接收器只关心CAN_H - CAN_L的差值——共模噪声被抵消。这个抵消的程度用CMRR（共模抑制比）衡量：CAN收发器的CMRR&gt;60dB（1000倍），即1V的共模噪声在差分输出端只有1mV残差。汽车级的CAN收发器通常&gt;70dB。</p>
+<p><strong>双绞线的绞合频率也经过了精心设计。</strong> 典型的CAN线束每英寸绞合2-4次。如果绞合太密——线太硬，成本高。如果绞合太疏——共模抑制效果差。2-4次/英寸是在抗扰度和机械柔性之间的工程最优。</p>
+<p><strong>终端电阻为什么是120Ω？</strong> 因为典型的CAN双绞线特征阻抗约120Ω。终端电阻的值必须等于线缆的特征阻抗——否则信号到达线缆末端时产生反射。反射波叠加在原始信号上，产生过冲或台阶。CAN仲裁依赖所有节点在同一bit时间内看到一致的总线电平——反射导致的振铃会破坏仲裁的确定性。120Ω不是“某种标准规定的“——它是线缆的物理属性规定的。</p>
+<p><strong>共模扼流圈（Common Mode Choke）。</strong> 在严重EMI环境中（如发动机舱内），CAN收发器和总线之间会串一个共模扼流圈。它由两个绕在同一磁芯上的线圈组成——差模信号（CAN_H-CAN_L）产生的磁通互相抵消，扼流圈呈现低阻抗。共模噪声（CAN_H和CAN_L同向）产生的磁通互相叠加，扼流圈呈现高阻抗（通常&gt;500Ω在1-50MHz范围），有效衰减共模噪声。这使得CAN在发动机舱里——离火花塞不到30cm——照样稳定通信。</p>
+<h3 id="id仲裁一个字段两个使命"><a class="header" href="#id仲裁一个字段两个使命">ID仲裁：一个字段，两个使命</a></h3>
+<p>CAN帧里有一个11位（标准帧）或29位（扩展帧）的ID域。它同时做两件事：</p>
+<p><strong>一、标识帧的内容。</strong> 协议本身不规定ID的含义——这是OEM自定义的。但行业惯例是：每个CAN ID对应一组特定的信号。ID 0x3E8 = 发动机状态帧（包含转速、冷却液温度、节气门位置等），ID 0x180 = 轮速帧（四个轮子的速度）。</p>
+<p><strong>二、仲裁优先级。</strong> 在仲裁阶段，所有待发节点同时往外推自己的ID。每一位送出后，立刻回读总线的实际电平。如果自己送的是隐性(1)但回读到显性(0)——说明有另一个节点在送优先级更高的ID（ID更小，0比1优先）——立即退出，转为监听模式。</p>
+<p><strong>用一个具体例子来说。</strong></p>
+<p>节点A要发送ID=0x3E8（= 01111101000b）。节点B要发送ID=0x180（= 00110000000b）。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>位序</th><th>节点A</th><th>节点B</th><th>总线实际</th><th>结果</th></tr>
+</thead>
+<tbody>
+<tr><td>10(SOF后第1位)</td><td>0</td><td>0</td><td>0</td><td>两位都是0(显性)，都继续</td></tr>
+<tr><td>9</td><td>1</td><td>0</td><td>0</td><td>A发1(隐性)，B发0(显性) → B的显性覆盖A的隐性 → 总线是0。A回读看到0，但自己发的是1——<strong>A仲裁失败，立即退出。</strong></td></tr>
+<tr><td>8</td><td>—</td><td>1</td><td>1</td><td>A已退出。B继续发1。</td></tr>
+<tr><td>…</td><td>—</td><td>…</td><td>…</td><td>B完全不受阻碍地发送整个帧。</td></tr>
+</tbody>
+</table>
+</div>
+<p>整个过程在ID域的前几位内完成。<strong>没有帧被“撞坏“</strong>——A只是发现自己优先级不够，主动让路。B甚至不知道有人和自己竞争。这就是CSMA/CR的优雅：冲突被消解，而不是被检测后重发。</p>
+<p>整个过程在ID域内完成，不损耗任何帧。确定性极强：最高优先级帧的最坏延迟 = 帧长时间 + 3个隐性位的帧间间隔（Intermission）。</p>
+<p><strong>这是CAN最天才的设计。</strong> ID域用同一个字段解决了“这是什么数据“和“谁先说“两个问题。没有中央调度器。不需要令牌传递。不需要主站轮询。硬件自己搞定一切。这是信息论级的优雅——一个字段承担了寻址和调度两个正交的语义。</p>
+<h3 id="穿透追踪一个发动机转速信号"><a class="header" href="#穿透追踪一个发动机转速信号">穿透：追踪一个发动机转速信号</a></h3>
+<p>你在OEM给的DBC（CAN数据库）文件里看到这一行：</p>
+<pre><code>BO_ 0x3E8 EMS_1: 8 Engine
+  SG_ EngineSpeed : 16|16@0+ (1,0) [0|8000] "rpm" 仪表盘
+</code></pre>
+<p>翻译：CAN ID 0x3E8的帧里，起始位16、长度16位、Intel格式（小端）、无符号、因子1.0、偏移0。范围0-8000rpm。仪表盘接收。</p>
+<p>下面是用DBC描述解析CAN信号的完整C函数：</p>
+<pre><code class="language-c">// DBC 信号解析: 从 CAN 帧的 8 字节中提取一个有符号或无符号整数
+// Layout: Intel (little-endian) 或 Motorola (big-endian)
+// start_bit: DBC 中的起始位号 (0-indexed, 从 byte 0 bit 0 开始)
+// length:    信号长度 (bits)
+// is_signed: 1 = 有符号, 0 = 无符号
+// is_motorola: 1 = Motorola 格式, 0 = Intel 格式
+
+uint64_t can_extract_signal(const uint8_t data[8],
+                            uint8_t start_bit, uint8_t length,
+                            uint8_t is_signed, uint8_t is_motorola)
+{
+    uint64_t raw = 0;
+    uint8_t bit_pos = start_bit;
+
+    // 逐位提取
+    for (uint8_t i = 0; i &lt; length; i++) {
+        uint8_t byte_idx = bit_pos / 8;
+        if (byte_idx &gt;= 8) return 0;  // 越界保护
+
+        uint8_t bit_in_byte = 7 - (bit_pos % 8);  // 从 MSB 开始数
+
+        if (data[byte_idx] &amp; (1 &lt;&lt; bit_in_byte))
+            raw |= (1ULL &lt;&lt; i);
+
+        if (is_motorola) {
+            // Motorola: 字节内的位从高到低, 字节间地址递增
+            // 但跨越字节边界时 "回绕" 到上一字节的 LSB
+            if ((bit_pos % 8) == 0) {
+                // 刚完成一个字节的 MSB, 跳到下一字节的 LSB
+                bit_pos -= 15;  // -8 to next byte, -7 to its LSB
+            } else {
+                bit_pos++;
+            }
+        } else {
+            // Intel: LSB first, 简单递增
+            bit_pos++;
+        }
+    }
+
+    // 符号扩展 (有符号信号)
+    if (is_signed &amp;&amp; (raw &amp; (1ULL &lt;&lt; (length - 1)))) {
+        uint64_t sign_mask = ~((1ULL &lt;&lt; length) - 1);
+        raw |= sign_mask;
+    }
+
+    return raw;
+}
+
+// 使用示例: 从 CAN 帧解析发动机转速
+void can_rx_callback(uint32_t id, uint8_t *data, uint8_t dlc)
+{
+    if (id == 0x3E8) {
+        // EngineSpeed: start_bit=16, length=16, Motorola, unsigned
+        uint64_t raw = can_extract_signal(data, 16, 16, 0, 1);
+        float rpm = raw * 1.0f + 0.0f;  // factor=1.0, offset=0.0
+        update_tacho_needle(rpm);
+    }
+}
+</code></pre>
+<p><strong>这段代码的背后，你看不到的地方，发生了什么？</strong></p>
+<p>发动机ECU一侧——</p>
+<p><strong>应用层：</strong> EMS控制软件把当前转速1847 rpm写入CAN发送缓冲区（实际上是一个mailbox的Data字段）。</p>
+<p><strong>CAN控制器硬件：</strong> 把1847编码为0x0737，填入data[2]=0x07、data[3]=0x37。组装帧头：SOF(1位显性)→ ID=0x3E8(11位)=01111101000b→ IDE=0(标准帧)→ R0(保留位)→ DLC=8(4位=1000b)→ 数据8字节→ CRC15→ CRC分隔符→ ACK槽(1位, 发送方发隐性, 接收方拉低表示收到)→ ACK分隔符→ EOF(7位隐性)。接着在位填充（Bit Stuffing）：如果连续5个相同位，自动插入一个相反的填充位。接收方自动去除。这是为了确保足够的边沿密度让各节点的PLL时钟恢复能锁定。</p>
+<p><strong>位时序：</strong> 每一位分成4个时段——Sync段（固定1Tq）、Prop段（补偿总线传播延迟+收发器延迟）、Phase Seg1和Phase Seg2（用于微调采样点位置）。1 Tq（Time Quantum）是CAN控制器的时钟周期。采样点在Phase Seg1和Seg2的交界处——通常设在75%-87.5%位宽处。这是延时和抗噪声的权衡：采样点越靠后，容忍的总线延迟越大（长线缆）；采样点越靠前，容忍的信号振动越小（高噪声环境）。</p>
+<p>你可以直观地理解这四个段：Sync段是裁判鸣哨——所有节点同时开始。Prop段是“给信号跑路的时间“——信号从总线一头跑到另一头需要时间，在这段时间里不能采样。PS1和PS2是采样窗口——在PS1结束时采样总线电平。如果采样点太早，信号还没稳定；太晚，下一个bit已经开始。CAN的采样点通常设在75%-87.5%的位置——经过大量实车验证的最优区间。</p>
+<p><strong>CAN收发器：</strong> 把TX引脚的单端逻辑（0/3.3V）转换为差分驱动。显性位(0)→驱动CAN_H到约3.5V、CAN_L到约1.5V。隐性位(1)→释放总线。收发器内部的主要电路是一个波形整形器+推挽输出级（由CANH和CANL两只大功率MOS管驱动）。</p>
+<p><strong>物理层：</strong> 差分电压在双绞线上传播。信号在双绞线上的传播速度约0.55c-0.65c（c=光速）——因为在FR4 PCB或PVC线缆的介质中，电磁波传播速度 = c/√εr。典型的绝缘材料εr≈3-4，所以速度约0.5c-0.6c。绞合使电气长度略有增加，等效速度约0.55c（约16.5cm/ns）。以此计算，5米长的线缆，信号单向传播延迟约30ns。仲裁需要双向传播——一方发送bit，信号传到另一方，另一方采样后可能同时发送——所以最坏往返延迟约60ns。CAN的位时间必须大于这个往返延迟，否则仲裁失效。这就是为什么1Mbps CAN的最大总线长度约40米、而5Mbps CAN-FD的数据段只能在短总线（&lt;5m）上实现。</p>
+<p>你的ECU一侧（倒序）——</p>
+<p><strong>CAN收发器：</strong> 接收差分电压。内部比较器的阈值通常设在0.5V-0.9V差分：ΔV&gt;0.9V→显性(0)，ΔV&lt;0.5V→隐性(1)。转为单端逻辑送RX引脚。收发器同时进行总线故障保护——检测CAN_H和CAN_L对电源/地的短路，检测显性位持续时间是否超过限值。</p>
+<p><strong>CAN控制器硬件：</strong> 逐位接收。边收边做CRC校验。如果CRC正确，在ACK槽发送显性位。把完整帧存入硬件RX mailbox，置位接收中断标志。同时检查错误计数器（TEC和REC）——当TEC或REC超过127时进入Error Passive状态，超过255时进入Bus Off状态（自动断开与总线的连接）。这是CAN的故障隔离机制——一个节点不能因为不停地发错误而把整条总线拖垮。</p>
+<p><strong>中断服务程序：</strong> NVIC（嵌套向量中断控制器）将CPU从主循环中拉出，跳转到CAN接收ISR。ISR读取mailbox——得到ID=0x3E8、DLC=8、data[8]={…,0x07,0x37,…}。调用你的can_rx_callback。</p>
+<p><strong>你的代码：</strong> can_extract_signal从data[2]和data[3]拼出0x0737=1847。乘以factor 1.0，加offset 0.0。更新仪表盘指针。</p>
+<p><strong>从EMS软件写下1847，到仪表盘指针移动——穿越了CAN控制器的位时序状态机、位填充器、CRC校验器、收发器的差分驱动器、双绞线上0.2c传播的电磁场、另一端收发器的比较器、控制器的硬件mailbox、NVIC中断路由、你的回调函数。不到10毫秒。十层硬件，一行C代码。</strong></p>
+<h3 id="s32k上flexcan的配置与收发"><a class="header" href="#s32k上flexcan的配置与收发">S32K上FlexCAN的配置与收发</a></h3>
+<p>S32K14x上用的是FlexCAN模块。下面是配置CAN通信、发送一帧、接收一帧的完整寄存器级代码：</p>
+<pre><code class="language-c">// ========== FlexCAN0 初始化 ==========
+// S32K144: FlexCAN0 基址 = 0x40024000
+#define CAN0_BASE  0x40024000
+
+#define CAN_MCR     (*(volatile uint32_t *)(CAN0_BASE + 0x00))  // Module Config
+#define CAN_CTRL1   (*(volatile uint32_t *)(CAN0_BASE + 0x04))  // Control 1
+#define CAN_TIMER   (*(volatile uint32_t *)(CAN0_BASE + 0x08))  // Free Running Timer
+#define CAN_RXGMASK (*(volatile uint32_t *)(CAN0_BASE + 0x10))  // Rx Global Mask
+#define CAN_IFLAG1  (*(volatile uint32_t *)(CAN0_BASE + 0x30))  // Interrupt Flags 1
+#define CAN_IMASK1  (*(volatile uint32_t *)(CAN0_BASE + 0x28))  // Interrupt Mask 1
+
+// Mailbox 区域: 每个 MB 4个 32-bit 寄存器 (CS, ID, WORD0, WORD1)
+// MB0-MB7 基址 = CAN0_BASE + 0x80
+#define MB_CS(n)    (*(volatile uint32_t *)(CAN0_BASE + 0x80 + (n)*0x10 + 0x0))
+#define MB_ID(n)    (*(volatile uint32_t *)(CAN0_BASE + 0x80 + (n)*0x10 + 0x4))
+#define MB_WORD0(n) (*(volatile uint32_t *)(CAN0_BASE + 0x80 + (n)*0x10 + 0x8))
+#define MB_WORD1(n) (*(volatile uint32_t *)(CAN0_BASE + 0x80 + (n)*0x10 + 0xC))
+
+// CAN_CTRL1中的位时间配置
+// 设 PE时钟=48MHz → 1 Tq = 1/48MHz ≈ 20.83ns
+// 目标 500kbps: 位时间 = 2μs = 96 Tq
+// 分配: Sync=1, PropSeg=40(41Tq含Sync), PSEG1=32, PSEG2=22, RJW=22
+// 采样点 = (1+40+32)/(1+40+32+22) ≈ 76.8%
+
+void flexcan0_init_750kbps(void)
+{
+    // 1. 进入冻结模式
+    CAN_MCR |= (1 &lt;&lt; 24);    // FRZ = 1 (请求冻结)
+    CAN_MCR |= (1 &lt;&lt; 25);    // HALT = 1 (或MDIS=0保持模块时钟)
+    while (!(CAN_MCR &amp; (1 &lt;&lt; 24))); // 等待 FRZACK = 1 (已进入冻结)
+
+    // 2. 使能模块 (退出软复位)
+    CAN_MCR &amp;= ~(1 &lt;&lt; 25);   // 清除 MDIS (使能模块)
+    while (CAN_MCR &amp; (1 &lt;&lt; 25));   // 等待 LPMACK=0 (退出低功耗)
+
+    // 3. 配置位时序
+    //    CTRL1: 只能在冻结模式下修改
+    //    PRESDIV=3 → Sclock = 48MHz / (3+1) = 12MHz → Tq=83.33ns
+    //    目标: 16 Tq/bit → 12MHz/16 = 750kbps
+    // 但实际设置更仔细:
+    CAN_CTRL1 = (3 &lt;&lt; 0)      // PRESDIV = 3 (Tq=83.33ns @48MHz)
+              | (5 &lt;&lt; 8)      // PSEG1 = 5 (Phase Seg1=6 Tq)
+              | (4 &lt;&lt; 12)     // PSEG2 = 4 (Phase Seg2=5 Tq)
+              | (3 &lt;&lt; 16)     // PROPSEG = 3 (Prop Seg=4 Tq)
+              | (3 &lt;&lt; 20)     // RJW = 3 (同步跳转宽度=4 Tq)
+              | (0 &lt;&lt; 22);    // SMP = 0 (单次采样 @采样点)
+    // 总 Tq/bit = 1(Sync) + 4(Prop) + 6(PS1) + 5(PS2) = 16
+    // 采样点 = (1+4+6)/16 = 68.75%
+    // 位率 = 12MHz / 16 = 750kbps
+
+    // 4. 配置 MB0 为接收 (RX), MB1 为发送 (TX)
+    //    MB0 接收所有 ID (全局掩码先清零)
+    CAN_RXGMASK = 0x00000000;  // 全局掩码 = 0 (不屏蔽任何位)
+
+    // MB0: 接收 mailbox — CODE=EMPTY(0x4), 激活后自动接收
+    MB_CS(0) = 0x00400000;  // CODE=Rx Empty (0x4 &lt;&lt; 24)
+    MB_ID(0) = 0;           // ID=0 (将被RXGMASK不过滤, 接收所有帧)
+
+    // MB1: 发送 mailbox — CODE=INACTIVE(0x8)
+    MB_CS(1) = 0x00880000;  // CODE=Tx Inactive (0x8 &lt;&lt; 24)
+                            // SRR=1(替换远程请求位, 标准帧用)
+
+    // 5. 清除所有中断标志, 使能 MB0 接收中断
+    CAN_IFLAG1 = 0xFFFFFFFF;  // 写1清除所有中断标志
+    CAN_IMASK1 = (1 &lt;&lt; 0);    // 使能 MB0 的接收中断
+
+    // 6. 退出冻结模式, 进入正常模式
+    CAN_MCR &amp;= ~(1 &lt;&lt; 24);    // 清除 FRZ
+    while (CAN_MCR &amp; (1 &lt;&lt; 24)); // 等待 FRZACK=0
+
+    // 等待模块准备好
+    while (!(CAN_MCR &amp; (1 &lt;&lt; 23)));  // 等待 NOTRDY=0
+}
+</code></pre>
+<p>你刚刚算出来的PROP_SEG+PHASE_SEG1+PHASE_SEG2，最终变成CAN控制器内部的一个硬件定时器链。每个时间段对应一串触发器——到了预设的TQ数就切换到下一个段。整个CAN网络上所有节点的位时序加起来，决定了谁能在下一位抢占总线。</p>
+<pre><code class="language-c">// ========== CAN 发送一帧 ==========
+void can_send_frame(uint32_t id, uint8_t *data, uint8_t dlc)
+{
+    // 等待 MB1 空闲 (检查 CODE 字段不是 TX 状态)
+    while (((MB_CS(1) &gt;&gt; 24) &amp; 0xF) == 0xC);  // CODE=0xC=TX In Progress
+
+    // 填充 ID
+    MB_ID(1) = (id &lt;&lt; 18) &amp; 0x1FFC0000;  // 标准帧: ID 放在 bit[28:18]
+              // (1 &lt;&lt; 14);  // 如果扩展帧
+
+    // 填充数据: FlexCAN 的 Byte 顺序是 Motorola
+    // MB_WORD0 = data[0-3], MB_WORD1 = data[4-7]
+    MB_WORD0(1) = (data[0] &lt;&lt; 24) | (data[1] &lt;&lt; 16)
+                | (data[2] &lt;&lt; 8)  | data[3];
+    MB_WORD1(1) = (data[4] &lt;&lt; 24) | (data[5] &lt;&lt; 16)
+                | (data[6] &lt;&lt; 8)  | data[7];
+
+    // 设置 CODE=Tx (0xC) + DLC + 数据段长度
+    // DLC 放在 CS 的 bit[3:0]
+    MB_CS(1) = (0xC &lt;&lt; 24)         // CODE=TX Once
+             | (dlc &amp; 0xF)         // DLC (数据长度)
+             | (0x0 &lt;&lt; 16);        // 不使用 RTR, IDE=0 (标准帧)
+}
+</code></pre>
+<p><code>CAN0-&gt;IFLAG1</code> 这个寄存器是一个边沿触发的中断标志。当CAN控制器检测到ACK slot期间总线上出现显性位（差分电压&gt;0.9V）时，硬件自动把对应的IFLAG bit置1。你读这个bit的时候，读到的是一根AHB总线上的电平——它在不到100纳秒前还是CAN收发器比较器输出端的一个电压跳变。</p>
+<pre><code class="language-c">// ========== CAN 接收中断处理 ==========
+// (在 NVIC 中使能 CAN0_ORed 中断)
+void CAN0_ORed_IRQHandler(void)
+{
+    // 检查 MB0 的中断标志
+    if (CAN_IFLAG1 &amp; (1 &lt;&lt; 0)) {
+        // 读取接收到的数据
+        uint8_t data[8];
+        uint8_t dlc = MB_CS(0) &amp; 0xF;  // DLC
+        uint32_t id = (MB_ID(0) &gt;&gt; 18) &amp; 0x7FF;  // 标准ID
+
+        data[0] = (MB_WORD0(0) &gt;&gt; 24) &amp; 0xFF;
+        data[1] = (MB_WORD0(0) &gt;&gt; 16) &amp; 0xFF;
+        data[2] = (MB_WORD0(0) &gt;&gt; 8)  &amp; 0xFF;
+        data[3] = MB_WORD0(0) &amp; 0xFF;
+        data[4] = (MB_WORD1(0) &gt;&gt; 24) &amp; 0xFF;
+        data[5] = (MB_WORD1(0) &gt;&gt; 16) &amp; 0xFF;
+        data[6] = (MB_WORD1(0) &gt;&gt; 8)  &amp; 0xFF;
+        data[7] = MB_WORD1(0) &amp; 0xFF;
+
+        // 处理接收到的帧
+        can_rx_callback(id, data, dlc);
+
+        // 清除 MB0 中断标志, 重新激活接收
+        CAN_IFLAG1 = (1 &lt;&lt; 0);       // 写1清除
+        MB_CS(0) = 0x00400000;       // 重新设置为 Rx Empty
+    }
+}
+</code></pre>
+<p><strong>这段FlexCAN驱动代码——每一条<code>MB_CS(1) = 0xC8000008</code>——都在驱动CAN控制器内部的状态机从一个mailbox取数据、组装帧、推到位引擎（bit engine）、驱动收发器、在双绞线上产生差分电压。</strong> 而你可能只在应用层写了一个<code>can_send_frame(0x3E8, rpm_data, 8)</code>。</p>
+<h3 id="can-fd同一对线八倍速率"><a class="header" href="#can-fd同一对线八倍速率">CAN-FD：同一对线，八倍速率</a></h3>
+<p>2012年，博世推出了CAN-FD。它保持物理层不变——同一条双绞线、同样的收发器——但做了两个关键改动：</p>
+<p><strong>一、数据段变速。</strong> 仲裁阶段仍然用原速率（如500kbps），让所有节点都能参与仲裁。但在仲裁结束后，由发送节点单方面将速率切换到更高频率（如5Mbps）。为什么数据段可以加速？因为仲裁阶段需要所有节点同步监测总线上每bit——速率上限 = 1 / (2 × 总线往返传播延迟)。但数据段只有发送节点在驱动——接收节点只需要采样，不需要在每bit通过“读回“来判断仲裁——所以可以加速。</p>
+<p>切换机制：仲裁阶段结束后，在BRS（Bit Rate Switch）位发送隐性——CAN-FD控制器检测到BRS=隐性后，在BRS位的采样点与CRC分隔符之间切换时钟分频器。接收节点也在同一时刻切换。整个过程在1 bit的时间内完成。对收发器完全透明——收发器看到的只是更快的差分电压翻转。</p>
+<p><strong>二、数据长度扩展到64字节。</strong> 经典CAN最多8字节。DLC字段在CAN-FD中被重新编码——DLC&gt;8时使用非线性编码（9→12, 10→16, 11→20, 12→24, 13→32, 14→48, 15→64）。CRC也做了增强：17位CRC（数据≤16字节）或21位CRC（数据&gt;16字节），加上4位stuff count和奇偶校验——错误检测概率从CAN的~4.7×10⁻¹¹提升到~10⁻²⁷。</p>
+<p>效果：传输64字节从~1.3ms（CAN 1Mbps）压缩到~170μs（CAN-FD 5Mbps数据段）。对OTA诊断、固件刷写——这是质的提升。</p>
+<p>数据段速率从1Mbps翻到5Mbps，意味着每个bit从1μs压缩到200ns。在这200ns里，收发器必须完成：驱动差分电压到显性电平（&gt;1.5V）、让信号传播到总线另一端（~25ns for 5m cable）、接收器的比较器做出判决、为下一位准备好。在5Mbps下，信号的眼图开始闭合——不是因为协议有问题，而是因为物理层的RC时间常数和收发器的转换速率（slew rate）赶不上了。这就是为什么CAN-FD只在数据段加速——仲裁段仍然用低速，因为仲裁需要所有节点在同一时间看到同一电平。加速段没有仲裁，只有两个节点在对话。</p>
+<h3 id="有限资源的最优解"><a class="header" href="#有限资源的最优解">有限资源的最优解</a></h3>
+<p>我们来复盘博世工程师在1983年面对的所有约束：</p>
+<ul>
+<li>线束重量必须降到十分之一 → 必须用共享总线。</li>
+<li>收发器芯片成本必须极低（每节点&lt;$1）→ 双绞线+差分驱动，最简单可靠。</li>
+<li>发动机控制和ABS需要确定性延迟（&lt;10ms最坏情况）→ 必须有硬件优先级仲裁，不能随机退避。</li>
+<li>MCU只有几KB RAM、几十MHz → IP协议栈不可能，复杂状态机不可能。CAN控制器必须用硬件状态机直接实现到硅片。</li>
+<li>电磁环境极端恶劣（火花塞30kV放电）→ 差分信号+120Ω终端+双绞线，物理层天然抗共模干扰。</li>
+</ul>
+<p><strong>CAN是所有这些约束的交点。</strong> 它不快（1Mbps），不灵活（无地址寻址、无路由），不通用（8字节数据、11/29位ID）。但在汽车的约束空间里——它是最优的。</p>
+<p>这不是教科书里“比较各种协议的优劣“——这是“在有限资源下，找到唯一解“。博世的工程师不是选了CAN——他们是推导出了CAN。</p>
+<p>40年后的今天，CAN仍在每辆新车里活着。每个MCU里都焊着一个CAN控制器。每一条动力总成CAN上都有几十个帧在不同的时间周期内重复广播。它能在跑20年不出通信故障。它的出错率低到需要专门的测试工具（CANoe的Error Frame Injection功能）才能人为制造。</p>
+<p>40年前博世工程师画在纸上的协议——今天在你的S32K的FlexCAN Silicon里、在你的PCB的CAN收发器里、在车身的双绞线里——每一比特都在忠实地运行。</p>
+<p><strong>有限资源 + 正确设计 = 一台车跑20年不出通信问题。</strong> 这不是运气——这是工程的胜利。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>还原博世工程师在1983年面对的所有约束，理解CAN为什么不是“被选的“而是“被推导出来的“。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>CAN是汽车约束空间的唯一交点</strong>：线束重量必须降到十分之一、收发器成本必须&lt;$1、必须确定性延迟——CAN的每一个设计决策都是在回答一个具体的物理和经济约束。</li>
+<li><strong>ID域的仲裁是协议层的天才设计</strong>：一个字段同时解决“这是什么数据“和“谁先说“——逐位仲裁在物理层就完成了优先级判决，无需中央调度器。</li>
+<li><strong>CAN-FD在保持物理层不变的前提下实现8倍加速</strong>：数据段变速（BRS位触发）、数据长度扩展到64字节——对OTA诊断和固件刷写是质的提升。</li>
+</ol>
+<p>下一节，当CAN的1Mbps带宽碰到ADAS域控制器500MB的OTA固件包——差距三个数量级。车载以太网进入汽车，不是替代CAN，而是与它分工协作。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>CAN是汽车的主干神经——可靠、确定、低成本。但它只有1Mbps。CAN-FD顶到8Mbps，但对ADAS域控制器的500MB OTA固件包——还是远远不够。</p>
+<p>雷达、摄像头的原始数据流——CAN的带宽差了三个数量级。</p>
+<p>2015年，某德系OEM的E/E架构部门面临一个选择：继续用CAN做一切，还是引入一个“新物种“？他们选择引入<strong>车载以太网</strong>——不是双绞线的变种，是真正的TCP/IP栈搬进汽车。SOME/IP让服务自己“喊“I’m Here。DoIP让诊断仪通过IP地址找到ECU，一次刷入几百MB固件。AVB/TSN让多摄像头视频流精准同步。</p>
+<p>但这条路上有一个根本性的问题还没回答：<strong>CAN是信号总线，以太网是数据网络。</strong> 一辆车需要两个神经系统吗？还是说——它们不是竞争关系，而是分工协作？CAN管“活着“（发动机不熄火、刹车不失灵），以太网管“聪明“（自动驾驶感知、云端更新、娱乐）。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/4.2-从片内到片间-SPI-I2C.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/4.4-车载以太网与DoIP.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/4.2-从片内到片间-SPI-I2C.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/4.4-车载以太网与DoIP.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

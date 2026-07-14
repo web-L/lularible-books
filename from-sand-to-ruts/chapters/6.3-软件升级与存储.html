@@ -1,0 +1,627 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>软件升级与存储 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="63-软件升级与存储"><a class="header" href="#63-软件升级与存储">6.3 软件升级与存储</a></h1>
+<h3 id="你给一百万个ecu发了一封邮件"><a class="header" href="#你给一百万个ecu发了一封邮件">你给一百万个ECU发了一封邮件</a></h3>
+<p>你坐在办公室。屏幕上是OTA后台界面。你选择了一个固件包——v2.3.1，修复了制动能量回收模块的一个偶发性迟滞bug。目标范围：全球97万辆搭载该ECU的车型。</p>
+<p>你点了“发布“。</p>
+<p>现在有97万个接收方，分布在全球各地的道路上。有的在德国无限速高速上以200km/h行驶。有的在挪威零下25度的车库里熄火休眠。有的在印度乡村道路上颠簸，蜂窝信号只有一格。有的车已经报废了——但ECU可能还在上电。</p>
+<p>你必须确保——不是“尽量确保“，是“必须确保“——这97万个ECU每一个都不会变砖。</p>
+<p>这就是OTA（Over-The-Air）。这不是“发个文件过去“。OTA是分布式系统工程的极端形态：<strong>在不可靠的网络通道上、对可能永不返厂的目标设备、执行不可逆的固件修改。</strong></p>
+<hr>
+<h3 id="ab分区的智慧永远留一条退路"><a class="header" href="#ab分区的智慧永远留一条退路">A/B分区的智慧：永远留一条退路</a></h3>
+<p>OTA的第一个核心问题不是传输。是安全网。</p>
+<p>如果把新固件直接覆盖写入正在运行的旧固件——写到一半断电，车变砖。新固件有未知bug——无法回退。签名验证失败——但旧固件已经被覆盖了。</p>
+<p>所以不能原地升级。</p>
+<p><strong>A/B分区</strong>是最优雅的解法。Flash被分成两个大小相等的独立分区——A区和B区。当前固件运行在A区。OTA下载的新固件全部写入B区。A区在整个下载和验证过程中从未被触碰——它完好地保存着你开始升级之前那一刻的完整系统状态。</p>
+<p>下载完成后，系统验证B区固件的签名和完整性。验证通过后，在一个非易失标志中写“下次启动请选择B区“。然后软复位。</p>
+<p>上电。HSM先启动。安全启动检查启动标志——“目标：B区”。HSM验证B区固件签名。通过——B区启动。B区固件的初始化代码在运行后前30秒自检——检查关键外设响应、所有SWC初始化状态、RAM和Flash的ECC。一切正常——确认新固件启动成功。B区成为新的“运行区“。</p>
+<p>如果B区启动失败——自检超时，WDOG咬死复位。HSM再次检查启动标志，看到尝试次数尚未耗尽。再试。重试三次后仍失败——HSM强制把启动标志切回A区，复位。A区从未被碰过——车辆照常运行。驾驶员甚至不知道发生过一次安静的失败回退。</p>
+<p><strong>A/B分区的精髓：任何时刻，至少有一个完整可启动的固件分区存在，且这个分区不被正在进行的升级操作触碰。</strong></p>
+<hr>
+<h3 id="启动引导器读到标志跳到正确的分区"><a class="header" href="#启动引导器读到标志跳到正确的分区">启动引导器：读到标志，跳到正确的分区</a></h3>
+<p>A/B 分区的控制核心是一个微小的<strong>启动引导器（Bootloader）</strong>——它在这个固件升级的宇宙里是唯一“不参与轮换“的代码。它永远放在 Flash 的最开头，不随 A/B 切换而改变。</p>
+<pre><code class="language-c">/* bootloader.c — A/B分区启动引导器（简化） */
+
+#define FLASH_PARTITION_A    0x08010000  /* A区起始地址 */
+#define FLASH_PARTITION_B    0x08080000  /* B区起始地址 */
+#define BOOT_FLAG_ADDR       0x0800F800  /* 启动标志所在扇区 */
+
+typedef enum {
+    BOOT_TARGET_A = 0xAA,
+    BOOT_TARGET_B = 0xBB,
+} BootTarget_t;
+
+typedef struct {
+    BootTarget_t target;      /* 目标分区 */
+    uint8_t      attempt;     /* 当前分区的启动尝试次数 */
+    uint8_t      max_attempt; /* 最大尝试次数（通常3次） */
+    uint32_t     magic;       /* 魔数：0xB007B007 表示标志有效 */
+} BootFlag_t;
+
+/* 从Flash读取启动标志 */
+static BootFlag_t boot_read_flags(void)
+{
+    BootFlag_t flags;
+    memcpy(&amp;flags, (void *)BOOT_FLAG_ADDR, sizeof(BootFlag_t));
+
+    /* 检查魔数——如果无效，要么是首次上电，要么是Flash损坏 */
+    if (flags.magic != 0xB007B007) {
+        flags.target = BOOT_TARGET_A;
+        flags.attempt = 0;
+        flags.max_attempt = 3;
+        flags.magic = 0xB007B007;
+        boot_write_flags(&amp;flags);  /* 初始化标志 */
+    }
+    return flags;
+}
+
+/* 向Flash写入启动标志——需要先擦除扇区 */
+static int boot_write_flags(const BootFlag_t *flags)
+{
+    /* Flash擦除——必须整个扇区 */
+    flash_erase_sector(BOOT_FLAG_ADDR);
+    /* Flash编程——按字写入 */
+    flash_write_words(BOOT_FLAG_ADDR,
+                      (const uint32_t *)flags,
+                      sizeof(BootFlag_t) / 4);
+    /* 验证写入 */
+    BootFlag_t verify;
+    memcpy(&amp;verify, (void *)BOOT_FLAG_ADDR, sizeof(BootFlag_t));
+    return (memcmp(flags, &amp;verify, sizeof(BootFlag_t)) == 0) ? 0 : -1;
+}
+
+/* 主入口——芯片上电后第一个执行的C函数 */
+void bootloader_main(void)
+{
+    BootFlag_t flags;
+    void (*app_entry)(void);
+    uint32_t app_start;
+
+    /* 基本硬件初始化：时钟、WDOG、HSM接口 */
+    system_clock_init();
+    watchdog_init();
+
+    /* 读取启动标志——不调用任何复杂函数 */
+    flags = boot_read_flags();
+
+    /* 确定目标分区地址 */
+    if (flags.target == BOOT_TARGET_B) {
+        app_start = FLASH_PARTITION_B;
+    } else {
+        app_start = FLASH_PARTITION_A;
+    }
+
+    /* 递增启动尝试计数器 */
+    flags.attempt++;
+    if (flags.attempt &gt; flags.max_attempt) {
+        /* 已达最大尝试次数——切换到备选分区 */
+        if (flags.target == BOOT_TARGET_B) {
+            flags.target = BOOT_TARGET_A;
+            app_start = FLASH_PARTITION_A;
+        } else {
+            /* A区也失败了——没有地方回退了 */
+            /* 进入安全模式：只跑WDOG循环，等待诊断仪 */
+            flags.target = BOOT_TARGET_A;
+            app_start = FLASH_PARTITION_A;
+        }
+        flags.attempt = 1;  /* 给新分区一次机会 */
+    }
+    boot_write_flags(&amp;flags);
+
+    /* 安全启动验证——交给HSM */
+    if (hsm_secure_boot_verify(app_start) != HSM_BOOT_OK) {
+        /* 签名验证失败——固件被篡改或损坏 */
+        if (flags.target == BOOT_TARGET_B) {
+            /* 回退到A区 */
+            flags.target = BOOT_TARGET_A;
+            flags.attempt = 1;
+            boot_write_flags(&amp;flags);
+            app_start = FLASH_PARTITION_A;
+            if (hsm_secure_boot_verify(app_start) != HSM_BOOT_OK) {
+                /* A区签名也无效——无法启动 */
+                while (1) { watchdog_kick(); }
+            }
+        }
+    }
+
+    /* 获取应用入口地址——通常在向量表的第二项 */
+    uint32_t *vector_table = (uint32_t *)app_start;
+    uint32_t stack_ptr    = vector_table[0];  /* 初始SP */
+    app_entry = (void (*)(void))vector_table[1]; /* Reset_Handler */
+
+    /* 设置主栈指针，关闭所有中断，跳转到应用 */
+    __set_MSP(stack_ptr);
+    __disable_irq();
+
+    /* 启动成功——清除尝试计数器 */
+    flags.attempt = 0;
+    boot_write_flags(&amp;flags);
+
+    /* 跳转到应用——这一跳之后，bootloader永远不会再运行
+     * （直到下次复位） */
+    app_entry();
+
+    /* 应用绝不应该返回 */
+    while (1) { watchdog_kick(); }
+}
+</code></pre>
+<p>Bootloader 的代码量非常小——通常小于 4KB。它不参与 A/B 轮换——始终保持在 Flash 开头的一个独立扇区里。它的逻辑极其简单：读标志、选分区、验签名、跳转。简单的逻辑意味着更少的 bug——而 bootloader 里的任何一个 bug 都可能让 ECU 永远无法启动。</p>
+<hr>
+<h3 id="ota下载把200mb切成小块"><a class="header" href="#ota下载把200mb切成小块">OTA下载：把200MB切成小块</a></h3>
+<p>OTA 固件包通常 200+ MB。你不能一次性下载——蜂窝网络可能在任何时刻中断。必须<strong>分块传输</strong>。</p>
+<pre><code class="language-c">/* OTA_StateMachine.c — OTA升级状态机（简化） */
+
+#define CHUNK_SIZE  4096   /* 每块4KB——匹配Flash页编程粒度 */
+#define HASH_SIZE   32     /* SHA-256 哈希值长度 */
+
+typedef enum {
+    OTA_IDLE,               /* 空闲——等待开始 */
+    OTA_DOWNLOADING,        /* 下载中——接收chunk */
+    OTA_VERIFYING,          /* 验证中——校验完整性和签名 */
+    OTA_ACTIVATING,         /* 激活中——写启动标志 */
+    OTA_ACTIVE              /* 升级完成——新固件已生效 */
+} OTA_State_t;
+
+typedef struct {
+    OTA_State_t  state;
+    uint32_t     total_size;       /* 总固件大小 */
+    uint32_t     received_size;    /* 已接收大小 */
+    uint32_t     current_chunk;    /* 当前chunk编号 */
+    uint8_t      expected_hash[HASH_SIZE]; /* 整体SHA-256期望值 */
+    uint8_t      chunk_hash[HASH_SIZE];    /* 当前chunk的SHA-256 */
+    uint32_t     target_partition; /* 目标分区起始地址 */
+    uint32_t     retry_count;      /* chunk重试次数 */
+} OTA_Context_t;
+
+static OTA_Context_t g_ota_ctx;
+
+/* OTA状态机主循环——由OTA任务周期性调用 */
+void OTA_StateMachine_Run(void)
+{
+    switch (g_ota_ctx.state) {
+
+    case OTA_IDLE:
+        /* 等待OTA请求——诊断仪或OTA客户端触发 */
+        break;
+
+    case OTA_DOWNLOADING:
+        /* 接收下一个chunk */
+        if (g_ota_ctx.received_size &gt;= g_ota_ctx.total_size) {
+            /* 所有chunk已下载——进入验证阶段 */
+            g_ota_ctx.state = OTA_VERIFYING;
+        }
+        break;
+
+    case OTA_VERIFYING: {
+        /* 对整个固件映像做SHA-256 */
+        uint8_t full_hash[HASH_SIZE];
+        sha256_calculate(
+            (const uint8_t *)g_ota_ctx.target_partition,
+            g_ota_ctx.total_size,
+            full_hash);
+
+        if (memcmp(full_hash, g_ota_ctx.expected_hash, HASH_SIZE) == 0) {
+            /* SHA-256通过——交给HSM验证签名 */
+            if (hsm_verify_signature(g_ota_ctx.target_partition) == 0) {
+                g_ota_ctx.state = OTA_ACTIVATING;
+            } else {
+                /* 签名无效——OTA失败，报告DTC */
+                ota_report_error(OTA_ERR_SIGNATURE);
+                g_ota_ctx.state = OTA_IDLE;
+            }
+        } else {
+            /* SHA-256不匹配——固件损坏 */
+            ota_report_error(OTA_ERR_CHECKSUM);
+            g_ota_ctx.state = OTA_IDLE;
+        }
+        break;
+    }
+
+    case OTA_ACTIVATING: {
+        /* 更新启动标志——下一次复位后bootloader将启动新分区 */
+        BootFlag_t flags = boot_read_flags();
+        flags.target = (g_ota_ctx.target_partition == FLASH_PARTITION_B)
+                        ? BOOT_TARGET_B : BOOT_TARGET_A;
+        flags.attempt = 0;
+        boot_write_flags(&amp;flags);
+        g_ota_ctx.state = OTA_ACTIVE;
+
+        /* 通知OTA客户端：升级成功，请求复位 */
+        ota_send_response(OTA_RESP_READY_TO_RESET);
+        break;
+    }
+
+    case OTA_ACTIVE:
+        /* ECU在下次复位后才会实际运行新固件 */
+        /* 诊断仪或OTA客户端触发ECU Reset (0x11 0x01) */
+        break;
+    }
+}
+
+/* 当收到一个chunk时被调用 */
+int OTA_ReceiveChunk(uint32_t chunk_num, const uint8_t *data, uint32_t len)
+{
+    if (g_ota_ctx.state != OTA_DOWNLOADING) {
+        return OTA_ERR_WRONG_STATE;
+    }
+
+    /* 验证chunk的SHA-256 */
+    uint8_t computed_hash[HASH_SIZE];
+    sha256_calculate(data, len, computed_hash);
+
+    if (memcmp(computed_hash, g_ota_ctx.chunk_hash, HASH_SIZE) != 0) {
+        /* chunk校验失败——请求重传 */
+        g_ota_ctx.retry_count++;
+        if (g_ota_ctx.retry_count &gt; 3) {
+            ota_report_error(OTA_ERR_CHUNK_HASH);
+            g_ota_ctx.state = OTA_IDLE;
+            return OTA_ERR_CHUNK_HASH;
+        }
+        return OTA_ERR_RETRY;
+    }
+    g_ota_ctx.retry_count = 0;
+
+    /* 写入Flash——目标分区 + 偏移 */
+    uint32_t flash_addr = g_ota_ctx.target_partition +
+                          (chunk_num * CHUNK_SIZE);
+
+    /* Flash写入：对于非页对齐的写入，需要读-改-写 */
+    flash_program_page(flash_addr, data, len);
+
+    /* 验证写入 */
+    if (memcmp((void *)flash_addr, data, len) != 0) {
+        return OTA_ERR_FLASH_WRITE_VERIFY;
+    }
+
+    g_ota_ctx.received_size += len;
+    g_ota_ctx.current_chunk = chunk_num;
+
+    /* 存储进度——如果掉电，从这里继续 */
+    nvm_save_ota_progress(chunk_num, g_ota_ctx.received_size);
+
+    return OTA_OK;
+}
+
+/* 掉电后恢复——从上次保存的chunk继续 */
+void OTA_ResumeAfterPowerLoss(void)
+{
+    uint32_t last_chunk;
+    uint32_t received;
+
+    if (nvm_load_ota_progress(&amp;last_chunk, &amp;received) == 0) {
+        g_ota_ctx.state = OTA_DOWNLOADING;
+        g_ota_ctx.current_chunk = last_chunk;
+        g_ota_ctx.received_size = received;
+        /* 请求服务器从last_chunk+1开始继续发送 */
+        ota_request_resume(last_chunk + 1);
+    }
+}
+</code></pre>
+<p>OTA 状态机的代码量比 bootloader 大得多——但它仍然遵循一个清晰的原则：<strong>在不可靠的网络上可靠地传输数据。</strong> 每个 chunk 独立做 SHA-256 校验——一个 chunk 校验失败不会影响之前已确认的 chunk。掉电后可以从上次保存的进度恢复，不需要从头开始。SHA-256 和签名验证都交给 HSM——主 CPU 不做密码运算。</p>
+<hr>
+<h3 id="flash的物理铁律为什么需要ab"><a class="header" href="#flash的物理铁律为什么需要ab">Flash的物理铁律：为什么需要A/B</a></h3>
+<p>说到这里一个自然的问题浮现：为什么不能像手机升级 App 一样，把新固件下载下来、校验一下、然后覆盖安装？为什么需要两倍空间？</p>
+<p>因为 Flash 有一个物理铁律。</p>
+<p><strong>Flash不能原地改写。</strong> 你必须先擦除整个扇区——通常 4KB 到 64KB，耗时几十到几百毫秒。擦除操作把扇区里所有位统一恢复为 1（0xFF）。然后你再编程写入新数据——每次几十微秒，把需要变成 0 的位翻成 0。</p>
+<p>Flash 的物理决定了它只能把位从 1 翻到 0，不能从 0 翻回 1。只有扇区擦除能把整个扇区统一复位为全 1。而擦除的粒度是扇区——你改一个字，整个扇区都得擦。</p>
+<p>如果你试图原地升级：读出当前扇区内容→备份到 RAM→擦除整个扇区→把新数据写进去。如果擦除之后、写入之前断电了——扇区是擦完的全 0xFF 状态。<strong>所有代码没了。变砖。</strong></p>
+<p>A/B分区解决的就是这个：升级操作永远在“不在运行的“分区上执行。即使 B 区在升级中途断电、留下一片半擦除的垃圾——没关系。A 区完好。下次启动跑 A 区。</p>
+<p>这里还有一个工程微妙点：<strong>擦除比编程慢一千倍。</strong> 擦除一个 64KB 扇区可能需要 200ms。在这 200ms 窗口内，电源必须稳定。而汽车 ECU 的电源环境并不总是稳定——启动电机的电压塌陷、发电机的电压脉冲、保险丝熔断前的毛刺——这些都可能在 200ms 窗口内出现。</p>
+<p>所以一个完整的 Flash 写入方案，必须同时处理两层防护：<strong>软件层面</strong>的掉电保护——写前备份扇区、脏标记机制；<strong>硬件层面</strong>的电压监控——LVD（低电压检测）电路在电源掉到安全阈值以下时提前触发 NMI 中断，在电压彻底崩溃前抢出几十微秒完成收尾。</p>
+<hr>
+<h3 id="穿透flash擦除的本质fowler-nordheim隧穿"><a class="header" href="#穿透flash擦除的本质fowler-nordheim隧穿">穿透：Flash擦除的本质——Fowler-Nordheim隧穿</a></h3>
+<p><strong>Flash擦除的本质是 Fowler-Nordheim 隧穿——电子在强电场下穿过氧化层。</strong></p>
+<p>NOR Flash 的每一个存储单元由一个浮栅晶体管组成。浮栅——一层被二氧化硅绝缘层包围的多晶硅——电隔离于外部世界。电子一旦进入浮栅，就无处可去——除非你施加一个足够强的电场让它们量子隧穿出去。</p>
+<p>擦除操作：Flash 控制器启动内部电荷泵，把 VDD（3.3V 或 5V）升压到约 -12V 或 +12V 施加在控制栅和源极之间。这个强电场（约 10 MV/cm）使得浮栅中的电子通过 Fowler-Nordheim 隧穿穿过二氧化硅势垒，回到沟道。浮栅中的电子被抽空——晶体管的阈值电压恢复为擦除态——读取为逻辑 1。</p>
+<p>编程操作：Flash 控制器在漏极和源极之间施加约 5V 电压，控制栅施加约 10V 编程电压。沟道中的电子在横向电场下加速，获得足够能量的“热电子“在纵向电场作用下越过二氧化硅势垒，被注入浮栅。浮栅中的负电荷改变了晶体管的阈值电压——读取为逻辑 0。</p>
+<p><strong>从你指尖的 HTTP 请求，到 NOR Flash 浮栅中被困住的电子。</strong> OTA 依赖的是整个物理栈——从 CDN 边缘节点到基站射频，到蜂窝调制解调器，到 SPI 总线，到 Flash 控制器的电荷泵，到二氧化硅层中的量子隧穿。</p>
+<p>这就是“穿透“的意义。你不是只看见“文件传过去了“。你看见了从云端到浮栅的完整因果链。</p>
+<hr>
+<h3 id="磨损均衡flash不是永生的"><a class="header" href="#磨损均衡flash不是永生的">磨损均衡：Flash不是永生的</a></h3>
+<p>Flash 有一个隐藏的寿命限制：<strong>每个扇区只能承受有限次的擦除/编程循环。</strong></p>
+<p>SLC NAND Flash 约 100,000 次。MLC NAND 约 3,000-10,000 次。汽车级 NOR Flash 约 100,000 次。超过这个次数后，氧化层中积累的陷阱电荷使隧穿效率下降——擦除越来越慢，编程越来越不稳定，数据保持时间越来越短。</p>
+<p>如果一个 ECU 每秒记录一次 DTC 到 Flash——每次都要擦除同一个扇区——10 万秒 = 约 28 小时。一天多一点，那个扇区就报废了。</p>
+<p><strong>磨损均衡（Wear Leveling）</strong> 把写入分布到多个扇区上。不总是在同一个物理位置写——每次写到一个“新“的擦除过的扇区上，旧扇区标记为“脏“等待擦除回收。一个 FTL（Flash Translation Layer）维护逻辑地址到物理地址的映射——逻辑块 0 这次写在物理扇区 7，下次写在物理扇区 23，再下次写在物理扇区 41。</p>
+<pre><code class="language-c">/* 简化的磨损均衡算法——每次都找擦除次数最少的空闲扇区 */
+uint32_t wear_leveling_allocate(void)
+{
+    uint32_t best_sector = INVALID_SECTOR;
+    uint32_t min_erase_count = 0xFFFFFFFF;
+
+    for (uint32_t i = 0; i &lt; TOTAL_SECTORS; i++) {
+        if (sectors[i].state == SECTOR_FREE &amp;&amp;
+            sectors[i].erase_count &lt; min_erase_count) {
+            min_erase_count = sectors[i].erase_count;
+            best_sector = i;
+        }
+    }
+
+    if (best_sector == INVALID_SECTOR) {
+        /* 没有空闲扇区——触发垃圾回收 */
+        garbage_collection();
+        return wear_leveling_allocate();  /* 重试 */
+    }
+
+    sectors[best_sector].state = SECTOR_ALLOCATED;
+    return best_sector;
+}
+</code></pre>
+<p>磨损均衡不是 OTA 的事——OTA 是整块分区擦除重写，寿命不是主要担心。磨损均衡是 NvM（非易失存储管理）的事——DTC 记录、标定数据、学习值——这些频繁写入的小数据块需要磨损均衡保护 Flash 寿命。</p>
+<hr>
+<h3 id="没有人能回到过去回滚保护"><a class="header" href="#没有人能回到过去回滚保护">没有人能回到过去：回滚保护</a></h3>
+<p>A/B 分区保你不断电。但它不防人性之恶。</p>
+<p>假设一个场景：v2.3.1 通过 OTA 推送到全国。但 v2.3.0 有一个已知的高危安全漏洞——SecOC 的 CMAC 验证在特定条件下会跳过。v2.3.1 修复了这个漏洞。</p>
+<p>现在一个攻击者手里有 v2.3.0 的固件镜像——它被 OEM 合法签名过，签名完全有效。攻击者以某种方式把这个旧镜像推送给一个 ECU。ECU 的 HSM 验证签名——匹配。合法。ECU 启动 v2.3.0——带着已修复的安全漏洞重新上线。</p>
+<p>这就是<strong>降级攻击</strong>（Rollback / Downgrade）。签名机制本身不能阻止安装旧版本——旧版本的签名在当时也是合法的。</p>
+<p><strong>回滚计数器</strong>（Rollback Counter）就是针对这个攻击面的。</p>
+<p>HSM 内部维护一个单调递增计数器，存储在 OTP 或受物理保护的存储块中。它的物理特性是：<strong>只能加 1，不能减回去。</strong> 这不是软件逻辑保证的——是 HSM 的硬件设计保证的。</p>
+<p>每次 OTA 升级包的 manifest 中携带一个版本号。HSM 验证签名后，额外做一次检查：这个版本号是否 ≥ 当前回滚计数器的值？如果是——接受升级，计数器更新为新版本号。如果不是——拒绝，即使签名完全合法。</p>
+<p><strong>旧版本永远不能被重放。</strong> 攻击者手里有一个完整合法签名的旧固件——HSM 说：“你这个版本比我见过的版本低。你过时了。我不接受。”</p>
+<p>降级攻击被堵死。旧固件带着旧漏洞——永远不能重返系统。</p>
+<hr>
+<h3 id="不可逆的承诺"><a class="header" href="#不可逆的承诺">不可逆的承诺</a></h3>
+<p>OTA 是你对一个永远不会再被你亲手触碰的设备的终极承诺。</p>
+<p>一辆车出厂后，在接下来的 15 年里，它不会再回到你的工厂。但它会跑 50 万公里。经过赤道和北极圈。被颠簸得螺丝松动。被电磁干扰轰击。被雷击中的物体的电流脉冲感应。被泡过水。被换了三手车主。被在路边摊改过电路。被停在地下车库三年没动。</p>
+<p>在这 15 年里，你只有一次机会给它升级——通过 OTA。没有物理接触。没有 JTAG 调试器。没有产线编程器。</p>
+<p>你必须信任你的 A/B 分区——B 区坏了回 A 区。你必须信任你的 HSM 签名验证——被篡改的固件不会启动。你必须信任你的 Flash 掉电保护——断电也不会丢数据。你必须信任你的回滚计数器——旧漏洞不会重生。</p>
+<p>一个 ECU 是 4MB Flash、256KB RAM、一个 ARM Cortex-M 核。它在不可靠的电源、不可靠的网络、不可预知的物理环境中运行。但你必须保证——在所有这些不确定性中——<strong>变砖的概率无限接近零。</strong></p>
+<p>这就是 OTA 工程师的责任。不是“代码发出去就算完了“。你赌的是：遥远未来的任何一天、世界任何角落——<strong>“你当年写的那段升级逻辑不会害死这辆车。”</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解OTA不是“下载固件“——是对一个永远不会再被物理触碰的设备执行的不可逆修改，而你必须保证变砖概率无限接近零。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>A/B分区的本质不是软件设计模式——是Flash物理铁律的必然推论</strong>：擦除必须整个扇区进行，写入只能把1翻成0，擦除比编程慢一千倍。A/B分区让升级始终有一条安全退路——B区坏了回A区，A区始终完好。</li>
+<li><strong>OTA调用了你学过的所有知识</strong>：裸机的状态机逻辑、RTOS的任务调度、AUTOSAR的NvM块、CAN/以太网的传输、UDS的RoutineControl、HSM的签名验证——七块知识在同一个不可逆转的操作中交汇。</li>
+<li><strong>这是不可逆的承诺</strong>：一辆车在出厂后15年里不会再回工厂。你只有一次机会通过OTA给它升级——你赌的是，当年写的那段升级逻辑不会在任何一天害死这辆车。</li>
+</ol>
+<p>回顾 Part 6 这一大章。</p>
+<p><strong>诊断</strong>让系统能说话。DTC 不只是故障标记——诊断是工程师留给未来的信。</p>
+<p><strong>安全</strong>让系统不可被攻破。密钥不只是加密工具——HSM 是驾驶员对车厂信任的物理基础。</p>
+<p><strong>升级与存储</strong>让系统持续进化。OTA 不只是文件传输——是你在不可靠的物理世界上、对永不会再触及的设备执行的不可逆修改。</p>
+<p>这三个世界在每一辆车的生命里是同一套系统的三条线程。诊断发现故障→分析定位 bug→OTA 推送修复→安全启动验证固件签名→安全回滚计数→车安全升级。安全报警被触发→诊断读取安全事件日志→分析入侵痕迹→OTA 推送安全补丁→回滚保护阻止降级。</p>
+<p>你学过的每一块知识——裸机调度、RTOS 抢占、AUTOSAR 分层、CAN 通信、UDS 诊断、HSM 验签、Flash 写入——不是七个孤岛。它们在同一个 ECU 上同时运行，在同一段生命周期中交织。</p>
+<p>现在所有技术都已就位。</p>
+<p><strong>然后呢？</strong></p>
+<p>下一节，Part 7全书结语——思想的回归。从低精度传感器测出精确值的工程智慧，到资源匮乏是永恒的世界观。这不是结束，是开始。</p>
+<blockquote></blockquote>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>全书最后一部分——Part 7：精神的回归。</p>
+<p>你手握全部技术武器。裸机、RTOS、AUTOSAR、通信协议、诊断、安全、OTA——每一件你都知其然，也知其所以然。但你学这些，不是为了学技术本身。你学这些，是为了造出一些推动世界向前走的东西。</p>
+<p>下一章，一个思想实验：一颗精度只有 1% 的传感器，能不能测出千分之一精度的物理量？答案凝聚了全人类的工程智慧——过采样、统计校准、卡尔曼滤波。1964 年戈壁滩上那群工程师用示波器拍照、人工读数、手算平均，在资源极度匮乏的条件下做出了精确的结果。</p>
+<p>从“两弹一星“的精神内核，到“资源匮乏是永恒的“工程观，再到兰亭集序的哲学启示——全书的灵魂篇。不是技术，但让所有技术有了方向。</p>
+<p>这不是结束。这是开始。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/6.2-硬件安全-HSM.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/7.1-思想实验-低精度传感器测出精确值.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/6.2-硬件安全-HSM.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/7.1-思想实验-低精度传感器测出精确值.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

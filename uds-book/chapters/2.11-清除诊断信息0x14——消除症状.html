@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>清除诊断信息0x14——消除症状 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="211-清除诊断信息0x14消除症状"><a class="header" href="#211-清除诊断信息0x14消除症状">2.11 清除诊断信息(0x14)——消除症状</a></h1>
+<h3 id="治好了症状列表要清掉"><a class="header" href="#治好了症状列表要清掉">治好了，症状列表要清掉</a></h3>
+<p>你已经通过0x19读到了P0305——5号缸失火。冻结帧告诉你故障发生在87km/h的高速巡航时——水温正常，长期燃油修正+3.1%。你检查了火花塞、更换了点火线圈、清除了燃烧室积碳。发动机重新启动——怠速平稳，短途试车没有异常。</p>
+<p>现在你需要让ECU知道：<strong>“这个故障已经修好了——你可以擦掉这条DTC了。”</strong></p>
+<p>这就是0x14 ClearDiagnosticInformation的全部使命。但这里藏着一个设计上的微妙之处——你不能只删一条DTC，你得删一整组。</p>
+<hr>
+<h3 id="为什么是分组清除而不是逐条清除"><a class="header" href="#为什么是分组清除而不是逐条清除">为什么是分组清除而不是逐条清除</a></h3>
+<p>如果你回到OBD-II时代——Mode 0x04是清除排放诊断信息的标准命令。OBD-II的设计者面临一个选择：是让诊断仪逐条DTC发送清除指令，还是一次性清掉整组？</p>
+<p>逐条清除听起来更精细——但实际上在诊断实践中是一个<strong>反模式</strong>。你想想真实的诊断场景：一个ECU可能有几十个DTC——转速传感器间歇失效、氧传感器老化、三元催化器效率下降、EGR流量不足、凸轮轴位置偏移……这些故障<strong>共享根因</strong>的概率极高——都是因为同一个O2传感器响应迟缓导致ECU做了一连串有误的喷油修正。维修技师把O2传感器换新之后——所有DTC都应该消失。</p>
+<p>如果他必须逐条DTC发清除命令——几十条请求+响应——在500kbps的CAN总线上耗时几秒——诊断效率被人为降低。分组清除是 <strong>“治好了根因，所有症状自然消失”</strong> 的设计。</p>
+<p><strong>但这不是唯一的原因</strong>。DTC的分配规则本身就阻止了“不相关的故障码被误删“：排放相关的动力总成DTC归组0xFFFF33；底盘稳定DTC归车厂自定义的组；车身控制DTC再归另一组。你清除排放组时不会碰到底盘组的DTC。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：分组清除的设计哲学不是“偷懒不想做逐条清除“——它是<strong>工程实践中DTC根因的高度相关性</strong>在协议层的映射。同一个物理故障会触发多条上下游的DTC——这些DTC必须一同消去，否则诊断仪和ECU就会处在不一致的状态。</p>
+</blockquote>
+<hr>
+<h3 id="groupofdtc三个字节的门牌号"><a class="header" href="#groupofdtc三个字节的门牌号">groupOfDTC——三个字节的门牌号</a></h3>
+<p>groupOfDTC是一个3字节的值。在ISO 14229-1:2013的语境中，它的最高三位(bit23-21)编码了DTC的类别，正好映射到OBD-II的P/C/B/U分类：</p>
+<pre><code>groupOfDTC[0] bits:   类别编码 (00=Powertrain, 01=Chassis, 10=Body, 11=Network)
+groupOfDTC[1] bits:   能识别具体的DTC前缀范围
+groupOfDTC[2] bytes:  填充对应范围
+</code></pre>
+<p>两个特殊值你永远不会忘记：</p>
+<ul>
+<li><code>0x000000</code> = 空白组（不常用）</li>
+<li><code>0xFFFFFF</code> = <strong>所有组</strong> —— 维修站最常用的值：一键清理全部DTC</li>
+</ul>
+<p>法规也定义了具体的组号：</p>
+<ul>
+<li><code>0xFFFF33</code> = 排放相关组（Emissions-related group）——这是OBD-II法规最关注的</li>
+<li><code>0xFFFX00~0xFFFF31</code> = 法规定义的其他组（动力总成、底盘、车身、网络通信）</li>
+</ul>
+<hr>
+<h3 id="请求格式唯一不带子功能的uds服务"><a class="header" href="#请求格式唯一不带子功能的uds服务">请求格式——唯一不带子功能的UDS服务</a></h3>
+<pre><code>Byte 0: 0x14 (SID)
+Byte 1-3: groupOfDTC (3字节，大端序——高位Byte在前)
+</code></pre>
+<p>正响应只有一个字节：</p>
+<pre><code>Byte 0: 0x54 (SID+0x40)
+</code></pre>
+<p><strong>没有额外数据</strong>。没有成功的标志位解释、没有被清除的DTC数量统计、没有剩余DTC清单。</p>
+<p>为什么这么自信？因为如果清除操作失败——ECU会返回负响应（NRC 0x22条件不满足，或NRC 0x72通用编程失败）。如果清除完成——那一条字节0x54就够了。不需要增加任何数据成本。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：0x54这个单字节正响应是UDS里最节约成本的确认机制。它代表了ECU给诊断仪的信息：“我已完成清除全部所请求的组下所有DTC——不需要你再来验证哪些没了哪些还在。如果失败了我会明确告诉你为什么。</p>
+</blockquote>
+<hr>
+<h3 id="0x14具体清除了什么不止删dtc条目"><a class="header" href="#0x14具体清除了什么不止删dtc条目">0x14具体清除了什么——不止删DTC条目</a></h3>
+<p>执行0x14时，ECU在DEM（Diagnostic Event Manager）中执行以下动作：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>被清除</th><th>详细含义</th></tr>
+</thead>
+<tbody>
+<tr><td>DTC Status Byte 所有8位</td><td>testFailed、pendingDTC、confirmedDTC……全部归0</td></tr>
+<tr><td>DTC Snapshot（快照数据）</td><td>故障发生那刻记录的PID数据——清除</td></tr>
+<tr><td>DTC Extended Data（扩展数据）</td><td>故障计数器、发生时间戳、老化计数器——清除</td></tr>
+<tr><td>FirstTestFailedDTC / MostRecentTestFailedDTC</td><td>首次失败/最近失败DTC的登记——清除</td></tr>
+<tr><td>ConfirmedDTC标志</td><td>确认标记清除——故障码不再被视为永久</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>不被清除的</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>不清除</th><th>原因</th></tr>
+</thead>
+<tbody>
+<tr><td>Mirror Memory DTC</td><td>镜像内存的DTC受法规保护——即使主内存被擦——排放相关DTC的镜像必须永久保留</td></tr>
+<tr><td>Event Memory DTC（某些实现相关）</td><td>事件存储器中的DTC不应因诊断清除而消除</td></tr>
+<tr><td>Permanent DTC（永久DTC）</td><td>法规要求某些排放DTC在老化之前不能随意清除</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p><strong>核心洞察</strong>：0x14不是你想象中的“删一条DTC就像删一个文件“——它是一个<strong>全组重置</strong>操作。DTC条目、快照、扩展数据、内部各种计数器和标记位——全部归零。但镜像内存是法律要求必须保存的底线——它在主内存被清之后仍然保有一份记录。</p>
+</blockquote>
+<hr>
+<h3 id="dtcstatus掩码在clear后的行为"><a class="header" href="#dtcstatus掩码在clear后的行为">DTCStatus掩码在Clear后的行为</a></h3>
+<p>清除执行完成后，DTC的所有状态位置0，但某些位<strong>随后会自动置1</strong>：</p>
+<ul>
+<li><code>testNotCompletedSinceLastClear (bit4)</code> → 清除后立即设为1</li>
+<li><code>testNotCompletedThisOperationCycle (bit6)</code> → 当前操作周期内也设为1（如果检测尚未完成）</li>
+</ul>
+<p>这很聪明——ECU在清除完毕后明确通知“我现在还没有重新做检测——所以这个DTC的检测状态是’未完成’。你下一次读取DTC时会看到bit4和bit6=1——这不是故障复现，是清除后的正常重置。</p>
+<hr>
+<h3 id="无法清除可能发生的情况"><a class="header" href="#无法清除可能发生的情况">无法清除——可能发生的情况</a></h3>
+<pre><code>诊断仪 → ECU:  0x14 0x00 0x00 0x00  (groupOfDTC=0x000000——空组)
+ECU → 诊断仪:   0x7F 0x14 0x31 (NRC 0x31 = requestOutOfRange)
+</code></pre>
+<p>groupOfDTC=0x000000通常无效——因为没有一个DTC会属于“组0“。</p>
+<pre><code>诊断仪 → ECU:  0x14 0xFF 0xFF 0xFF
+ECU → 诊断仪:   0x7F 0x14 0x22 (NRC 0x22 = conditionsNotCorrect)
+</code></pre>
+<p>可能是ECU正在编程模式下不允许清DTC——或当前有未处理的SafetyCritical DTC阻止清除。更常见的情况是安全访问未解锁（NRC 0x33 = securityAccessDenied）——如果DTC清除受安全等级保护，必须先执行0x27解锁。</p>
+<hr>
+<h3 id="cleardiagnosticinformation在医院里的最终映射"><a class="header" href="#cleardiagnosticinformation在医院里的最终映射">clearDiagnosticInformation在医院里的最终映射</a></h3>
+<p>在医院里，0x14是你决定病人已不需要住院——然后把整本纸质病历归档——并把电子病历系统里的症状清单标记为“已解除“。下次病人再来时检查是空白的——之前的所有症状记录都已记录到历史存档中、但不再作为活跃状态显示。</p>
+<p>镜像内存呢？相当于医院的<strong>法律合规备份</strong>——不管你门诊怎么清——法律要求保留患者在某个特定时刻的全部病历记录。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>0x14是分组清除——不是单DTC清除——因为工程实践中同一根因的多条DTC必须同时消去，避免不一致。</li>
+<li>groupOfDTC=0xFFFFFF是全部组的预设值——大多数诊断工具以此作为“清除所有DTC“的命令。</li>
+<li>清除后DTC状态位全0——但bit4(testNotCompletedSinceLastClear)自动置1以示意“检测重新开始“。</li>
+<li>镜像内存的记录不受0x14影响——这是法规留下的不可篡改痕迹。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：DTC清了——你开始给ECU刷新固件。但你肯定不希望刷写过程中ECU还在往DEM里写新的DTC。你需要在刷写前暂停DTC记录——0x85 ControlDTCSetting就是暂缓发病症状的总开关。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/2.10-DTC状态字节——症状的八种状态.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/2.12-控制DTC设置0x85——暂停症状记录.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/2.10-DTC状态字节——症状的八种状态.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/2.12-控制DTC设置0x85——暂停症状记录.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

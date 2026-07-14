@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>负响应码NRC——当ECU说不 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="218-负响应码nrc当ecu说不"><a class="header" href="#218-负响应码nrc当ecu说不">2.18 负响应码(NRC)——当ECU说“不</a></h1>
+<h3 id="被拒之门外的诊断仪"><a class="header" href="#被拒之门外的诊断仪">被拒之门外的诊断仪</a></h3>
+<p>你第一次连上一台陌生的ECU。你发了条0x2E——想用DID 0xF40C写入一个新的发动机转速限制。ECU回你三个字节：<code>0x7F 0x2E 0x33</code>。</p>
+<p>如果你不知道NRC编码体系，你看到的只是一串十六进制数字。如果你知道——你看到的是一个完整的句子：“我收到了你的0x2E写入请求——但拒绝执行——因为安全访问被拒绝了——请先解锁。</p>
+<p>三层信息，三个字节。</p>
+<p>这就是NRC（Negative Response Code，负响应码）的威力——它把“不行“这种无用的回复变成了可执行的指令。没有NRC的“不行“等于没有回答——诊断仪既不知道自己错在哪，也不知道该怎么改。有了NRC，诊断仪可以实现自动化自愈——被拒后自己调整、自己重试。</p>
+<p>NRC不是装饰——它是UDS协议的<strong>自我纠正机制</strong>。它是让诊断仪从“盲人摸象“升级为“自动化诊断“的关键基础设施。</p>
+<hr>
+<h3 id="nrc的编码结构三字节里承载一个对话"><a class="header" href="#nrc的编码结构三字节里承载一个对话">NRC的编码结构——三字节里承载一个对话</a></h3>
+<pre><code>负响应帧结构：
+┌──────┬──────────┬──────────┐
+│ 0x7F │   SID    │   NRC    │
+├──────┼──────────┼──────────┤
+│NR_SI │ 请求回声  │ 拒绝原因  │
+│1字节  │ 1字节    │ 1字节    │
+└──────┴──────────┴──────────┘
+</code></pre>
+<p>三个字节分别回答了三个问题：</p>
+<ol>
+<li><strong>0x7F</strong> — “这是一个负响应”（不是正响应）</li>
+<li><strong>SID回声</strong> — “我拒绝的是哪个请求”（上下文——诊断仪可能发了多个请求）</li>
+<li><strong>NRC</strong> — “为什么拒绝”（可执行的原因编码）</li>
+</ol>
+<p><strong>为什么用0x7F而不是0xFF？</strong></p>
+<p>正响应SID的编码规则是<code>请求SID + 0x40</code>，覆盖0x40~0x7E。0x7F是此范围之外紧邻的下一个值——bit6=1（标识为响应而非请求），同时不与任何正响应SID冲突。0xFF虽然技术上也可行，但选择0x7F保持了编码的紧凑性：所有响应（正/负）集中在0x40~0x7F区间，诊断栈只需检查bit6即可区分请求与响应，无需单独处理0xFF这个离群值。</p>
+<hr>
+<h3 id="全量nrc速查表每个不背后的含义"><a class="header" href="#全量nrc速查表每个不背后的含义">全量NRC速查表——每个“不“背后的含义</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>NRC</th><th>缩写</th><th>全称</th><th>含义</th><th>医院类比</th><th>诊断仪动作</th></tr>
+</thead>
+<tbody>
+<tr><td>0x10</td><td>GR</td><td>General Reject</td><td>一般性拒绝——ECU无法给出更具体的原因</td><td>“这个治疗我不能做，理由复杂不细说”</td><td>无法自动恢复——日志记录、人工分析</td></tr>
+<tr><td>0x11</td><td>SNS</td><td>Service Not Supported</td><td>此SID本ECU完全不支持</td><td>“我们科室不提供这项检查”</td><td>永久跳过此SID——此ECU永远不会支持</td></tr>
+<tr><td>0x12</td><td>SFNS</td><td>Sub-Function Not Supported</td><td>服务支持但此子功能不支持</td><td>“我们有心电图机，但不做动态心电图”</td><td>换子功能或用其他SID实现类似目的</td></tr>
+<tr><td>0x13</td><td>IMLOIF</td><td>Incorrect Message Length Or Invalid Format</td><td>报文长度或格式与标准/配置不匹配</td><td>“化验单格式错——拒收”</td><td>检查请求字节数、检查DID长度定义</td></tr>
+<tr><td>0x14</td><td>RTL</td><td>Response Too Long</td><td>响应数据超过传输层MTU</td><td>“报告太长打印不出来——分段给”</td><td>拆分请求——减少DID数量或分批发</td></tr>
+<tr><td>0x21</td><td>BRR</td><td>Busy Repeat Request</td><td>ECU忙——稍后重发相同请求</td><td>“医生正在手术——几分钟后再来”</td><td>等待后原样重试——等P2*周期过后</td></tr>
+<tr><td>0x22</td><td>CNC</td><td>Conditions Not Correct</td><td>条件不满足——ECU状态不正确</td><td>“先挂急诊科的号——这个科现在处理不了”</td><td>检查并调整会话/状态——切换到正确会话</td></tr>
+<tr><td>0x24</td><td>RSE</td><td>Request Sequence Error</td><td>请求序列错误——步骤顺序不对</td><td>“先叫挂号→再就诊→再开药——你跳步了”</td><td>从正确序列第一步开始：建会话→解锁→操作</td></tr>
+<tr><td>0x25</td><td>NRFSC</td><td>No Response From Subnet Component</td><td>子网组件无响应</td><td>“拍了CT但CT室没回复”</td><td>检查网关、子网络连接——重试</td></tr>
+<tr><td>0x26</td><td>FPEORA</td><td>Failure Prevents Execution Of Requested Action</td><td>已存在的故障阻止了请求执行</td><td>“你有心脏病史——不能用这个麻醉药”</td><td>先处理已存在的故障——清除或修复</td></tr>
+<tr><td>0x31</td><td>ROOR</td><td>Request Out Of Range</td><td>请求参数超出有效范围</td><td>“没有第439号床位——我们楼就三层”</td><td>查ODX确认有效的DID/地址/例程ID</td></tr>
+<tr><td>0x33</td><td>SAD</td><td>Security Access Denied</td><td>安全等级不足——未解锁或解锁失败</td><td>“你没权限看这份病历——先出示授权”</td><td>执行0x27解锁——requestSeed→sendKey</td></tr>
+<tr><td>0x35</td><td>IK</td><td>Invalid Key</td><td>SecurityAccess密钥计算错误</td><td>“授权码不对——请重新生成”</td><td>重新请求种子→重新计算密钥→重新发送</td></tr>
+<tr><td>0x36</td><td>ENOA</td><td>Exceeded Number Of Attempts</td><td>尝试次数超限——触发延迟锁定</td><td>“输错密码太多次——30分钟后重试”</td><td>等待延迟定时器到期后重试</td></tr>
+<tr><td>0x37</td><td>RTDNE</td><td>Required Time Delay Not Expired</td><td>延迟时间未到——还在锁定waiting period内</td><td>“还得等20分钟——急也没用”</td><td>继续等待——使用TesterPresent维持会话</td></tr>
+<tr><td>0x38-0x4F</td><td>RBEDLSD</td><td>Reserved By Extended Data Link Security</td><td>扩展数据链路安全保留</td><td>（加密通信相关——超出本书范围）</td><td>—</td></tr>
+<tr><td>0x70</td><td>UDNA</td><td>Upload/Download Not Accepted</td><td>上传下载操作未接受——可能因为前面对话未完</td><td>“上次手术没做完——不能开始新手术”</td><td>完成或正确终止前序下载/上传流程</td></tr>
+<tr><td>0x71</td><td>TDS</td><td>Transfer Data Suspended</td><td>数据传输已暂停</td><td>“手术中途暂停——需要确认继续”</td><td>发送0x36继续传输或0x37退出传输</td></tr>
+<tr><td>0x72</td><td>GPF</td><td>General Programming Failure</td><td>刷写操作一般性失败</td><td>“手术过程中发生了意外”</td><td>检查Flash状态——可能需要擦除后重新编程</td></tr>
+<tr><td>0x73</td><td>WBSC</td><td>Wrong Block Sequence Counter</td><td>块序列号错误——下载传输的数据块序号不对</td><td>“药品批次号对不上——送错了”</td><td>重新传输当前块——BlockSequenceCounter校验失败</td></tr>
+<tr><td>0x78</td><td>RCRRP</td><td>Request Correctly Received, Response Pending</td><td>请求已收到、处理中——最终响应稍后给出</td><td>“化验正在做——需要等一会出结果”</td><td>等待——扩展P2*时间窗口——这是唯一的“正常中的异常“</td></tr>
+<tr><td>0x7E</td><td>SFNSIAS</td><td>Sub-Function Not Supported In Active Session</td><td>当前会话不支持此子功能</td><td>“这个检查只能在住院部做——门诊做不了”</td><td>切换到正确的会话→重试</td></tr>
+<tr><td>0x7F</td><td>SNSIAS</td><td>Service Not Supported In Active Session</td><td>当前会话不支持此服务</td><td>“这个治疗只能在手术室做——你得先住院”</td><td>发送0x10切换到指定会话→重试</td></tr>
+<tr><td>0x81</td><td>RPMTOH</td><td>RPM Too High</td><td>发动机转速太高——操作被拒绝</td><td>“心跳太快——不能打这个针”</td><td>请求降低转速或等待怠速状态→重试</td></tr>
+<tr><td>0x82</td><td>RSO</td><td>RPM Too Low</td><td>发动机转速太低——操作被拒绝</td><td>“血压太低——不适合做负荷测试”</td><td>提高发动机转速→重试</td></tr>
+<tr><td>0x83</td><td>EIR</td><td>Engine Is Running</td><td>发动机正在运转——此操作不能在运转时执行</td><td>“不能边跑边换零件——先熄火”</td><td>先停止发动机→重试</td></tr>
+<tr><td>0x84</td><td>EINR</td><td>Engine Is Not Running</td><td>发动机未运转——此操作需要发动机在运转状态</td><td>“这一项需要发动机转起来才能测”</td><td>先启动发动机→重试</td></tr>
+<tr><td>0x85</td><td>ERTTL</td><td>Engine Run Time Too Low</td><td>发动机运行时间太短——温度/状态未稳定</td><td>“刚启动——水温还没上来——不能测”</td><td>等待发动机暖机→重试</td></tr>
+<tr><td>0x86</td><td>TEMPTOH</td><td>Temperature Too High</td><td>温度太高——条件不满足</td><td>“发烧40度——不能做剧烈活动”</td><td>等待降温或主动散热→重试</td></tr>
+<tr><td>0x87</td><td>TEMPTOL</td><td>Temperature Too Low</td><td>温度太低——条件不满足</td><td>“体温过低——不适合进行代谢测试”</td><td>等待升温或主动加热→重试</td></tr>
+<tr><td>0x88</td><td>VSTL</td><td>Vehicle Speed Too Low</td><td>车速太低——条件不满足</td><td>“原地不动——没法测ABS”</td><td>必须行驶到一定速度→重试</td></tr>
+<tr><td>0x89</td><td>VSTH</td><td>Vehicle Speed Too High</td><td>车速太高——条件不满足</td><td>“速度太快——没法执行精确的转向角校准”</td><td>减速到允许范围→重试</td></tr>
+<tr><td>0x8A</td><td>TPTOH</td><td>Throttle/Pedal Too High</td><td>节气门开度/踏板位置太高</td><td>“油门踩太深——原地测不了怠速数据”</td><td>松开油门→重试</td></tr>
+<tr><td>0x8B</td><td>TPTOL</td><td>Throttle/Pedal Too Low</td><td>节气门开度/踏板位置太低</td><td>“没踩油门——无法测试加速响应”</td><td>补油到正确开度→重试</td></tr>
+<tr><td>0x8C</td><td>TVINR</td><td>Transmission Not In Neutral</td><td>变速箱不在空档</td><td>“挂挡了——不能做静态测试”</td><td>挂到空档或P档→重试</td></tr>
+<tr><td>0x8D</td><td>TVING</td><td>Transmission Not In Gear</td><td>变速箱未挂挡</td><td>“空档——测试不了档位切换”</td><td>挂到D档或R档→重试</td></tr>
+<tr><td>0x8F</td><td>BSCNE</td><td>Brake Switch(es) Not Closed</td><td>刹车开关未闭合——未踩刹车</td><td>“没踩刹车——没法测试刹车系统”</td><td>踩下刹车→重试</td></tr>
+<tr><td>0x90</td><td>SLNOIP</td><td>Shifter Lever Not In Park</td><td>换挡杆不在P档</td><td>“不在P档——有些设置不能改”</td><td>切换到P档→重试</td></tr>
+<tr><td>0x91</td><td>TCCL</td><td>Torque Converter Clutch Locked</td><td>液力变矩器锁止——某些测试不能做</td><td>“离合器锁住了——先解锁”</td><td>解锁变矩器→重试</td></tr>
+<tr><td>0x92</td><td>VTH</td><td>Voltage Too High</td><td>电压太高——环境条件不满足</td><td>“供电异常——不适合精密操作”</td><td>检查电源系统→调整→重试</td></tr>
+<tr><td>0x93</td><td>VTL</td><td>Voltage Too Low</td><td>电压太低——环境条件不满足</td><td>“电池快没电了——不能做要求稳定的检查”</td><td>给电池充电或更换电源→重试</td></tr>
+</tbody>
+</table>
+</div>
+<p>这个表看起来很枯燥——但它是你写一个能<strong>自我修复</strong>的诊断仪程序的必备知识。每一个NRC都不是终点——它是一个信号，告诉你“应该调整什么条件才能让这个操作在下次被接受“。</p>
+<hr>
+<h3 id="深度专题nrc-0x78唯一的正-负混合响应"><a class="header" href="#深度专题nrc-0x78唯一的正-负混合响应">深度专题：NRC 0x78——唯一的“正-负混合响应”</a></h3>
+<p>在所有NRC中，0x78 RCRRP（Request Correctly Received, Response Pending）是独一无二的存在。从帧格式上看，它是负响应：<code>0x7F + SID + 0x78</code>。从语义上看，它传达的却是正向信息：“你的请求没有问题——我受理了——只是需要更多时间。</p>
+<p><strong>为什么不用正响应？</strong> 因为正响应一旦发出，就是最终结果。而0x78的正响应<strong>还没有产生</strong>——ECU需要时间——它不能谎报结果。所以它必须在“还没结果“时给诊断仪一个回应——而UDS里唯一的“未完成但正常“的信号通道就是NRC 0x78。</p>
+<p><strong>0x78触发的协议行为链：</strong></p>
+<pre><code>诊断仪发送请求（假设是0x22读一个复杂DID）
+  │
+  ▼ P1定时器开始——诊断仪等待
+  │
+ECU收到请求 → 确认格式正确 → 确定需要额外处理时间
+  │
+  ▼ 在P2超时前返回
+诊断仪 ← 0x7F 0x22 0x78
+  │
+  ▼ 诊断仪收到0x78 → 切换到P2*（增强型超时——典型值5000ms）
+  │
+ECU继续处理（例如：NvM异步读取未完成、等待传感器采集窗口）
+  │
+  ▼ 处理完成
+诊断仪 ← 0x62 ...（真正的正响应）
+</code></pre>
+<p><strong>0x78可以出现多次！</strong> 如果ECU在P2<em>周期内仍无法完成，它可以继续发送第二个、第三个0x78——每次重置诊断仪的P2</em>等待计时器。在固件刷写场景中，ECU可能持续发送数分钟的0x78直到刷写完成。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：0x78是UDS协议设计者面对“异步计算现实“的妥协方案。在理想世界里，所有ECU都能在毫秒内完成任意DID的计算。在真实世界里，有些操作需要等待外部事件（NvM异步写入、CAN消息窗口、传感器数据就绪）。0x78让UDS支持异步处理而不破坏同步的请求-响应模型——这是一个优雅的hack，用负响应格式包装了一个正向的等待信号。</p>
+</blockquote>
+<hr>
+<h3 id="功能寻址时nrc的抑制规则为什么要假装听不见"><a class="header" href="#功能寻址时nrc的抑制规则为什么要假装听不见">功能寻址时NRC的抑制规则——为什么要假装听不见</a></h3>
+<p>功能寻址（Functional Addressing）是诊断仪同时向总线上的<strong>所有ECU</strong>发送同一请求的能力。例如：诊断仪通过功能ID发送<code>0x10 0x01</code>（切换到默认会话）——所有ECU同时切换。这很高效——但也带来了一个问题：</p>
+<p><strong>如果50个ECU中有45个不支持某个SID——它们应该同时回复NRC 0x11吗？</strong></p>
+<p>如果它们都回复——CAN总线上会瞬间堆积45条负响应帧——造成总线拥塞和仲裁混乱。更致命的是：有些ECU在CAN ID的低位不同——它们会在不同的仲裁时隙中挤占总线——最终到达诊断仪的数据可能错乱。</p>
+<p><strong>解决方案：功能寻址时，某些NRC被静默抑制。</strong> ECU收到功能寻址请求时，如果判断NRC属于特定类别，它<strong>不发送任何响应</strong>——假装没有收到。这不是bug——这是协议设计的刻意行为。</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>被抑制的NRC</th><th>原因</th></tr>
+</thead>
+<tbody>
+<tr><td>0x11 (SNS)</td><td>此ECU不支持该服务——但功能寻址的目标可能不包含此ECU——不回复</td></tr>
+<tr><td>0x12 (SFNS)</td><td>子功能不支持</td></tr>
+<tr><td>0x31 (ROOR)</td><td>DID/地址/例程不在此ECU中</td></tr>
+<tr><td>0x7E (SFNSIAS)</td><td>子功能不在当前会话下支持</td></tr>
+<tr><td>0x7F (SNSIAS)</td><td>服务不在当前会话下支持</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>哪些NRC在功能寻址时仍然发送？</strong> 那些“服务存在、但当前状态不适合执行“的错误：</p>
+<ul>
+<li>0x22 (CNC) — 我认识你要我做的手术——但我现在的状态不允许</li>
+<li>0x33 (SAD) — 我知道你想读的数据——但安全访问没解锁</li>
+<li>0x24 (RSE) — 请求序列错误——步骤没走对</li>
+</ul>
+<p>这些NRC之所以保留——是因为它们告诉诊断仪：“不是ECU不支持——而是操作步骤需要调整。“这对诊断仪的自愈逻辑有价值。</p>
+<hr>
+<h3 id="从nrc到自愈一个成熟诊断仪的内在机制"><a class="header" href="#从nrc到自愈一个成熟诊断仪的内在机制">从NRC到自愈——一个成熟诊断仪的内在机制</a></h3>
+<p>生产级别的诊断仪不会在收到NRC时就把控制权交还给操作员——它会根据NRC自动调整策略。以下是一个自愈引擎的简化工作流程：</p>
+<pre><code>收到负响应帧:
+  │
+  ├─ 0x11 (SNS) → 记录日志 → 永久标记此ECU不支持该服务 → 继续下一个任务
+  │
+  ├─ 0x7F (SNSIAS) → 提取该服务要求的会话类型 → 发送0x10切换会话 → 等待正响应 → 重试原请求
+  │
+  ├─ 0x7E (SFNSIAS) → 同上——但仅为子功能切换会话
+  │
+  ├─ 0x33 (SAD) → 提取该DID/操作要求的安全等级 → 发0x27 requestSeed → 计算密钥 → sendKey → 等待正响应 → 重试原请求
+  │
+  ├─ 0x35 (IK) → 重新请求种子 (0x27 requestSeed) → 重新计算密钥 → sendKey → 重试
+  │
+  ├─ 0x36 (ENOA) → 查询该ECU的延迟定时器时长 → 启动局部等待 → 到期后重试
+  │
+  ├─ 0x37 (RTDNE) → 等待剩余延迟时间 → 重试
+  │
+  ├─ 0x78 (RCRRP) → 切换到P2*等待 → 扩展接收窗口 → 等待最终响应
+  │
+  ├─ 0x24 (RSE) → 重置会话 → 重新建会话 → 重新解锁 → 重新执行整个操作序列
+  │
+  ├─ 0x22 (CNC) → 检查ECU当前状态 → 尝试调整条件 → 重试
+  │                 （某些CNC需要人工判断——例如"发动机未运转"——诊断仪不能自动启动发动机）
+  │
+  └─ 0x10 (GR) → 无法自动恢复 → 记录完整上下文 → 提示操作员人工介入
+</code></pre>
+<p>这种自愈机制可以让诊断仪在后台自动完成“会话切换→解锁→重试“这条完整的恢复链——把几十毫秒的自动恢复变成无需人工介入的流畅过程。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>NRC不是装饰——它是UDS协议的自我纠正机制。每一个负响应都携带三层信息：“这是负响应(0x7F)” + “我拒绝了哪个请求(SID回声)” + “为什么(NRC)”。</li>
+<li>0x78 RCRRP 是UDS中唯一的“正-负混合响应“——格式是负响应，语义是正向的“处理中，请等待“。它是诊断协议对ECU内部异步计算现实的妥协。</li>
+<li>功能寻址时SNS/SFNS/ROOR/SFNSIAS/SNSIAS五类NRC被静默抑制——防止不支持某功能的ECU同时回复NRC淹没总线。仅保留“服务存在但条件不满足“类NRC（如0x22 CNC、0x33 SAD）。</li>
+<li>生产级诊断仪依赖NRC自愈引擎——收到NRC不意味着“人工介入“——多数情况下诊断仪可以自动完成“会话切换→解锁→重试“的恢复链。</li>
+<li>NRC从0x11到0x93覆盖了从“服务不支持“到“换挡杆不在P档“的几乎每一种拒绝场景——它是对ECU内部状态的一个完整“原因反馈“机制。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>： 你已经读完了ISO 14229-1:2013负响应码的完整体系——从NRC的报文格式、分类表、到诊断仪的自愈策略。下一节进入2.19周期读取(0x2A)，继续探索UDS的更多服务。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/2.17-按地址写内存0x3D——直接注射.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/2.19-周期读取0x2A——24小时心电图.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/2.17-按地址写内存0x3D——直接注射.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/2.19-周期读取0x2A——24小时心电图.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

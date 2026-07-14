@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>从图灵机到ECU - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="15-从图灵机到-ecu"><a class="header" href="#15-从图灵机到-ecu">1.5 从图灵机到 ECU</a></h2>
+<h3 id="一座恶魔般的机房"><a class="header" href="#一座恶魔般的机房">一座恶魔般的机房</a></h3>
+<p>1945 年，费城，宾夕法尼亚大学摩尔工程学院。</p>
+<p>一座 30 吨重的巨兽蹲在一间约 167 平方米的机房里。它的名字叫 <strong>ENIAC</strong>（Electronic Numerical Integrator and Computer）——世界上第一台通用电子计算机。它有 18000 根真空管、70000 个电阻、10000 个电容、6000 个手动开关。它的功耗是 150 千瓦——每当 ENIAC 开机，费城的电灯都会闪一下。</p>
+<p>真空管的故障率极高——平均每两天坏一根。ENIAC 的维护工程师们发明了一套诊断流程：他们学会根据 ENIAC 运算时不同单元的示波器波形“感觉“哪根真空管快不行了，然后提前更换。这和汽车工程师靠发动机的异响判断气门间隙过大，是同一类直觉。</p>
+<p>ENIAC 每秒能做大约 5000 次加法或 357 次乘法。这个速度在 1945 年是石破天惊的——比当时最快的机电计算机（Harvard Mark I）快了 1000 倍。单条弹道的计算量，人工用台式计算器需要 20 小时——ENIAC 只需要 30 秒。</p>
+<p>但你猜 ENIAC 怎么“编程“？</p>
+<p><strong>靠插拔电缆。</strong> 几十个女操作员——当时叫“计算员“（computers，这个头衔后来才指机器本身）——在 ENIAC 内部爬上爬下，手动把跳线插到不同的插孔上，设置函数表上 3000 多个开关的位置。换一个计算任务（比如从算炮弹弹道换成算原子弹的冲击波传播），需要花<strong>几天甚至几周</strong>来重新布线。</p>
+<p>恩尼阿克的女操作员中，有六位被公认为世界上第一批程序员：Kay McNulty、Jean Jennings、Betty Snyder、Marlyn Wescoff、Fran Bilas 和 Ruth Lichterman。在当时，硬件（那台 30 吨的机房）被认为是“高级的工作“——男人做的。编程被认为是“文书工作“——女人做的。六十年后我们回看，软件工程成了地球上收入最高的职业之一，而“计算机“这个词从指人变成了指机器。</p>
+<hr>
+<h3 id="飞蛾史上第一个-bug"><a class="header" href="#飞蛾史上第一个-bug">飞蛾：史上第一个 Bug</a></h3>
+<p>说到编程，就绕不开<strong>格蕾丝·霍珀</strong>（Grace Hopper）。</p>
+<p>霍珀在 1944 年离开瓦萨学院（Vassar College）的数学教职，加入美国海军，被派去哈佛大学参与 Mark I 计算机的开发。她是第一个提出“用人类可读的英文词汇来代替机器码“的人——这个想法后来成长为 <strong>COBOL</strong> 编程语言和整个“高级编程语言“的概念。</p>
+<p>1947 年的一个夏天，霍珀的团队在 Harvard Mark II 上排查一个奇怪的故障。继电器不工作了。他们打开机柜检查——发现一只飞蛾被夹在了继电器触点之间。他们用镊子把飞蛾夹出来，用胶带贴在日志本上，旁边写了一句：</p>
+<blockquote>
+<p><em>“First actual case of bug being found.”</em>
+——首个真实的“bug“被发现案例。</p>
+</blockquote>
+<p>从此以后，“bug”（虫子/故障）和“debug“（调试/去除虫子）成了计算机工程的通行行话。霍珀后来喜欢给年轻人讲这个故事——她会说：“我们没有在找 bug，bug 来找了我们。”</p>
+<hr>
+<h3 id="冯诺依曼那个在火车上想清楚一切的人"><a class="header" href="#冯诺依曼那个在火车上想清楚一切的人">冯·诺依曼：那个在火车上想清楚一切的人</a></h3>
+<p>ENIAC 展示了“电子计算机可以工作“——但它也展示了“插拔电缆是一个死胡同“。如果每次换程序都要配线队忙几天，那计算还不是“通用“的。</p>
+<p>解决这个问题的，是<strong>约翰·冯·诺依曼</strong>（John von Neumann）。他可能是 20 世纪最聪明的人——不是“之一“，而是“最聪明“这个级别里的并列第一名。他的生平是一份让人喘不过气的履历：</p>
+<ul>
+<li>22 岁发表关于序数定义的论文，奠定了现代集合论的公理化基础。</li>
+<li>25 岁提出量子力学的希尔伯特空间形式化——这是今天所有量子力学教科书的数学框架。</li>
+<li>24 岁证明博弈论的最小最大定理——博弈论的发源论文。</li>
+<li>29 岁加入普林斯顿高等研究院，成为那里最年轻的终身教授。</li>
+<li>40 岁加入曼哈顿计划，他的内爆透镜设计是原子弹“胖子“成功引爆的关键——他不只是“计算了冲击波“，他亲自去新墨西哥州的沙漠里观察了第一次核试验，还做出了大量数值模拟。</li>
+</ul>
+<p>冯·诺依曼有一种近乎恐怖的心算能力。他的同事讲过一件事：有一次他在会议上提出了一组偏微分方程的数值解法，大家听完了觉得有点复杂。他说：“不急，我大概算一下。“然后他在脑海里模拟了计算机需要执行的前 50 步，给出了数值解的前几位有效数字。<strong>冯·诺依曼的大脑，是一台以 40Hz（他自己的生物时钟频率）运行的图灵机——不需要纸带、不需要真空管、不需要电。</strong></p>
+<p>他也研究了图灵在 1936 年的论文。在普林斯顿，图灵还做过他的助手。冯·诺依曼深知图灵机的数学意义——但他更关心它的工程实现。1945 年 6 月，他花了几个星期在火车通勤的路上，写出了一份 101 页的手稿——</p>
+<blockquote>
+<p><em>First Draft of a Report on the EDVAC</em></p>
+</blockquote>
+<hr>
+<h3 id="edvac-报告101-页改变世界"><a class="header" href="#edvac-报告101-页改变世界">EDVAC 报告：101 页改变世界</a></h3>
+<p>冯·诺依曼在 EDVAC 报告里做了<strong>一件事</strong>：他把图灵机的三大抽象组件——纸带、读写头、状态表——翻译成了可以用电子管、汞延迟线和导线实现的电路框图。</p>
+<p>图灵机的纸带 → <strong>存储器</strong>。不是串行纸带，而是一个可以“按地址随机访问“的存储空间。地址是存储器的坐标，数据是存储器的内容。随机访问这个特性至关重要——在图灵机里，你要读纸带上的第 73 个格子，必须先读过前 72 个格子。在冯·诺依曼架构里，你直接把地址线设为 73，数据线上就出现了那个格子里的内容。O(1) vs O(n)。这是计算效率的质变。</p>
+<p>图灵机的读写头 → <strong>运算器（ALU）+ 控制器</strong>。运算器是纯粹的“计算“——加法、减法、逻辑与或非。控制器是“决定“——读取指令、译码、发控制信号、更新程序计数器。两者合在一起就是 <strong>CPU</strong>（Central Processing Unit，中央处理器）。</p>
+<p>图灵机的状态表 → <strong>程序——存储在同一片内存里</strong>。这是最天才的决策。在 ENIAC 里，程序是物理线缆的连接方式。在冯·诺依曼架构里，程序就是内存中的一串数字——和存数据的数字没有区别。<strong>换程序，就是换一段内存的内容。</strong> 不需要插座和电缆——只需要把纸带（或纸带上的编码）替换掉。</p>
+<p>这个决策意味着：计算机从“专门做特定计算的物理机器“变成了“<strong>可以加载任意程序的通用机器</strong>“。在冯·诺依曼的架构被实现之后，同一个硬件可以算弹道、算工资单、算天气预报、下国际象棋。唯一的变化是内存里的数据不同。</p>
+<p><strong>通用计算，从数学概念变成了工程现实。</strong></p>
+<hr>
+<h3 id="五个方框一颗心脏"><a class="header" href="#五个方框一颗心脏">五个方框，一颗心脏</a></h3>
+<p>冯·诺依曼架构的经典框图，你一旦看懂了，就看清了所有计算机的本质：</p>
+<pre><code>+----------+     +-----------+
+|  存储器  |&lt;---&gt;|    CPU    |
+|          |     |           |
+| 程序+数据|     | +-------+ |
+|          |     | | 运算器 | |
++----------+     | | (ALU) | |
+                 | +-------+ |
+                 | +-------+ |
+                 | |控制器  | |
+                 | +-------+ |
+                 +-----------+
+                      |
+                 +-----------+
+                 | 输入/输出 |
+                 |   (I/O)  |
+                 +-----------+
+</code></pre>
+<p><strong>存储器</strong>在 ECU 上是 Flash（程序）+ SRAM（数据）+ EEPROM（标定参数）。你的 <code>const</code> 常量进 Flash，你的局部变量进 SRAM 的栈。</p>
+<p><strong>运算器（ALU）</strong> 在 ECU 上是 ARM Cortex-M4F 的 32 位 ALU。你在 C 里写的 <code>x + y</code>、<code>a &amp; b</code>、<code>c &lt;&lt; 4</code>，最终都在这里。ARM 的 ALU 还能做桶式移位 + 加法合并操作——所以编译器可以把 <code>x = y * 3</code> 翻译成 <code>ADD r0, r1, r1, LSL #1</code>（r0 = r1 + r1*2），一条指令、一个时钟周期。这是 RISC 架构的优雅。</p>
+<p><strong>控制器</strong>的核心只有一个寄存器——<strong>程序计数器</strong>（PC）。PC 永远指向“下一条要执行的指令的地址“。控制器的工作就是：取 PC 地址的指令 → 译码 → 执行 → PC 指向下一条指令 → 取 PC 地址的指令 → … 周而复始，直到断电、HALT、或异常。</p>
+<p><strong>输入/输出</strong>在 ECU 上是 CAN 控制器、SPI、I2C、ADC、GPIO。你没想过的——车速传感器发出的脉冲被 GPIO 脚捕获，经过内部定时器计数，换算出转速——这不是“数据“进了“CPU“——这是<strong>物理世界把信息写到了 CPU 的地址空间里</strong>。</p>
+<p><strong>总线</strong>是五者之间的“公路网“。在 S32K144 上，总线不是一条——是 AHB 总线矩阵，用交叉开关把多条主设备（CPU、DMA）和多条从设备（Flash、SRAM、外设）连起来。DMA 可以直接从 ADC 数据寄存器搬运数据到 SRAM，不经过 CPU——这叫“解放 CPU“。</p>
+<hr>
+<h3 id="冯诺依曼瓶颈"><a class="header" href="#冯诺依曼瓶颈">冯·诺依曼瓶颈</a></h3>
+<p>冯·诺依曼架构有一个著名的缺陷——<strong>冯·诺依曼瓶颈</strong>。</p>
+<p>存储器和 CPU 之间的双向总线是整台计算机最窄的通道。CPU 一个周期能吞 32 bit 数据，但总线每个周期只能传一个数据。这就是缓存存在的理由——把 CPU 频繁访问的指令和数据扣在离 ALU 最近的地方。</p>
+<p><strong>冯·诺依曼瓶颈的本质是物理距离。</strong> 电子在导线中约以光速 2/3 传播。1GHz 时钟周期 1ns，信号只能走约 20 厘米。如果你的片外 SDRAM 离 CPU 10 厘米——往返就是 20 厘米——这一个时钟周期里你根本碰不到它。而片上 SRAM 距离毫米级，延迟短得多。所以 S32K144 的 Flash 控制器能零等待输出 64 bit 预取数据（2 条 ARM 指令）。但访问片外 QSPI Flash 时，等待周期立刻跳升到几十个时钟。</p>
+<p><strong>这就是嵌入式工程师要关心 .data/.bss 段放置、LMA/VMA、链接脚本布局的原因。</strong> 你在跟冯·诺依曼瓶颈搏斗。</p>
+<hr>
+<h3 id="哈佛架构对抗瓶颈的另一条路"><a class="header" href="#哈佛架构对抗瓶颈的另一条路">哈佛架构：对抗瓶颈的另一条路</a></h3>
+<p>冯·诺依曼架构的程序和数据共用一条总线。<strong>哈佛架构</strong>把指令和数据分到两条独立总线——CPU 可以同时取指令和访问数据。ARM Cortex-M 系列采用了<strong>改良哈佛</strong>：指令和数据在逻辑上分开（ICode 和 DCode 两条总线），但物理上映射到同一地址空间。你在 0x00000000 存得是指令还是数据——ICode 预取单元和 DCode load/store 单元走不同的 AHB 接口，硬件上并行访问。<strong>面对物理极限走侧面——这是整个计算机架构史的核心母题。</strong></p>
+<hr>
+<h3 id="穿透-fetch-decode-executecpu-的一次心跳"><a class="header" href="#穿透-fetch-decode-executecpu-的一次心跳">穿透 fetch-decode-execute：CPU 的一次心跳</a></h3>
+<p>现在我们把一架显微镜对准 CPU 内部，看一个完整的指令周期——CPU 的“一呼一吸“。</p>
+<p>假设 PC 指向 Flash 地址 <code>0x00001234</code>，存储着 32 bit 的机器码 <code>0xE0800001</code>。以下是 Cortex-M4 三级流水线的行为：</p>
+<p><strong>第一个流水级：取指（Fetch）</strong>。CPU 把地址 <code>0x00001234</code> 放到地址总线上，发出读请求。Flash 控制器内部的预取缓冲区（Prefetch Buffer）和加速逻辑（Speculative Fetch）把相邻的 64 bit（两条 32 bit 指令）一起读出，送到译码级。<strong>这一步花费物理时间：地址总线的传播延迟 + Flash 存储阵列的读取延迟 + 数据总线的返回延迟。</strong> 在 112MHz 的 S32K144 上，约为 2-3 个 HCLK 周期。</p>
+<p><strong>第二个流水级：译码（Decode）</strong>。32 bit 机器码 <code>0xE0800001</code> 被送入译码器。译码器是一组硬连线逻辑——组合电路（combinational logic）——没有时钟，没有寄存器。它把 32 bit 拆成字段：</p>
+<pre><code>0xE0800001 = 1110 0000 1000 0000 0000 0000 0000 0001
+
+[31:28] = 1110  → 条件码 AL（Always，无条件执行）
+[27:26] = 00    → 指令类型：数据处理
+[24:21] = 0100  → 操作码：ADD
+[19:16] = 0000  → 目标寄存器：R0
+[15:12] = 0000  → 第一操作数：R0
+[11:0]  = ...   → 第二操作数：R1（通过 shift operand 编码）
+</code></pre>
+<p>译码结果是：“<strong>R0 = R0 + R1</strong>”——一个 32 位加法。一组控制信号从这个结论中展开：ALU 的操作选择设为 ADD，ALU 的 A 输入端连到 R0，ALU 的 B 输入端连到 R1，目标寄存器地址指向 R0。</p>
+<p><strong>第三个流水级：执行（Execute）</strong>。寄存器文件（Register File——一块内有 16 个 32 位寄存器的快速 SRAM）把 R0 和 R1 的值同时输出到 ALU 的两个输入端。ALU 的 32 位全加器接受两个输入，经过逻辑门传输延迟（几百皮秒），输出 R0+R1 的结果。写使能信号把 ALU 的输出写回寄存器文件中的 R0。<strong>与此同时，PC 递增：PC = PC + 4。</strong> ARM 指令固定 4 字节，所以下一条指令的地址就是当前地址 + 4。</p>
+<p><strong>三条指令，九个流水级推进，约三个时钟周期。</strong> 你的 C 代码 <code>GPIOA-&gt;ODR |= (1 &lt;&lt; 5)</code> 被编译成：</p>
+<pre><code class="language-asm">LDR r0, =0x40020014    ; 加载 GPIOA_ODR 地址
+LDR r1, [r0]           ; 读取当前 ODR 值
+ORR r1, r1, #(1&lt;&lt;5)    ; 第 5 位置 1
+STR r1, [r0]           ; 写回 ODR
+</code></pre>
+<p>四条指令——取 GPIOD 地址、读当前值、置位、写回——约 8-10 个时钟周期后，PA5 引脚的电平从 0V 变成了 3.3V。</p>
+<p><strong>你的 C 代码不是在“控制硬件“——它是在驱动这条 fetch-decode-execute 流水线。</strong> 流水线的每一拍都在做同一组机械操作——取指、译码、执行、更新 PC——无限循环。从你按下编译按钮到 PA5 引脚拉高，中间的每一步都是确定性的、可追踪的、纯机械的。</p>
+<hr>
+<h3 id="内存映射-io为什么写一个地址就能点亮-led"><a class="header" href="#内存映射-io为什么写一个地址就能点亮-led">内存映射 I/O：为什么写一个地址就能点亮 LED</a></h3>
+<p>冯·诺依曼架构还有一个不那么直观但极其强大的特性：<strong>I/O 设备也被映射到了同一个地址空间里。</strong></p>
+<p>ARM 的默认内存映射把 32 位地址空间（4GB）分配如下：</p>
+<pre><code>0x00000000 — 0x1FFFFFFF  Code（Flash, 512MB）
+0x20000000 — 0x3FFFFFFF  SRAM（512MB）
+0x40000000 — 0x5FFFFFFF  Peripherals（512MB，外设寄存器）
+0x60000000 — 0x9FFFFFFF  External RAM
+0xA0000000 — 0xDFFFFFFF  External Device
+0xE0000000 — 0xFFFFFFFF  System（NVIC, SysTick, MPU, SCB 等）
+</code></pre>
+<p>当你写 <code>*(volatile uint32_t *)0x40020014 = 0x20</code> 时，CPU 不知道这是个 GPIO 寄存器——它只知道这是一次“写入地址 0x40020014 的 32 位数据“。地址解码器（address decoder）看到这个地址落在外设区间（0x40000000-0x5FFFFFFF），就在 AHB 总线矩阵中把它路由到 APB 桥（Advanced Peripheral Bus bridge），再路由到 GPIO 端口 A 的 ODR 寄存器。</p>
+<p>GPIO 外设内部的输出驱动电路（output driver）接到寄存器 bit 5 从 0 变成 1 的信号。它打开对应的 PMOS（拉高）晶体管、关闭对应的 NMOS（拉低）晶体管，引脚电压在几纳秒内从 0V 爬升到 3.3V。如果引脚上挂着一颗 LED 和限流电阻——LED 就亮了。</p>
+<p>从 C 代码的赋值语句到 LED 发光——<strong>中间经过的每一个步骤、每一层硬件、每一个 MOSFET 的栅极电容充放电——都是确定性的。</strong> 没有魔法。没有“操作系统在帮你做“。裸机上，就是你的一条 STR 指令击穿了两层总线桥（AHB → APB）、一个 GPIO 寄存器、一对输出驱动 MOSFET、一个外部引脚——最终变成了一个光子从 LED 表面逸出，打在你视网膜上。</p>
+<p><strong>这就是穿透。能穿透到这一层，你才真正理解“计算“和“物理“的连接点。</strong></p>
+<hr>
+<h3 id="精简与复杂risc-vs-cisc-的世纪对决"><a class="header" href="#精简与复杂risc-vs-cisc-的世纪对决">精简与复杂：RISC vs CISC 的世纪对决</a></h3>
+<p>在嵌入式和桌面 CPU 的两个世界里，有一条重要的设计哲学分歧值得了解——因为它解释了为什么你的车里是 ARM，你的笔记本里是 x86。</p>
+<p><strong>RISC（精简指令集计算机）的核心思想是：每条指令只做一件极简单的事，CPU 极快地把它们流水线化。</strong> 指令长度固定（ARM 是 32 bit），每条指令一个时钟周期（至少在设计目标上如此）。ARM 是 RISC。RISC-V 是 RISC。</p>
+<p><strong>CISC（复杂指令集计算机）的核心思想是：用一条复杂的指令完成很多事情。</strong> 指令长度不固定。x86 是 CISC。</p>
+<p>为什么 ARM 赢了嵌入式？因为嵌入式最紧俏的是<strong>功耗</strong>。RISC 简单 → 译码逻辑简单 → 晶体管少 → 功耗低 → 不需要散热器。S32K144 全速跑 112MHz，功耗约几十毫瓦。CISC 用微码把复杂指令拆成内部微操作，在内部跑 RISC-like 执行引擎——外部兼容旧程序，内部用现代技术加速。这是“兼容性换复杂性“。</p>
+<p>对嵌入式工程师来说，RISC 还有一个关键收益——<strong>ARM Thumb-2</strong>：把 32 位 ARM 指令压缩成 16 位，代码密度提高约 30%~40%。同样 512KB Flash，比纯 ARM 模式多装三分之一的代码。</p>
+<hr>
+<h3 id="你的-ecu就是一台冯诺依曼机器但没那么简单"><a class="header" href="#你的-ecu就是一台冯诺依曼机器但没那么简单">你的 ECU，就是一台冯·诺依曼机器（但没那么简单）</a></h3>
+<p>现在打开任意一颗车规 MCU 的数据手册（比如 NXP S32K144），看它的框图。</p>
+<pre><code>         +-------------------+
+         |   ARM Cortex-M4F  |  ← CPU (运算器+控制器)
+         |   112 MHz         |
+         +--------+----------+
+                  |
+         +--------+----------+
+         |   AHB 总线矩阵     |  ← 多层总线交叉开关
+         +--+----+----+-----+
+            |    |    |
+       +----+ +--+--+ +----+
+       |SRAM| |Flash| |外设|
+       |64KB| |512KB| |    |
+       +----+ +-----+ +----+
+         ↑       ↑       ↑
+       内存    程序+数据   I/O
+</code></pre>
+<p>SRAM = 存储器（数据）。Flash = 存储器（程序 + 常量数据）。外设区 = I/O 接口。</p>
+<p><strong>但等一下——图灵的纸带是读写同一个介质，而这里程序在 Flash 里、数据在 SRAM 里。这是冯·诺依曼架构吗？</strong></p>
+<p>严格来说，Cortex-M 使用的是<strong>改进型哈佛架构</strong>（Modified Harvard Architecture）：CPU 核心内部有两条独立的总线——I-Code 总线（读指令）和 D-Code 总线（读写数据），允许同时取指和访存。但在系统层面，Flash 和 SRAM 被统一编址到一个连续的地址空间里（0x00000000 - 0xFFFFFFFF），用同一套 AHB 总线矩阵访问。所以它在“统一编址“上是冯·诺依曼，在“内部并行取指/访存“上是哈佛。</p>
+<p><strong>为什么这对你重要？</strong> 当你在调试器里单步执行时，CPU 可以同时从 Flash 读取下一条指令、从 SRAM 读取操作数——这叫“指令级并行“的起点。如果是纯冯·诺依曼（一条总线），取指和访存必须串行——这就是“冯·诺依曼瓶颈“。</p>
+<p><strong>那图灵机的三要素呢？</strong></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">图灵机（1936）</th><th style="text-align: left">冯·诺依曼（1945）</th><th style="text-align: left">S32K144（你手里的）</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">纸带（无限长）</td><td style="text-align: left">存储器（内存 + 磁盘）</td><td style="text-align: left">512KB Flash + 64KB SRAM</td></tr>
+<tr><td style="text-align: left">读写头（状态+符号）</td><td style="text-align: left">CPU（ALU + 寄存器）</td><td style="text-align: left">Cortex-M4F 核心</td></tr>
+<tr><td style="text-align: left">状态表（有限条规则）</td><td style="text-align: left">程序（指令序列）</td><td style="text-align: left">你烧录的固件</td></tr>
+</tbody>
+</table>
+</div>
+<p>你的 <code>CAN0-&gt;IFLAG1 = (1 &lt;&lt; 15)</code> 编译成 STR 指令，目标地址 0x40024030（FlexCAN 的 IFLAG1 寄存器）。CPU 从 Flash 读到这条指令，经译码发现是“写内存“，ALU 计算目标地址，数据总线把值写过去——CAN 模块内部的组合逻辑检测到中断标志位变化——触发中断控制器 NVIC——CPU 进入中断服务函数。<strong>每个你写的 C 句子，都是一根可以追踪到底的因果链——从代码到数字逻辑到半导体物理，没有断裂，没有模糊。</strong></p>
+<hr>
+<h3 id="80-年从图纸到公路一场无声的接力"><a class="header" href="#80-年从图纸到公路一场无声的接力">80 年，从图纸到公路：一场无声的接力</a></h3>
+<p>让我们把时间轴拉长，看清整幅图景。</p>
+<p>1936年，图灵用一条无限长的纸带和一个有限的状态表，定义了计算的边界。同年，丘奇用λ演算给出了等价定义。</p>
+<p>1945年，冯·诺依曼在火车上勾勒出EDVAC架构的蓝图——把图灵的抽象模型变成了可建造的电路逻辑框架。他在报告里连ALU的逻辑结构、指令格式、寻址方式、I/O调度都详细描述了。</p>
+<p>1947年，贝尔实验室的巴丁、布拉顿和肖克利发明了点接触晶体管。它取代了真空管——体积缩小了几千倍，功耗降低了几个数量级。</p>
+<p>1958年，德州仪器的杰克·基尔比做出了第一块集成电路——把晶体管、电阻和电容做在同一块锗片上。次年，仙童的罗伯特·诺伊斯用硅基平面工艺实现了商用集成电路。从此，电子元件不再“组装”——而是“刻”在硅上。</p>
+<p>1971年，英特尔的费德里科·法金设计并制出了Intel 4004——世界上第一个商用微处理器。2250个晶体管，10μm制程，4位数据总线。法金在1970年代用最原始的工具——手工绘制掩模版的聚酯薄膜，然后用物理掩模做光刻——把CPU刻进了硅片。法金自己的话说：“那时候，你可以用肉眼看到每一个晶体管。”</p>
+<h3 id="中国人也在造计算机"><a class="header" href="#中国人也在造计算机">中国人也在造计算机</a></h3>
+<p>当法金在加州设计 Intel 4004 的时候，中国也在走自己的计算之路。</p>
+<p>1960 年，夏培肃带领团队研制出中国第一台自主设计的通用电子计算机——107 机。它用电子管搭建，每秒运算约 2500 次，内存只有 1K 字（约 4KB）。和她同时代的美国 IBM 7090 相比，107 机的性能差了约两个数量级。但它是一台完整的、能用的、中国人从零设计制造的通用计算机。夏培肃后来培养了一代又一代中国计算机科学家——她是“中国人计算之路”的第一个传递人。</p>
+<p>1979 年，王选开始了一项近乎疯狂的项目：用计算机处理汉字。当时所有的计算机系统都是英文的——ASCII 编码只需要 128 个字符。而汉字有几千个常用字、几万个总字量。如果每个字用点阵存储，一个 64×64 的点阵就要 512 字节——几千个字需要几 MB 的存储，这在 1979 年是天文数字（当时主流磁盘容量只有几十 MB，但内存和软盘以 KB 为单位）。王选的解决方法：用轮廓描述字形——存储的不是点阵，而是笔画边界的数学曲线——然后让计算机在输出时“算出”点阵。这就是“轮廓+压缩”——有限资源下的最优解。王选的汉字激光照排系统让中国跳过了铅字印刷时代，直接进入了电子排版。他递出的这根接力棒，到今天还在运行。</p>
+<p>而在英国，另一条计算之路也在萌芽。</p>
+<p>1985 年，Acorn 计算机公司发布了第一颗 ARM 处理器（ARM1）。Sophie Wilson 设计指令集，Steve Furber 设计硬件。ARM1 接通电源后几乎不发热——Wilson 以为芯片坏了，其实只是功耗太低。2005 年，ARM Cortex-M3 发布，从此统治嵌入式 MCU 市场。你开的每辆车里，可能有几十颗 Arm Cortex-M 核心在同时运行。</p>
+<p><strong>图灵 → 冯·诺依曼 → 肖克利 → 基尔比 → 诺伊斯 → 法金 → Furber &amp; Wilson → S32K144 的设计团队 → 你。</strong></p>
+<p>你在调试板上烧录的那颗 S32K144，是几百年来人类科学积累的终点。从纳皮尔的骨筹，到巴贝奇的分析机，到图灵的纸带，到冯·诺依曼的 101 页报告，到法金手工画的掩模版，到台积电 55nm 的铜互连——<strong>每一环都接上了。没有断档，没有奇迹。全部是科学发现和工程迭代的累积。</strong></p>
+<p>而你的固件烧录进去之后，在芯片里每天跑着——处理 CAN 报文、执行 UDS 诊断——然后这辆载着它的车每天上下班。下一个接手这颗 MCU 的工程师，会打开你的源码，读你的注释，调你的标定数据。<strong>你接过的棒，有一天会传给下一个人。</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>把80年的接力链串了起来——从图灵的纸带到你手里的S32K144。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>冯·诺依曼把图灵机的抽象三要素翻译成了可建造的电路框图</strong>：纸带→存储器，读写头→CPU，状态表→程序。这份101页的报告，定义了此后所有计算机的骨架。</li>
+<li><strong>fetch-decode-execute是你写的每一行C代码的物理心跳</strong>：从赋值语句到LED发光，中间的每一步都是确定性的、可追踪的——没有魔法。</li>
+<li><strong>你不是一个人在写代码</strong>：图灵→冯·诺依曼→肖克利→基尔比→诺伊斯→法金→Furber &amp; Wilson→你——这是一场无声的接力，而你正在跑你那一棒。</li>
+</ol>
+<p>下一节，我们走进硅的世界。从沙子到芯片——第二个思想实验开始了。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>下一个思想实验：你和 100 个各领域的专家被扔进原始森林里。你们有地球上所有的自然资源，有无穷的时间。但你们<strong>造不出一颗芯片</strong>。</p>
+<p>为什么？因为芯片背后是一整套工业文明体系。几百道工序、几十个学科、几千家工厂的协作——你严重低估了现代工业的复杂性。</p>
+<p>接下来的一章，我们走进硅的世界。但这次我们从思想实验开始——在森林里，你为什么会失败？</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/1.4-计算的边界.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/2.1-思想实验-在原始森林里造芯片.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/1.4-计算的边界.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/2.1-思想实验-在原始森林里造芯片.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

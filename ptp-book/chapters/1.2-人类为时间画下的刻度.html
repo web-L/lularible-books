@@ -1,0 +1,448 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>人类为时间画下的刻度 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="12-人类为时间画下的刻度"><a class="header" href="#12-人类为时间画下的刻度">1.2 人类为时间画下的刻度</a></h1>
+<h2 id="一场海难让整个英国慌了神"><a class="header" href="#一场海难让整个英国慌了神">一场海难，让整个英国慌了神</a></h2>
+<p>1707年10月22日，英吉利海峡。</p>
+<p>浓雾像一块巨大的灰色幕布，把天地之间塞得满满当当。英国海军上将克劳德斯利·肖维尔爵士站在旗舰“协会号”的船头，眉头紧锁。</p>
+<p>他的舰队已经在海上漂了十几天，刚从直布罗陀海峡战役中撤回来。船上伤员嗷嚎，淡水所剩无几，而更可怕的是——<strong>没有人知道自己在哪里</strong>。</p>
+<p>在GPS出现之前的300年，航海者面临一个致命难题：你可以通过观测太阳和北极星轻松知道“纬度”（南北位置），但你几乎没有办法知道“经度”（东西位置）。</p>
+<p>为什么经度这么难测？</p>
+<p>因为地球在不停地自转。经度本质上是一个“时间差”问题：如果你知道家乡时间和当地时间之间的差值，就能换算出经度。每15度经度对应1小时时差。</p>
+<p>但问题在于：<strong>你需要一块在海上航行几个月都不会走偏的钟</strong>。</p>
+<p>18世纪的钟表是什么水平？摆钟在陆地上可以很准，但一上船，海浪的颠簸就让摆锤彻底失效。发条钟倒是能走，但温度变化、湿度、磨损会让它一天就差出去好几分钟。</p>
+<p>几分钟的误差，在经度换算上就是几百公里的偏差。在茫茫大海上，几百公里意味着你可能看到的是礁石，而不是港口。</p>
+<p>肖维尔爵士的舰队就遇到了这个要命的问题。</p>
+<p>经过十几天的航行，船员们对经度的推算已经乱成了一锅粥。有人觉得自己在英格兰以西，有人觉得在西北，还有人偷偷说可能已经快到法国海岸了。</p>
+<p>肖维尔爵士做了一个后来被载入史册的错误决定。</p>
+<p>他召集所有船长开了一个“经度会议”，让大家各自报出自己推算的位置，然后取了一个<strong>平均值</strong>。</p>
+<p>这个平均值告诉他们：安全，继续向北。</p>
+<p>舰队继续在浓雾中航行。几个小时后，最前方的侦察舰突然发出警报——但已经太晚了。</p>
+<p>“协会号”（Association）撞上了礁石，船底像纸一样被撕开。紧随其后的“罗姆尼号”（Romney）试图转向，但直接撞上了另一块礁石，瞬间倾覆。另外两艘战舰“鹰号”（Eagle）和“火把号”（Firebrand）也相继搁浅。</p>
+<p>四艘战舰，近2000名水手。</p>
+<p>最后只有不到30人活着爬上了锡利群岛的岸边。肖维尔爵士本人的尸体几天后被冲上沙滩，据说他的口袋里还揣着那个被他们取来取去的“平均经度”。</p>
+<p>这场灾难震动了整个英国。</p>
+<p>商人愤怒了——他们的货物和投资沉入了海底。海军愤怒了——他们损失了四艘主力战舰和两千名精锐水手。议会愤怒了——他们意识到，大英帝国的海上霸权，竟然被一块<strong>不准的表</strong>卡住了脖子。</p>
+<p>1714年，英国议会通过了著名的《经度法案》，悬赏2万英镑（相当于今天数百万英镑）征集能够将经度测定到半度以内（即2分钟时差）的实用方法。</p>
+<p>这个悬赏，开启了一场长达半个世纪的技术竞赛。而最终的胜出者，是一个叫约翰·哈里森的钟表匠。</p>
+<p>他的故事我们后面会讲。但你首先要知道的是：<strong>人类对时间精度的追求，从来不是因为闲得无聊，而是因为不精确真的会死人。</strong></p>
+<hr>
+<h2 id="第一把尺子天象"><a class="header" href="#第一把尺子天象">第一把尺子：天象</a></h2>
+<p>在哈里森之前，在摆钟之前，甚至在国家这个概念出现之前，人类就已经在“对时间”了。</p>
+<p>只不过那时候的“对时间”，用的是天上那根最大的钟表——太阳。</p>
+<p>你可能会觉得，看太阳还不简单？太阳出来就是白天，太阳落山就是黑夜。这不就是最原始的时间吗？</p>
+<p>但我们的祖先不满足于这种粗糙的分辨率。他们很快发现，太阳在天空中的位置是可以被精确刻画的。</p>
+<p><strong>立竿见影</strong></p>
+<p>找一根直立的棍子，插在地上。观察它的影子。</p>
+<p>早上，影子很长，指向西边。中午，影子最短，指向正北（北半球）。下午，影子又变长，指向东边。</p>
+<p>这个简单的装置，就是人类最早的时钟——<strong>日晷</strong>的雏形。</p>
+<p>古人发现，影子的长度和方向是随着时间均匀变化的。如果把地面刻上刻度，就可以大致知道现在是什么时辰。</p>
+<p>更精妙的是“圭表”——一种专门用来测量正午影长的仪器。通过记录一年中正午影长的变化，古人可以精确地确定夏至和冬至，进而制定出二十四节气。</p>
+<p>对于一个农耕文明来说，这太重要了。什么时候播种，什么时候收割，差几天可能就是一年的收成。</p>
+<p><strong>月亮的圆缺</strong></p>
+<p>太阳给了我们“日”，月亮给了我们“月”。</p>
+<p>月亮的圆缺周期大约是29.5天。这个周期非常稳定，肉眼可见，不需要任何工具。</p>
+<p>古巴比伦人、古埃及人、古希腊人、古中国人，几乎所有的早期文明都制定了基于月相变化的<strong>阴历</strong>。</p>
+<p>但阴历有一个大问题：12个月亮周期大约是354天，比一个太阳年（365.25天）短了11天。这意味着如果你只用阴历，每年的同一个月份会越来越早地进入冬天。</p>
+<p>于是聪明的古人发明了<strong>阴阳合历</strong>——在19年中加入7个闰月，让月份和季节重新对齐。这就是我们熟悉的农历（以及希伯来历、古希腊历等）的原理。</p>
+<p><strong>星辰的位置</strong></p>
+<p>如果你足够细心，你会发现每天晚上同一时刻，天上的星星位置也在缓慢变化。</p>
+<p>古埃及人发现了这一点。他们注意到，每年尼罗河开始泛滥的时候（这对埃及农业是头等大事），天狼星刚好在日出前出现在东方地平线上。</p>
+<p>这个发现让埃及人确定了一年的长度是365天。他们制定了人类历史上第一部太阳历，后来经过希腊人和罗马人的改良，最终演变成了我们今天使用的公历。</p>
+<p>你看，这个阶段的时间计量，全部是“向外看”的。人类抬头仰望，从宇宙的运行中读取时间。</p>
+<p>这种方式的优点是：不用花钱，不用维护，全人类共享同一个时间基准。</p>
+<p>但缺点也很明显：<strong>颗粒度太粗，而且受天气影响</strong>。</p>
+<p>阴天没日影，下雨看不见星星，晚上没有月亮你就没法对表。更重要的是，你只能知道“大概是下午两点”，没法知道“现在是两点十五分三十秒”。</p>
+<p>要切分得更细，人类需要一把新的尺子——一把人造的、可以在任何天气下运行的尺子。</p>
+<hr>
+<h2 id="第二把尺子流动的水和落下的沙"><a class="header" href="#第二把尺子流动的水和落下的沙">第二把尺子：流动的水和落下的沙</a></h2>
+<p>水钟的出现，是人类第一次“人造”时间刻度。</p>
+<p>它的原理极其简单：让水以均匀的速度从一个容器流到另一个容器，然后看水位变化。</p>
+<p>最早的水钟可以追溯到古埃及和古巴比伦，大约公元前16世纪。中国的水钟（漏刻）也出现得很早，而且发展得相当精妙。</p>
+<p><strong>中国的漏刻：时间的滴答声</strong></p>
+<p>你想象一下这样的场景：一个铜壶，底部有一个小孔，里面装满水。水从小孔慢慢滴出，滴到下面一个承接的壶里。承接壶里有一个浮标，浮标连着刻有刻度的尺子。</p>
+<p>水位上升，浮标上浮，刻度尺就显示出了时间。</p>
+<p>这就是“漏刻”的基本原理。为了延长计时周期，古人甚至做了“多级漏”——上面好几个壶串联，一级一级往下滴，可以保持水压稳定，让流速更均匀。</p>
+<p>在汉代，漏刻的精度已经可以达到一天只差几分钟。对于那个时代来说，这已经是不可思议的成就了。</p>
+<p><strong>希腊的水钟：公共时间的诞生</strong></p>
+<p>古希腊人把水钟玩出了新花样。</p>
+<p>雅典的广场上，有一个公共水钟。公民们用它来安排演讲时间、法庭辩论时间。到了时间，水钟会自动发出哨声或启动某种机关，提示“时间到”。</p>
+<p>这是人类历史上第一次出现“公共时间”的概念——所有人都看同一个钟，所有人的时间基准是一致的。</p>
+<p><strong>沙漏：流动的颗粒</strong></p>
+<p>水钟的问题是：水会结冰，而且水需要定期清理。</p>
+<p>沙漏解决了这些问题。沙子不会结冰，流动速度也很稳定。更重要的是，沙漏可以做得很小，便于携带。</p>
+<p>15-16世纪，沙漏成了航海的标准配置。每半小时，船员就要翻转一次沙漏，同时敲响船上的铃——这就是“敲钟”制度的由来（直到今天，海军还保留着“八声钟”的传统）。</p>
+<p>不过，沙漏和水钟都有同一个致命缺陷：<strong>它们只能告诉你“过了多久”，不能告诉你“现在是几点”</strong>。</p>
+<p>换句话说，它们是“相对时间”的测量工具，不是“绝对时间”的同步基准。</p>
+<p>如果你早上醒来看到水钟显示“水位到了刻度3”，你并不能知道这是凌晨三点还是下午三点——除非你另外知道一个绝对参考点（比如太阳的位置）。</p>
+<p>而且，这些工具都受物理条件影响。水的温度会影响流速，沙子的颗粒度会磨损，长期使用后的精度会越来越差。</p>
+<p>要突破这个瓶颈，人类需要一种全新的原理。</p>
+<hr>
+<h2 id="第三把尺子摆动的钟摆"><a class="header" href="#第三把尺子摆动的钟摆">第三把尺子：摆动的钟摆</a></h2>
+<p>16世纪末的一天，年轻的伽利略坐在比萨大教堂里，百无聊赖地听着布道。</p>
+<p>他的目光落在头顶的吊灯上。那盏灯不知被谁碰了一下，正在微微摆动。</p>
+<p>伽利略盯着它看了一会儿，然后做了一个在传说中被重复了无数遍的动作——他用手指按住自己的手腕，测量吊灯摆动一次和自己脉搏跳动次数之间的关系。</p>
+<p>他发现了一件奇怪的事：不管吊灯摆动的幅度是大还是小，<strong>每一次摆动的时间几乎是相等的</strong>。</p>
+<p>这就是“等时性”原理的发现。</p>
+<p>几十年后，荷兰科学家克里斯蒂安·惠更斯读到伽利略的笔记，意识到这个原理可以用来制造前所未有的精准时钟。</p>
+<p>1656年，惠更斯制造了世界上第一台摆钟。</p>
+<p>它的核心是一个“擒纵机构”——一个精巧的机械装置，把钟摆的周期性摆动转换成齿轮的步进运动。钟摆每摆动一次，齿轮就前进一齿，秒针就跳动一格。</p>
+<p>摆钟的精度有多高？惠更斯的早期型号已经把日误差从机械钟的15分钟降到了15秒。后来的改进型更是达到了<strong>每天误差不到1秒</strong>。</p>
+<p>这意味着什么？</p>
+<p>意味着人类第一次拥有了能够精确测量“秒”的仪器。意味着一分钟不再是一个模糊的“念完一篇短祷告的时间”，而是一个可以精确计数、可以复现、可以验证的物理量。</p>
+<p>摆钟很快传遍了欧洲。教堂的钟楼、市政厅的塔楼、富人家的客厅——摆锤的滴答声成了新的时间背景音。</p>
+<p>更重要的是，摆钟让人们开始相信：<strong>时间是可以被精确计量的，而不是某种模糊的、流动的感觉</strong>。</p>
+<p>这种信念，为后来的工业革命、铁路网络、科学实验铺平了道路。</p>
+<p><strong>但摆钟有一个大问题：在船上不能用。</strong></p>
+<p>海浪的颠簸会破坏摆锤的等时性。船身的倾斜会让齿轮卡住。温度的变化会让金属摆杆热胀冷缩，改变摆动周期。</p>
+<p>这个问题困扰了航海者几百年。而解决它的人，就是我们开头提到的那位——约翰·哈里森。</p>
+<hr>
+<h2 id="一个钟表匠与2万英镑的故事"><a class="header" href="#一个钟表匠与2万英镑的故事">一个钟表匠与2万英镑的故事</a></h2>
+<p>约翰·哈里森是一个木匠的儿子，自学了钟表制造。</p>
+<p>当英国议会悬赏2万英镑寻找经度解决方案时，哈里森决定挑战这个难题。他的思路很简单：造一块能在海上精准运行的钟。</p>
+<p>但“简单”不等于“容易”。</p>
+<p>从1730年到1760年，哈里森花了30年时间，造了四代航海钟。</p>
+<ul>
+<li><strong>H1</strong>（1735年）：用弹簧和平衡轮代替摆锤，用双向平衡装置抵消海浪颠簸的影响。</li>
+<li><strong>H2</strong>（1739年）：改进了H1的设计，但发现了一个致命的对称性问题，推倒重来。</li>
+<li><strong>H3</strong>（1759年）：彻底重新设计，用了三组平衡轮和两个不同金属复合的摆杆来补偿温度变化。</li>
+<li><strong>H4</strong>（1761年）：放弃之前的思路，回归传统的高精度怀表设计，但用了一种全新的擒纵机构。</li>
+</ul>
+<p>H4的尺寸只有直径13厘米，重1.45公斤。在一次从英国到牙买加的航行测试中，航行81天，H4的累计误差只有5秒——<strong>每天误差不到0.1秒</strong>。</p>
+<p>这个精度，远超《经度法案》的要求。</p>
+<p>但英国议会和经度委员会的评委们不太想付钱。他们是一群天文学家，更倾向于用“月距法”（通过测量月亮相对于恒星的位置来推算经度）而不是“钟表法”来解决问题。让一个木匠的儿子拿走2万英镑？这让他们很不舒服。</p>
+<p>于是他们设置了一个又一个障碍：要求哈里森交出自己的设计图纸公开，要求再做一次测试，要求H4的设计必须“可以被复制”。</p>
+<p>哈里森和评委们斗了十几年。直到1773年，在国王乔治三世的亲自干预下，80岁的哈里森才拿到了那2万英镑。</p>
+<p>他拿到这笔钱之后三年，就去世了。</p>
+<p>但他的航海钟彻底改变了世界。库克船长在他的第二次远航中使用了H4的复制品，绘制了第一张精确的太平洋海图。英国的海上贸易从此不再需要依赖“估算经度”。</p>
+<p>这个故事告诉我们：<strong>追求时间精度，从来不是技术问题，而是生存问题、利益问题、权力问题。</strong></p>
+<p>哈里森的航海钟，是人类历史上第一台真正意义上的“便携高精度时间基准”。它的出现，让不同地点的人第一次可以在长达数月的时间尺度上保持时间同步。</p>
+<p>但你可能会问：每天0.1秒的误差，在今天看来也不算很准啊？</p>
+<p>没错。0.1秒对于18世纪的航海来说已经足够逆天。但对于20世纪的电力网络、21世纪的金融交易和5G通信来说，0.1秒是一个极其漫长的“错误”——足够让电网崩溃、让高频交易损失几百万、让5G基站的信号完全错乱。</p>
+<p>所以，人类还需要下一把尺子。</p>
+<hr>
+<h2 id="第四把尺子振动的石英"><a class="header" href="#第四把尺子振动的石英">第四把尺子：振动的石英</a></h2>
+<p>20世纪初，一个偶然的发现改变了时间计量的轨迹。</p>
+<p>美国贝尔实验室的物理学家沃尔特·卡迪正在研究压电效应。他发现，当他在石英晶体两端施加电压时，晶体会以非常精确的频率振动。反过来，当他压缩石英晶体时，晶体会产生电压。</p>
+<p>这个发现很快被应用到电子振荡器中。一个石英晶体，加上一个简单的电路，就可以产生极其稳定的振荡信号——每秒几万次，频率精度可以达到百万分之一。</p>
+<p>1927年，贝尔实验室制造了世界上第一台石英钟。</p>
+<p>它的精度是多少？<strong>每天误差不到0.01秒</strong>。</p>
+<p>哈里森花30年才达到每天0.1秒，而石英钟一出生就是它的10倍。</p>
+<p>而且石英钟没有摆锤，没有齿轮，没有任何运动部件（除了电子振荡）。它可以做得很小——小到可以放进手表里。</p>
+<p>1969年，日本精工推出了世界上第一块石英手表——Seiko Astron。这块手表以惊人的精度和远低于机械表的价格横扫市场，差点把瑞士机械表行业逼到绝路（这就是著名的“石英危机”）。</p>
+<p>石英钟的原理并不复杂：石英晶体在通电时会以固有频率振动。对于一块手表来说，这个频率通常是32768赫兹（即每秒振动32768次）。电路计数这个振动次数，当计到32768次时，就驱动秒针跳一格。</p>
+<p>因为石英晶体的振动频率极其稳定（受温度影响极小），石英表的日误差可以轻松做到0.5秒以内——也就是说，你戴一个月，误差可能还不到15秒。</p>
+<p>在日常生活里，这已经完全够用了。</p>
+<p>但对于某些特殊场景，石英钟的精度依然不够。</p>
+<ul>
+<li>电网的频率同步要求微秒级精度。</li>
+<li>GPS卫星的时间基准要求纳秒级精度。</li>
+<li>射电天文学、粒子物理实验要求皮秒级甚至飞秒级精度。</li>
+</ul>
+<p>石英钟的极限在哪里？石英晶体的振动频率会随着时间缓慢漂移（老化效应），也会受到温度变化的轻微影响。在最好的条件下，石英钟的日误差可以做到0.001秒（1毫秒）左右，但这已经是天花板了。</p>
+<p>要突破这个天花板，人类需要找到一种比石英更稳定的“振动源”。</p>
+<p>而这个振动源，不在任何宏观物体的机械运动里——它在原子内部的量子跃迁里。</p>
+<hr>
+<h2 id="第五把尺子倾听原子的心跳"><a class="header" href="#第五把尺子倾听原子的心跳">第五把尺子：倾听原子的心跳</a></h2>
+<p>1949年，美国国家标准局（现在的NIST）制造了世界上第一台原子钟。</p>
+<p>它的原理听起来像是科幻小说：用氨分子作为“钟摆”。</p>
+<p>具体来说是这样的：氨分子有一个特殊的性质——它的三个氢原子会像一把伞一样反复“翻折”，从一个位置翻到另一个位置，再翻回来。这个“翻折”的频率是固定的，大约是每秒23,870,000,000次（23.87GHz）。</p>
+<p>如果用一个精确调谐的电磁场去照射氨分子，当电磁场的频率正好等于分子翻折的频率时，分子就会吸收能量，发生能级跃迁。通过检测这个跃迁，就可以“锁定”电磁场的频率，让电磁场严格跟随分子的翻折频率。</p>
+<p>你看，这里的关键是：<strong>原子的能级跃迁频率是由物理常数决定的，理论上不会变化</strong>。</p>
+<p>不管你在地球上、火星上、还是在仙女座星系，任何一个氨分子的翻折频率都完全一样。你不需要校准，不需要调校，不需要考虑磨损——因为分子不会磨损，物理常数不会改变。</p>
+<p>氨分子钟的精度已经远远超过了最好的石英钟。但真正把时间计量推向现代标准的是另一类原子——<strong>铯原子</strong>。</p>
+<p>1967年，国际度量衡大会做了一件划时代的事情：他们废除了“秒”的传统定义（1/86400个平均太阳日），改用铯-133原子的跃迁频率来定义：</p>
+<blockquote>
+<p><strong>一秒等于铯-133原子基态的两个超精细能级间跃迁辐射振荡9,192,631,770个周期所持续的时间。</strong></p>
+</blockquote>
+<p>这意味着什么？</p>
+<p>意味着“秒”不再依赖于地球的自转（实际上地球自转在缓慢减速），不再依赖于任何人工装置的稳定性，而是被锚定在一个<strong>宇宙常量</strong>上。</p>
+<p>任何人都可以在任何地方，通过测量铯原子的跃迁频率来复现“一秒”。不需要找英国皇家天文台对表，不需要接收无线电信号，只要你有原子钟，你就拥有了全宇宙统一的“秒”。</p>
+<p>现在的原子钟有多准？</p>
+<ul>
+<li>商用铯原子钟：每天误差约1纳秒（10⁻⁹秒），即300万年差1秒。</li>
+<li>铷原子钟：精度略低，但体积更小、功耗更低。</li>
+<li>氢原子钟：短期稳定性极高，常用于射电天文学和深空探测。</li>
+<li>光晶格钟：利用光学频率而非微波频率，精度达到<strong>150亿年（宇宙的年龄）差1秒</strong>。</li>
+</ul>
+<p>是的，你没看错。如果宇宙大爆炸时启动了这样一台钟，到今天为止，它的误差还不到1秒。</p>
+<p>这已经是人类目前能够达到的时间计量极限。在这个尺度上，你甚至需要考虑<strong>广义相对论</strong>的效应——因为引力会影响时间的流逝速度。一台原子钟放在海拔1000米的山顶，比放在海平面上的同一台钟每天快约0.0000000094秒（约9.4纳秒）。虽然极小，但在光晶格钟的精度下，这个差异是显著可测的。</p>
+<hr>
+<h2 id="时间尺子的演进一张表看懂"><a class="header" href="#时间尺子的演进一张表看懂">时间尺子的演进：一张表看懂</a></h2>
+<p>让我们把这段漫长而精彩的历史浓缩成一张表：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">时代</th><th style="text-align: left">尺子</th><th style="text-align: left">原理</th><th style="text-align: left">代表成就</th><th style="text-align: left">典型精度</th><th style="text-align: left">为什么不够？</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">远古</td><td style="text-align: left">天象</td><td style="text-align: left">观测日月星辰</td><td style="text-align: left">日晷、圭表、农历</td><td style="text-align: left">分钟级（白天）</td><td style="text-align: left">阴天/夜间不能用，无法切分到秒</td></tr>
+<tr><td style="text-align: left">古代</td><td style="text-align: left">流体</td><td style="text-align: left">水流/沙流的均匀性</td><td style="text-align: left">漏刻、水钟、沙漏</td><td style="text-align: left">每天误差几分钟</td><td style="text-align: left">受温度/湿度影响，只能测相对时间</td></tr>
+<tr><td style="text-align: left">近代</td><td style="text-align: left">机械</td><td style="text-align: left">摆锤等时性、发条储能</td><td style="text-align: left">摆钟、航海钟H4</td><td style="text-align: left">每天误差0.1秒</td><td style="text-align: left">船用摆锤失效，磨损导致漂移</td></tr>
+<tr><td style="text-align: left">现代</td><td style="text-align: left">石英</td><td style="text-align: left">石英晶体压电效应</td><td style="text-align: left">石英表、石英钟</td><td style="text-align: left">每天误差0.5秒以内</td><td style="text-align: left">老化效应，温度敏感</td></tr>
+<tr><td style="text-align: left">当代</td><td style="text-align: left">原子</td><td style="text-align: left">量子能级跃迁频率</td><td style="text-align: left">铯原子钟、光晶格钟</td><td style="text-align: left">每千万年差1秒</td><td style="text-align: left">体积/功耗/成本限制了普及</td></tr>
+</tbody>
+</table>
+</div>
+<p>你有没有注意到一个规律？</p>
+<p><strong>每一次时间尺度的跨越，精度至少提高1000倍，而背后的推动力永远是某种“不够用”——航海不够用、工业不够用、通信不够用、科学不够用。</strong></p>
+<p>这就是时间同步技术的演进逻辑：<strong>需求驱动精度，精度驱动创新。</strong></p>
+<p>而PTP协议，正是在这个演进链条中的最新一环。它不是一个新的“尺子”，而是一个新的“对表方法”——如何在原子钟级别的精度下，让成千上万个分布在各地的设备保持同步。</p>
+<hr>
+<h2 id="从历史到协议我们学到了什么"><a class="header" href="#从历史到协议我们学到了什么">从历史到协议：我们学到了什么？</a></h2>
+<p>在结束这一节之前，让我们把历史和PTP协议做一个对应。</p>
+<p><strong>1. 你需要一个“主时间源”</strong></p>
+<p>无论是日晷（太阳）、漏刻（水流）、摆钟（摆锤）、石英钟（晶体）、原子钟（原子跃迁），你都需要一个权威的时间基准。在PTP协议里，这个角色叫<strong>Grandmaster Clock</strong>（主时钟）。</p>
+<p><strong>2. 主时间源会被“传递”</strong></p>
+<p>你不可能让每个人都去格林尼治天文台看原子钟。所以时间需要通过某种方式传递出去：日晷的读数被人抄下来做成表格，火车站的钟通过电信号同步，NTP服务器通过互联网分发时间。在PTP协议里，这个传递过程通过<strong>网络报文</strong>完成。</p>
+<p><strong>3. 传递过程会引入误差</strong></p>
+<p>哈里森的航海钟为什么珍贵？因为它“随身携带”时间，不需要通过外部信号校准，所以不受信号传递延迟的影响。但在网络同步中，你无法避免传递延迟——报文从主时钟发到从时钟需要时间，而这个时间本身就在变化。PTP协议最精妙的地方，就是<strong>测量这个传递延迟</strong>，然后在计算中把它减掉。</p>
+<p><strong>4. 即使同步了，也会慢慢“跑偏”</strong></p>
+<p>你的石英表为什么过几天就不准了？因为它的“心跳”（石英振动）和原子钟的心跳不完全一致。这个差异叫<strong>频率漂移</strong>。PTP协议不仅要校准当前时刻（相位），还要持续校准频率，让从时钟的心跳频率无限逼近主时钟。</p>
+<p>这些问题，就是我们后面要一章一章拆解的内容。</p>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>现在我们知道了：</p>
+<ul>
+<li>人类为了精准的时间计量，折腾了几千年。</li>
+<li>原子钟给出了宇宙级的“秒”的定义。</li>
+<li>但有了精准的尺子，不等于所有人都能拿到这把尺子。</li>
+</ul>
+<p>下一节，我们将回到日常生活的场景中。你会看到，即使你手机上的时间已经够准了，它和旁边人的手机之间，仍然可能存在着几十毫秒的差异——而这个差异，在某些场景下是致命的。</p>
+<blockquote>
+<p><strong>【悬念留给1.3】</strong></p>
+<p>你有没有想过：为什么股票交易所有自己的时间服务器？为什么5G基站之间需要微秒级同步？为什么特斯拉的电池管理系统需要所有电芯的时间对齐？</p>
+<p>因为这些场景里，几十毫秒的误差就意味着几百万的损失、或者一块烧坏的电池。</p>
+<p>下一节，我们就来讲这些“日常中的同步需求”，以及一个核心概念——<strong>漂移</strong>。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/1.1-如果你周围的一切都静止了.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/1.3-为什么你手机上的时间和我不一样？.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/1.1-如果你周围的一切都静止了.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/1.3-为什么你手机上的时间和我不一样？.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

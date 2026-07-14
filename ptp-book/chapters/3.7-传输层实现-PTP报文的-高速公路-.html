@@ -1,0 +1,1848 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>传输层实现 · PTP报文的 · 高速公路 ·  - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="37-传输层实现ptp报文的高速公路"><a class="header" href="#37-传输层实现ptp报文的高速公路">3.7 传输层实现：PTP报文的“高速公路“</a></h1>
+<h2 id="ptp报文如何穿越网络"><a class="header" href="#ptp报文如何穿越网络">PTP报文如何穿越网络</a></h2>
+<p>上一节我们学会了如何操作PHC硬件时钟，但有个问题：</p>
+<p>PTP报文是怎么在网络中传输的？</p>
+<pre><code>PTP报文诞生流程：
+1. 应用层：构造PTP消息（Sync, Follow_Up, Delay_Req...）
+2. 传输层：封装成UDP或以太网帧
+3. 网络层：发送到组播地址
+4. 数据链路层：网卡发送
+5. 物理层：电信号传输
+
+反向流程：
+5. 物理层：接收电信号
+4. 数据链路层：网卡接收
+3. 网络层：识别PTP报文
+2. 传输层：提取PTP消息
+1. 应用层：处理消息内容
+</code></pre>
+<p>LinuxPTP支持多种传输方式，如何统一管理？</p>
+<hr>
+<h2 id="传输抽象接口"><a class="header" href="#传输抽象接口">传输抽象接口</a></h2>
+<h3 id="transport_type枚举"><a class="header" href="#transport_type枚举">transport_type枚举</a></h3>
+<pre><code class="language-c">/* transport.h, 第33-42行 */
+
+enum transport_type {
+    /* 0 is Reserved in spec. Use it for UDS */
+    TRANS_UDS = 0,          /* Unix域套接字（管理接口） */
+    TRANS_UDP_IPV4 = 1,     /* UDP/IPv4传输 */
+    TRANS_UDP_IPV6,         /* UDP/IPv6传输 */
+    TRANS_IEEE_802_3,       /* 原始以太网传输 */
+    TRANS_DEVICENET,        /* DeviceNet（工业协议） */
+    TRANS_CONTROLNET,       /* ControlNet（工业协议） */
+    TRANS_PROFINET,         /* PROFINET（工业协议） */
+};
+</code></pre>
+<p><strong>IEEE 1588定义的传输类型</strong>：</p>
+<pre><code>networkProtocol enumeration（7.4.1 Table 3）：
+
+值    含义                  描述
+0     Reserved              保留（LinuxPTP用于UDS）
+1     UDP/IP (IPv4)         UDP over IPv4
+2     UDP/IP (IPv6)         UDP over IPv6
+3     IEEE 802.3            原始以太网
+4     DeviceNet             工业网络协议
+5     ControlNet            工业网络协议
+6     PROFINET              工业以太网协议
+
+LinuxPTP实现了前4种（0-3），工业协议未实现。
+</code></pre>
+<h3 id="transport_event枚举"><a class="header" href="#transport_event枚举">transport_event枚举</a></h3>
+<pre><code class="language-c">/* transport.h, 第48-54行 */
+
+enum transport_event {
+    TRANS_GENERAL,      /* 普通消息（不需要时间戳） */
+    TRANS_EVENT,        /* 事件消息（需要时间戳） */
+    TRANS_ONESTEP,      /* 单步时钟（同步消息） */
+    TRANS_P2P1STEP,     /* 单步时钟（P2P延迟测量） */
+    TRANS_DEFER_EVENT,  /* 延迟获取时间戳 */
+};
+</code></pre>
+<p><strong>普通消息 vs 事件消息</strong>：</p>
+<pre><code>PTP消息分类：
+
+事件消息（需要精确时间戳）：
+- Sync：同步消息
+- Delay_Req：延迟请求
+- Pdelay_Req：P2P延迟请求
+- Pdelay_Resp：P2P延迟响应
+
+特点：
+- 发送和接收时都需要打时间戳
+- 时间戳精度直接影响同步精度
+- 使用EVENT端口（319）
+
+普通消息（不需要精确时间戳）：
+- Follow_Up：跟随消息
+- Delay_Resp：延迟响应
+- Announce：通告消息
+- Management：管理消息
+- Signaling：信号消息
+
+特点：
+- 不需要精确时间戳
+- 携带事件消息的时间戳信息
+- 使用GENERAL端口（320）
+</code></pre>
+<h3 id="transport结构体"><a class="header" href="#transport结构体">transport结构体</a></h3>
+<pre><code class="language-c">/* transport_private.h, 第29-50行 */
+
+struct transport {
+    enum transport_type type;    /* 传输类型 */
+    struct config *cfg;          /* 配置对象 */
+
+    /* 操作函数指针 */
+    int (*close)(struct transport *t, struct fdarray *fda);
+    int (*open)(struct transport *t, struct interface *iface,
+                struct fdarray *fda, enum timestamp_type tt);
+    int (*recv)(struct transport *t, int fd, void *buf, int buflen,
+                struct address *addr, struct hw_timestamp *hwts);
+    int (*send)(struct transport *t, struct fdarray *fda,
+                enum transport_event event, int peer, void *buf, int buflen,
+                struct address *addr, struct hw_timestamp *hwts);
+    void (*release)(struct transport *t);
+    int (*physical_addr)(struct transport *t, uint8_t *addr);
+    int (*protocol_addr)(struct transport *t, uint8_t *addr);
+};
+</code></pre>
+<p><strong>这是典型的面向对象设计</strong>：</p>
+<pre><code>C语言的"虚函数表"模式：
+
+struct transport定义了接口（抽象类）
+具体的传输实现（UDP、Raw）继承这个接口
+通过函数指针实现多态
+
+好处：
+- 统一的接口调用
+- 方便添加新的传输类型
+- 上层代码不关心具体传输
+</code></pre>
+<hr>
+<h2 id="公共接口函数"><a class="header" href="#公共接口函数">公共接口函数</a></h2>
+<h3 id="transport_create创建传输实例"><a class="header" href="#transport_create创建传输实例">transport_create：创建传输实例</a></h3>
+<pre><code class="language-c">/* transport.c, 第101-128行 */
+
+struct transport *transport_create(struct config *cfg, enum transport_type type)
+{
+    struct transport *t = NULL;
+    
+    switch (type) {
+    case TRANS_UDS:
+        t = uds_transport_create();
+        break;
+    case TRANS_UDP_IPV4:
+        t = udp_transport_create();
+        break;
+    case TRANS_UDP_IPV6:
+        t = udp6_transport_create();
+        break;
+    case TRANS_IEEE_802_3:
+        t = raw_transport_create();
+        break;
+    case TRANS_DEVICENET:
+    case TRANS_CONTROLNET:
+    case TRANS_PROFINET:
+        break;      /* 不支持 */
+    }
+    
+    if (t) {
+        t-&gt;type = type;
+        t-&gt;cfg = cfg;
+    }
+    return t;
+}
+</code></pre>
+<p><strong>工厂模式</strong>：</p>
+<pre><code>transport_create是"工厂函数"：
+- 根据类型参数创建相应实例
+- 每种传输有自己的create函数
+- 返回统一接口
+
+调用示例：
+t = transport_create(cfg, TRANS_UDP_IPV4);
+    → 调用udp_transport_create()
+    → 返回UDP传输实例
+
+t = transport_create(cfg, TRANS_IEEE_802_3);
+    → 调用raw_transport_create()
+    → 返回Raw传输实例
+</code></pre>
+<h3 id="transport_open打开传输"><a class="header" href="#transport_open打开传输">transport_open：打开传输</a></h3>
+<pre><code class="language-c">/* transport.c, 第34-38行 */
+
+int transport_open(struct transport *t, struct interface *iface,
+                   struct fdarray *fda, enum timestamp_type tt)
+{
+    return t-&gt;open(t, iface, fda, tt);
+}
+</code></pre>
+<p><strong>多态调用</strong>：</p>
+<pre><code>transport_open是"虚函数"调用：
+- 通过函数指针调用具体实现
+- UDP：调用udp_open
+- Raw：调用raw_open
+
+参数说明：
+- iface：网络接口配置
+- fda：文件描述符数组（存放打开的socket）
+- tt：时间戳类型（软件/硬件）
+
+返回值：
+- 0：成功
+- -1：失败
+</code></pre>
+<h3 id="fdarray结构"><a class="header" href="#fdarray结构">fdarray结构</a></h3>
+<pre><code class="language-c">/* fd.h, 第49-51行 */
+
+struct fdarray {
+    int fd[N_POLLFD];
+};
+
+/* fd数组索引定义 */
+enum {
+    FD_EVENT,          /* 事件消息socket */
+    FD_GENERAL,        /* 普通消息socket */
+    FD_DELAY_TIMER,    /* 延迟定时器 */
+    FD_ANNOUNCE_TIMER, /* 通告定时器 */
+    FD_SYNC_RX_TIMER,  /* 同步接收定时器 */
+    ...
+    N_POLLFD,          /* 总数量 */
+};
+</code></pre>
+<p><strong>两个socket的设计</strong>：</p>
+<pre><code>PTP需要两个socket：
+
+FD_EVENT（事件socket）：
+- 端口319（UDP）或EtherType 0x88F7
+- 发送/接收事件消息
+- 配置硬件时间戳
+
+FD_GENERAL（普通socket）：
+- 端口320（UDP）
+- 发送/接收普通消息
+- 可选软件时间戳
+
+为什么分开？
+- 事件消息需要精确时间戳
+- 普通消息不需要精确时间戳
+- 分开可以独立配置时间戳
+</code></pre>
+<h3 id="transport_send发送消息"><a class="header" href="#transport_send发送消息">transport_send：发送消息</a></h3>
+<pre><code class="language-c">/* transport.c, 第45-51行 */
+
+int transport_send(struct transport *t, struct fdarray *fda,
+                   enum transport_event event, struct ptp_message *msg)
+{
+    int len = ntohs(msg-&gt;header.messageLength);
+
+    return t-&gt;send(t, fda, event, 0, msg, len, NULL, &amp;msg-&gt;hwts);
+}
+</code></pre>
+<p><strong>参数解析</strong>：</p>
+<pre><code>transport_send参数：
+- t：传输实例
+- fda：socket数组
+- event：消息类型（TRANS_GENERAL/TRANS_EVENT）
+- msg：PTP消息结构
+
+内部调用：
+t-&gt;send(t, fda, event, 0, msg, len, NULL, &amp;msg-&gt;hwts)
+- event=0表示非peer消息（使用主组播地址）
+- NULL表示使用默认地址
+- &amp;msg-&gt;hwts用于存放时间戳
+
+消息长度：
+ntohs(msg-&gt;header.messageLength)
+- 从消息头获取长度
+- ntohs转换字节序
+</code></pre>
+<h3 id="transport_peer发送peer消息"><a class="header" href="#transport_peer发送peer消息">transport_peer：发送peer消息</a></h3>
+<pre><code class="language-c">/* transport.c, 第53-59行 */
+
+int transport_peer(struct transport *t, struct fdarray *fda,
+                   enum transport_event event, struct ptp_message *msg)
+{
+    int len = ntohs(msg-&gt;header.messageLength);
+
+    return t-&gt;send(t, fda, event, 1, msg, len, NULL, &amp;msg-&gt;hwts);
+}
+</code></pre>
+<p><strong>peer消息的含义</strong>：</p>
+<pre><code>peer参数的作用：
+- event=0：使用主组播地址（ptp_dst）
+- event=1：使用peer组播地址（p2p_dst）
+
+主组播地址：
+- 用于E2E延迟测量
+- 发送Sync, Announce等
+- IPv4：224.0.1.129
+- MAC：01:1B:19:00:00:00
+
+Peer组播地址：
+- 用于P2P延迟测量
+- 发送Pdelay_Req, Pdelay_Resp
+- IPv4：224.0.0.107
+- MAC：01:80:C2:00:00:0E
+
+区别：
+transport_send → 主组播地址
+transport_peer → peer组播地址
+</code></pre>
+<h3 id="transport_recv接收消息"><a class="header" href="#transport_recv接收消息">transport_recv：接收消息</a></h3>
+<pre><code class="language-c">/* transport.c, 第40-43行 */
+
+int transport_recv(struct transport *t, int fd, struct ptp_message *msg)
+{
+    return t-&gt;recv(t, fd, msg, sizeof(msg-&gt;data), &amp;msg-&gt;address, &amp;msg-&gt;hwts);
+}
+</code></pre>
+<p><strong>接收流程</strong>：</p>
+<pre><code>transport_recv调用具体传输的recv：
+- 从socket读取数据
+- 同时获取时间戳
+- 记录源地址
+
+参数：
+- fd：socket文件描述符
+- msg-&gt;data：数据缓冲区
+- msg-&gt;address：源地址
+- msg-&gt;hwts：硬件时间戳
+
+返回值：
+- 正数：接收的字节数
+- 负数：错误
+</code></pre>
+<hr>
+<h2 id="udpipv4传输实现"><a class="header" href="#udpipv4传输实现">UDP/IPv4传输实现</a></h2>
+<h3 id="udp传输结构"><a class="header" href="#udp传输结构">UDP传输结构</a></h3>
+<pre><code class="language-c">/* udp.c, 第43-47行 */
+
+struct udp {
+    struct transport t;      /* 传输接口 */
+    struct address ip;       /* IP地址 */
+    struct address mac;      /* MAC地址 */
+};
+</code></pre>
+<p><strong>继承关系</strong>：</p>
+<pre><code>struct udp包含struct transport：
+- 第一个成员是基类
+- 可以用container_of宏获取派生类
+
+container_of(ptr, struct udp, t)：
+- 从t指针获取udp结构体指针
+- C语言实现继承的关键技巧
+</code></pre>
+<h3 id="udp端口定义"><a class="header" href="#udp端口定义">UDP端口定义</a></h3>
+<pre><code class="language-c">/* udp.c, 第40-41行 */
+
+#define EVENT_PORT        319    /* PTP事件端口 */
+#define GENERAL_PORT      320    /* PTP普通端口 */
+</code></pre>
+<p><strong>IEEE 1588规定的端口</strong>：</p>
+<pre><code>PTP使用两个UDP端口：
+
+端口319（事件端口）：
+- IANA注册：ptp-event
+- 发送需要时间戳的消息
+- 配置硬件时间戳
+
+端口320（普通端口）：
+- IANA注册：ptp-general
+- 发送不需要时间戳的消息
+- Follow_Up, Announce等
+
+查看端口注册：
+$ grep ptp /etc/services
+ptp-event    319/udp    # PTP Event
+ptp-general  320/udp    # PTP General
+</code></pre>
+<h3 id="组播地址配置"><a class="header" href="#组播地址配置">组播地址配置</a></h3>
+<pre><code class="language-c">/* config.c中的默认配置 */
+
+PORT_ITEM_STR("ptp_dst_ipv4", "224.0.1.129"),
+PORT_ITEM_STR("p2p_dst_ipv4", "224.0.0.107"),
+</code></pre>
+<p><strong>组播地址选择</strong>：</p>
+<pre><code>IPv4组播地址范围：
+224.0.0.0 - 224.0.0.255：本地网络控制块
+224.0.1.0 - 224.0.1.255：本地网络范围
+
+PTP主组播地址（224.0.1.129）：
+- 属于本地网络范围
+- 需要路由器转发（跨子网）
+- 用于E2E延迟测量
+
+PTP peer组播地址（224.0.0.107）：
+- 属于本地网络控制块
+- 不转发，仅本子网
+- 用于P2P延迟测量
+
+为什么不同？
+- P2P测量相邻节点，不需要跨子网
+- E2E测量可能跨多个节点
+</code></pre>
+<h3 id="mcast_join加入组播组"><a class="header" href="#mcast_join加入组播组">mcast_join：加入组播组</a></h3>
+<pre><code class="language-c">/* udp.c, 第63-82行 */
+
+static int mcast_join(int fd, int index, const struct sockaddr_in *sa)
+{
+    int err, off = 0;
+    struct ip_mreqn req;
+
+    memset(&amp;req, 0, sizeof(req));
+    memcpy(&amp;req.imr_multiaddr, &amp;sa-&gt;sin_addr, sizeof(struct in_addr));
+    req.imr_ifindex = index;
+    
+    /* 加入组播组 */
+    err = setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &amp;req, sizeof(req));
+    if (err) {
+        pr_err("setsockopt IP_ADD_MEMBERSHIP failed: %m");
+        return -1;
+    }
+    
+    /* 禁止本地回环 */
+    err = setsockopt(fd, IPPROTO_IP, IP_MULTICAST_LOOP, &amp;off, sizeof(off));
+    if (err) {
+        pr_err("setsockopt IP_MULTICAST_LOOP failed: %m");
+        return -1;
+    }
+    return 0;
+}
+</code></pre>
+<p><strong>组播加入详解</strong>：</p>
+<pre><code>IP_ADD_MEMBERSHIP：
+- 加入指定的组播组
+- 网卡开始接收该组播地址的报文
+- 参数：struct ip_mreqn
+
+struct ip_mreqn {
+    struct in_addr imr_multiaddr;  /* 组播地址 */
+    struct in_addr imr_address;    /* 本地地址（可选） */
+    int imr_ifindex;               /* 网卡索引 */
+};
+
+IP_MULTICAST_LOOP：
+- 控制是否接收自己发送的组播
+- off=0：禁止回环
+- 防止自己发送的消息被自己接收
+</code></pre>
+<p><strong>为什么禁止回环</strong>：</p>
+<pre><code>组播回环问题：
+
+如果不禁止：
+1. ptp4l发送Sync消息到组播地址
+2. 同一网卡接收自己发送的消息
+3. 接收时间戳和发送时间戳几乎相同
+4. 导致误判（以为收到其他节点的消息）
+
+禁止回环后：
+- 只接收其他节点发送的消息
+- 不会误判
+</code></pre>
+<h3 id="open_socket创建udp-socket"><a class="header" href="#open_socket创建udp-socket">open_socket：创建UDP socket</a></h3>
+<pre><code class="language-c">/* udp.c, 第91-145行 */
+
+static int open_socket(const char *name, struct in_addr mc_addr[2], short port, int ttl)
+{
+    struct sockaddr_in addr;
+    int fd, index, on = 1;
+
+    /* 步骤1：创建socket */
+    fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (fd &lt; 0) {
+        pr_err("socket failed: %m");
+        goto no_socket;
+    }
+
+    /* 步骤2：获取网卡索引 */
+    index = sk_interface_index(fd, name);
+    if (index &lt; 0)
+        goto no_option;
+
+    /* 步骤3：设置地址重用 */
+    if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &amp;on, sizeof(on))) {
+        pr_err("setsockopt SO_REUSEADDR failed: %m");
+        goto no_option;
+    }
+
+    /* 步骤4：绑定端口 */
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);  /* 绑定所有地址 */
+    addr.sin_port = htons(port);
+    if (bind(fd, (struct sockaddr *) &amp;addr, sizeof(addr))) {
+        pr_err("bind failed: %m");
+        goto no_option;
+    }
+
+    /* 步骤5：绑定到指定网卡 */
+    if (setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, name, strlen(name))) {
+        pr_err("setsockopt SO_BINDTODEVICE failed: %m");
+        goto no_option;
+    }
+
+    /* 步骤6：设置组播TTL */
+    if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &amp;ttl, sizeof(ttl))) {
+        pr_err("setsockopt IP_MULTICAST_TTL failed: %m");
+        goto no_option;
+    }
+
+    /* 步骤7：加入两个组播组 */
+    addr.sin_addr = mc_addr[0];
+    if (mcast_join(fd, index, &amp;addr)) {
+        goto no_option;
+    }
+    addr.sin_addr = mc_addr[1];
+    if (mcast_join(fd, index, &amp;addr)) {
+        goto no_option;
+    }
+
+    /* 步骤8：设置组播输出接口 */
+    if (mcast_bind(fd, index)) {
+        goto no_option;
+    }
+
+    return fd;
+no_option:
+    close(fd);
+no_socket:
+    return -1;
+}
+</code></pre>
+<p><strong>socket创建的8个步骤</strong>：</p>
+<pre><code>1. socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)
+   - 创建UDP socket
+   - PF_INET表示IPv4协议族
+
+2. sk_interface_index(fd, name)
+   - 获取网卡索引
+   - 用于后续组播配置
+
+3. SO_REUSEADDR
+   - 允许地址重用
+   - 多个进程可以绑定同一端口
+
+4. bind(INADDR_ANY, port)
+   - 绑定端口
+   - INADDR_ANY表示接收所有地址的报文
+
+5. SO_BINDTODEVICE
+   - 绑定到指定网卡
+   - 只从该网卡接收报文
+
+6. IP_MULTICAST_TTL
+   - 设置组播报文的TTL
+   - 控制转发范围
+
+7. mcast_join（两次）
+   - 加入主组播组（ptp_dst）
+   - 加入peer组播组（p2p_dst）
+
+8. mcast_bind
+   - 设置组播报文的输出接口
+   - 发送组播时使用指定网卡
+</code></pre>
+<h3 id="udp_open打开udp传输"><a class="header" href="#udp_open打开udp传输">udp_open：打开UDP传输</a></h3>
+<pre><code class="language-c">/* udp.c, 第151-214行 */
+
+static int udp_open(struct transport *t, struct interface *iface,
+                    struct fdarray *fda, enum timestamp_type ts_type)
+{
+    struct udp *udp = container_of(t, struct udp, t);
+    const char *name = interface_name(iface);
+    uint8_t event_dscp, general_dscp;
+    int efd, gfd, ttl;
+    char *str;
+
+    /* 步骤1：获取配置 */
+    ttl = config_get_int(t-&gt;cfg, name, "udp_ttl");
+    
+    /* 步骤2：获取MAC地址 */
+    sk_interface_macaddr(name, &amp;udp-&gt;mac);
+
+    /* 步骤3：获取IP地址 */
+    sk_interface_addr(name, AF_INET, &amp;udp-&gt;ip);
+
+    /* 步骤4：解析主组播地址 */
+    str = config_get_string(t-&gt;cfg, name, "ptp_dst_ipv4");
+    if (!inet_aton(str, &amp;mcast_addr[MC_PRIMARY])) {
+        pr_err("invalid ptp_dst_ipv4 %s", str);
+        return -1;
+    }
+
+    /* 步骤5：解析peer组播地址 */
+    str = config_get_string(t-&gt;cfg, name, "p2p_dst_ipv4");
+    if (!inet_aton(str, &amp;mcast_addr[MC_PDELAY])) {
+        pr_err("invalid p2p_dst_ipv4 %s", str);
+        return -1;
+    }
+
+    /* 步骤6：打开事件socket */
+    efd = open_socket(name, mcast_addr, EVENT_PORT, ttl);
+    if (efd &lt; 0)
+        goto no_event;
+
+    /* 步骤7：打开普通socket */
+    gfd = open_socket(name, mcast_addr, GENERAL_PORT, ttl);
+    if (gfd &lt; 0)
+        goto no_general;
+
+    /* 步骤8：配置时间戳 */
+    if (sk_timestamping_init(efd, interface_label(iface), ts_type, 
+                             TRANS_UDP_IPV4, interface_get_vclock(iface)))
+        goto no_timestamping;
+
+    if (sk_general_init(gfd))
+        goto no_timestamping;
+
+    /* 步骤9：配置DSCP优先级 */
+    event_dscp = config_get_int(t-&gt;cfg, NULL, "dscp_event");
+    general_dscp = config_get_int(t-&gt;cfg, NULL, "dscp_general");
+
+    if (event_dscp &amp;&amp; sk_set_priority(efd, AF_INET, event_dscp)) {
+        pr_warning("Failed to set event DSCP priority.");
+    }
+    if (general_dscp &amp;&amp; sk_set_priority(gfd, AF_INET, general_dscp)) {
+        pr_warning("Failed to set general DSCP priority.");
+    }
+
+    /* 步骤10：保存文件描述符 */
+    fda-&gt;fd[FD_EVENT] = efd;
+    fda-&gt;fd[FD_GENERAL] = gfd;
+    return 0;
+
+no_timestamping:
+    close(gfd);
+no_general:
+    close(efd);
+no_event:
+    return -1;
+}
+</code></pre>
+<p><strong>DSCP优先级</strong>：</p>
+<pre><code>DSCP（Differentiated Services Code Point）：
+- IP头中的服务质量字段
+- 用于区分报文优先级
+- 高优先级报文获得更好的网络服务
+
+PTP报文优先级：
+- event_dscp：事件消息优先级
+- general_dscp：普通消息优先级
+
+作用：
+- 事件消息需要高优先级
+- 减少网络延迟抖动
+- 提高同步精度
+
+配置示例：
+dscp_event 46    # 高优先级（ Expedited Forwarding）
+dscp_general 0   # 普通优先级
+</code></pre>
+<h3 id="udp_send发送udp消息"><a class="header" href="#udp_send发送udp消息">udp_send：发送UDP消息</a></h3>
+<pre><code class="language-c">/* udp.c, 第222-271行 */
+
+static int udp_send(struct transport *t, struct fdarray *fda,
+                    enum transport_event event, int peer, void *buf, int len,
+                    struct address *addr, struct hw_timestamp *hwts)
+{
+    struct address addr_buf;
+    unsigned char junk[1600];
+    ssize_t cnt;
+    int fd = -1;
+
+    /* 步骤1：选择socket */
+    switch (event) {
+    case TRANS_GENERAL:
+        fd = fda-&gt;fd[FD_GENERAL];
+        break;
+    case TRANS_EVENT:
+    case TRANS_ONESTEP:
+    case TRANS_P2P1STEP:
+    case TRANS_DEFER_EVENT:
+        fd = fda-&gt;fd[FD_EVENT];
+        break;
+    }
+
+    /* 步骤2：设置目标地址 */
+    if (!addr) {
+        memset(&amp;addr_buf, 0, sizeof(addr_buf));
+        addr_buf.sin.sin_family = AF_INET;
+        addr_buf.sin.sin_addr = peer ? mcast_addr[MC_PDELAY] : 
+                                       mcast_addr[MC_PRIMARY];
+        addr_buf.len = sizeof(addr_buf.sin);
+        addr = &amp;addr_buf;
+    }
+
+    /* 步骤3：设置端口 */
+    addr-&gt;sin.sin_port = htons(event ? EVENT_PORT : GENERAL_PORT);
+
+    /* 步骤4：单步时钟特殊处理 */
+    if (event == TRANS_ONESTEP)
+        len += 2;    /* 为UDP校验修正扩展 */
+
+    /* 步骤5：发送消息 */
+    cnt = sendto(fd, buf, len, 0, &amp;addr-&gt;sa, sizeof(addr-&gt;sin));
+    if (cnt &lt; 1) {
+        pr_err("sendto failed: %m");
+        return -errno;
+    }
+
+    /* 步骤6：获取发送时间戳 */
+    return event == TRANS_EVENT ? 
+           sk_receive(fd, junk, len, NULL, hwts, MSG_ERRQUEUE) : cnt;
+}
+</code></pre>
+<p><strong>发送时间戳获取</strong>：</p>
+<pre><code>MSG_ERRQUEUE的魔法：
+
+普通socket发送：
+sendto(fd, buf, len, 0, &amp;addr, sizeof(addr))
+- 发送数据
+- 返回发送字节数
+
+获取发送时间戳：
+sk_receive(fd, junk, len, NULL, hwts, MSG_ERRQUEUE)
+- 从错误队列读取
+- 不是真正的"接收"
+- 而是获取发送时的时间戳
+
+原理：
+- Linux内核在发送报文时打时间戳
+- 时间戳保存在socket的错误队列
+- 用recvmsg(MSG_ERRQUEUE)读取
+- junk缓冲区存放发送的报文副本
+</code></pre>
+<p><strong>单步时钟的UDP扩展</strong>：</p>
+<pre><code class="language-c">if (event == TRANS_ONESTEP)
+    len += 2;
+</code></pre>
+<pre><code>单步时钟（One-Step）：
+- 在发送Sync时直接打时间戳
+- 修改报文中的时间戳字段
+- 不需要Follow_Up消息
+
+问题：
+- 网卡可能在发送后才修改时间戳
+- UDP校验和需要重新计算
+- PHY芯片（如DP83640）需要额外2字节
+
+len += 2：
+- 为UDP校验修正预留空间
+- PHY会用这些字节计算校验
+</code></pre>
+<hr>
+<h2 id="udpipv6传输实现"><a class="header" href="#udpipv6传输实现">UDP/IPv6传输实现</a></h2>
+<h3 id="ipv6组播地址"><a class="header" href="#ipv6组播地址">IPv6组播地址</a></h3>
+<pre><code class="language-c">/* config.c中的IPv6配置 */
+
+PORT_ITEM_STR("ptp_dst_ipv6", "FF0E:0:0:0:0:0:0:181"),
+PORT_ITEM_STR("p2p_dst_ipv6", "FF02:0:0:0:0:0:0:6B"),
+</code></pre>
+<p><strong>IPv6组播地址结构</strong>：</p>
+<pre><code>IPv6组播地址格式：
+FF0s:0:0:0:0:0:0:xxxx
+
+FF：组播前缀
+0：标志（临时=1，永久=0）
+s：范围：
+   1：接口本地
+   2：链路本地
+   5：站点本地
+   8：组织本地
+   E：全球范围
+
+PTP主组播（FF0E::181）：
+- FF0E：全球范围永久组播
+- 181：PTP协议编号
+
+PTP peer组播（FF02::6B）：
+- FF02：链路本地永久组播
+- 6B：PTP P2P编号（107）
+
+区别：
+- E2E需要跨范围 → 全球范围
+- P2P仅链路 → 链路本地
+</code></pre>
+<h3 id="ipv6-scope配置"><a class="header" href="#ipv6-scope配置">IPv6 scope配置</a></h3>
+<pre><code class="language-c">/* udp6.c, 第181-182行 */
+
+udp6-&gt;mc6_addr[MC_PRIMARY].s6_addr[1] = config_get_int(t-&gt;cfg, name, "udp6_scope");
+</code></pre>
+<p><strong>动态修改scope</strong>：</p>
+<pre><code>udp6_scope配置：
+- 默认值：0x0E（全球范围）
+- 可配置为其他范围
+
+s6_addr[1]是地址的第2字节：
+FF0E::181 → s6_addr[1] = 0x0E
+修改为FF05::181 → s6_addr[1] = 0x05
+
+作用：
+- 控制组播报文的传播范围
+- 根据网络拓扑调整
+</code></pre>
+<h3 id="链路本地地址处理"><a class="header" href="#链路本地地址处理">链路本地地址处理</a></h3>
+<pre><code class="language-c">/* udp6.c, 第53-56行 */
+
+static int is_link_local(struct in6_addr *addr)
+{
+    return addr-&gt;s6_addr[1] == 0x02 ? 1 : 0;
+}
+
+/* 发送时使用 */
+if (is_link_local(&amp;addr_buf.sin6.sin6_addr))
+    addr_buf.sin6.sin6_scope_id = udp6-&gt;index;
+</code></pre>
+<p><strong>链路本地地址的特殊性</strong>：</p>
+<pre><code>IPv6链路本地地址（fe80::/10）：
+- 仅在本链路有效
+- 需要指定网卡索引
+- scope_id字段用于标识网卡
+
+PTP peer组播（FF02::6B）：
+- 虽然不是fe80::，但也是链路本地范围
+- 需要设置scope_id
+
+sin6_scope_id：
+- 指定使用的网卡
+- 发送到链路本地地址时必须设置
+</code></pre>
+<hr>
+<h2 id="原始以太网传输"><a class="header" href="#原始以太网传输">原始以太网传输</a></h2>
+<h3 id="为什么使用原始以太网"><a class="header" href="#为什么使用原始以太网">为什么使用原始以太网</a></h3>
+<pre><code>UDP vs 原始以太网：
+
+UDP传输：
+- 需要IP协议栈处理
+- 有UDP和IP头部开销
+- 受IP路由影响
+- 穿越路由器时时间戳可能变化
+
+原始以太网：
+- 绕过IP协议栈
+- 直接以太网帧传输
+- 无IP路由影响
+- 时间戳更稳定
+- 精度更高
+
+适用场景：
+- 工业控制网络
+- 不需要路由的环境
+- 追求最高精度
+</code></pre>
+<h3 id="ethernet-ethertype"><a class="header" href="#ethernet-ethertype">Ethernet EtherType</a></h3>
+<pre><code class="language-c">/* ether.h, 第25-39行 */
+
+#define EUI48 6      /* MAC地址长度 */
+#define EUI64 8      /* GUID长度（InfiniBand） */
+#define MAC_LEN EUI48
+
+typedef uint8_t eth_addr[MAC_LEN];
+
+struct eth_hdr {
+    eth_addr dst;    /* 目标MAC */
+    eth_addr src;    /* 源MAC */
+    uint16_t type;   /* EtherType */
+} __attribute__((packed));
+</code></pre>
+<p><strong>PTP EtherType</strong>：</p>
+<pre><code>IEEE 1588定义的EtherType：
+0x88F7：PTP over IEEE 802.3
+
+以太网帧结构：
+┌─────────┬─────────┬─────────┬─────────────┬─────┐
+│Dst MAC  │Src MAC  │EtherType│PTP Message  │FCS  │
+│6 bytes  │6 bytes  │2 bytes  │N bytes      │4    │
+└─────────┴─────────┴─────────┴─────────────┴─────┘
+
+EtherType：
+0x0800：IPv4
+0x86DD：IPv6
+0x8100：VLAN
+0x88F7：PTP
+</code></pre>
+<h3 id="ptp组播mac地址"><a class="header" href="#ptp组播mac地址">PTP组播MAC地址</a></h3>
+<pre><code class="language-c">/* config.c中的MAC配置 */
+
+PORT_ITEM_STR("ptp_dst_mac", "01:1B:19:00:00:00"),
+PORT_ITEM_STR("p2p_dst_mac", "01:80:C2:00:00:0E"),
+</code></pre>
+<p><strong>组播MAC地址生成规则</strong>：</p>
+<pre><code>IPv4组播 → MAC组播映射：
+
+IPv4组播地址：224.0.1.129
+MAC组播地址：01:00:5E:00:01:81
+
+映射规则：
+- 前24位：01:00:5E（IPv4组播MAC前缀）
+- 后23位：IPv4组播地址的后23位
+- 第25位：0（固定）
+
+224.0.1.129 → 0xE0.0.1.81
+取后23位 → 0.01.81（去掉最高位）
+映射MAC → 01:00:5E:00:01:81
+
+但IEEE 1588定义了特殊的MAC地址：
+ptp_dst_mac：01:1B:19:00:00:00
+- 不是标准映射
+- IEEE 1588专用组播MAC
+
+p2p_dst_mac：01:80:C2:00:00:0E
+- IEEE 802.1桥接协议组播地址范围
+- 不会被交换机转发到其他端口
+- 仅在本地链路有效
+</code></pre>
+<h3 id="bpf过滤器"><a class="header" href="#bpf过滤器">BPF过滤器</a></h3>
+<pre><code class="language-c">/* raw.c, 第131-149行 */
+
+/*
+ * tcpdump -d \
+ * '((ether[12:2] == 0x8100 and ether[12 + 4 :2] == 0x88F7 and ether[14+4 :1] &amp; 0x8 == 0x8) or '\
+ * ' (ether[12:2] == 0x88F7 and                                ether[14   :1] &amp; 0x8 == 0x8)) and '\
+ * 'not ether src de:ad:de:ad:be:ef'
+ */
+
+static struct sock_filter raw_filter_vlan_norm_event[] = {
+    { 0x28, 0, 0, 0x0000000c },   /* ldh      [12]       */
+    { 0x15, 0, 5, 0x00008100 },   /* jeq      #0x8100    */
+    { 0x28, 0, 0, 0x00000010 },   /* ldh      [16]       */
+    { 0x15, 0, 12, 0x000088f7 },  /* jeq      #0x88f7    */
+    { 0x30, 0, 0, 0x00000012 },   /* ldb      [18]       */
+    { 0x54, 0, 0, 0x00000008 },   /* and      #0x8       */
+    { 0x15, 4, 9, 0x00000008 },   /* jeq      #0x8       */
+    { 0x15, 0, 8, 0x000088f7 },   /* jeq      #0x88f7    */
+    { 0x30, 0, 0, 0x0000000e },   /* ldb      [14]       */
+    { 0x54, 0, 0, 0x00000008 },   /* and      #0x8       */
+    { 0x15, 0, 5, 0x00000008 },   /* jeq      #0x8       */
+    { 0x20, 0, 0, 0x00000008 },   /* ld       [8]        */
+    { 0x15, 0, 2, 0xdeadbeef },   /* jeq      #0xdeadbeef */
+    { 0x28, 0, 0, 0x00000006 },   /* ldh      [6]        */
+    { 0x15, 1, 0, 0x0000dead },   /* jeq      #0xdead    */
+    { 0x6, 0, 0, 0x00040000 },    /* ret      #262144    */
+    { 0x6, 0, 0, 0x00000000 },    /* ret      #0         */
+};
+</code></pre>
+<p><strong>BPF（Berkeley Packet Filter）</strong>：</p>
+<pre><code>BPF是Linux内核的包过滤器：
+- 在内核态运行
+- 高效过滤网络包
+- 减少用户态处理开销
+
+PTP BPF过滤器的作用：
+1. 只接收PTP报文（EtherType 0x88F7）
+2. 区分事件消息和普通消息
+3. 过滤自己发送的消息
+4. 支持VLAN封装
+
+过滤器逻辑：
+- 检查EtherType是否为PTP（0x88F7）
+- 检查消息类型（事件/普通）
+- 检查源MAC是否是自己（避免回环）
+- 返回：接受（262144）或拒绝（0）
+</code></pre>
+<p><strong>BPF指令解读</strong>：</p>
+<pre><code>ldh [12]：加载以太网帧[12:14]（EtherType位置）
+jeq #0x8100：判断是否为VLAN标签（TPID）
+ldh [16]：如果是VLAN，加载[16:18]（VLAN后的EtherType）
+jeq #0x88f7：判断是否为PTP
+ldb [18]：加载字节[18]（PTP消息头）
+and #0x8：检查bit 3（事件消息标志）
+...
+
+逻辑流程：
+1. 先检查是否VLAN封装
+2. 找到实际的EtherType
+3. 判断是否PTP
+4. 判断是否事件消息
+5. 检查源MAC避免回环
+</code></pre>
+<h3 id="raw_configure配置过滤器"><a class="header" href="#raw_configure配置过滤器">raw_configure：配置过滤器</a></h3>
+<pre><code class="language-c">/* raw.c, 第154-228行 */
+
+static int raw_configure(int fd, int event, int index,
+                         unsigned char *local_addr, unsigned char *addr1,
+                         unsigned char *addr2, int enable)
+{
+    int err1, err2, option;
+    struct packet_mreq mreq;
+    struct sock_fprog prg;
+
+    /* 步骤1：安装BPF过滤器 */
+    if (event) {
+        prg.len = ARRAY_SIZE(raw_filter_vlan_norm_event);
+        prg.filter = raw_filter_vlan_norm_event;
+    } else {
+        prg.len = ARRAY_SIZE(raw_filter_vlan_norm_general);
+        prg.filter = raw_filter_vlan_norm_general;
+    }
+
+    /* 修改过滤器中的源MAC */
+    memcpy(&amp;prg.filter[FILTER_EVENT_POS_SRC0].k, local_addr, 2);
+    memcpy(&amp;prg.filter[FILTER_EVENT_POS_SRC2].k, local_addr + 2, 4);
+    prg.filter[FILTER_EVENT_POS_SRC0].k = ntohs(prg.filter[FILTER_EVENT_POS_SRC0].k);
+    prg.filter[FILTER_EVENT_POS_SRC2].k = ntohl(prg.filter[FILTER_EVENT_POS_SRC2].k);
+
+    if (setsockopt(fd, SOL_SOCKET, SO_ATTACH_FILTER, &amp;prg, sizeof(prg))) {
+        pr_err("setsockopt SO_ATTACH_FILTER failed: %m");
+        return -1;
+    }
+
+    /* 步骤2：加入组播 */
+    option = enable ? PACKET_ADD_MEMBERSHIP : PACKET_DROP_MEMBERSHIP;
+
+    memset(&amp;mreq, 0, sizeof(mreq));
+    mreq.mr_ifindex = index;
+    mreq.mr_type = PACKET_MR_MULTICAST;
+    mreq.mr_alen = MAC_LEN;
+    memcpy(mreq.mr_address, addr1, MAC_LEN);
+
+    err1 = setsockopt(fd, SOL_PACKET, option, &amp;mreq, sizeof(mreq));
+    
+    memcpy(mreq.mr_address, addr2, MAC_LEN);
+    err2 = setsockopt(fd, SOL_PACKET, option, &amp;mreq, sizeof(mreq));
+
+    if (!err1 &amp;&amp; !err2)
+        return 0;
+
+    /* 步骤3：如果组播失败，尝试全组播模式 */
+    mreq.mr_type = PACKET_MR_ALLMULTI;
+    if (!setsockopt(fd, SOL_PACKET, option, &amp;mreq, sizeof(mreq))) {
+        return 0;
+    }
+
+    /* 步骤4：如果还失败，尝试混杂模式 */
+    mreq.mr_type = PACKET_MR_PROMISC;
+    if (!setsockopt(fd, SOL_PACKET, option, &amp;mreq, sizeof(mreq))) {
+        return 0;
+    }
+
+    pr_err("all socket options failed");
+    return -1;
+}
+</code></pre>
+<p><strong>三层fallback</strong>：</p>
+<pre><code>组播配置的fallback策略：
+
+第1层： PACKET_MR_MULTICAST
+- 加入指定的组播MAC地址
+- 只接收PTP组播报文
+- 最高效
+
+第2层： PACKET_MR_ALLMULTI
+- 接收所有组播报文
+- 包括PTP和其他组播
+- 稍低效，但兼容性好
+
+第3层： PACKET_MR_PROMISC
+- 混杂模式，接收所有报文
+- 包括组播和单播
+- 最低效，但一定能工作
+
+为什么需要fallback？
+- 有些网卡不支持特定组播
+- 有些驱动有bug
+- 混杂模式保证可用性
+</code></pre>
+<h3 id="raw_recv接收以太网帧"><a class="header" href="#raw_recv接收以太网帧">raw_recv：接收以太网帧</a></h3>
+<pre><code class="language-c">/* raw.c, 第407-446行 */
+
+static int raw_recv(struct transport *t, int fd, void *buf, int buflen,
+                    struct address *addr, struct hw_timestamp *hwts)
+{
+    struct raw *raw = container_of(t, struct raw, t);
+    unsigned char *ptr = buf;
+    struct eth_hdr *hdr;
+    int cnt, hlen;
+
+    /* 计算头部长度 */
+    if (raw-&gt;vlan) {
+        hlen = sizeof(struct vlan_hdr);   /* 16字节 */
+    } else {
+        hlen = sizeof(struct eth_hdr);    /* 14字节 */
+    }
+
+    /* 调整缓冲区位置 */
+    ptr -= hlen;           /* 预留头部空间 */
+    buflen += hlen;        /* 增加缓冲区大小 */
+    hdr = (struct eth_hdr *) ptr;
+
+    /* 接收以太网帧 */
+    cnt = sk_receive(fd, ptr, buflen, addr, hwts, MSG_DONTWAIT);
+
+    if (cnt &gt;= 0)
+        cnt -= hlen;       /* 返回PTP消息长度 */
+    if (cnt &lt; 0)
+        return cnt;
+
+    /* 处理PRP尾部 */
+    if (has_prp_trailer(buf, cnt))
+        cnt -= PRP_TRAILER_LEN;
+
+    /* 检测VLAN并更新状态 */
+    if (raw-&gt;vlan) {
+        if (ETH_P_1588 == ntohs(hdr-&gt;type)) {
+            pr_notice("raw: disabling VLAN mode");
+            raw-&gt;vlan = 0;
+        }
+    } else {
+        if (ETH_P_8021Q == ntohs(hdr-&gt;type)) {
+            pr_notice("raw: switching to VLAN mode");
+            raw-&gt;vlan = 1;
+        }
+    }
+
+    return cnt;
+}
+</code></pre>
+<p><strong>VLAN动态检测</strong>：</p>
+<pre><code>VLAN封装：
+
+普通以太网帧：
+┌─────────┬─────────┬─────────┬─────────────┐
+│Dst MAC  │Src MAC  │0x88F7   │PTP Message  │
+│6 bytes  │6 bytes  │2 bytes  │N bytes      │
+└─────────┴─────────┴─────────┴─────────────┘
+
+VLAN封装帧：
+┌─────────┬─────────┬─────────┬─────────┬─────────┬─────────────┐
+│Dst MAC  │Src MAC  │0x8100   │TCI      │0x88F7   │PTP Message  │
+│6 bytes  │6 bytes  │2 bytes  │2 bytes  │2 bytes  │N bytes      │
+└─────────┴─────────┴─────────┴─────────┴─────────┴─────────────┘
+
+raw-&gt;vlan状态：
+- 0：普通模式，hlen=14
+- 1：VLAN模式，hlen=16
+
+动态检测：
+- 接收报文时检查EtherType
+- 根据实际情况切换模式
+- 自动适应网络环境
+</code></pre>
+<h3 id="prpparallel-redundancy-protocol"><a class="header" href="#prpparallel-redundancy-protocol">PRP（Parallel Redundancy Protocol）</a></h3>
+<pre><code class="language-c">/* raw.c, 第297-346行 */
+
+static bool has_prp_trailer(unsigned char *ptr, int cnt)
+{
+    unsigned short suffix_id, lane_size_field, lsdu_size;
+    int ptp_msg_len, trailer_start;
+    struct ptp_header *hdr;
+
+    /* 检查是否有效PTP消息 */
+    if (cnt &lt; sizeof(struct ptp_header))
+        return false;
+
+    hdr = (struct ptp_header *)ptr;
+    if ((hdr-&gt;ver &amp; MAJOR_VERSION_MASK) != PTP_MAJOR_VERSION)
+        return false;
+
+    ptp_msg_len = ntohs(hdr-&gt;messageLength);
+    if (cnt &lt; (ptp_msg_len + PRP_TRAILER_LEN))
+        return false;
+
+    trailer_start = cnt - PRP_TRAILER_LEN;
+
+    /* 检查RCT尾部 */
+    lane_size_field = ntohs(*(unsigned short*)(ptr + trailer_start + 2));
+    lsdu_size = lane_size_field &amp; 0x0FFF;
+    if (lsdu_size != cnt)
+        return false;
+
+    suffix_id = ntohs(*(unsigned short*)(ptr + trailer_start + 4));
+    if (suffix_id == ETH_P_PRP) {
+        return true;
+    }
+
+    return false;
+}
+</code></pre>
+<p><strong>PRP冗余协议</strong>：</p>
+<pre><code>PRP（IEC 62439-3）：
+- 双网并行冗余
+- 两个独立网络同时传输
+- 接收端丢弃重复报文
+
+PRP尾部（RCT）：
+┌───────────┬───────────┬───────────┐
+│SeqNr      │LanId+Size │Suffix     │
+│16 bits    │16 bits    │16 bits    │
+└───────────┴───────────┴───────────┘
+
+Suffix：0x88FB（标识PRP）
+
+PTP over PRP：
+- PTP报文携带PRP尾部
+- 需要在接收时去除
+- cnt -= PRP_TRAILER_LEN
+</code></pre>
+<hr>
+<h2 id="socket辅助函数"><a class="header" href="#socket辅助函数">Socket辅助函数</a></h2>
+<h3 id="sk_receive收发统一接口"><a class="header" href="#sk_receive收发统一接口">sk_receive：收发统一接口</a></h3>
+<pre><code class="language-c">/* sk.c, 第418-508行 */
+
+int sk_receive(int fd, void *buf, int buflen,
+               struct address *addr, struct hw_timestamp *hwts, int flags)
+{
+    char control[256];
+    int cnt = 0, res = 0, level, type;
+    struct cmsghdr *cm;
+    struct iovec iov = { buf, buflen };
+    struct msghdr msg;
+    struct timespec *sw, *ts = NULL;
+
+    /* 设置消息结构 */
+    memset(control, 0, sizeof(control));
+    memset(&amp;msg, 0, sizeof(msg));
+    if (addr) {
+        msg.msg_name = &amp;addr-&gt;ss;
+        msg.msg_namelen = sizeof(addr-&gt;ss);
+    }
+    msg.msg_iov = &amp;iov;
+    msg.msg_iovlen = 1;
+    msg.msg_control = control;
+    msg.msg_controllen = sizeof(control);
+
+    /* 如果是获取发送时间戳，需要poll等待 */
+    if (flags == MSG_ERRQUEUE) {
+        struct pollfd pfd = { fd, sk_events, 0 };
+        res = poll(&amp;pfd, 1, sk_tx_timeout);
+        if (res &lt; 0 &amp;&amp; errno == EINTR)
+            res = poll(&amp;pfd, 1, sk_tx_timeout);
+        if (res &lt; 0) {
+            pr_err("poll for tx timestamp failed: %m");
+            return -errno;
+        } else if (!res) {
+            pr_err("timed out while polling for tx timestamp");
+            errno = ETIME;
+            return -1;
+        }
+    }
+
+    /* 接收消息 */
+    cnt = recvmsg(fd, &amp;msg, flags);
+    if (cnt &lt; 0) {
+        pr_err("recvmsg%sfailed: %m",
+               flags == MSG_ERRQUEUE ? " tx timestamp " : " ");
+    }
+
+    /* 解析控制消息（时间戳） */
+    for (cm = CMSG_FIRSTHDR(&amp;msg); cm != NULL; cm = CMSG_NXTHDR(&amp;msg, cm)) {
+        level = cm-&gt;cmsg_level;
+        type  = cm-&gt;cmsg_type;
+        if (SOL_SOCKET == level &amp;&amp; SO_TIMESTAMPING == type) {
+            ts = (struct timespec *) CMSG_DATA(cm);
+        }
+        if (SOL_SOCKET == level &amp;&amp; SO_TIMESTAMPNS == type) {
+            sw = (struct timespec *) CMSG_DATA(cm);
+            hwts-&gt;sw = timespec_to_tmv(*sw);
+        }
+    }
+
+    if (addr)
+        addr-&gt;len = msg.msg_namelen;
+
+    if (!ts) {
+        memset(&amp;hwts-&gt;ts, 0, sizeof(hwts-&gt;ts));
+        return cnt &lt; 0 ? -errno : cnt;
+    }
+
+    /* 根据时间戳类型选择 */
+    switch (hwts-&gt;type) {
+    case TS_SOFTWARE:
+        hwts-&gt;ts = timespec_to_tmv(ts[0]);    /* 软件时间戳 */
+        break;
+    case TS_HARDWARE:
+    case TS_ONESTEP:
+    case TS_P2P1STEP:
+        hwts-&gt;ts = timespec_to_tmv(ts[2]);    /* 硬件时间戳 */
+        break;
+    case TS_LEGACY_HW:
+        hwts-&gt;ts = timespec_to_tmv(ts[1]);    /* 旧硬件时间戳 */
+        break;
+    }
+
+    return cnt &lt; 0 ? -errno : cnt;
+}
+</code></pre>
+<p><strong>recvmsg详解</strong>：</p>
+<pre><code>recvmsg是高级接收函数：
+
+struct msghdr {
+    void *msg_name;          /* 源地址 */
+    socklen_t msg_namelen;   /* 地址长度 */
+    struct iovec *msg_iov;   /* 数据缓冲区数组 */
+    size_t msg_iovlen;       /* iov数量 */
+    void *msg_control;       /* 控制信息 */
+    size_t msg_controllen;   /* 控制信息长度 */
+    int msg_flags;           /* 接收标志 */
+};
+
+控制信息（msg_control）：
+- 包含时间戳等辅助数据
+- 通过CMSG_FIRSTHDR/NXTHDR遍历
+- 不同类型的时间戳在不同位置
+</code></pre>
+<p><strong>时间戳数组</strong>：</p>
+<pre><code>SO_TIMESTAMPING返回3个时间戳：
+
+ts[0]：软件时间戳
+- 内核协议栈处理时的时间
+- 精度较低（微秒级）
+
+ts[1]：硬件时间戳（legacy）
+- 旧的硬件时间戳格式
+- 某些旧驱动使用
+
+ts[2]：硬件时间戳（raw）
+- PHY/网卡硬件时间戳
+- 精度最高（纳秒级）
+
+选择：
+TS_SOFTWARE → ts[0]
+TS_LEGACY_HW → ts[1]
+TS_HARDWARE → ts[2]
+</code></pre>
+<h3 id="sk_timestamping_init配置时间戳"><a class="header" href="#sk_timestamping_init配置时间戳">sk_timestamping_init：配置时间戳</a></h3>
+<pre><code class="language-c">/* sk.c, 第560-650行 */
+
+int sk_timestamping_init(int fd, const char *device, enum timestamp_type type,
+                         enum transport_type transport, int vclock)
+{
+    int err, filter1, filter2 = 0, flags, tx_type = HWTSTAMP_TX_ON;
+    struct so_timestamping timestamping;
+
+    /* 步骤1：确定时间戳标志 */
+    switch (type) {
+    case TS_SOFTWARE:
+        flags = SOF_TIMESTAMPING_TX_SOFTWARE |
+                SOF_TIMESTAMPING_RX_SOFTWARE |
+                SOF_TIMESTAMPING_SOFTWARE;
+        break;
+    case TS_HARDWARE:
+    case TS_ONESTEP:
+    case TS_P2P1STEP:
+        flags = SOF_TIMESTAMPING_TX_HARDWARE |
+                SOF_TIMESTAMPING_RX_HARDWARE |
+                SOF_TIMESTAMPING_RAW_HARDWARE;
+        break;
+    case TS_LEGACY_HW:
+        flags = SOF_TIMESTAMPING_TX_HARDWARE |
+                SOF_TIMESTAMPING_RX_HARDWARE |
+                SOF_TIMESTAMPING_SYS_HARDWARE;
+        break;
+    default:
+        return -1;
+    }
+
+    /* 步骤2：硬件时间戳需要配置驱动 */
+    if (type != TS_SOFTWARE) {
+        filter1 = HWTSTAMP_FILTER_PTP_V2_EVENT;
+        switch (type) {
+        case TS_HARDWARE:
+        case TS_LEGACY_HW:
+            tx_type = HWTSTAMP_TX_ON;
+            break;
+        case TS_ONESTEP:
+            tx_type = HWTSTAMP_TX_ONESTEP_SYNC;
+            break;
+        case TS_P2P1STEP:
+            tx_type = HWTSTAMP_TX_ONESTEP_P2P;
+            break;
+        }
+
+        switch (transport) {
+        case TRANS_UDP_IPV4:
+        case TRANS_UDP_IPV6:
+            filter2 = HWTSTAMP_FILTER_PTP_V2_L4_EVENT;
+            break;
+        case TRANS_IEEE_802_3:
+            filter2 = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
+            break;
+        }
+
+        err = hwts_init(fd, device, filter1, filter2, tx_type);
+        if (err)
+            return err;
+    }
+
+    /* 步骤3：绑定虚拟时钟 */
+    if (vclock &gt;= 0)
+        flags |= SOF_TIMESTAMPING_BIND_PHC;
+
+    timestamping.flags = flags;
+    timestamping.bind_phc = vclock;
+
+    /* 步骤4：启用时间戳 */
+    if (setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING,
+                   &amp;timestamping, sizeof(timestamping)) &lt; 0) {
+        pr_err("ioctl SO_TIMESTAMPING failed: %m");
+        return -1;
+    }
+
+    /* 步骤5：配置错误队列 */
+    flags = 1;
+    if (setsockopt(fd, SOL_SOCKET, SO_SELECT_ERR_QUEUE,
+                   &amp;flags, sizeof(flags)) &lt; 0) {
+        pr_warning("%s: SO_SELECT_ERR_QUEUE: %m", device);
+        sk_events = 0;
+        sk_revents = POLLERR;
+    }
+
+    return 0;
+}
+</code></pre>
+<p><strong>硬件时间戳配置</strong>：</p>
+<pre><code>SIOCSHWTSTAMP ioctl：
+
+struct hwtstamp_config {
+    int flags;       /* 配置标志 */
+    int tx_type;     /* 发送时间戳类型 */
+    int rx_filter;   /* 接收时间戳过滤 */
+};
+
+tx_type：
+HWTSTAMP_TX_OFF：不打发送时间戳
+HWTSTAMP_TX_ON：普通硬件时间戳
+HWTSTAMP_TX_ONESTEP_SYNC：单步时钟（Sync消息）
+HWTSTAMP_TX_ONESTEP_P2P：单步时钟（P2P消息）
+
+rx_filter：
+HWTSTAMP_FILTER_NONE：不接收时间戳
+HWTSTAMP_FILTER_PTP_V2_L2_EVENT：以太网PTP
+HWTSTAMP_FILTER_PTP_V2_L4_EVENT：UDP PTP
+HWTSTAMP_FILTER_PTP_V2_EVENT：所有PTP
+HWTSTAMP_FILTER_ALL：所有报文
+</code></pre>
+<hr>
+<h2 id="unix域套接字uds"><a class="header" href="#unix域套接字uds">Unix域套接字（UDS）</a></h2>
+<h3 id="uds的作用"><a class="header" href="#uds的作用">UDS的作用</a></h3>
+<pre><code>UDS（Unix Domain Socket）：
+- 本地进程间通信
+- 不经过网络
+- 用于管理接口
+
+用途：
+- pmc工具与ptp4l通信
+- 发送管理消息
+- 获取时钟信息
+- 配置参数
+
+UDS不是PTP网络传输！
+- 只是管理接口
+- 不参与PTP同步
+- transport_type=0（保留值）
+</code></pre>
+<h3 id="uds路径配置"><a class="header" href="#uds路径配置">UDS路径配置</a></h3>
+<pre><code class="language-c">/* uds.c, 第53-103行 */
+
+static int uds_open(struct transport *t, struct interface *iface, 
+                    struct fdarray *fda, enum timestamp_type tt)
+{
+    char *uds_ro_path = config_get_string(t-&gt;cfg, NULL, "uds_ro_address");
+    const char *uds_path = interface_remote(iface);
+    struct uds *uds = container_of(t, struct uds, t);
+    const char *name = interface_name(iface);
+    struct sockaddr_un sa;
+    mode_t file_mode;
+    int fd, err;
+
+    /* 创建socket */
+    fd = socket(AF_LOCAL, SOCK_DGRAM, 0);
+    
+    /* 绑定路径 */
+    memset(&amp;sa, 0, sizeof(sa));
+    sa.sun_family = AF_LOCAL;
+    strncpy(sa.sun_path, name, sizeof(sa.sun_path) - 1);
+
+    /* 删除已存在的文件 */
+    if (!unlink(name))
+        pr_err("uds: removed existing %s", name);
+
+    /* 绑定 */
+    err = bind(fd, (struct sockaddr *) &amp;sa, sizeof(sa));
+
+    /* 设置文件权限 */
+    file_mode = (mode_t)config_get_int(t-&gt;cfg, name, "uds_file_mode");
+    chmod(name, file_mode);
+
+    fda-&gt;fd[FD_EVENT] = -1;
+    fda-&gt;fd[FD_GENERAL] = fd;
+    return 0;
+}
+</code></pre>
+<p><strong>默认UDS路径</strong>：</p>
+<pre><code>配置默认值：
+
+uds_address：/var/run/ptp4l
+- ptp4l创建，用于管理
+- pmc连接到此路径
+
+uds_ro_address：/var/run/ptp4lro
+- 只读接口
+- 允许非root用户读取
+
+文件权限：
+uds_file_mode：0660
+- 用户和组可读写
+
+使用示例：
+pmc -u /var/run/ptp4l "GET CURRENT_DATA_SET"
+</code></pre>
+<hr>
+<h2 id="传输层初始化流程"><a class="header" href="#传输层初始化流程">传输层初始化流程</a></h2>
+<h3 id="port创建传输"><a class="header" href="#port创建传输">port创建传输</a></h3>
+<pre><code class="language-c">/* port.c中的传输创建（简化） */
+
+struct port *port_create(struct interface *iface, ...)
+{
+    struct port *p;
+    enum transport_type transport;
+
+    /* 获取传输类型配置 */
+    transport = config_get_int(cfg, interface_name(iface), "network_transport");
+    
+    switch (transport) {
+    case TRANS_UDP_IPV4:
+        p-&gt;transport = transport_create(cfg, TRANS_UDP_IPV4);
+        break;
+    case TRANS_IEEE_802_3:
+        p-&gt;transport = transport_create(cfg, TRANS_IEEE_802_3);
+        break;
+    ...
+    }
+
+    /* 打开传输 */
+    transport_open(p-&gt;transport, iface, &amp;p-&gt;fda, ts_type);
+
+    return p;
+}
+</code></pre>
+<h3 id="配置参数"><a class="header" href="#配置参数">配置参数</a></h3>
+<pre><code class="language-bash"># /etc/linuxptp/ptp4l.conf
+
+[global]
+# 传输类型
+network_transport UDPv4    # 或 L2（以太网）
+
+# 组播地址
+ptp_dst_ipv4 224.0.1.129
+p2p_dst_ipv4 224.0.0.107
+
+# 组播TTL
+udp_ttl 1
+
+# DSCP优先级
+dscp_event 46
+dscp_general 0
+
+[eth0]
+# 网卡特定配置
+</code></pre>
+<hr>
+<h2 id="实战示例"><a class="header" href="#实战示例">实战示例</a></h2>
+<h3 id="查看传输配置"><a class="header" href="#查看传输配置">查看传输配置</a></h3>
+<pre><code class="language-bash"># 查看网卡组播地址
+$ ip maddr show eth0
+2:  eth0
+    link  01:1b:19:00:00:00
+    link  01:80:c2:00:00:0e
+    inet  224.0.1.129
+    inet  224.0.0.107
+
+# 查看网卡时间戳能力
+$ ethtool -T eth0
+Time stamping parameters for eth0:
+Capabilities:
+    hardware-transmit
+    hardware-receive
+    hardware-raw-clock
+PTP Hardware Clock: 0
+</code></pre>
+<h3 id="抓包分析"><a class="header" href="#抓包分析">抓包分析</a></h3>
+<pre><code class="language-bash"># 抓取PTP UDP报文
+$ tcpdump -i eth0 'udp port 319 or port 320'
+
+# 抓取PTP以太网报文
+$ tcpdump -i eth0 'ether proto 0x88f7'
+
+# 解析PTP内容
+$ tcpdump -i eth0 'udp port 319' -vv
+...
+PTPv2, length 44, version 2, subtype 0 (SYNC)
+    ...
+</code></pre>
+<hr>
+<h2 id="小结传输层的设计智慧"><a class="header" href="#小结传输层的设计智慧">小结：传输层的设计智慧</a></h2>
+<p><strong>抽象接口</strong>：</p>
+<ul>
+<li>统一的transport接口</li>
+<li>多种传输实现多态调用</li>
+<li>上层代码不关心具体传输</li>
+</ul>
+<p><strong>UDP传输</strong>：</p>
+<ul>
+<li>端口319/320</li>
+<li>组播地址配置</li>
+<li>DSCP优先级</li>
+</ul>
+<p><strong>原始以太网</strong>：</p>
+<ul>
+<li>EtherType 0x88F7</li>
+<li>BPF过滤器</li>
+<li>VLAN支持</li>
+</ul>
+<p><strong>时间戳配置</strong>：</p>
+<ul>
+<li>SO_TIMESTAMPING</li>
+<li>SIOCSHWTSTAMP</li>
+<li>软件和硬件时间戳</li>
+</ul>
+<p><strong>UDS管理</strong>：</p>
+<ul>
+<li>本地通信</li>
+<li>pmc工具接口</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>传输层解决了“如何发送报文“，但硬件时间戳是怎么工作的？</p>
+<p>下一节，我们将深入分析<strong>硬件时间戳机制</strong>——看看网卡如何精确记录报文时间。</p>
+<blockquote>
+<p><strong>【悬念留给3.8】</strong></p>
+<p>硬件时间戳是实现高精度PTP的关键。</p>
+<p>网卡PHY如何在纳秒级精度打时间戳？</p>
+<p>Linux内核如何传递时间戳给用户态？</p>
+<p>One-Step时钟如何修改报文时间戳？</p>
+<p>下一节，揭示时间戳的黑科技。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/3.6-PHC操作与时钟调整-与硬件时钟对话.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/3.8-硬件时间戳详解-纳秒级精度的魔法.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/3.6-PHC操作与时钟调整-与硬件时钟对话.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/3.8-硬件时间戳详解-纳秒级精度的魔法.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

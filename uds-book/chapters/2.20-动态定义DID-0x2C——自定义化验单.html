@@ -1,0 +1,488 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>动态定义DID · 0x2C——自定义化验单 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="220-动态定义did0x2c自定义化验单"><a class="header" href="#220-动态定义did0x2c自定义化验单">2.20 动态定义DID(0x2C)——自定义化验单</a></h1>
+<blockquote>
+<p>标准的 DID 列表就像医院的固定套餐化验单——血常规、肝功能、肾功能，各是各的。但有时候你就想在一个报告单上同时看到转氨酶、肌酐和甲状腺素。这时你不是去改医院的标准——而是开一张自定义化验单。</p>
+</blockquote>
+<hr>
+<h2 id="场景变速箱换挡闯动但四个关键参数散落在四个不同的did里"><a class="header" href="#场景变速箱换挡闯动但四个关键参数散落在四个不同的did里">场景：变速箱换挡闯动，但四个关键参数散落在四个不同的DID里</a></h2>
+<p>下午两点半，传动系统实验室。</p>
+<p>你面前摆着一台8速自动变速箱的台架，电机模拟发动机驱动，测功机模拟道路负载。问题是：2挡升3挡时偶尔有闯动——有时候有有时候没有，有时候轻有时候重，完全找不到规律。</p>
+<p>你怀疑是换挡瞬间的扭矩协调出了问题。从工程直觉出发，你应该同时观察四个参数在换挡点前后的变化：</p>
+<ol>
+<li><strong>发动机转速</strong> — 在 DID <code>0x010C</code> 中（2字节，byte0-1）</li>
+<li><strong>油门踏板位置</strong> — 在 DID <code>0x0131</code> 中（1字节，byte0）</li>
+<li><strong>变速箱输出轴转速（车速）</strong> — 在 DID <code>0x010D</code> 中（2字节，byte0-1）</li>
+<li><strong>变速箱油温</strong> — 在 DID <code>0x0118</code> 中（1字节，byte0）</li>
+</ol>
+<p>但这四个参数分别属于四个不同的 DID。如果用 <code>0x22</code> 读，你得连续发四次请求：</p>
+<pre><code>02 22 01 0C ...  → 转速
+02 22 01 31 ...  → 油门
+02 22 01 0D ...  → 车速
+02 22 01 18 ...  → 油温
+</code></pre>
+<p>四次请求之间有时间差——可能是几毫秒，也可能因为 CAN 总线仲裁延迟几十毫秒。对于分析 2→3 换挡这个 200ms 级别的瞬态过程来说，这四个值必须<strong>来自同一时刻</strong>才有意义。相差 20ms 的转速和油门位置对不上，就像两张不同时间拍摄的X光片叠在一起看——骨骼错位了。</p>
+<p>你或许会想：用 <code>0x2A</code> 周期读取行不行？可以把四个 DID 都注册上，100ms 上报一次——但每个 DID 仍然是独立上报的，它们被放在同一个 CAN 帧里不代表它们是同一时刻采样的。ECU 的软件在遍历 DID 列表时逐个读取，中间仍有微小时差。</p>
+<p>更关键的是：你只想在这 200ms 的换挡窗口内获取高密度数据。如果你能自定义一个 DID，把四个参数的指定字节拼接在一起，让 ECU 一次性读取所有来源——就像在医院里，你不点“血常规“、“肝功能”、“甲状腺“三张化验单，而是让检验科直接把 ALT、TSH、HbA1c 三个指标合成一张报告——那你只需要发一次 <code>0x22</code> 请求，就能拿到一个<strong>原子快照</strong>。</p>
+<p>这个需求在 ISO 14229-1 中的化身就是：<strong>动态定义数据标识符 (DynamicallyDefineDataIdentifier)</strong>，SID <code>0x2C</code>。</p>
+<hr>
+<h2 id="为什么需要0x2cdid命名空间的运行时扩展"><a class="header" href="#为什么需要0x2cdid命名空间的运行时扩展">为什么需要0x2C？——DID命名空间的运行时扩展</a></h2>
+<p>UDS 的 DID 系统本质上是一个<strong>映射表</strong>：</p>
+<pre><code>DID (2 bytes) → 数据源描述符 → 实际数据
+</code></pre>
+<p>这个映射表在 ECU 的配置阶段就已经固化了。DID <code>0x010C</code> 永远对应发动机转速的 byte0-1，DID <code>0x0105</code> 永远对应冷却液温度的 byte0。这个固化有两个好处：</p>
+<ol>
+<li><strong>确定性</strong>：全局的 DID 定义来自 ODX/PDX 数据库，测试仪和 ECU 对同一个 DID 的理解一致</li>
+<li><strong>简单性</strong>：ECU 的实现是一个静态查找表，不需要动态内存分配</li>
+</ol>
+<p>但它的代价也很明显：<strong>灵活性为零</strong>。如果你的分析需要一组参数组合，而恰好没有一个现成的 DID 包含这个组合，你就必须分多次读取——不仅低效，数据的一致性也无法保证。</p>
+<p>0x2C 的设计者提出了一个巧妙的折中：<strong>不改变 ECU 的原始 DID 定义表，而是在它之上叠加一个运行时动态层。</strong></p>
+<pre><code>                    ┌──────────────────────┐
+                    │   静态 DID 表 (ROM)    │
+                    │  0x010C → 转速        │
+                    │  0x0105 → 水温        │
+                    │  0x010D → 车速        │
+                    │  0x0110 → MAF         │
+                    └──────────┬───────────┘
+                               │
+            ┌──────────────────┼──────────────────┐
+            │                                     │
+            ▼                                     ▼
+    ┌───────────────┐                     ┌───────────────┐
+    │  直接读取层    │                     │  动态覆盖层    │
+    │  0x22 0x010C  │                     │  0x22 0xFE01  │
+    │  → 转速        │                     │  → 自定义组合   │
+    └───────────────┘                     └───────┬───────┘
+                                                  │
+                                          ┌───────▼───────────┐
+                                          │  动态 DID 定义    │
+                                          │  0xFE01 = {       │
+                                          │    ［字节0-1］←0x010C│
+                                          │    ［字节2］  ←0x0131│
+                                          │    ［字节3-4］←0x010D│
+                                          │    ［字节5］  ←0x0118│
+                                          │  }                │
+                                          └───────────────────┘
+</code></pre>
+<p>当测试仪读 <code>0xFE01</code> 时，ECU 先去动态表中查找——如果命中，就用动态组合逻辑拼装数据；如果未命中，再回退到静态 DID 表。<strong>动态定义的存在不影响静态 DID 的正常工作，它们是两个平行的解析路径。</strong></p>
+<p>这就是 0x2C 的精髓：<strong>它把 DID 命名空间从 “编译期封闭” 变成了 “运行时开放”</strong> ——不是让所有 DID 都可改，而是让测试仪有权开辟一小块属于自己的临时命名空间。</p>
+<hr>
+<h2 id="请求报文三个子功能两种定义方式"><a class="header" href="#请求报文三个子功能两种定义方式">请求报文：三个子功能，两种定义方式</a></h2>
+<p>0x2C 的请求格式取决于子功能：</p>
+<h3 id="子功能-0x01definebyidentifier按标识符定义"><a class="header" href="#子功能-0x01definebyidentifier按标识符定义">子功能 0x01：defineByIdentifier（按标识符定义）</a></h3>
+<p>从现有的 DID 中裁剪组合。这是一种“乐高拼接“模式——你来指定新 DID 中的每一个字节来自哪个源 DID 的哪个位置。</p>
+<p>请求格式：</p>
+<pre><code>Byte 0: SID = 0x2C
+Byte 1: SubFunction = 0x01
+Byte 2-3: dynamicallyDefinedDataIdentifier（新 DID 编号。标准未强制指定动态DID的范围，由OEM在DID地址空间中预留一段区域，如0xE000~0xEFFF）
+Byte 4:   paramCountLowByte（参数定义条目数）
+Byte 5+:  parameterDefinitionRecord[]
+          每条记录 = {
+            positionInDynamicDID (2字节, 在新DID中的字节偏移)
+            sourceDataIdentifier   (2字节, 源 DID 编号)
+            sourceByteOffset       (1字节, 从源 DID 数据的第几个字节开始)
+            sourceByteCount        (1字节, 从源 DID 复制多少个字节)
+          }
+</code></pre>
+<p>每条 parameterDefinitionRecord 恰好 6 个字节。所以对于一个需要拼接 4 个参数的组合 DID，定义阶段的总请求长度是：</p>
+<pre><code>1(SID) + 1(Sub) + 2(新DID) + 1(count) + 4×6 = 29 字节
+
+&gt; 29字节已超出经典CAN单帧8字节载荷。分段由ISO 15765-2传输层自动完成——诊断仪只需构造完整的29字节请求，CAN驱动层自动执行FF（首帧）→ CF（连续帧）的拆分与重组。
+</code></pre>
+<p>下面是一个具体例子——定义 DID <code>0xFE01</code> 包含我们前面说的四个参数：</p>
+<pre><code>请求: 2C 01 FE 01 04
+      00 00 01 0C 00 02
+      00 02 01 31 00 01
+      00 03 01 0D 00 02
+      00 05 01 18 00 01
+</code></pre>
+<p>逐条解释：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>条目</th><th>position (新DID中)</th><th>源 DID</th><th>源偏移</th><th>长度</th><th>含义</th></tr>
+</thead>
+<tbody>
+<tr><td>第1条</td><td>0x0000</td><td>0x010C</td><td>0x00</td><td>0x02</td><td>新DID字节0-1 ← 转速(byte0-1)</td></tr>
+<tr><td>第2条</td><td>0x0002</td><td>0x0131</td><td>0x00</td><td>0x01</td><td>新DID字节2   ← 油门(byte0)</td></tr>
+<tr><td>第3条</td><td>0x0003</td><td>0x010D</td><td>0x00</td><td>0x02</td><td>新DID字节3-4 ← 车速(byte0-1)</td></tr>
+<tr><td>第4条</td><td>0x0005</td><td>0x0118</td><td>0x00</td><td>0x01</td><td>新DID字节5   ← 油温(byte0)</td></tr>
+</tbody>
+</table>
+</div>
+<p>总共 6 个字节的自定义 DID，包含四个来源的五个字段。之后你只需要：</p>
+<pre><code>发: 22 FE 01
+收: 62 FE 01 0B 40 1E 08 50 64
+解析: 转速=0x0B40=2880rpm, 油门=0x1E=30%, 车速=0x0850=2128(≈80km/h), 油温=0x64=100°C
+</code></pre>
+<p>一次请求，原子快照。时间差为零。</p>
+<h3 id="子功能-0x02definebymemoryaddress按内存地址定义"><a class="header" href="#子功能-0x02definebymemoryaddress按内存地址定义">子功能 0x02：defineByMemoryAddress（按内存地址定义）</a></h3>
+<p>这是一个更底层、更危险的接口。它允许测试仪直接给出 ECU 内存中的地址和长度：</p>
+<pre><code>Byte 0: SID = 0x2C
+Byte 1: SubFunction = 0x02
+Byte 2-3: dynamicallyDefinedDataIdentifier
+Byte 4:   paramCountLowByte
+Byte 5+:  memoryAddressDefinition[]
+          每条记录 = {
+            positionInDynamicDID (2 bytes)
+            memoryAddress (4 bytes, 物理地址或逻辑地址)
+            memorySize (1 byte, 读取长度)
+          }
+</code></pre>
+<p>这个模式很像 <code>0x23</code> (ReadMemoryByAddress)，但多了一步：你先“注册“一个地址范围为一个 DID，之后就可以用 0x22 来读取它，也可以把它放进 0x2A 的周期读取列表里。</p>
+<p>大多数 OEM 出于安全原因<strong>禁用</strong>或<strong>严格限制</strong> <code>defineByMemoryAddress</code>。随便读内存地址在量产 ECU 上是不可接受的——它绕过了 DID 的数据访问控制。通常只在工程开发阶段和特定的安全解锁会话下可用。</p>
+<h3 id="子功能-0x03cleardynamicallydefineddataidentifier"><a class="header" href="#子功能-0x03cleardynamicallydefineddataidentifier">子功能 0x03：clearDynamicallyDefinedDataIdentifier</a></h3>
+<p>清除一个之前定义的动态 DID：</p>
+<pre><code>请求: 2C 03 FE 01
+响应: 6C 03
+</code></pre>
+<p>很简单——就是告诉 ECU “这个自定义报表我不要了，你可以释放资源了”。</p>
+<h3 id="实现侧的关键逻辑"><a class="header" href="#实现侧的关键逻辑">实现侧的关键逻辑</a></h3>
+<p>在 ECU 的 DSP 层，处理 <code>defineByIdentifier</code> 需要一个临时的描述符表。一个简化的实现思路：</p>
+<pre><code class="language-c">#define DYNAMIC_DID_MAX_COUNT    8
+#define DYNAMIC_DID_PARAM_MAX    16
+
+typedef struct {
+    uint16 positionInDynamic;   /* 在新 DID 中的字节偏移 */
+    uint16 sourceDid;           /* 源 DID 编号 */
+    uint8  sourceOffset;        /* 从源 DID 数据区的偏移 */
+    uint8  byteCount;           /* 复制字节数 */
+} DynamicDidParam;
+
+typedef struct {
+    uint16           dynamicDid;            /* 动态 DID 编号 */
+    uint8            paramCount;            /* 参数条目数 */
+    uint8            active;                /* 是否激活 */
+    DynamicDidParam  params[DYNAMIC_DID_PARAM_MAX];
+} DynamicDidEntry;
+
+static DynamicDidEntry gDynamicDidTable[DYNAMIC_DID_MAX_COUNT];
+
+static Std_ReturnType Dsp_DynamicDid_DefineByIdentifier(
+    uint16 newDid,
+    P2CONST(uint8, AUTOMATIC, AUTOMATIC) pParamData,
+    uint8 paramCount)
+{
+    int i;
+    DynamicDidEntry *entry = NULL;
+
+    /* 查找空闲槽位或同名 DID（覆盖旧定义） */
+    for (i = 0; i &lt; DYNAMIC_DID_MAX_COUNT; i++)
+    {
+        if (gDynamicDidTable[i].active == 0x00)
+        {
+            entry = &amp;gDynamicDidTable[i];
+            break;
+        }
+        if (gDynamicDidTable[i].dynamicDid == newDid)
+        {
+            entry = &amp;gDynamicDidTable[i]; /* 覆盖已有定义 */
+            break;
+        }
+    }
+
+    if (entry == NULL)
+        return E_NOT_OK; /* 槽位满了 */
+
+    entry-&gt;dynamicDid = newDid;
+    entry-&gt;paramCount = paramCount;
+    entry-&gt;active = 0x01;
+
+    for (i = 0; i &lt; paramCount; i++)
+    {
+        /* 从参数缓冲区逐条解析，每条 6 字节 */
+        entry-&gt;params[i].positionInDynamic = ((uint16)pParamData[i*6] &lt;&lt; 8)
+                                            | pParamData[i*6 + 1];
+        entry-&gt;params[i].sourceDid         = ((uint16)pParamData[i*6 + 2] &lt;&lt; 8)
+                                            | pParamData[i*6 + 3];
+        entry-&gt;params[i].sourceOffset      = pParamData[i*6 + 4];
+        entry-&gt;params[i].byteCount         = pParamData[i*6 + 5];
+    }
+
+    return E_OK;
+}
+</code></pre>
+<p>当后续 <code>0x22</code> 请求命中动态 DID 时，读取函数需要遍历参数条目，逐条调用源 DID 的读取接口，将结果拼装到响应缓冲区中。</p>
+<hr>
+<h2 id="医院隐喻自定义化验单"><a class="header" href="#医院隐喻自定义化验单">医院隐喻：自定义化验单</a></h2>
+<p>去医院体检，你一般拿到的是“套餐化验单“：</p>
+<ul>
+<li><strong>血常规</strong>：白细胞、红细胞、血红蛋白、血小板……</li>
+<li><strong>肝功能</strong>：ALT、AST、总胆红素……</li>
+<li><strong>甲状腺功能</strong>：TSH、T3、T4……</li>
+</ul>
+<p>这些套餐是标准化的——就像 ECU 的标准 DID 列表。99% 的情况够用。</p>
+<p>但如果有一位肾内科医生正在追踪一位同时有肝功能异常的肾病患者，她只关心三个指标：血肌酐（来自肾功能）、ALT（来自肝功能）、TSH（来自甲状腺功能）。按常规流程，她需要翻三张不同的化验单——就像工程师需要发三次 <code>0x22</code>。能不能让检验科直接把这三个指标出在一张报告上？</p>
+<p>能。这就是“自定义化验单“——医生不点套餐，而是指定她需要的指标列表。检验科从各自的标准检测流程中提取指定结果，拼成一张报告。</p>
+<p>这正是 0x2C 的 <code>defineByIdentifier</code> 在做的事：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>医院</th><th>汽车诊断</th></tr>
+</thead>
+<tbody>
+<tr><td>标准化验套餐（血常规、肝功能……）</td><td>标准 DID（0x010C 转速、0x0105 水温……）</td></tr>
+<tr><td>自定义化验单（指定指标列表）</td><td>动态定义 DID <code>0xFE01</code></td></tr>
+<tr><td>检验科从各自检测线取数据拼报告</td><td>ECU 从源 DID 数据区按偏移+长度裁剪拼装</td></tr>
+<tr><td>一张报告纸包含所有关注的指标</td><td>一个 CAN 帧包含所有关注的参数</td></tr>
+<tr><td>报告单一出就是同一时刻的血样</td><td>一次 0x22 读取 = 同一个软件执行片段 = 原子快照</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>defineByMemoryAddress</code> 在医院的类比就更生猛了——不是让检验科按标准流程做检测，而是直接让你去看显微镜看细胞切片，找到特定的坐标区域观察。这显然不是普通医生能做的，属于“如有必要，主任医师权限下才能操作“的类型。</p>
+<hr>
+<blockquote>
+<p><strong>核心洞察</strong>：</p>
+<p><strong>0x2C 将 UDS 的 DID 系统从“固定菜单“变成了“自选配菜“。</strong> 它的设计没有去修改编译时固化的静态 DID 映射表，而是在其上叠加了一个动态查找层——既保留了标准 DID 的确定性和简单性，又赋予测试仪在运行时按需组合数据的能力。这个“双层映射“架构是嵌入式系统设计中一种值得记住的模式：不要试图让所有东西都动态化——只需要在关键位置打开一个可控的动态窗口。</p>
+<p>它也回答了一个深层问题：<strong>协议应该如何应对“设计时无法预见的查询需求“？</strong> ISO 14229-1 没有尝试去规定所有可能的参数组合（那是不可能的），而是提供了一个元机制——让使用者自己去定义要读什么、从哪读、读多少。这种“授人以渔“的思路，比堆砌一万个预定义 DID 要高明得多。</p>
+</blockquote>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li><strong>0x2C DynamicallyDefineDataIdentifier</strong> 允许测试仪在运行时定义新的虚拟 DID，从现有数据源中按字节裁剪组合</li>
+<li>三种子功能：<code>0x01</code> defineByIdentifier（从源 DID 组合）、<code>0x02</code> defineByMemoryAddress（从内存地址读取）、<code>0x03</code> clear（清除动态定义）</li>
+<li><code>defineByIdentifier</code> 通过“position+sourceDID+offset+length“四元组描述每个字段的来源和放置位置</li>
+<li>动态 DID 可以实现<strong>真正的原子快照</strong>：多个参数在同一读取周期内采集，时间差为零</li>
+<li>动态定义的数量受 ECU 资源限制（RAM 中预设的槽位数），清除不用的定义可以释放资源</li>
+<li><code>defineByMemoryAddress</code> 功能强大但风险高，通常仅限工程模式和安全解锁后使用</li>
+<li>医院隐喻：自定义化验单——医生不点标准套餐，而是指定她需要的指标组合，检验科拼接输出</li>
+<li>核心模式：双层映射——静态 DID 表（ROM）+ 动态覆盖表（RAM），兼顾确定性和灵活性</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：0x2A 和 0x2C 让 ECU 获得了一定的“主动性“——可以周期上报、可以动态组合数据。但它们有一个共同的触发前提：<strong>测试仪必须先发出一个启动请求</strong>。ECU 不能在自己“觉得有事情要报告“时主动说话。</p>
+<p>但现实生活中，病人没事不会按铃——一旦按铃，就是有事。UDS 有没有这样一种机制：让 ECU 在某些内部事件发生时（比如弹出新故障码），<strong>在测试仪早已注册过的情况下</strong>，主动推送一条消息？</p>
+<p>下一章，我们将看到 UDS 中唯一一个“ECU 主动发起“的服务——<code>0x86</code> 事件响应。它就像病房里的护士呼叫铃，病人（ECU）不需要等医生（测试仪）来查房才说话。当事情发生，铃就响了。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/2.19-周期读取0x2A——24小时心电图.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/2.21-事件响应0x86——护士按铃.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/2.19-周期读取0x2A——24小时心电图.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/2.21-事件响应0x86——护士按铃.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

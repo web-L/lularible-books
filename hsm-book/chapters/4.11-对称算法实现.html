@@ -1,0 +1,990 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>对称算法实现 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="411-对称算法实现aes与des的密码引擎"><a class="header" href="#411-对称算法实现aes与des的密码引擎">4.11 对称算法实现：AES与DES的密码引擎</a></h2>
+<h3 id="对称算法家族"><a class="header" href="#对称算法家族">对称算法家族</a></h3>
+<p>SoftHSM2支持的对称算法：</p>
+<pre><code>对称算法家族：
+
+SymmetricAlgorithm（抽象基类）
+│
+├── AES
+│   ├── BotanAES  (Botan实现)
+│   └── OSSLAES   (OpenSSL实现)
+│   └── 支持模式：CBC, ECB, CTR, GCM, CFB, OFB
+│   └── 密钥长度：128, 192, 256位
+│
+├── DES
+│   ├── BotanDES  (Botan实现)
+│   └── OSSLDES   (OpenSSL实现)
+│   └── 支持模式：CBC, ECB
+│   └── 密钥长度：64位
+│
+└── DES3 (Triple DES)
+    ├── BotanDES  (Botan实现)
+    └── OSSLDES   (OpenSSL实现)
+    └── 支持模式：CBC, ECB
+    └── 密钥长度：128, 192位
+</code></pre>
+<hr>
+<h3 id="symmetricalgorithm抽象类"><a class="header" href="#symmetricalgorithm抽象类">SymmetricAlgorithm抽象类</a></h3>
+<p>SymmetricAlgorithm定义了对称加密的通用接口：</p>
+<pre><code class="language-cpp">struct SymAlgo
+{
+    enum Type
+    {
+        Unknown,
+        AES,
+        DES,
+        DES3
+    };
+};
+
+struct SymMode
+{
+    enum Type
+    {
+        Unknown,
+        CBC,    // Cipher Block Chaining
+        CFB,    // Cipher Feedback
+        CTR,    // Counter
+        ECB,    // Electronic Codebook
+        GCM,    // Galois/Counter Mode
+        OFB     // Output Feedback
+    };
+};
+
+struct SymWrap
+{
+    enum Type
+    {
+        Unknown,
+        AES_KEYWRAP,
+        AES_KEYWRAP_PAD
+    };
+};
+
+class SymmetricAlgorithm
+{
+public:
+    SymmetricAlgorithm();
+    virtual ~SymmetricAlgorithm() { }
+    
+    virtual bool encryptInit(const SymmetricKey* key, 
+                              const SymMode::Type mode,
+                              const ByteString&amp; IV,
+                              bool padding = true,
+                              size_t counterBits = 0,
+                              const ByteString&amp; aad = ByteString(),
+                              size_t tagBytes = 0);
+    
+    virtual bool encryptUpdate(const ByteString&amp; data, 
+                                ByteString&amp; encryptedData);
+    
+    virtual bool encryptFinal(ByteString&amp; encryptedData);
+    
+    virtual bool decryptInit(const SymmetricKey* key, 
+                              const SymMode::Type mode,
+                              const ByteString&amp; IV,
+                              bool padding = true,
+                              size_t counterBits = 0,
+                              const ByteString&amp; aad = ByteString(),
+                              size_t tagBytes = 0);
+    
+    virtual bool decryptUpdate(const ByteString&amp; encryptedData, 
+                                ByteString&amp; data);
+    
+    virtual bool decryptFinal(ByteString&amp; data);
+    
+    virtual bool wrapKey(const SymmetricKey* key, 
+                          const SymWrap::Type mode,
+                          const ByteString&amp; in, 
+                          ByteString&amp; out) = 0;
+    
+    virtual bool unwrapKey(const SymmetricKey* key, 
+                            const SymWrap::Type mode,
+                            const ByteString&amp; in, 
+                            ByteString&amp; out) = 0;
+    
+    virtual size_t getBlockSize() const = 0;
+    
+protected:
+    const SymmetricKey* currentKey;
+    SymMode::Type currentCipherMode;
+    bool currentPaddingMode;
+    size_t currentCounterBits;
+    size_t currentTagBytes;
+    
+    enum { NONE, ENCRYPT, DECRYPT } currentOperation;
+};
+</code></pre>
+<hr>
+<h3 id="加密模式详解"><a class="header" href="#加密模式详解">加密模式详解</a></h3>
+<p><strong>CBC（Cipher Block Chaining）</strong>：</p>
+<pre><code>CBC加密模式：
+
+明文块
+    │
+    │ P1     P2     P3
+    │        │      │
+    ▼        ▼      ▼
+┌───────┐ ┌───────┐ ┌───────┐
+│ XOR   │ │ XOR   │ │ XOR   │
+│ IV    │ │ C1    │ │ C2    │
+└───────┘ └───────┘ └───────┘
+    │        │      │
+    │        │      │
+    ▼        ▼      ▼
+┌───────┐ ┌───────┐ ┌───────┐
+│ AES   │ │ AES   │ │ AES   │
+│ Enc   │ │ Enc   │ │ Enc   │
+└───────┘ └───────┘ └───────┘
+    │        │      │
+    ▼        ▼      ▼
+    C1       C2     C3
+
+特点：
+- 每个明文块与前一个密文块异或后加密
+- 需要IV（初始向量）
+- 相同明文产生不同密文
+- 需要填充（PKCS#7）
+</code></pre>
+<p><strong>ECB（Electronic Codebook）</strong>：</p>
+<pre><code>ECB加密模式：
+
+明文块
+    │
+    │ P1     P2     P3
+    │        │      │
+    ▼        ▼      ▼
+┌───────┐ ┌───────┐ ┌───────┐
+│ AES   │ │ AES   │ │ AES   │
+│ Enc   │ │ Enc   │ │ Enc   │
+└───────┘ └───────┘ └───────┘
+    │        │      │
+    ▼        ▼      ▼
+    C1       C2     C3
+
+特点：
+- 每个明文块独立加密
+- 不需要IV
+- 相同明文产生相同密文（不安全）
+- 需要填充
+</code></pre>
+<p><strong>GCM（Galois/Counter Mode）</strong>：</p>
+<pre><code>GCM加密模式：
+
+特点：
+- AEAD模式（认证加密）
+- 不需要填充
+- 生成认证标签
+- 支持附加数据（AAD）
+
+加密：
+┌─────────────────────────────────────┐
+│                                     │
+│  IV + Counter → AES Enc → C1       │
+│  IV + Counter+1 → AES Enc → C2     │
+│  ...                                │
+│                                     │
+│  计算GMAC标签                       │
+│                                     │
+└─────────────────────────────────────┘
+
+输出：
+- 密文数据
+- 认证标签
+</code></pre>
+<hr>
+<h3 id="symmetrickey类"><a class="header" href="#symmetrickey类">SymmetricKey类</a></h3>
+<p>SymmetricKey是对称密钥的抽象：</p>
+<pre><code class="language-cpp">class SymmetricKey : public Serialisable
+{
+public:
+    explicit SymmetricKey(size_t inBitLen = 0);
+    
+    virtual bool setKeyBits(const ByteString&amp; keybits);
+    virtual const ByteString&amp; getKeyBits() const;
+    virtual ByteString getKeyCheckValue() const;
+    
+    virtual ByteString serialise() const;
+    
+    virtual void setBitLen(const size_t inBitLen);
+    virtual size_t getBitLen() const;
+
+protected:
+    ByteString keyData;   // 密钥数据
+    size_t bitLen;        // 密钥长度（位）
+};
+</code></pre>
+<p><strong>AESKey类</strong>：</p>
+<pre><code class="language-cpp">class AESKey : public SymmetricKey
+{
+public:
+    AESKey(size_t inBitLen = 0) : SymmetricKey(inBitLen) { }
+    
+    virtual ByteString getKeyCheckValue() const;
+};
+
+ByteString AESKey::getKeyCheckValue() const
+{
+    // KCV = AES-ECB(密钥, 0x0000000000000000)的前3字节
+    // 用于验证密钥是否正确导入
+    
+    ByteString zeroBlock(16);  // 16字节全零
+    
+    // 调用AES加密
+    SymmetricAlgorithm* aes = CryptoFactory::i()-&gt;getSymmetricAlgorithm(SymAlgo::AES);
+    aes-&gt;encryptInit(this, SymMode::ECB, ByteString(), false);
+    
+    ByteString kcv;
+    aes-&gt;encryptUpdate(zeroBlock, kcv);
+    aes-&gt;encryptFinal(kcv);
+    
+    CryptoFactory::i()-&gt;recycleSymmetricAlgorithm(aes);
+    
+    // 返回前3字节
+    return kcv.substr(0, 3);
+}
+</code></pre>
+<hr>
+<h3 id="botanaes实现"><a class="header" href="#botanaes实现">BotanAES实现</a></h3>
+<p>BotanAES使用Botan密码库实现AES：</p>
+<pre><code class="language-cpp">class BotanAES : public BotanSymmetricAlgorithm
+{
+public:
+    virtual ~BotanAES() { }
+    
+    virtual bool wrapKey(const SymmetricKey* key, 
+                          const SymWrap::Type mode,
+                          const ByteString&amp; in, 
+                          ByteString&amp; out);
+    
+    virtual bool unwrapKey(const SymmetricKey* key, 
+                            const SymWrap::Type mode,
+                            const ByteString&amp; in, 
+                            ByteString&amp; out);
+    
+    virtual size_t getBlockSize() const { return 16; }
+    
+protected:
+    virtual std::string getCipher() const;
+};
+
+size_t BotanAES::getBlockSize() const
+{
+    return 16;  // AES块大小固定为16字节
+}
+
+std::string BotanAES::getCipher() const
+{
+    // 根据密钥长度和模式返回Botan cipher字符串
+    
+    size_t keyBits = currentKey-&gt;getBitLen();
+    std::string cipherName;
+    
+    // 基础名称
+    cipherName = "AES-" + std::to_string(keyBits);
+    
+    // 添加模式
+    switch (currentCipherMode) {
+        case SymMode::CBC:
+            cipherName += "/CBC";
+            break;
+        case SymMode::ECB:
+            cipherName += "/ECB";
+            break;
+        case SymMode::CTR:
+            cipherName += "/CTR-BE";
+            break;
+        case SymMode::GCM:
+            cipherName += "/GCM";
+            break;
+        case SymMode::CFB:
+            cipherName += "/CFB";
+            break;
+        case SymMode::OFB:
+            cipherName += "/OFB";
+            break;
+        default:
+            return "";
+    }
+    
+    // 添加填充
+    if (currentPaddingMode) {
+        cipherName += "/PKCS7";
+    } else {
+        cipherName += "/NoPadding";
+    }
+    
+    return cipherName;
+}
+</code></pre>
+<p><strong>Botan加密实现</strong>：</p>
+<pre><code class="language-cpp">bool BotanSymmetricAlgorithm::encryptInit(const SymmetricKey* key, 
+                                           const SymMode::Type mode,
+                                           const ByteString&amp; IV,
+                                           bool padding,
+                                           size_t counterBits,
+                                           const ByteString&amp; aad,
+                                           size_t tagBytes)
+{
+    currentKey = key;
+    currentCipherMode = mode;
+    currentPaddingMode = padding;
+    currentCounterBits = counterBits;
+    currentTagBytes = tagBytes;
+    currentOperation = ENCRYPT;
+    
+    // 获取cipher名称
+    std::string cipherName = getCipher();
+    
+    // 创建Botan cipher对象
+    Botan::Cipher_Mode* cipher = Botan::Cipher_Mode::create(cipherName, Botan::ENCRYPTION);
+    if (cipher == NULL) {
+        return false;
+    }
+    
+    // 设置密钥
+    cipher-&gt;set_key(Botan::SymmetricKey(key-&gt;getKeyBits().byte_str(), key-&gt;getKeyBits().size()));
+    
+    // 设置IV
+    cipher-&gt;start(IV.byte_str(), IV.size());
+    
+    // GCM模式设置AAD
+    if (mode == SymMode::GCM &amp;&amp; aad.size() &gt; 0) {
+        cipher-&gt;process(aad.byte_str(), aad.size());
+    }
+    
+    return true;
+}
+
+bool BotanSymmetricAlgorithm::encryptUpdate(const ByteString&amp; data, 
+                                             ByteString&amp; encryptedData)
+{
+    if (currentOperation != ENCRYPT) {
+        return false;
+    }
+    
+    // Botan一次性加密
+    Botan::SecureVector&lt;Botan::byte&gt; buffer;
+    buffer.resize(data.size() + getBlockSize());
+    
+    cipher-&gt;process(data.byte_str(), data.size(), buffer, Botan::ENCRYPTION);
+    
+    encryptedData = ByteString(buffer.begin(), buffer.size());
+    
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="osslaes实现"><a class="header" href="#osslaes实现">OSSLAES实现</a></h3>
+<p>OSSLAES使用OpenSSL EVP API：</p>
+<pre><code class="language-cpp">class OSSLAES : public OSSLEVPSymmetricAlgorithm
+{
+public:
+    virtual ~OSSLAES() { }
+    
+    virtual bool wrapKey(const SymmetricKey* key, 
+                          const SymWrap::Type mode,
+                          const ByteString&amp; in, 
+                          ByteString&amp; out);
+    
+    virtual bool unwrapKey(const SymmetricKey* key, 
+                            const SymWrap::Type mode,
+                            const ByteString&amp; in, 
+                            ByteString&amp; out);
+    
+    virtual size_t getBlockSize() const { return 16; }
+    
+protected:
+    virtual const EVP_CIPHER* getCipher() const;
+};
+
+const EVP_CIPHER* OSSLAES::getCipher() const
+{
+    // 根据密钥长度和模式返回EVP_CIPHER
+    
+    size_t keyBits = currentKey-&gt;getBitLen();
+    
+    switch (currentCipherMode) {
+        case SymMode::CBC:
+            if (keyBits == 128) return EVP_aes_128_cbc();
+            if (keyBits == 192) return EVP_aes_192_cbc();
+            if (keyBits == 256) return EVP_aes_256_cbc();
+            break;
+            
+        case SymMode::ECB:
+            if (keyBits == 128) return EVP_aes_128_ecb();
+            if (keyBits == 192) return EVP_aes_192_ecb();
+            if (keyBits == 256) return EVP_aes_256_ecb();
+            break;
+            
+        case SymMode::CTR:
+            if (keyBits == 128) return EVP_aes_128_ctr();
+            if (keyBits == 192) return EVP_aes_192_ctr();
+            if (keyBits == 256) return EVP_aes_256_ctr();
+            break;
+            
+        case SymMode::GCM:
+            if (keyBits == 128) return EVP_aes_128_gcm();
+            if (keyBits == 192) return EVP_aes_192_gcm();
+            if (keyBits == 256) return EVP_aes_256_gcm();
+            break;
+            
+        default:
+            return NULL;
+    }
+    
+    return NULL;
+}
+</code></pre>
+<p><strong>OpenSSL EVP加密实现</strong>：</p>
+<pre><code class="language-cpp">bool OSSLEVPSymmetricAlgorithm::encryptInit(const SymmetricKey* key, 
+                                              const SymMode::Type mode,
+                                              const ByteString&amp; IV,
+                                              bool padding,
+                                              size_t counterBits,
+                                              const ByteString&amp; aad,
+                                              size_t tagBytes)
+{
+    currentKey = key;
+    currentCipherMode = mode;
+    currentPaddingMode = padding;
+    currentTagBytes = tagBytes;
+    currentOperation = ENCRYPT;
+    
+    // 获取EVP_CIPHER
+    const EVP_CIPHER* cipher = getCipher();
+    if (cipher == NULL) {
+        return false;
+    }
+    
+    // 创建EVP_CTX
+    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
+    if (ctx == NULL) {
+        return false;
+    }
+    
+    // 初始化加密
+    if (EVP_EncryptInit_ex(ctx, cipher, NULL, 
+                           key-&gt;getKeyBits().byte_str(), 
+                           IV.byte_str()) != 1) {
+        EVP_CIPHER_CTX_free(ctx);
+        return false;
+    }
+    
+    // 设置填充
+    EVP_CIPHER_CTX_set_padding(ctx, padding ? 1 : 0);
+    
+    // GCM模式设置IV长度和AAD
+    if (mode == SymMode::GCM) {
+        EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, IV.size(), NULL);
+        
+        if (aad.size() &gt; 0) {
+            int len;
+            EVP_EncryptUpdate(ctx, NULL, &amp;len, aad.byte_str(), aad.size());
+        }
+    }
+    
+    cipherCtx = ctx;
+    return true;
+}
+
+bool OSSLEVPSymmetricAlgorithm::encryptUpdate(const ByteString&amp; data, 
+                                               ByteString&amp; encryptedData)
+{
+    if (currentOperation != ENCRYPT) {
+        return false;
+    }
+    
+    int outlen;
+    int maxLen = data.size() + getBlockSize();
+    
+    unsigned char* buffer = new unsigned char[maxLen];
+    
+    // 加密数据
+    if (EVP_EncryptUpdate(cipherCtx, buffer, &amp;outlen, 
+                          data.byte_str(), data.size()) != 1) {
+        delete[] buffer;
+        return false;
+    }
+    
+    encryptedData = ByteString(buffer, outlen);
+    delete[] buffer;
+    
+    return true;
+}
+
+bool OSSLEVPSymmetricAlgorithm::encryptFinal(ByteString&amp; encryptedData)
+{
+    int outlen;
+    unsigned char buffer[getBlockSize()];
+    
+    // 完成加密
+    if (EVP_EncryptFinal_ex(cipherCtx, buffer, &amp;outlen) != 1) {
+        return false;
+    }
+    
+    encryptedData += ByteString(buffer, outlen);
+    
+    // GCM模式获取标签
+    if (currentCipherMode == SymMode::GCM) {
+        unsigned char tag[16];
+        EVP_CIPHER_CTX_ctrl(cipherCtx, EVP_CTRL_GCM_GET_TAG, currentTagBytes, tag);
+        encryptedData += ByteString(tag, currentTagBytes);
+    }
+    
+    EVP_CIPHER_CTX_free(cipherCtx);
+    cipherCtx = NULL;
+    
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="密钥包装key-wrap"><a class="header" href="#密钥包装key-wrap">密钥包装（Key Wrap）</a></h3>
+<p>AES密钥包装用于安全导出密钥：</p>
+<pre><code class="language-cpp">bool OSSLAES::wrapKey(const SymmetricKey* key, 
+                       const SymWrap::Type mode,
+                       const ByteString&amp; in, 
+                       ByteString&amp; out)
+{
+    const EVP_CIPHER* wrapCipher = getWrapCipher(mode, key);
+    if (wrapCipher == NULL) {
+        return false;
+    }
+    
+    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
+    
+    // 初始化包装
+    EVP_EncryptInit_ex(ctx, wrapCipher, NULL, 
+                       key-&gt;getKeyBits().byte_str(), NULL);
+    
+    int outlen;
+    int maxLen = in.size() + 16;
+    unsigned char* buffer = new unsigned char[maxLen];
+    
+    // 执行包装
+    EVP_EncryptUpdate(ctx, buffer, &amp;outlen, in.byte_str(), in.size());
+    int finallen;
+    EVP_EncryptFinal_ex(ctx, buffer + outlen, &amp;finallen);
+    
+    out = ByteString(buffer, outlen + finallen);
+    
+    delete[] buffer;
+    EVP_CIPHER_CTX_free(ctx);
+    
+    return true;
+}
+
+const EVP_CIPHER* OSSLAES::getWrapCipher(const SymWrap::Type mode, 
+                                          const SymmetricKey* key) const
+{
+    size_t keyBits = key-&gt;getBitLen();
+    
+    if (mode == SymWrap::AES_KEYWRAP) {
+        if (keyBits == 128) return EVP_aes_128_wrap();
+        if (keyBits == 192) return EVP_aes_192_wrap();
+        if (keyBits == 256) return EVP_aes_256_wrap();
+    } else if (mode == SymWrap::AES_KEYWRAP_PAD) {
+        if (keyBits == 128) return EVP_aes_128_wrap_pad();
+        if (keyBits == 192) return EVP_aes_192_wrap_pad();
+        if (keyBits == 256) return EVP_aes_256_wrap_pad();
+    }
+    
+    return NULL;
+}
+</code></pre>
+<hr>
+<h3 id="des实现"><a class="header" href="#des实现">DES实现</a></h3>
+<p>DES和3DES实现类似AES：</p>
+<pre><code class="language-cpp">class BotanDES : public BotanSymmetricAlgorithm
+{
+public:
+    virtual size_t getBlockSize() const { return 8; }  // DES块大小8字节
+    
+protected:
+    virtual std::string getCipher() const;
+};
+
+std::string BotanDES::getCipher() const
+{
+    std::string cipherName;
+    
+    if (currentKey-&gt;getBitLen() == 64) {
+        cipherName = "DES";
+    } else if (currentKey-&gt;getBitLen() == 128) {
+        cipherName = "TripleDES-2key";  // 2-key 3DES
+    } else if (currentKey-&gt;getBitLen() == 192) {
+        cipherName = "TripleDES-3key";  // 3-key 3DES
+    }
+    
+    switch (currentCipherMode) {
+        case SymMode::CBC:
+            cipherName += "/CBC/PKCS7";
+            break;
+        case SymMode::ECB:
+            cipherName += "/ECB/PKCS7";
+            break;
+        default:
+            return "";
+    }
+    
+    return cipherName;
+}
+</code></pre>
+<hr>
+<h3 id="对称加密完整流程"><a class="header" href="#对称加密完整流程">对称加密完整流程</a></h3>
+<pre><code>对称加密完整流程：
+
+C_GenerateKey
+    │
+    │ CryptoFactory::i()-&gt;getSymmetricAlgorithm(SymAlgo::AES)
+    │ algo-&gt;generateKey(key, rng)
+    ▼
+密钥创建（AESKey对象）
+    │
+    │ C_EncryptInit
+    │ CryptoFactory::i()-&gt;getSymmetricAlgorithm(SymAlgo::AES)
+    │ algo-&gt;encryptInit(key, mode, IV)
+    ▼
+加密初始化
+    │
+    │ C_Encrypt
+    │ algo-&gt;encryptUpdate(data, encrypted)
+    ▼
+加密数据
+    │
+    │ C_EncryptFinal
+    │ algo-&gt;encryptFinal(encrypted)
+    ▼
+加密完成
+    │
+    │ CryptoFactory::i()-&gt;recycleSymmetricAlgorithm(algo)
+    ▼
+回收算法实例
+</code></pre>
+<hr>
+<h3 id="一个类比保险箱的密码锁"><a class="header" href="#一个类比保险箱的密码锁">一个类比：保险箱的密码锁</a></h3>
+<pre><code>保险箱密码锁类比：
+
+密码锁（对称算法）
+│
+├── 密钥
+│   ├── AESKey：128位密码（16字符）
+│   ├── AESKey：256位密码（32字符）
+│   └── DESKey：64位密码（8字符）
+│
+├── 加密模式（锁的工作方式）
+│   │
+│   ├── CBC模式（链式锁）
+│   │   ├── 每次开锁依赖上次结果
+│   │   ├── 需要初始状态（IV）
+│   │   └── 相同密码每次产生不同结果
+│   │
+│   ├── ECB模式（独立锁）
+│   │   ├── 每次开锁独立工作
+│   │   ├── 不需要初始状态
+│   │   ├── 相同密码产生相同结果（不安全）
+│   │
+│   └── GCM模式（认证锁）
+│   │   ├── 加密同时验证
+│   │   ├── 产生认证标签
+│   │   ├── 可附加额外验证数据
+│   │
+│   └── CTR模式（计数锁）
+│   │   ├── 使用计数器加密
+│   │   ├── 不需要填充
+│   │   ├── 支持并行处理
+│   │
+│   └── OFB/CFB模式（流式锁）
+│       ├── 输出反馈加密
+│       ├── 流式加密
+│       ├── 不需要填充
+│
+└── 操作流程
+    ├── 设置密码（encryptInit）
+    ├── 输入数据（encryptUpdate）
+    ├── 输出结果（encryptFinal）
+    └── 回收锁（recycleSymmetricAlgorithm）
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们分析了SoftHSM2的对称算法实现。</p>
+<p><strong>SymmetricAlgorithm抽象类</strong>：</p>
+<ul>
+<li>encryptInit/Update/Final：加密接口</li>
+<li>decryptInit/Update/Final：解密接口</li>
+<li>wrapKey/unwrapKey：密钥包装</li>
+</ul>
+<p><strong>加密模式</strong>：</p>
+<ul>
+<li>CBC：链式加密，需要IV和填充</li>
+<li>ECB：独立加密，不安全</li>
+<li>GCM：AEAD认证加密</li>
+<li>CTR：计数器模式，无填充</li>
+<li>CFB/OFB：流式加密</li>
+</ul>
+<p><strong>密钥类</strong>：</p>
+<ul>
+<li>SymmetricKey：密钥基类</li>
+<li>AESKey：AES密钥，支持KCV</li>
+<li>DESKey/DES3Key：DES密钥</li>
+</ul>
+<p><strong>Botan实现</strong>：</p>
+<ul>
+<li>getCipher()返回Botan cipher字符串</li>
+<li>Botan::Cipher_Mode::create()创建cipher</li>
+<li>C++原生API</li>
+</ul>
+<p><strong>OpenSSL实现</strong>：</p>
+<ul>
+<li>getCipher()返回EVP_CIPHER指针</li>
+<li>EVP_EncryptInit/Update/Final API</li>
+<li>需要手动管理EVP_CIPHER_CTX</li>
+</ul>
+<p><strong>密钥包装</strong>：</p>
+<ul>
+<li>AES_KEYWRAP：标准密钥包装</li>
+<li>AES_KEYWRAP_PAD：填充密钥包装</li>
+</ul>
+<p>下一节，我们将分析非对称算法实现——RSA、ECDSA如何在Botan/OpenSSL中实现。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>非对称算法如何实现？</p>
+<p>RSA签名/验证如何工作？</p>
+<p>ECDSA密钥生成如何实现？</p>
+<p>公钥/私钥类如何设计？</p>
+<p>下一节，非对称算法实现。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/4.10-CryptoFactory架构.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/4.12-非对称算法实现.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/4.10-CryptoFactory架构.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/4.12-非对称算法实现.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

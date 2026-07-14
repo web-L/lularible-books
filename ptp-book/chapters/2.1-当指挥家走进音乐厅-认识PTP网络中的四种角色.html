@@ -1,0 +1,548 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>当指挥家走进音乐厅 · 认识PTP网络中的四种角色 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="第二章-ptp协议深度解析"><a class="header" href="#第二章-ptp协议深度解析">第二章 PTP协议深度解析</a></h1>
+<h2 id="21-当指挥家走进音乐厅认识ptp网络中的四种角色"><a class="header" href="#21-当指挥家走进音乐厅认识ptp网络中的四种角色">2.1 当指挥家走进音乐厅：认识PTP网络中的四种角色</a></h2>
+<h3 id="一场交响乐演出需要哪些角色"><a class="header" href="#一场交响乐演出需要哪些角色">一场交响乐演出，需要哪些角色？</a></h3>
+<p>还记得第一章里那个交响乐团的比喻吗？</p>
+<p>现在，让我们真正走进这座“音乐厅“——PTP网络。</p>
+<p>想象一下，一场交响乐演出需要什么？</p>
+<p>首先，需要一个<strong>指挥家</strong>。他站在整个乐团的最前方，用指挥棒划出精确的节拍。所有乐手都盯着他的动作，他的每一次挥手，都是时间的标尺。</p>
+<p>其次，需要<strong>乐手</strong>。他们分布在舞台的各个位置，手里拿着不同的乐器。他们看着指挥家的动作，调整自己的演奏节奏。</p>
+<p>但是，你可能忽略了一个角色：<strong>舞台监督</strong>。</p>
+<p>舞台监督不在聚光灯下。他站在幕后，负责传递消息——“第三个乐章还有30秒开始”，“指挥家需要加快速度”。他不会改变音乐的节奏，但他会确保所有信息准确无误地传递到每个乐手手中。</p>
+<p>最后，还有一种特殊的角色：<strong>特邀独奏家</strong>。</p>
+<p>他可能只出现一场，或者只在特定的音乐会上出现。他有自己独特的时间感，但为了整个演出，他需要与乐团同步。</p>
+<hr>
+<h3 id="ptp网络的四种演出角色"><a class="header" href="#ptp网络的四种演出角色">PTP网络的四种“演出角色“</a></h3>
+<p>PTP网络中，也恰好有四种角色，每一种都对应着我们刚才提到的音乐厅角色。</p>
+<h4 id="普通时钟ordinary-clock舞台上的乐手"><a class="header" href="#普通时钟ordinary-clock舞台上的乐手">普通时钟（Ordinary Clock）：舞台上的乐手</a></h4>
+<p><strong>定义</strong>：只有一个PTP端口的PTP实例。</p>
+<p>普通时钟就像舞台上的乐手。它只有一个“窗口“向外看——一个PTP端口。通过这个端口，它可以接收指挥家的指令，或者向其他乐手发出信号。</p>
+<p>普通时钟有两种状态：</p>
+<ul>
+<li><strong>主时钟状态（MASTER）</strong>：它觉得自己足够准，可以充当“小指挥“，向其他设备发送时间信号</li>
+<li><strong>从时钟状态（SLAVE）</strong>：它承认自己不够准，需要跟着别人走</li>
+</ul>
+<p>一个典型的普通时钟是什么？你的电脑网卡、你的5G基站、你的工业控制器——只要它们只需要在一个网络接口上同步时间，它们就是普通时钟。</p>
+<p><strong>关键特征</strong>：</p>
+<ul>
+<li>端口数量：1个</li>
+<li>时钟状态：可以是MASTER或SLAVE</li>
+<li>典型应用：终端设备、网络末端设备</li>
+</ul>
+<hr>
+<h4 id="边界时钟boundary-clock连接不同区域的分区指挥"><a class="header" href="#边界时钟boundary-clock连接不同区域的分区指挥">边界时钟（Boundary Clock）：连接不同区域的“分区指挥“</a></h4>
+<p><strong>定义</strong>：具有多个PTP端口的PTP实例。</p>
+<p>边界时钟就像一个大型音乐厅的“分区指挥“。想象一个超大的舞台，分为三个区域：弦乐区、铜管区、打击乐区。每个区域都有自己的分区指挥，他们盯着总指挥的动作，然后传递给自己区域的乐手。</p>
+<p>边界时钟的核心作用是：</p>
+<ol>
+<li><strong>隔离误差</strong>：一个区域的问题不会传播到其他区域</li>
+<li><strong>扩展网络</strong>：可以连接更多的设备</li>
+<li><strong>层次化同步</strong>：形成清晰的同步树</li>
+</ol>
+<p><strong>边界时钟的工作原理</strong>：</p>
+<p>假设边界时钟有3个端口：A、B、C。</p>
+<p>端口A靠近主时钟，处于SLAVE状态，接收主时钟的时间信号。</p>
+<p>端口B和C远离主时钟，处于MASTER状态，向下游设备发送时间信号。</p>
+<p>边界时钟内部的逻辑是这样的：</p>
+<ol>
+<li>端口A接收到主时钟的Sync报文</li>
+<li>边界时钟调整自己的Local PTP Clock（本地时钟）</li>
+<li>端口B和C基于这个调整后的本地时钟，发送新的Sync报文</li>
+</ol>
+<p><strong>关键点</strong>：边界时钟会“终结“PTP报文，然后“再生“新的报文。这意味着报文不会原封不动地穿越边界时钟，而是在边界时钟内部被处理和重新生成。</p>
+<p>这有什么好处？</p>
+<p>假设没有边界时钟，报文需要经过10个交换机才能从主时钟到达从时钟。每个交换机都会引入延迟抖动（处理延迟不确定）。10个交换机的抖动叠加，同步精度会急剧下降。</p>
+<p>有了边界时钟，每经过一个边界时钟，抖动就被“清零“一次。因为边界时钟会根据上游信号调整自己的时钟，然后以稳定的频率向下游发送报文。</p>
+<p><strong>关键特征</strong>：</p>
+<ul>
+<li>端口数量：2个或更多</li>
+<li>时钟状态：某些端口是SLAVE，某些端口是MASTER</li>
+<li>典型应用：网络交换机、路由器、时间分配器</li>
+</ul>
+<hr>
+<h4 id="透明时钟transparent-clock不说谎的舞台监督"><a class="header" href="#透明时钟transparent-clock不说谎的舞台监督">透明时钟（Transparent Clock）：不说谎的舞台监督</a></h4>
+<p><strong>定义</strong>：测量PTP事件报文通过该实例的时间，并将此信息提供给接收该报文的PTP实例。</p>
+<p>透明时钟就像舞台监督。他站在幕后，不参与音乐演奏，但他做了一件关键的事：记录信息传递的时间。</p>
+<p>假设指挥家在第0秒举手，这个信号经过舞台监督传递给后排的打击乐手。舞台监督会记录：</p>
+<ul>
+<li>“我在第0.001秒收到指挥的信号”</li>
+<li>“我在第0.002秒将信号传递给打击乐手”</li>
+<li>“信号在我这里停留了0.001秒”</li>
+</ul>
+<p>透明时钟做的是同样的事。</p>
+<p>当一个PTP报文穿过透明时钟时，透明时钟会：</p>
+<ol>
+<li>记录报文进入的时间戳（ingress timestamp）</li>
+<li>记录报文离开的时间戳（egress timestamp）</li>
+<li>计算驻留时间（residence time）= 离开时间 - 进入时间</li>
+<li>将驻留时间写入报文的correctionField字段</li>
+</ol>
+<p>这样，下游的设备就知道：“这个报文在路上被耽搁了多久”。</p>
+<p><strong>透明时钟的关键特性</strong>：</p>
+<p>它<strong>不调整自己的时钟</strong>。它的Local Clock自由运行，不需要与任何人同步。</p>
+<p>它<strong>不改变报文的源地址和目的地址</strong>。报文就像穿过空气一样穿过它，只是多了一个“迟到“的记录。</p>
+<p>它<strong>不参与BMCA（最佳主时钟算法）</strong>。它不关心谁是主时钟，它只是忠实地记录时间。</p>
+<p><strong>透明时钟的两种类型</strong>：</p>
+<p><strong>端到端透明时钟（E2E TC）</strong>：</p>
+<ul>
+<li>支持Delay_Req/Delay_Resp报文转发</li>
+<li>只测量驻留时间，不测量链路延迟</li>
+<li>从时钟负责测量整个路径的延迟</li>
+</ul>
+<p><strong>对等透明时钟（P2P TC）</strong>：</p>
+<ul>
+<li>丢弃Delay_Req/Delay_Resp报文</li>
+<li>不仅测量驻留时间，还测量链路延迟</li>
+<li>使用Pdelay_Req/Pdelay_Resp逐链路测量</li>
+</ul>
+<p>为什么P2P TC要丢弃Delay_Req/Delay_Resp？因为P2P机制是逐链路测量，每个透明时钟都知道自己两边链路的延迟。当它转发Sync报文时，会把“驻留时间 + 入口链路延迟“一起写入correctionField。这样，下游设备就不需要再发Delay_Req来测量路径延迟了。</p>
+<p><strong>关键特征</strong>：</p>
+<ul>
+<li>时钟状态：无状态机，不参与BMCA</li>
+<li>时钟同步：不要求同步</li>
+<li>典型应用：网络交换机、路由器（用于提升精度）</li>
+</ul>
+<hr>
+<h4 id="普通时钟-vs-边界时钟-vs-透明时钟一张表看懂差异"><a class="header" href="#普通时钟-vs-边界时钟-vs-透明时钟一张表看懂差异">普通时钟 vs 边界时钟 vs 透明时钟：一张表看懂差异</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">特性</th><th style="text-align: left">普通时钟</th><th style="text-align: left">边界时钟</th><th style="text-align: left">透明时钟</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>PTP端口数</strong></td><td style="text-align: left">1个</td><td style="text-align: left">≥2个</td><td style="text-align: left">≥1个（通常多个）</td></tr>
+<tr><td style="text-align: left"><strong>时钟调整</strong></td><td style="text-align: left">是（跟随主时钟）</td><td style="text-align: left">是（跟随主时钟）</td><td style="text-align: left">否（自由运行）</td></tr>
+<tr><td style="text-align: left"><strong>参与BMCA</strong></td><td style="text-align: left">是</td><td style="text-align: left">是</td><td style="text-align: left">否</td></tr>
+<tr><td style="text-align: left"><strong>报文处理</strong></td><td style="text-align: left">终结/发起</td><td style="text-align: left">终结/发起/再生</td><td style="text-align: left">透传（加时间戳）</td></tr>
+<tr><td style="text-align: left"><strong>状态机</strong></td><td style="text-align: left">有（9种状态）</td><td style="text-align: left">每端口独立状态机</td><td style="text-align: left">无</td></tr>
+<tr><td style="text-align: left"><strong>典型设备</strong></td><td style="text-align: left">终端设备、基站</td><td style="text-align: left">PTP交换机</td><td style="text-align: left">普通交换机</td></tr>
+<tr><td style="text-align: left"><strong>同步精度影响</strong></td><td style="text-align: left">取决于本地时钟质量</td><td style="text-align: left">可以隔离误差累积</td><td style="text-align: left">消除抖动和驻留延迟</td></tr>
+<tr><td style="text-align: left"><strong>成本</strong></td><td style="text-align: left">低</td><td style="text-align: left">中高</td><td style="text-align: left">中</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="时间域音乐厅的包厢"><a class="header" href="#时间域音乐厅的包厢">时间域：音乐厅的“包厢“</a></h3>
+<p>PTP网络还有一个重要概念：<strong>域（Domain）</strong>。</p>
+<p>想象一个大型音乐厅，有多个包厢。每个包厢都在演奏，但各自演奏不同的曲目。A包厢在演奏贝多芬，B包厢在演奏莫扎特。他们互不干扰，因为他们在不同的空间里。</p>
+<p>PTP的域就是这样的“包厢“。</p>
+<p><strong>域的作用</strong>：</p>
+<ol>
+<li><strong>隔离</strong>：不同域的PTP实例不会相互干扰</li>
+<li><strong>多时间尺度</strong>：不同域可以使用不同的时间基准</li>
+<li><strong>多Profile</strong>：不同域可以遵循不同的配置规则</li>
+</ol>
+<p><strong>域的标识</strong>：</p>
+<p>每个PTP报文的头部都包含两个域标识字段：</p>
+<ul>
+<li><strong>domainNumber</strong>：0-255（用户可配置）</li>
+<li><strong>sdoId</strong>：12位标识符（用于隔离不同标准组织的Profile）</li>
+</ul>
+<p>当PTP实例收到一个报文时，它会检查：</p>
+<ul>
+<li>这个报文的domainNumber和我的domainNumber一样吗？</li>
+<li>这个报文的sdoId和我的sdoId一样吗？</li>
+</ul>
+<p>如果不一样，直接丢弃，不处理。</p>
+<p><strong>为什么需要域？</strong></p>
+<p><strong>场景一：一个网络，多个应用</strong></p>
+<p>一个工厂里，有两条生产线。A生产线使用PTP控制机器人协作，精度要求1微秒。B生产线使用PTP监控设备状态，精度要求1毫秒。</p>
+<p>两条生产线的PTP设备连接在同一个物理网络上。如何避免干扰？</p>
+<p>答案：使用不同的域。A生产线用domainNumber=0，B生产线用domainNumber=1。它们的PTP报文互不相干，各自运行各自的同步。</p>
+<p><strong>场景二：冗余备份</strong></p>
+<p>一个电力系统，有两套PTP网络：主网络和备用网络。两套网络物理上独立，但最终都要同步到同一个时间基准。</p>
+<p>如果它们使用同一个domainNumber，会发生什么？BMCA可能会让主网络的某个设备成为备用网络的主时钟，导致交叉同步，违反冗余设计。</p>
+<p>使用不同的domainNumber，两套网络完全独立，互不干扰。</p>
+<p><strong>场景三：不同标准组织的Profile</strong></p>
+<p>IEEE 802.1工作组定义了802.1AS Profile（用于音视频桥接）。ITU-T定义了G.8275.1 Profile（用于电信网络）。两个Profile有不同的配置要求，不同的默认值。</p>
+<p>如果它们使用相同的domainNumber，不同Profile的设备可能会相互干扰。</p>
+<p>使用不同的sdoId（IEEE 802.1使用0x100，ITU-T使用0x300-0xFFC中的某个值），可以实现Profile级别的隔离。</p>
+<hr>
+<h3 id="时间尺度演奏的节拍"><a class="header" href="#时间尺度演奏的节拍">时间尺度：演奏的“节拍“</a></h3>
+<p>域定义了“在哪个包厢“，时间尺度定义了“用什么节拍“。</p>
+<p>PTP支持两种时间尺度：</p>
+<h4 id="ptp时间尺度ptp-timescale"><a class="header" href="#ptp时间尺度ptp-timescale">PTP时间尺度（PTP Timescale）</a></h4>
+<p><strong>定义</strong>：使用国际原子时（TAI）定义的秒，纪元为1970年1月1日00:00:00 TAI。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>基于物理常数，理论上永远准确</li>
+<li>与UTC的关系：PTP时间 = UTC时间 + 闰秒累积</li>
+<li>截至2026年，PTP时间比UTC时间快37秒（即UTC = PTP - 37）</li>
+</ul>
+<p><strong>适用场景</strong>：需要溯源到国际标准时间的应用（金融、电力、通信）</p>
+<h4 id="arb时间尺度arbitrary-timescale"><a class="header" href="#arb时间尺度arbitrary-timescale">ARB时间尺度（Arbitrary Timescale）</a></h4>
+<p><strong>定义</strong>：纪元由管理过程设置，秒长由主时钟确定。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>不要求与任何标准时间对齐</li>
+<li>主时钟可以说“现在的时间是0“，然后所有从时钟跟着从0开始</li>
+<li>通常用于封闭系统，不需要与外部时间同步</li>
+</ul>
+<p><strong>适用场景</strong>：工业控制、实验室测试、封闭网络</p>
+<p><strong>关键区别</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">特性</th><th style="text-align: left">PTP时间尺度</th><th style="text-align: left">ARB时间尺度</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>纪元</strong></td><td style="text-align: left">固定（1970-01-01 00:00:00 TAI）</td><td style="text-align: left">管理设置</td></tr>
+<tr><td style="text-align: left"><strong>秒长</strong></td><td style="text-align: left">TAI秒（SI秒）</td><td style="text-align: left">主时钟确定</td></tr>
+<tr><td style="text-align: left"><strong>UTC关系</strong></td><td style="text-align: left">可计算（需要闰秒信息）</td><td style="text-align: left">不适用</td></tr>
+<tr><td style="text-align: left"><strong>溯源</strong></td><td style="text-align: left">可溯源到国际标准</td><td style="text-align: left">无法溯源</td></tr>
+<tr><td style="text-align: left"><strong>典型应用</strong></td><td style="text-align: left">通信、金融、电力</td><td style="text-align: left">工业、实验室</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="端口状态乐手的演出状态"><a class="header" href="#端口状态乐手的演出状态">端口状态：乐手的“演出状态“</a></h3>
+<p>PTP端口有9种状态，就像乐手有不同的演出状态。</p>
+<h4 id="状态一览表"><a class="header" href="#状态一览表">状态一览表</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">状态</th><th style="text-align: left">英文</th><th style="text-align: left">描述</th><th style="text-align: left">能发送什么报文？</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>初始化</strong></td><td style="text-align: left">INITIALIZING</td><td style="text-align: left">正在初始化，还没准备好</td><td style="text-align: left">不发送任何报文</td></tr>
+<tr><td style="text-align: left"><strong>故障</strong></td><td style="text-align: left">FAULTY</td><td style="text-align: left">出故障了</td><td style="text-align: left">只响应管理报文</td></tr>
+<tr><td style="text-align: left"><strong>禁用</strong></td><td style="text-align: left">DISABLED</td><td style="text-align: left">被人工禁用</td><td style="text-align: left">不发送任何报文</td></tr>
+<tr><td style="text-align: left"><strong>监听</strong></td><td style="text-align: left">LISTENING</td><td style="text-align: left">等待接收Announce报文</td><td style="text-align: left">可发送Pdelay报文</td></tr>
+<tr><td style="text-align: left"><strong>预备主</strong></td><td style="text-align: left">PRE_MASTER</td><td style="text-align: left">准备成为主时钟，但还在等待</td><td style="text-align: left">不发送定时报文</td></tr>
+<tr><td style="text-align: left"><strong>主时钟</strong></td><td style="text-align: left">MASTER</td><td style="text-align: left">已经是主时钟，发送时间信号</td><td style="text-align: left">发送所有报文</td></tr>
+<tr><td style="text-align: left"><strong>被动</strong></td><td style="text-align: left">PASSIVE</td><td style="text-align: left">被动状态，不参与同步</td><td style="text-align: left">只发送Pdelay报文</td></tr>
+<tr><td style="text-align: left"><strong>未校准</strong></td><td style="text-align: left">UNCALIBRATED</td><td style="text-align: left">正在校准，还未稳定</td><td style="text-align: left">可发送Delay_Req</td></tr>
+<tr><td style="text-align: left"><strong>从时钟</strong></td><td style="text-align: left">SLAVE</td><td style="text-align: left">已经同步到主时钟</td><td style="text-align: left">发送Delay_Req</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="状态转换的典型流程"><a class="header" href="#状态转换的典型流程">状态转换的典型流程</a></h4>
+<p><strong>场景：一个普通时钟上电后的状态转换</strong></p>
+<pre><code>上电
+  ↓
+INITIALIZING（初始化数据集、检查硬件）
+  ↓
+LISTENING（监听Announce报文）
+  ↓
+  ├── 收到更好的主时钟的Announce？
+  │     ↓
+  │   UNCALIBRATED（开始同步）
+  │     ↓
+  │   SLAVE（同步完成）
+  │
+  └── 超时没收到Announce，或者自己就是最好的？
+        ↓
+      PRE_MASTER（等待确认）
+        ↓
+      MASTER（成为主时钟）
+</code></pre>
+<p><strong>PASSIVE状态是什么？</strong></p>
+<p>PASSIVE状态是最容易被误解的状态。它用于“剪枝“——防止形成同步环路。</p>
+<p>想象一个三角形拓扑：A-B-C-A。</p>
+<p>如果A是主时钟，B和C都是从时钟。B从A同步，C从A同步。这没问题。</p>
+<p>但如果B和C之间也建立了主从关系，会怎样？</p>
+<p>情况1：B成为C的主时钟。但B本身是从时钟，它的时间来自A。这意味着C间接地从A同步，只是多跳了一级。这似乎也没问题？</p>
+<p>问题在于：如果网络拓扑发生变化，或者BMCA计算出现错误，可能形成环路。</p>
+<p>PTP标准规定：在同一个PTP通信路径上，只能有一个主时钟。如果BMCA发现某个端口不应该成为主时钟，但也不应该成为从时钟（因为已经有更好的从时钟路径），那么这个端口就进入PASSIVE状态。</p>
+<p>PASSIVE状态的端口不发送Sync报文，不接收Sync报文，只发送Pdelay报文（用于测量链路延迟）。它像一个“被搁置“的端口，既不参与同步，也不影响其他端口。</p>
+<hr>
+<h3 id="实体身份每个乐手的工牌"><a class="header" href="#实体身份每个乐手的工牌">实体身份：每个乐手的“工牌“</a></h3>
+<p>在PTP网络中，每个PTP实例都有一个唯一的身份标识：<strong>clockIdentity</strong>。</p>
+<h4 id="clockidentity的结构"><a class="header" href="#clockidentity的结构">clockIdentity的结构</a></h4>
+<p>clockIdentity是一个8字节（64位）的标识符。它的构造方式有多种：</p>
+<p><strong>方式一：基于MAC地址（EUI-48）</strong></p>
+<pre><code>[OUI (3字节)] [NIC (3字节)] [扩展 (2字节)]
+</code></pre>
+<p>前6字节来自MAC地址，后2字节由实现者填充，确保唯一性。</p>
+<p><strong>方式二：基于EUI-64</strong></p>
+<p>直接使用8字节的EUI-64标识符。</p>
+<p><strong>方式三：基于其他唯一标识</strong></p>
+<p>只要保证全局唯一即可。</p>
+<h4 id="为什么需要clockidentity"><a class="header" href="#为什么需要clockidentity">为什么需要clockIdentity？</a></h4>
+<p><strong>场景一：BMCA决策</strong></p>
+<p>当多个设备都有可能成为主时钟时，BMCA需要比较它们的优先级。如果所有属性都相同，就比较clockIdentity。clockIdentity小的获胜。</p>
+<p><strong>场景二：路径追踪</strong></p>
+<p>边界时钟在转发Announce报文时，可以在PATH_TRACE TLV中记录经过的clockIdentity列表。如果某个边界时钟发现自己的clockIdentity已经在列表中，说明形成了环路，丢弃该报文。</p>
+<p><strong>场景三：故障诊断</strong></p>
+<p>管理员可以通过clockIdentity快速定位问题设备。</p>
+<h4 id="portidentity端口的分身标识"><a class="header" href="#portidentity端口的分身标识">portIdentity：端口的“分身标识“</a></h4>
+<p>一个PTP实例可能有多个端口（如边界时钟）。每个端口需要一个独立标识：<strong>portIdentity</strong>。</p>
+<p>portIdentity由两部分组成：</p>
+<ul>
+<li>clockIdentity（8字节）：标识PTP实例</li>
+<li>portNumber（2字节）：标识端口号</li>
+</ul>
+<p><strong>端口号规则</strong>：</p>
+<ul>
+<li>有效范围：1-65534</li>
+<li>65535（0xFFFF）：表示“所有端口“（用于管理报文）</li>
+<li>0：表示“无效“或“未初始化“</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<p>一个边界时钟的clockIdentity是 00-1B-19-00-00-00-00-01，有3个端口。那么：</p>
+<ul>
+<li>端口1的portIdentity：{clockIdentity: 00-1B-19-00-00-00-00-01, portNumber: 1}</li>
+<li>端口2的portIdentity：{clockIdentity: 00-1B-19-00-00-00-00-01, portNumber: 2}</li>
+<li>端口3的portIdentity：{clockIdentity: 00-1B-19-00-00-00-00-01, portNumber: 3}</li>
+</ul>
+<hr>
+<h3 id="小结ptp网络的演出团队"><a class="header" href="#小结ptp网络的演出团队">小结：PTP网络的“演出团队“</a></h3>
+<p>现在，我们可以用一张完整的表格来总结PTP网络中的角色：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">角色</th><th style="text-align: left">比喻</th><th style="text-align: left">端口数</th><th style="text-align: left">是否同步</th><th style="text-align: left">是否参与BMCA</th><th style="text-align: left">典型设备</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>普通时钟</strong></td><td style="text-align: left">乐手</td><td style="text-align: left">1</td><td style="text-align: left">是</td><td style="text-align: left">是</td><td style="text-align: left">终端设备</td></tr>
+<tr><td style="text-align: left"><strong>边界时钟</strong></td><td style="text-align: left">分区指挥</td><td style="text-align: left">≥2</td><td style="text-align: left">是</td><td style="text-align: left">是</td><td style="text-align: left">PTP交换机</td></tr>
+<tr><td style="text-align: left"><strong>透明时钟</strong></td><td style="text-align: left">舞台监督</td><td style="text-align: left">≥1</td><td style="text-align: left">否</td><td style="text-align: left">否</td><td style="text-align: left">普通交换机</td></tr>
+</tbody>
+</table>
+</div>
+<p>加上域、时间尺度、端口状态、身份标识这些概念，我们就完整描述了PTP网络的“组织架构“。</p>
+<hr>
+<h3 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h3>
+<p>现在，我们知道了PTP网络中有哪些角色，每个角色做什么事。</p>
+<p>但还有一个关键问题没有回答：<strong>在一个PTP网络中，谁来当指挥家？</strong></p>
+<p>如果网络中有多个设备都有能力成为主时钟（比如多个设备都接了GPS），如何决定谁是真正的“指挥家“？</p>
+<p>下一节，我们将深入讲解PTP协议中最精妙的算法——<strong>BMCA（最佳主时钟算法）</strong>。你会看到，PTP如何通过一套优雅的规则，自动选举出最合适的主时钟，就像交响乐团自动选出最佳指挥家。</p>
+<blockquote>
+<p><strong>【悬念留给2.2】</strong></p>
+<p>想象一下：你的网络中有10个设备，都接了GPS天线。理论上，它们都可以成为主时钟。但如果它们都抢着发Announce报文，都声称“我是主时钟“，会发生什么？</p>
+<p>答案是：混乱。每个设备都会收到多个Announce报文，不知道该听谁的。</p>
+<p>下一节，我们看看PTP如何用一套“民主选举“机制，优雅地解决这个问题。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/1.4-那个按电子表的小学生，已经懂了PTP的核心.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/2.2-让指挥家诞生-BMCA算法详解.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/1.4-那个按电子表的小学生，已经懂了PTP的核心.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/2.2-让指挥家诞生-BMCA算法详解.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

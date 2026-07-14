@@ -1,0 +1,1013 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>时间机器的记忆 · PTP数据集全解析 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="24-时间机器的记忆ptp数据集全解析"><a class="header" href="#24-时间机器的记忆ptp数据集全解析">2.4 时间机器的记忆：PTP数据集全解析</a></h1>
+<h2 id="如果ptp设备有大脑记忆存放在哪里"><a class="header" href="#如果ptp设备有大脑记忆存放在哪里">如果PTP设备有大脑，记忆存放在哪里？</a></h2>
+<p>你有没有想过，一个PTP设备是如何“记住“事情的？</p>
+<p>它记得：</p>
+<ul>
+<li><strong>我是谁</strong>（clockIdentity）</li>
+<li><strong>我现在是什么状态</strong>（MASTER还是SLAVE）</li>
+<li><strong>我的主时钟是谁</strong>（grandmasterIdentity）</li>
+<li><strong>我和主时钟差多少时间</strong>（offsetFromMaster）</li>
+<li><strong>我应该每隔多久发一次Sync报文</strong>（logSyncInterval）</li>
+</ul>
+<p>这些信息存在哪里？</p>
+<p>答案就是：<strong>数据集（Data Set）</strong>。</p>
+<p>PTP数据集就像是设备的“记忆库“，存储了协议运行所需的所有状态信息。</p>
+<hr>
+<h2 id="数据集的三种记忆类型"><a class="header" href="#数据集的三种记忆类型">数据集的三种“记忆类型“</a></h2>
+<p>在深入每个数据集之前，我们先理解数据集成员的三种分类。</p>
+<h3 id="静态成员static出厂时决定永不变"><a class="header" href="#静态成员static出厂时决定永不变">静态成员（Static）：出厂时决定，永不变</a></h3>
+<p><strong>定义</strong>：在设备设计时确定，运行期间不会改变。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>通常与硬件绑定</li>
+<li>不需要运行时计算</li>
+<li>不会被协议修改</li>
+</ul>
+<p><strong>典型例子</strong>：</p>
+<ul>
+<li><code>clockIdentity</code>：设备的唯一标识，由硬件决定</li>
+<li><code>numberPorts</code>：设备有多少个PTP端口，由硬件决定</li>
+</ul>
+<p><strong>比喻</strong>：就像你的DNA，出生时就决定了，终身不变。</p>
+<hr>
+<h3 id="动态成员dynamic协议运行时自动更新"><a class="header" href="#动态成员dynamic协议运行时自动更新">动态成员（Dynamic）：协议运行时自动更新</a></h3>
+<p><strong>定义</strong>：在协议运行过程中，根据收到的报文或测量结果自动更新。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>实时变化</li>
+<li>不需要人工干预</li>
+<li>由协议算法控制</li>
+</ul>
+<p><strong>典型例子</strong>：</p>
+<ul>
+<li><code>offsetFromMaster</code>：从时钟与主时钟的时间差，每次同步后更新</li>
+<li><code>portState</code>：端口当前状态，由BMCA决定</li>
+<li><code>meanDelay</code>：平均路径延迟，每次测量后更新</li>
+</ul>
+<p><strong>比喻</strong>：就像你的心跳频率，根据身体状况自动调整，不需要你控制。</p>
+<hr>
+<h3 id="可配置成员configurable管理员可以改"><a class="header" href="#可配置成员configurable管理员可以改">可配置成员（Configurable）：管理员可以改</a></h3>
+<p><strong>定义</strong>：可以通过管理接口（SNMP、NETCONF、CLI等）修改。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>需要管理员主动设置</li>
+<li>通常有默认值</li>
+<li>可能在运行时改变（如果管理员重新配置）</li>
+</ul>
+<p><strong>典型例子</strong>：</p>
+<ul>
+<li><code>priority1</code>、<code>priority2</code>：BMCA优先级，管理员可调整</li>
+<li><code>domainNumber</code>：域编号，管理员可设置</li>
+<li><code>logSyncInterval</code>：Sync报文发送间隔，管理员可调整</li>
+</ul>
+<p><strong>比喻</strong>：就像你的发型，可以自己决定怎么剪，也可以随时改变。</p>
+<hr>
+<h2 id="核心数据集详解"><a class="header" href="#核心数据集详解">核心数据集详解</a></h2>
+<p>PTP定义了多个数据集，每个数据集负责一类信息。</p>
+<h3 id="一defaultds默认数据集"><a class="header" href="#一defaultds默认数据集">一、defaultDS：默认数据集</a></h3>
+<p><strong>作用</strong>：存储PTP实例的身份信息和全局配置。</p>
+<p><strong>所属</strong>：每个PTP实例一个。</p>
+<h4 id="关键成员详解"><a class="header" href="#关键成员详解">关键成员详解</a></h4>
+<h5 id="1-clockidentity我是谁"><a class="header" href="#1-clockidentity我是谁">1. clockIdentity：我是谁</a></h5>
+<ul>
+<li><strong>类型</strong>：ClockIdentity（8字节）</li>
+<li><strong>分类</strong>：静态</li>
+<li><strong>含义</strong>：PTP实例的唯一标识符</li>
+<li><strong>生成方式</strong>：基于MAC地址、EUI-64或其他唯一标识</li>
+</ul>
+<p><strong>为什么需要clockIdentity？</strong></p>
+<p><strong>场景一：BMCA决胜</strong></p>
+<p>当两个设备的所有优先级属性都相同时，BMCA会比较clockIdentity。clockIdentity小的获胜。</p>
+<p><strong>场景二：环路检测</strong></p>
+<p>边界时钟在转发Announce报文时，可以在PATH_TRACE TLV中记录经过的clockIdentity列表。如果某个边界时钟发现自己的clockIdentity已经在列表中，说明形成了环路。</p>
+<p><strong>场景三：诊断</strong></p>
+<p>管理员可以通过clockIdentity快速定位问题设备。</p>
+<h5 id="2-numberports我有几个端口"><a class="header" href="#2-numberports我有几个端口">2. numberPorts：我有几个端口</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger16</li>
+<li><strong>分类</strong>：静态</li>
+<li><strong>含义</strong>：PTP实例的端口数量</li>
+<li><strong>取值</strong>：
+<ul>
+<li>普通时钟：1</li>
+<li>边界时钟：≥2</li>
+<li>透明时钟：≥1</li>
+</ul>
+</li>
+</ul>
+<p><strong>为什么需要numberPorts？</strong></p>
+<p>在管理协议中，管理员需要知道设备有多少个端口，以便查询每个端口的状态。</p>
+<h5 id="3-clockquality我的时钟质量如何"><a class="header" href="#3-clockquality我的时钟质量如何">3. clockQuality：我的时钟质量如何</a></h5>
+<ul>
+<li><strong>类型</strong>：结构体（clockClass + clockAccuracy + offsetScaledLogVariance）</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：时钟的质量指标</li>
+</ul>
+<p><strong>clockQuality的三个成员</strong>：</p>
+<p><strong>clockClass</strong>：</p>
+<ul>
+<li>时钟等级，表示时钟的精度和可溯源性</li>
+<li>值越小，等级越高</li>
+<li>关键值：6（主参考）、7（保持模式）、248（默认）、255（仅从时钟）</li>
+</ul>
+<p><strong>clockAccuracy</strong>：</p>
+<ul>
+<li>时钟精度，表示时钟的预期精度范围</li>
+<li>值越小，精度越高</li>
+<li>关键值：0x20（≤25ns）、0x22（≤250ns）、0x23（≤1μs）</li>
+</ul>
+<p><strong>offsetScaledLogVariance</strong>：</p>
+<ul>
+<li>时钟稳定性，基于Allan方差</li>
+<li>值越小，稳定性越好</li>
+</ul>
+<p><strong>clockQuality如何变化？</strong></p>
+<p><strong>正常状态</strong>：</p>
+<ul>
+<li>设备接GPS，clockClass = 6</li>
+<li>clockAccuracy根据GPS精度设置，如0x20</li>
+</ul>
+<p><strong>GPS信号丢失，但本地原子钟保持</strong>：</p>
+<ul>
+<li>clockClass从6变为7</li>
+<li>clockAccuracy可能略有下降</li>
+</ul>
+<p><strong>本地时钟漂移超出规范</strong>：</p>
+<ul>
+<li>clockClass从7变为52</li>
+<li>表示不再适合做主时钟</li>
+</ul>
+<h5 id="4-priority1和priority2我的优先级"><a class="header" href="#4-priority1和priority2我的优先级">4. priority1和priority2：我的优先级</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger8（0-255）</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：BMCA选举优先级</li>
+<li><strong>规则</strong>：值越小，优先级越高</li>
+</ul>
+<p><strong>priority1 vs priority2的区别</strong>：</p>
+<ul>
+<li><strong>priority1</strong>：第一优先级，通常用于区分不同“等级“的设备</li>
+<li><strong>priority2</strong>：第二优先级，通常用于区分同一“等级“内的设备</li>
+</ul>
+<p><strong>配置策略</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">设备类型</th><th style="text-align: left">priority1建议值</th><th style="text-align: left">priority2建议值</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">核心主时钟（GPS+原子钟）</td><td style="text-align: left">10</td><td style="text-align: left">10</td></tr>
+<tr><td style="text-align: left">一级备份（GPS+铷钟）</td><td style="text-align: left">20</td><td style="text-align: left">10-20</td></tr>
+<tr><td style="text-align: left">二级备份（GPS+TCXO）</td><td style="text-align: left">30</td><td style="text-align: left">10-30</td></tr>
+<tr><td style="text-align: left">普通设备</td><td style="text-align: left">128</td><td style="text-align: left">128</td></tr>
+<tr><td style="text-align: left">仅从设备</td><td style="text-align: left">200-255</td><td style="text-align: left">128</td></tr>
+</tbody>
+</table>
+</div>
+<h5 id="5-domainnumber我的域"><a class="header" href="#5-domainnumber我的域">5. domainNumber：我的域</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger8（0-255）</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：PTP实例所属的域编号</li>
+<li><strong>默认值</strong>：0</li>
+</ul>
+<h5 id="6-slaveonly我只能是从时钟吗"><a class="header" href="#6-slaveonly我只能是从时钟吗">6. slaveOnly：我只能是从时钟吗</a></h5>
+<ul>
+<li><strong>类型</strong>：Boolean</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：该PTP实例是否只能作为从时钟</li>
+<li><strong>取值</strong>：
+<ul>
+<li>TRUE：永远不能成为主时钟</li>
+<li>FALSE：可以成为主时钟</li>
+</ul>
+</li>
+</ul>
+<p><strong>什么时候设置slaveOnly=TRUE？</strong></p>
+<ul>
+<li>终端设备（工作站、服务器）</li>
+<li>不提供时间给他人的设备</li>
+<li>只需要同步，不需要被同步的设备</li>
+</ul>
+<p><strong>注意</strong>：当slaveOnly=TRUE时，clockClass必须设置为255。</p>
+<h5 id="7-sdoid我的profile归属"><a class="header" href="#7-sdoid我的profile归属">7. sdoId：我的Profile归属</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger16（低12位有效，0-4095）</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：标识PTP实例使用的Profile</li>
+<li><strong>默认值</strong>：0x000</li>
+</ul>
+<hr>
+<h3 id="二currentds当前数据集"><a class="header" href="#二currentds当前数据集">二、currentDS：当前数据集</a></h3>
+<p><strong>作用</strong>：存储PTP实例的当前同步状态。</p>
+<p><strong>所属</strong>：每个PTP实例一个。</p>
+<h4 id="关键成员详解-1"><a class="header" href="#关键成员详解-1">关键成员详解</a></h4>
+<h5 id="1-stepsremoved我离主时钟有多远"><a class="header" href="#1-stepsremoved我离主时钟有多远">1. stepsRemoved：我离主时钟有多远</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger16</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：到Grandmaster的边界时钟跳数</li>
+<li><strong>取值</strong>：
+<ul>
+<li>Grandmaster自己：0</li>
+<li>直接连接Grandmaster的从时钟：1</li>
+<li>再下一级：2</li>
+<li>以此类推</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何更新？</strong></p>
+<p><strong>我是主时钟（M1/M2决策）</strong>：</p>
+<ul>
+<li>stepsRemoved = 0</li>
+</ul>
+<p><strong>我是从时钟（S1决策）</strong>：</p>
+<ul>
+<li>stepsRemoved = Ebest中的stepsRemoved + 1</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre><code>Grandmaster A（stepsRemoved = 0）
+    ↓
+Boundary Clock B（stepsRemoved = 1）
+    ↓
+Boundary Clock C（stepsRemoved = 2）
+    ↓
+Slave Clock D（stepsRemoved = 3）
+</code></pre>
+<p><strong>stepsRemoved的作用</strong>：</p>
+<p><strong>作用一：BMCA决策</strong></p>
+<p>当两个设备的grandmasterIdentity相同时，比较stepsRemoved。stepsRemoved小的优先。</p>
+<p><strong>作用二：防止无限传播</strong></p>
+<p>当stepsRemoved ≥ 255时，丢弃Announce报文，防止环路导致无限传播。</p>
+<h5 id="2-offsetfrommaster我和主时钟差多少"><a class="header" href="#2-offsetfrommaster我和主时钟差多少">2. offsetFromMaster：我和主时钟差多少</a></h5>
+<ul>
+<li><strong>类型</strong>：TimeInterval（内部单位：纳秒 × 2¹⁶，即约15.26飞秒分辨率）</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：从时钟时间 - 主时钟时间</li>
+<li><strong>取值</strong>：
+<ul>
+<li>正值：从时钟比主时钟快</li>
+<li>负值：从时钟比主时钟慢</li>
+<li>零：完全同步</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何计算？</strong></p>
+<p>在1.4节中，我们已经详细推导了offsetFromMaster的计算公式：</p>
+<pre><code>offsetFromMaster = t₂ - originTimestamp - meanDelay - correctionField
+</code></pre>
+<p>其中：</p>
+<ul>
+<li>t₂：Sync报文的接收时间戳</li>
+<li>originTimestamp：Sync报文的发送时间戳</li>
+<li>meanDelay：平均路径延迟</li>
+<li>correctionField：各种校正值的总和</li>
+</ul>
+<p><strong>offsetFromMaster的用途</strong>：</p>
+<p><strong>用途一：相位校正</strong></p>
+<p>从时钟根据offsetFromMaster调整自己的时间。如果offsetFromMaster = +1μs，说明从时钟快了1μs，需要减去1μs。</p>
+<p><strong>用途二：同步质量监控</strong></p>
+<p>管理员可以监控offsetFromMaster的变化，判断同步质量。如果offsetFromMaster剧烈波动，说明网络不稳定或时钟有问题。</p>
+<h5 id="3-meandelay平均延迟"><a class="header" href="#3-meandelay平均延迟">3. meanDelay：平均延迟</a></h5>
+<ul>
+<li><strong>类型</strong>：TimeInterval（纳秒 × 2¹⁶）</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：平均路径延迟或平均链路延迟</li>
+<li><strong>取决于延迟机制</strong>：
+<ul>
+<li>E2E机制：meanDelay = meanPathDelay（端到端路径延迟）</li>
+<li>P2P机制：meanDelay = meanLinkDelay（对等链路延迟）</li>
+<li>无延迟机制：meanDelay = 0</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何计算？</strong></p>
+<p>在1.4节中，我们已经详细推导了meanPathDelay的计算公式：</p>
+<pre><code>meanPathDelay = [(t₂ - t₁) + (t₄ - t₃)] / 2
+</code></pre>
+<p>其中：</p>
+<ul>
+<li>t₁：Sync报文的发送时间戳</li>
+<li>t₂：Sync报文的接收时间戳</li>
+<li>t₃：Delay_Req报文的发送时间戳</li>
+<li>t₄：Delay_Req报文的接收时间戳</li>
+</ul>
+<hr>
+<h3 id="三parentds父时钟数据集"><a class="header" href="#三parentds父时钟数据集">三、parentDS：父时钟数据集</a></h3>
+<p><strong>作用</strong>：存储关于父PTP实例（上游主时钟）的信息。</p>
+<p><strong>所属</strong>：每个PTP实例一个。</p>
+<h4 id="关键成员详解-2"><a class="header" href="#关键成员详解-2">关键成员详解</a></h4>
+<h5 id="1-parentportidentity我的上级是谁"><a class="header" href="#1-parentportidentity我的上级是谁">1. parentPortIdentity：我的上级是谁</a></h5>
+<ul>
+<li><strong>类型</strong>：PortIdentity（clockIdentity + portNumber）</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：父时钟的端口标识</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<p>如果从时钟从某个边界时钟的端口2接收时间信号，那么：</p>
+<ul>
+<li>parentPortIdentity.clockIdentity = 边界时钟的clockIdentity</li>
+<li>parentPortIdentity.portNumber = 2</li>
+</ul>
+<h5 id="2-grandmasteridentity终极主时钟是谁"><a class="header" href="#2-grandmasteridentity终极主时钟是谁">2. grandmasterIdentity：终极主时钟是谁</a></h5>
+<ul>
+<li><strong>类型</strong>：ClockIdentity（8字节）</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：Grandmaster的标识</li>
+</ul>
+<p><strong>parentPortIdentity vs grandmasterIdentity的区别</strong>：</p>
+<pre><code>Grandmaster A
+    ↓
+Boundary Clock B（端口2）
+    ↓
+Slave Clock C
+</code></pre>
+<p>对于从时钟C：</p>
+<ul>
+<li><strong>parentPortIdentity</strong> = B的端口2的标识</li>
+<li><strong>grandmasterIdentity</strong> = A的clockIdentity</li>
+</ul>
+<h5 id="3-grandmasterclockquality主时钟的质量"><a class="header" href="#3-grandmasterclockquality主时钟的质量">3. grandmasterClockQuality：主时钟的质量</a></h5>
+<ul>
+<li><strong>类型</strong>：结构体（clockClass + clockAccuracy + offsetScaledLogVariance）</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：Grandmaster的时钟质量</li>
+</ul>
+<p>从时钟需要知道Grandmaster的质量，以便在Announce报文中传播给下游设备。</p>
+<h5 id="4-grandmasterpriority1和grandmasterpriority2"><a class="header" href="#4-grandmasterpriority1和grandmasterpriority2">4. grandmasterPriority1和grandmasterPriority2</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger8</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：Grandmaster的BMCA优先级</li>
+</ul>
+<hr>
+<h3 id="四timepropertiesds时间属性数据集"><a class="header" href="#四timepropertiesds时间属性数据集">四、timePropertiesDS：时间属性数据集</a></h3>
+<p><strong>作用</strong>：存储时间尺度和溯源信息。</p>
+<p><strong>所属</strong>：每个PTP实例一个。</p>
+<h4 id="关键成员详解-3"><a class="header" href="#关键成员详解-3">关键成员详解</a></h4>
+<h5 id="1-currentutcoffsettai与utc的差"><a class="header" href="#1-currentutcoffsettai与utc的差">1. currentUtcOffset：TAI与UTC的差</a></h5>
+<ul>
+<li><strong>类型</strong>：Integer16</li>
+<li><strong>分类</strong>：动态（主时钟可配置）</li>
+<li><strong>含义</strong>：TAI - UTC的当前值</li>
+<li><strong>截至2026年</strong>：37秒</li>
+</ul>
+<p><strong>如何更新？</strong></p>
+<ul>
+<li><strong>主时钟</strong>：从GPS信号中提取，或人工配置</li>
+<li><strong>从时钟</strong>：从Announce报文中获取，或人工配置</li>
+</ul>
+<h5 id="2-currentutcoffsetvalidutc偏移有效吗"><a class="header" href="#2-currentutcoffsetvalidutc偏移有效吗">2. currentUtcOffsetValid：UTC偏移有效吗</a></h5>
+<ul>
+<li><strong>类型</strong>：Boolean</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：currentUtcOffset是否有效</li>
+<li><strong>取值</strong>：
+<ul>
+<li>TRUE：有效</li>
+<li>FALSE：无效，不应使用</li>
+</ul>
+</li>
+</ul>
+<p><strong>什么时候是FALSE？</strong></p>
+<ul>
+<li>主时钟失去GPS信号，无法获取最新的闰秒信息</li>
+<li>主时钟的时间源不可靠</li>
+</ul>
+<h5 id="3-leap59和leap61闰秒预告"><a class="header" href="#3-leap59和leap61闰秒预告">3. leap59和leap61：闰秒预告</a></h5>
+<ul>
+<li><strong>类型</strong>：Boolean</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：
+<ul>
+<li>leap59=TRUE：当月最后一分钟将有59秒（负闰秒）</li>
+<li>leap61=TRUE：当月最后一分钟将有61秒（正闰秒）</li>
+</ul>
+</li>
+</ul>
+<p><strong>注意</strong>：leap59和leap61不能同时为TRUE。</p>
+<h5 id="4-ptptimescale使用哪种时间尺度"><a class="header" href="#4-ptptimescale使用哪种时间尺度">4. ptpTimescale：使用哪种时间尺度</a></h5>
+<ul>
+<li><strong>类型</strong>：Boolean</li>
+<li><strong>分类</strong>：动态（主时钟可配置）</li>
+<li><strong>含义</strong>：
+<ul>
+<li>TRUE：PTP时间尺度（TAI）</li>
+<li>FALSE：ARB时间尺度</li>
+</ul>
+</li>
+</ul>
+<h5 id="5-timetraceable时间可溯源吗"><a class="header" href="#5-timetraceable时间可溯源吗">5. timeTraceable：时间可溯源吗</a></h5>
+<ul>
+<li><strong>类型</strong>：Boolean</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：时间是否可溯源到国际标准</li>
+</ul>
+<h5 id="6-frequencytraceable频率可溯源吗"><a class="header" href="#6-frequencytraceable频率可溯源吗">6. frequencyTraceable：频率可溯源吗</a></h5>
+<ul>
+<li><strong>类型</strong>：Boolean</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：频率是否可溯源到国际标准</li>
+</ul>
+<h5 id="7-timesource时间源类型"><a class="header" href="#7-timesource时间源类型">7. timeSource：时间源类型</a></h5>
+<ul>
+<li><strong>类型</strong>：Enumeration8</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：主时钟的时间来自哪种类型的源</li>
+<li><strong>典型值</strong>：
+<ul>
+<li>0x20：GNSS（GPS等）</li>
+<li>0x10：ATOMIC_CLOCK（原子钟）</li>
+<li>0x50：NTP</li>
+<li>0xA0：INTERNAL_OSCILLATOR（内部振荡器）</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="五portds端口数据集"><a class="header" href="#五portds端口数据集">五、portDS：端口数据集</a></h3>
+<p><strong>作用</strong>：存储每个PTP端口的状态和配置。</p>
+<p><strong>所属</strong>：每个PTP端口一个。</p>
+<h4 id="关键成员详解-4"><a class="header" href="#关键成员详解-4">关键成员详解</a></h4>
+<h5 id="1-portidentity端口标识"><a class="header" href="#1-portidentity端口标识">1. portIdentity：端口标识</a></h5>
+<ul>
+<li><strong>类型</strong>：PortIdentity（clockIdentity + portNumber）</li>
+<li><strong>分类</strong>：静态</li>
+<li><strong>含义</strong>：端口的唯一标识</li>
+</ul>
+<h5 id="2-portstate端口状态"><a class="header" href="#2-portstate端口状态">2. portState：端口状态</a></h5>
+<ul>
+<li><strong>类型</strong>：Enumeration8</li>
+<li><strong>分类</strong>：动态</li>
+<li><strong>含义</strong>：端口当前状态</li>
+<li><strong>取值</strong>：
+<ul>
+<li>0x01：INITIALIZING</li>
+<li>0x02：FAULTY</li>
+<li>0x03：DISABLED</li>
+<li>0x04：LISTENING</li>
+<li>0x05：PRE_MASTER</li>
+<li>0x06：MASTER</li>
+<li>0x07：PASSIVE</li>
+<li>0x08：UNCALIBRATED</li>
+<li>0x09：SLAVE</li>
+</ul>
+</li>
+</ul>
+<h5 id="3-logannounceintervalannounce报文间隔"><a class="header" href="#3-logannounceintervalannounce报文间隔">3. logAnnounceInterval：Announce报文间隔</a></h5>
+<ul>
+<li><strong>类型</strong>：Integer8</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：Announce报文的发送间隔，以log₂秒表示</li>
+<li><strong>计算</strong>：间隔 = 2^(logAnnounceInterval) 秒</li>
+<li><strong>默认值</strong>：1（即间隔 = 2秒）</li>
+<li><strong>典型范围</strong>：-3到+4（即125ms到16秒）</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">logAnnounceInterval</th><th style="text-align: left">间隔</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">-3</td><td style="text-align: left">125毫秒</td></tr>
+<tr><td style="text-align: left">-2</td><td style="text-align: left">250毫秒</td></tr>
+<tr><td style="text-align: left">-1</td><td style="text-align: left">500毫秒</td></tr>
+<tr><td style="text-align: left">0</td><td style="text-align: left">1秒</td></tr>
+<tr><td style="text-align: left">1</td><td style="text-align: left">2秒（默认）</td></tr>
+<tr><td style="text-align: left">2</td><td style="text-align: left">4秒</td></tr>
+<tr><td style="text-align: left">3</td><td style="text-align: left">8秒</td></tr>
+<tr><td style="text-align: left">4</td><td style="text-align: left">16秒</td></tr>
+</tbody>
+</table>
+</div>
+<h5 id="4-announcereceipttimeoutannounce超时"><a class="header" href="#4-announcereceipttimeoutannounce超时">4. announceReceiptTimeout：Announce超时</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger8</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：未收到Announce报文的超时倍数</li>
+<li><strong>计算</strong>：超时时间 = announceReceiptTimeout × 2^(logAnnounceInterval)</li>
+<li><strong>默认值</strong>：3</li>
+<li><strong>典型范围</strong>：2-10</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<p>当logAnnounceInterval=1（间隔2秒）、announceReceiptTimeout=3时：</p>
+<ul>
+<li>超时时间 = 3 × 2 = 6秒</li>
+</ul>
+<p>如果6秒内未收到Announce报文，触发ANNOUNCE_RECEIPT_TIMEOUT_EXPIRES事件。</p>
+<h5 id="5-logsyncintervalsync报文间隔"><a class="header" href="#5-logsyncintervalsync报文间隔">5. logSyncInterval：Sync报文间隔</a></h5>
+<ul>
+<li><strong>类型</strong>：Integer8</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：Sync报文的发送间隔，以log₂秒表示</li>
+<li><strong>计算</strong>：间隔 = 2^(logSyncInterval) 秒</li>
+<li><strong>默认值</strong>：0（即间隔 = 1秒）</li>
+<li><strong>典型范围</strong>：-7到+1（即7.8ms到2秒）</li>
+</ul>
+<p><strong>为什么通常Sync间隔比Announce间隔小？</strong></p>
+<p>Sync报文用于时间同步，频率越高，同步精度越高。</p>
+<p>Announce报文用于BMCA，不需要那么频繁，节省带宽。</p>
+<h5 id="6-logmindelayreqintervaldelay_req最小间隔"><a class="header" href="#6-logmindelayreqintervaldelay_req最小间隔">6. logMinDelayReqInterval：Delay_Req最小间隔</a></h5>
+<ul>
+<li><strong>类型</strong>：Integer8</li>
+<li><strong>分类</strong>：动态（主时钟通告）</li>
+<li><strong>含义</strong>：从时钟发送Delay_Req报文的最小间隔，以log₂秒表示</li>
+<li><strong>计算</strong>：间隔 = 2^(logMinDelayReqInterval) 秒</li>
+<li><strong>默认值</strong>：0（即间隔 = 1秒）</li>
+</ul>
+<p><strong>为什么是主时钟通告？</strong></p>
+<p>主时钟知道自己的处理能力。如果主时钟处理能力有限，可以要求从时钟降低Delay_Req频率，避免过载。</p>
+<h5 id="7-delaymechanism延迟测量机制"><a class="header" href="#7-delaymechanism延迟测量机制">7. delayMechanism：延迟测量机制</a></h5>
+<ul>
+<li><strong>类型</strong>：Enumeration8</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：端口使用的延迟测量机制</li>
+<li><strong>取值</strong>：
+<ul>
+<li>0x01：E2E（端到端）</li>
+<li>0x02：P2P（对等）</li>
+<li>0x03：COMMON_P2P（公共P2P）</li>
+<li>0x04：SPECIAL（特殊端口）</li>
+<li>0xFE：NO_MECHANISM（无延迟机制）</li>
+</ul>
+</li>
+</ul>
+<p><strong>关键规则</strong>：</p>
+<ul>
+<li><strong>同一PTP通信路径上的所有端口，必须使用相同的delayMechanism</strong></li>
+<li>混用E2E和P2P会导致无法正确测量延迟</li>
+</ul>
+<h5 id="8-versionnumber和minorversionnumberptp版本"><a class="header" href="#8-versionnumber和minorversionnumberptp版本">8. versionNumber和minorVersionNumber：PTP版本</a></h5>
+<ul>
+<li><strong>类型</strong>：UInteger4</li>
+<li><strong>分类</strong>：可配置</li>
+<li><strong>含义</strong>：PTP协议版本</li>
+<li><strong>IEEE 1588-2019</strong>：versionNumber=2, minorVersionNumber=1</li>
+</ul>
+<hr>
+<h2 id="数据集之间的关系"><a class="header" href="#数据集之间的关系">数据集之间的关系</a></h2>
+<h3 id="关系图"><a class="header" href="#关系图">关系图</a></h3>
+<pre><code>PTP实例
+├── defaultDS（身份和配置）
+├── currentDS（当前同步状态）
+├── parentDS（父时钟信息）
+├── timePropertiesDS（时间属性）
+└── portDS[]（每个端口一个）
+    ├── portDS[1]
+    ├── portDS[2]
+    └── ...
+</code></pre>
+<h3 id="数据流动"><a class="header" href="#数据流动">数据流动</a></h3>
+<p><strong>主时钟发送Announce报文</strong>：</p>
+<pre><code>主时钟的数据集 → Announce报文
+├── defaultDS.clockIdentity → sourcePortIdentity.clockIdentity
+├── defaultDS.clockQuality → grandmasterClockQuality
+├── defaultDS.priority1 → grandmasterPriority1
+├── defaultDS.priority2 → grandmasterPriority2
+├── currentDS.stepsRemoved → stepsRemoved
+├── timePropertiesDS.currentUtcOffset → currentUtcOffset
+└── ...
+</code></pre>
+<p><strong>从时钟接收Announce报文</strong>：</p>
+<pre><code>Announce报文 → 从时钟的数据集
+├── sourcePortIdentity → parentDS.parentPortIdentity
+├── grandmasterIdentity → parentDS.grandmasterIdentity
+├── grandmasterClockQuality → parentDS.grandmasterClockQuality
+├── grandmasterPriority1 → parentDS.grandmasterPriority1
+├── stepsRemoved + 1 → currentDS.stepsRemoved
+└── ...
+</code></pre>
+<hr>
+<h2 id="数据集更新规则"><a class="header" href="#数据集更新规则">数据集更新规则</a></h2>
+<h3 id="m1m2决策我成为主时钟"><a class="header" href="#m1m2决策我成为主时钟">M1/M2决策（我成为主时钟）</a></h3>
+<p>当BMCA决定我是主时钟时，按以下规则更新数据集：</p>
+<p><strong>currentDS</strong>：</p>
+<ul>
+<li>stepsRemoved = 0</li>
+<li>offsetFromMaster = 0</li>
+<li>meanDelay = 0</li>
+</ul>
+<p><strong>parentDS</strong>：</p>
+<ul>
+<li>parentPortIdentity.clockIdentity = defaultDS.clockIdentity</li>
+<li>parentPortIdentity.portNumber = 0</li>
+<li>grandmasterIdentity = defaultDS.clockIdentity</li>
+<li>grandmasterClockQuality = defaultDS.clockQuality</li>
+<li>grandmasterPriority1 = defaultDS.priority1</li>
+<li>grandmasterPriority2 = defaultDS.priority2</li>
+</ul>
+<p><strong>timePropertiesDS</strong>：</p>
+<ul>
+<li>根据外部时间源（如GPS）更新各项属性</li>
+</ul>
+<h3 id="s1决策我成为从时钟"><a class="header" href="#s1决策我成为从时钟">S1决策（我成为从时钟）</a></h3>
+<p>当BMCA决定我是从时钟时，按以下规则更新数据集：</p>
+<p><strong>currentDS</strong>：</p>
+<ul>
+<li>stepsRemoved = Ebest.stepsRemoved + 1</li>
+</ul>
+<p><strong>parentDS</strong>：</p>
+<ul>
+<li>parentPortIdentity = Ebest.sourcePortIdentity</li>
+<li>grandmasterIdentity = Ebest.grandmasterIdentity</li>
+<li>grandmasterClockQuality = Ebest.grandmasterClockQuality</li>
+<li>grandmasterPriority1 = Ebest.grandmasterPriority1</li>
+<li>grandmasterPriority2 = Ebest.grandmasterPriority2</li>
+</ul>
+<p><strong>timePropertiesDS</strong>：</p>
+<ul>
+<li>currentUtcOffset = Ebest.currentUtcOffset</li>
+<li>leap59 = Ebest.leap59</li>
+<li>leap61 = Ebest.leap61</li>
+<li>ptpTimescale = Ebest.ptpTimescale</li>
+<li>timeTraceable = Ebest.timeTraceable</li>
+<li>frequencyTraceable = Ebest.frequencyTraceable</li>
+<li>timeSource = Ebest.timeSource</li>
+</ul>
+<hr>
+<h2 id="一个完整的例子"><a class="header" href="#一个完整的例子">一个完整的例子</a></h2>
+<p>让我们用一个完整的例子，演示数据集如何工作。</p>
+<p><strong>场景</strong>：</p>
+<pre><code>主时钟A（接GPS）
+    ↓
+边界时钟B
+    ↓
+从时钟C（5G基站）
+</code></pre>
+<p><strong>初始状态</strong>：</p>
+<p>主时钟A的数据集：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">数据集</th><th style="text-align: left">成员</th><th style="text-align: left">值</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">defaultDS</td><td style="text-align: left">clockIdentity</td><td style="text-align: left">00-1B-19-00-00-00-00-01</td></tr>
+<tr><td style="text-align: left">defaultDS</td><td style="text-align: left">clockClass</td><td style="text-align: left">6</td></tr>
+<tr><td style="text-align: left">defaultDS</td><td style="text-align: left">clockAccuracy</td><td style="text-align: left">0x20</td></tr>
+<tr><td style="text-align: left">defaultDS</td><td style="text-align: left">priority1</td><td style="text-align: left">10</td></tr>
+<tr><td style="text-align: left">defaultDS</td><td style="text-align: left">priority2</td><td style="text-align: left">10</td></tr>
+<tr><td style="text-align: left">defaultDS</td><td style="text-align: left">slaveOnly</td><td style="text-align: left">FALSE</td></tr>
+<tr><td style="text-align: left">currentDS</td><td style="text-align: left">stepsRemoved</td><td style="text-align: left">0</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">ptpTimescale</td><td style="text-align: left">TRUE</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">currentUtcOffset</td><td style="text-align: left">37</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">timeTraceable</td><td style="text-align: left">TRUE</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">frequencyTraceable</td><td style="text-align: left">TRUE</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">timeSource</td><td style="text-align: left">0x20（GNSS）</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>主时钟A发送Announce报文</strong>：</p>
+<p>Announce报文内容：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">字段</th><th style="text-align: left">值</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">sourcePortIdentity</td><td style="text-align: left">00-1B-19-00-00-00-00-01, portNumber=1</td></tr>
+<tr><td style="text-align: left">grandmasterIdentity</td><td style="text-align: left">00-1B-19-00-00-00-00-01</td></tr>
+<tr><td style="text-align: left">grandmasterClockQuality</td><td style="text-align: left">{class:6, accuracy:0x20, variance:…}</td></tr>
+<tr><td style="text-align: left">grandmasterPriority1</td><td style="text-align: left">10</td></tr>
+<tr><td style="text-align: left">grandmasterPriority2</td><td style="text-align: left">10</td></tr>
+<tr><td style="text-align: left">stepsRemoved</td><td style="text-align: left">0</td></tr>
+<tr><td style="text-align: left">currentUtcOffset</td><td style="text-align: left">37</td></tr>
+<tr><td style="text-align: left">ptpTimescale</td><td style="text-align: left">TRUE</td></tr>
+<tr><td style="text-align: left">timeTraceable</td><td style="text-align: left">TRUE</td></tr>
+<tr><td style="text-align: left">frequencyTraceable</td><td style="text-align: left">TRUE</td></tr>
+<tr><td style="text-align: left">timeSource</td><td style="text-align: left">0x20</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>边界时钟B接收Announce报文</strong>：</p>
+<p>边界时钟B更新数据集：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">数据集</th><th style="text-align: left">成员</th><th style="text-align: left">更新后的值</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">currentDS</td><td style="text-align: left">stepsRemoved</td><td style="text-align: left">0 + 1 = 1</td></tr>
+<tr><td style="text-align: left">parentDS</td><td style="text-align: left">parentPortIdentity</td><td style="text-align: left">A的端口1</td></tr>
+<tr><td style="text-align: left">parentDS</td><td style="text-align: left">grandmasterIdentity</td><td style="text-align: left">00-1B-19-00-00-00-00-01</td></tr>
+<tr><td style="text-align: left">parentDS</td><td style="text-align: left">grandmasterPriority1</td><td style="text-align: left">10</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">currentUtcOffset</td><td style="text-align: left">37</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">timeTraceable</td><td style="text-align: left">TRUE</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>边界时钟B转发Announce报文</strong>：</p>
+<p>Announce报文内容（更新后）：</p>
+<p>| 字段 | 值 |
+|:—|:—|:—|
+| sourcePortIdentity | B的clockIdentity, portNumber=2 |
+| grandmasterIdentity | 00-1B-19-00-00-00-00-01 |
+| grandmasterClockQuality | {class:6, accuracy:0x20, variance:…} |
+| grandmasterPriority1 | 10 |
+| stepsRemoved | 1（原值0 + 1） |
+| currentUtcOffset | 37 |</p>
+<p><strong>从时钟C接收Announce报文</strong>：</p>
+<p>从时钟C更新数据集：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">数据集</th><th style="text-align: left">成员</th><th style="text-align: left">更新后的值</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left">currentDS</td><td style="text-align: left">stepsRemoved</td><td style="text-align: left">1 + 1 = 2</td></tr>
+<tr><td style="text-align: left">parentDS</td><td style="text-align: left">parentPortIdentity</td><td style="text-align: left">B的端口2</td></tr>
+<tr><td style="text-align: left">parentDS</td><td style="text-align: left">grandmasterIdentity</td><td style="text-align: left">00-1B-19-00-00-00-00-01</td></tr>
+<tr><td style="text-align: left">timePropertiesDS</td><td style="text-align: left">currentUtcOffset</td><td style="text-align: left">37</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>从时钟C的应用</strong>：</p>
+<p>从时钟C的应用层查询时间信息：</p>
+<pre><code>问题1：我同步到哪个主时钟？
+答案：parentDS.grandmasterIdentity = 00-1B-19-00-00-00-00-01（主时钟A）
+
+问题2：我离主时钟多远？
+答案：currentDS.stepsRemoved = 2（经过2个边界时钟）
+
+问题3：我离上级时钟差多少？
+答案：currentDS.offsetFromMaster = +125ns（假设当前测量值）
+
+问题4：现在UTC时间是多少？
+答案：PTP时间 - timePropertiesDS.currentUtcOffset
+     = （当前PTP时间） - 37
+</code></pre>
+<hr>
+<h2 id="小结数据集的核心要点"><a class="header" href="#小结数据集的核心要点">小结：数据集的核心要点</a></h2>
+<p><strong>数据集分类</strong>：</p>
+<ul>
+<li>defaultDS：身份和全局配置</li>
+<li>currentDS：当前同步状态</li>
+<li>parentDS：父时钟信息</li>
+<li>timePropertiesDS：时间属性</li>
+<li>portDS：端口状态和配置</li>
+</ul>
+<p><strong>成员分类</strong>：</p>
+<ul>
+<li>静态：出厂决定，不变</li>
+<li>动态：协议运行时自动更新</li>
+<li>可配置：管理员可以修改</li>
+</ul>
+<p><strong>关键数据集成员</strong>：</p>
+<ul>
+<li>defaultDS.clockIdentity：设备唯一标识</li>
+<li>defaultDS.clockQuality：时钟质量</li>
+<li>currentDS.offsetFromMaster：时间偏差</li>
+<li>currentDS.stepsRemoved：到主时钟的跳数</li>
+<li>parentDS.grandmasterIdentity：主时钟标识</li>
+<li>timePropertiesDS.currentUtcOffset：闰秒偏移</li>
+</ul>
+<p><strong>数据流动</strong>：</p>
+<ul>
+<li>主时钟发送Announce：数据集 → 报文</li>
+<li>从时钟接收Announce：报文 → 数据集</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>现在，我们知道了PTP设备如何存储和管理信息。</p>
+<p>但还有一个问题：PTP端口有9种状态，它们之间如何转换？什么事件触发状态转换？</p>
+<p>下一节，我们将深入讲解<strong>端口状态机</strong>——PTP协议的“心脏“。你会看到，PTP定义了一套完整的状态转换规则，确保协议的正确运行。</p>
+<blockquote>
+<p><strong>【悬念留给2.5】</strong></p>
+<p>你可能好奇：为什么要有INITIALIZING、PRE_MASTER、UNCALIBRATED这些“中间状态“？直接从LISTENING跳到MASTER或SLAVE不行吗？</p>
+<p>答案是：不行。这些中间状态是协议稳定性的关键。如果省略它们，可能导致多个设备同时声称自己是主时钟，或者从时钟在未稳定时就开始工作。</p>
+<p>下一节，我们详细解读每个状态的作用和转换规则。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/2.3-时间护照与签证-PTP域和时间尺度.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/2.5-时钟的九种生命-端口状态机详解.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/2.3-时间护照与签证-PTP域和时间尺度.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/2.5-时钟的九种生命-端口状态机详解.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

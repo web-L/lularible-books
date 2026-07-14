@@ -1,0 +1,875 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Object存储架构 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="48-object存储架构密钥的永久家园"><a class="header" href="#48-object存储架构密钥的永久家园">4.8 Object存储架构：密钥的“永久家园“</a></h2>
+<h3 id="存储架构概览"><a class="header" href="#存储架构概览">存储架构概览</a></h3>
+<p>SoftHSM2的Object存储分为两层：</p>
+<pre><code>Object存储架构：
+
+┌─────────────────────────────────────────────────────────────┐
+│                      ObjectStore                            │
+│                    （存储管理器）                             │
+│                                                             │
+│  管理所有Token，提供Token创建/销毁接口                        │
+└─────────────────────────────────────────────────────────────┘
+                           │
+                           │ 管理
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      OSToken                                │
+│                    （Token存储）                             │
+│                                                             │
+│  一个Token对应一个目录                                       │
+│  管理Token内的所有Object                                    │
+└─────────────────────────────────────────────────────────────┘
+                           │
+           ┌───────────────┼───────────────┐
+           │               │               │
+           ▼               ▼               ▼
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│   ObjectFile    │ │  SessionObject  │ │   DBObject      │
+│  （文件存储）    │ │  （内存存储）    │ │  （数据库存储）  │
+│                 │ │                 │ │                 │
+│ Token Object    │ │ Session Object  │ │ 可选的后端       │
+│ 持久化存储      │ │ 临时存储        │ │                 │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
+</code></pre>
+<p><strong>两种Object类型</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">类型</th><th style="text-align: left">存储位置</th><th style="text-align: left">生命周期</th><th style="text-align: left">对应类</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>Token Object</strong></td><td style="text-align: left">文件系统</td><td style="text-align: left">持久（Session关闭后仍存在）</td><td style="text-align: left">ObjectFile</td></tr>
+<tr><td style="text-align: left"><strong>Session Object</strong></td><td style="text-align: left">内存</td><td style="text-align: left">临时（Session关闭后消失）</td><td style="text-align: left">SessionObject</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="objectstore存储管理器"><a class="header" href="#objectstore存储管理器">ObjectStore：存储管理器</a></h3>
+<p>ObjectStore是顶层存储管理器：</p>
+<pre><code class="language-cpp">class ObjectStore
+{
+public:
+    ObjectStore(std::string inStorePath, int umask);
+    virtual ~ObjectStore();
+
+    size_t getTokenCount();
+    ObjectStoreToken* getToken(size_t whichToken);
+    ObjectStoreToken* newToken(const ByteString&amp; label);
+    bool destroyToken(ObjectStoreToken* token);
+    bool isValid();
+
+private:
+    std::vector&lt;ObjectStoreToken*&gt; tokens;
+    std::vector&lt;ObjectStoreToken*&gt; allTokens;
+    std::string storePath;
+    int umask;
+    bool valid;
+    Mutex* storeMutex;
+};
+</code></pre>
+<p><strong>职责</strong>：</p>
+<ol>
+<li><strong>管理Token列表</strong>：枚举存储目录中的所有Token</li>
+<li><strong>创建新Token</strong>：创建Token目录和初始化文件</li>
+<li><strong>销毁Token</strong>：删除Token目录及其内容</li>
+<li><strong>线程安全</strong>：Mutex保护并发访问</li>
+</ol>
+<p><strong>初始化流程</strong>：</p>
+<pre><code class="language-cpp">ObjectStore::ObjectStore(std::string inStorePath, int umask)
+{
+    storePath = inStorePath;
+    this-&gt;umask = umask;
+    
+    // 创建存储目录（如果不存在）
+    Directory dir(storePath);
+    if (!dir.isValid()) {
+        valid = false;
+        return;
+    }
+    
+    // 枚举目录中的所有Token
+    std::list&lt;std::string&gt; subdirs = dir.getSubdirs();
+    for (const std::string&amp; subdir : subdirs) {
+        OSToken* token = OSToken::accessToken(storePath, subdir, umask);
+        if (token != NULL &amp;&amp; token-&gt;isValid()) {
+            tokens.push_back(token);
+        }
+    }
+    
+    valid = true;
+}
+</code></pre>
+<hr>
+<h3 id="ostokentoken存储"><a class="header" href="#ostokentoken存储">OSToken：Token存储</a></h3>
+<p>OSToken管理一个Token的所有Object：</p>
+<pre><code class="language-cpp">class OSToken : public ObjectStoreToken
+{
+public:
+    OSToken(const std::string tokenPath, int umask);
+    static OSToken* createToken(...);
+    static OSToken* accessToken(...);
+    
+    bool setSOPIN(const ByteString&amp; soPINBlob);
+    bool getSOPIN(ByteString&amp; soPINBlob);
+    bool setUserPIN(ByteString userPINBlob);
+    bool getUserPIN(ByteString&amp; userPINBlob);
+    
+    bool getTokenFlags(CK_ULONG&amp; flags);
+    bool setTokenFlags(const CK_ULONG flags);
+    bool getTokenLabel(ByteString&amp; label);
+    bool getTokenSerial(ByteString&amp; serial);
+    
+    std::set&lt;OSObject*&gt; getObjects();
+    OSObject* createObject();
+    bool deleteObject(OSObject* object);
+    
+    bool isValid();
+    void invalidate();
+    bool clearToken();
+    bool resetToken(const ByteString&amp; label);
+
+private:
+    bool index(bool isFirstTime = false);
+    
+    bool valid;
+    std::string tokenPath;
+    std::set&lt;OSObject*&gt; objects;
+    std::set&lt;OSObject*&gt; allObjects;
+    std::set&lt;std::string&gt; currentFiles;
+    ObjectFile* tokenObject;
+    Generation* gen;
+    Directory* tokenDir;
+    int umask;
+    Mutex* tokenMutex;
+};
+</code></pre>
+<p><strong>Token目录结构</strong>：</p>
+<pre><code>Token目录结构：
+
+/var/lib/softhsm2/tokens/
+│
+├── 1234567890abcdef/          ← Token目录（UUID命名）
+│   ├── token.object           ← Token元数据文件
+│   │
+│   ├── 00123456.object        ← Object文件（UUID命名）
+│   ├── 00123457.object
+│   ├── 00123458.object
+│   │
+│   ├── 00123456.lock          ← Object锁文件（事务用）
+│   ├── 00123457.lock
+│   │
+│   └── generation             ← Generation文件（版本控制）
+│
+├── 234567890abcdef/           ← 另一个Token
+│   ├── token.object
+│   ├── ...
+│
+└── ...
+</code></pre>
+<hr>
+<h3 id="osobjectobject抽象接口"><a class="header" href="#osobjectobject抽象接口">OSObject：Object抽象接口</a></h3>
+<p>OSObject是Object的抽象接口：</p>
+<pre><code class="language-cpp">class OSObject
+{
+public:
+    virtual ~OSObject() { }
+    
+    virtual bool attributeExists(CK_ATTRIBUTE_TYPE type) = 0;
+    virtual OSAttribute getAttribute(CK_ATTRIBUTE_TYPE type) = 0;
+    virtual bool getBooleanValue(CK_ATTRIBUTE_TYPE type, bool val) = 0;
+    virtual unsigned long getUnsignedLongValue(CK_ATTRIBUTE_TYPE type, unsigned long val) = 0;
+    virtual ByteString getByteStringValue(CK_ATTRIBUTE_TYPE type) = 0;
+    
+    virtual CK_ATTRIBUTE_TYPE nextAttributeType(CK_ATTRIBUTE_TYPE type) = 0;
+    
+    virtual bool setAttribute(CK_ATTRIBUTE_TYPE type, const OSAttribute&amp; attribute) = 0;
+    virtual bool deleteAttribute(CK_ATTRIBUTE_TYPE type) = 0;
+    
+    virtual bool isValid() = 0;
+    
+    enum Access { ReadOnly, ReadWrite };
+    virtual bool startTransaction(Access access = ReadWrite) = 0;
+    virtual bool commitTransaction() = 0;
+    virtual bool abortTransaction() = 0;
+    
+    virtual bool destroyObject() = 0;
+};
+</code></pre>
+<p><strong>两个实现</strong>：</p>
+<ol>
+<li><strong>ObjectFile</strong>：文件存储，持久化</li>
+<li><strong>SessionObject</strong>：内存存储，临时</li>
+</ol>
+<hr>
+<h3 id="objectfile文件存储实现"><a class="header" href="#objectfile文件存储实现">ObjectFile：文件存储实现</a></h3>
+<p>ObjectFile实现持久化存储：</p>
+<pre><code class="language-cpp">class ObjectFile : public OSObject
+{
+public:
+    ObjectFile(OSToken* parent, const std::string inPath, int inUmask, 
+               const std::string inLockpath, bool isNew = false);
+    virtual ~ObjectFile();
+    
+    virtual bool attributeExists(CK_ATTRIBUTE_TYPE type);
+    virtual OSAttribute getAttribute(CK_ATTRIBUTE_TYPE type);
+    virtual bool setAttribute(CK_ATTRIBUTE_TYPE type, const OSAttribute&amp; attribute);
+    virtual bool deleteAttribute(CK_ATTRIBUTE_TYPE type);
+    
+    virtual bool isValid();
+    void invalidate();
+    
+    std::string getFilename() const;
+    std::string getLockname() const;
+    
+    virtual bool startTransaction(Access access);
+    virtual bool commitTransaction();
+    virtual bool abortTransaction();
+    
+    virtual bool destroyObject();
+
+private:
+    void refresh(bool isFirstTime = false);
+    void store(bool isCommit = false);
+    bool writeAttributes(File &amp;objectFile);
+    void discardAttributes();
+    
+    std::string path;
+    int umask;
+    Generation* gen;
+    std::map&lt;CK_ATTRIBUTE_TYPE, OSAttribute*&gt; attributes;
+    bool valid;
+    OSToken* token;
+    Mutex* objectMutex;
+    bool inTransaction;
+    File* transactionLockFile;
+    std::string lockpath;
+};
+</code></pre>
+<p><strong>Object文件格式</strong>：</p>
+<pre><code>Object文件格式（Binary格式）：
+
+┌─────────────────────────────────────────────────────────────┐
+│                    Object File                              │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  Header                                              │   │
+│  │  ├── Magic Number: "SHSMOBJ"                         │   │
+│  │  ├── Version: 1                                      │   │
+│  │  └── Attribute Count                                 │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  Attributes                                          │   │
+│  │                                                      │   │
+│  │  ├── Attribute 1                                     │   │
+│  │  │   ├── Type (CK_ATTRIBUTE_TYPE)                   │   │
+│  │  │   ├── Length                                      │   │
+│  │  │   └── Value                                       │   │
+│  │  │                                                   │   │
+│  │  ├── Attribute 2                                     │   │
+│  │  │   ├── Type                                        │   │
+│  │  │   ├── Length                                      │   │
+│  │  │   └── Value                                       │   │
+│  │  │                                                   │   │
+│  │  ├── ...                                             │   │
+│  │  │                                                   │   │
+│  │  └── Attribute N                                     │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>属性编码</strong>：</p>
+<pre><code class="language-cpp">bool ObjectFile::writeAttributes(File &amp;objectFile)
+{
+    for (auto&amp; attrPair : attributes) {
+        CK_ATTRIBUTE_TYPE type = attrPair.first;
+        OSAttribute* attr = attrPair.second;
+        
+        // 写入属性类型
+        objectFile.write((CK_BYTE*)&amp;type, sizeof(CK_ATTRIBUTE_TYPE));
+        
+        // 写入属性值
+        if (attr-&gt;isBooleanAttribute()) {
+            CK_BBOOL value = attr-&gt;getBooleanValue();
+            CK_ULONG len = sizeof(CK_BBOOL);
+            objectFile.write((CK_BYTE*)&amp;len, sizeof(CK_ULONG));
+            objectFile.write((CK_BYTE*)&amp;value, len);
+        } else if (attr-&gt;isUnsignedLongAttribute()) {
+            CK_ULONG value = attr-&gt;getUnsignedLongValue();
+            CK_ULONG len = sizeof(CK_ULONG);
+            objectFile.write((CK_BYTE*)&amp;len, sizeof(CK_ULONG));
+            objectFile.write((CK_BYTE*)&amp;value, len);
+        } else if (attr-&gt;isByteStringAttribute()) {
+            ByteString value = attr-&gt;getByteStringValue();
+            CK_ULONG len = value.size();
+            objectFile.write((CK_BYTE*)&amp;len, sizeof(CK_ULONG));
+            objectFile.write(value.byte_str(), len);
+        }
+    }
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="generation文件版本控制"><a class="header" href="#generation文件版本控制">Generation：文件版本控制</a></h3>
+<p>Generation类用于检测文件变化：</p>
+<pre><code class="language-cpp">class Generation
+{
+public:
+    Generation(const std::string path);
+    virtual ~Generation();
+    
+    bool isValid();
+    bool isChanged();
+    void commit();
+    void reset();
+    
+private:
+    std::string genPath;
+    time_t lastModTime;
+    bool valid;
+};
+</code></pre>
+<p><strong>用途</strong>：</p>
+<ol>
+<li><strong>多实例同步</strong>：多个SoftHSM2实例共享同一存储</li>
+<li><strong>缓存失效</strong>：检测文件是否被其他实例修改</li>
+<li><strong>版本跟踪</strong>：记录文件的最后修改时间</li>
+</ol>
+<pre><code class="language-cpp">bool ObjectFile::refresh(bool isFirstTime)
+{
+    // 检查文件是否被修改
+    if (!isFirstTime &amp;&amp; gen != NULL &amp;&amp; !gen-&gt;isChanged()) {
+        return true;  // 未修改，无需刷新
+    }
+    
+    // 文件被修改，重新加载
+    File objectFile(path);
+    if (!objectFile.isValid()) {
+        valid = false;
+        return false;
+    }
+    
+    // 丢弃旧属性
+    discardAttributes();
+    
+    // 读取新属性
+    readAttributes(objectFile);
+    
+    // 更新Generation
+    if (gen != NULL) {
+        gen-&gt;commit();
+    }
+    
+    valid = true;
+    return true;
+}
+</code></pre>
+<hr>
+<h3 id="sessionobjectstore临时对象存储"><a class="header" href="#sessionobjectstore临时对象存储">SessionObjectStore：临时对象存储</a></h3>
+<p>SessionObjectStore管理Session Object：</p>
+<pre><code class="language-cpp">class SessionObjectStore
+{
+public:
+    SessionObjectStore();
+    virtual ~SessionObjectStore();
+    
+    int getObjectCount();
+    void getObjects(std::set&lt;OSObject*&gt; &amp;inObjects);
+    void getObjects(CK_SLOT_ID slotID, std::set&lt;OSObject*&gt; &amp;inObjects);
+    
+    SessionObject* createObject(CK_SLOT_ID slotID, CK_SESSION_HANDLE hSession, bool isPrivate = false);
+    bool deleteObject(SessionObject* object);
+    
+    void sessionClosed(CK_SESSION_HANDLE hSession);
+    void allSessionsClosed(CK_SLOT_ID slotID);
+    void tokenLoggedOut(CK_SLOT_ID slotID);
+    
+    void clearStore();
+
+private:
+    std::set&lt;SessionObject*&gt; objects;
+    std::set&lt;SessionObject*&gt; allObjects;
+    Mutex* storeMutex;
+};
+</code></pre>
+<p><strong>生命周期管理</strong>：</p>
+<pre><code class="language-cpp">void SessionObjectStore::sessionClosed(CK_SESSION_HANDLE hSession)
+{
+    MutexLocker lock(storeMutex);
+    
+    // 遍历所有Session Object
+    for (auto it = objects.begin(); it != objects.end(); ) {
+        SessionObject* obj = *it;
+        
+        // 如果Object绑定到被关闭的Session，删除它
+        if (obj-&gt;removeOnSessionClose(hSession)) {
+            it = objects.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void SessionObjectStore::tokenLoggedOut(CK_SLOT_ID slotID)
+{
+    MutexLocker lock(storeMutex);
+    
+    // 遍历所有Session Object
+    for (auto it = objects.begin(); it != objects.end(); ) {
+        SessionObject* obj = *it;
+        
+        // 如果Object是私有的且属于该Token，删除它
+        if (obj-&gt;removeOnTokenLogout(slotID)) {
+            it = objects.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+</code></pre>
+<hr>
+<h3 id="sessionobject临时对象实现"><a class="header" href="#sessionobject临时对象实现">SessionObject：临时对象实现</a></h3>
+<p>SessionObject实现内存存储：</p>
+<pre><code class="language-cpp">class SessionObject : public OSObject
+{
+public:
+    SessionObject(SessionObjectStore* inParent, CK_SLOT_ID inSlotID, 
+                  CK_SESSION_HANDLE inHSession, bool inIsPrivate = false);
+    virtual ~SessionObject();
+    
+    virtual bool attributeExists(CK_ATTRIBUTE_TYPE type);
+    virtual OSAttribute getAttribute(CK_ATTRIBUTE_TYPE type);
+    virtual bool setAttribute(CK_ATTRIBUTE_TYPE type, const OSAttribute&amp; attribute);
+    virtual bool deleteAttribute(CK_ATTRIBUTE_TYPE type);
+    
+    virtual bool isValid();
+    
+    bool hasSlotID(CK_SLOT_ID inSlotID);
+    bool removeOnSessionClose(CK_SESSION_HANDLE inHSession);
+    bool removeOnAllSessionsClose(CK_SLOT_ID inSlotID);
+    bool removeOnTokenLogout(CK_SLOT_ID inSlotID);
+    
+    virtual bool startTransaction(Access access);  // Stub
+    virtual bool commitTransaction();               // Stub
+    virtual bool abortTransaction();                // Stub
+    
+    virtual bool destroyObject();
+    void invalidate();
+
+private:
+    std::map&lt;CK_ATTRIBUTE_TYPE, OSAttribute*&gt; attributes;
+    bool valid;
+    Mutex* objectMutex;
+    CK_SLOT_ID slotID;
+    CK_SESSION_HANDLE hSession;
+    bool isPrivate;
+    SessionObjectStore* parent;
+};
+</code></pre>
+<p><strong>Session绑定</strong>：</p>
+<pre><code class="language-cpp">bool SessionObject::removeOnSessionClose(CK_SESSION_HANDLE inHSession)
+{
+    // 如果Object绑定的Session被关闭
+    if (hSession == inHSession) {
+        invalidate();
+        return true;
+    }
+    return false;
+}
+
+bool SessionObject::removeOnTokenLogout(CK_SLOT_ID inSlotID)
+{
+    // 如果Object是私有的且属于该Token
+    if (isPrivate &amp;&amp; slotID == inSlotID) {
+        invalidate();
+        return true;
+    }
+    return false;
+}
+</code></pre>
+<hr>
+<h3 id="事务机制"><a class="header" href="#事务机制">事务机制</a></h3>
+<p>ObjectFile支持事务操作：</p>
+<pre><code class="language-cpp">bool ObjectFile::startTransaction(Access access)
+{
+    MutexLocker lock(objectMutex);
+    
+    if (inTransaction) {
+        return false;  // 已有事务在进行
+    }
+    
+    // 创建锁文件
+    transactionLockFile = new File(lockpath);
+    if (!transactionLockFile-&gt;createFile()) {
+        delete transactionLockFile;
+        transactionLockFile = NULL;
+        return false;
+    }
+    
+    inTransaction = true;
+    return true;
+}
+
+bool ObjectFile::commitTransaction()
+{
+    MutexLocker lock(objectMutex);
+    
+    if (!inTransaction) {
+        return false;
+    }
+    
+    // 写入文件
+    store(true);
+    
+    // 删除锁文件
+    transactionLockFile-&gt;close();
+    delete transactionLockFile;
+    transactionLockFile = NULL;
+    
+    inTransaction = false;
+    return true;
+}
+
+bool ObjectFile::abortTransaction()
+{
+    MutexLocker lock(objectMutex);
+    
+    if (!inTransaction) {
+        return false;
+    }
+    
+    // 重新加载文件（丢弃修改）
+    refresh();
+    
+    // 删除锁文件
+    transactionLockFile-&gt;close();
+    delete transactionLockFile;
+    transactionLockFile = NULL;
+    
+    inTransaction = false;
+    return true;
+}
+</code></pre>
+<p><strong>事务用途</strong>：</p>
+<p>密钥生成时，需要一次性写入所有属性：</p>
+<pre><code class="language-cpp">OSObject* obj = token-&gt;createObject();
+
+obj-&gt;startTransaction();
+
+obj-&gt;setAttribute(CKA_CLASS, ...);
+obj-&gt;setAttribute(CKA_KEY_TYPE, ...);
+obj-&gt;setAttribute(CKA_TOKEN, ...);
+obj-&gt;setAttribute(CKA_SENSITIVE, ...);
+obj-&gt;setAttribute(CKA_VALUE, ...);
+// ... 更多属性
+
+obj-&gt;commitTransaction();  // 一次性写入
+</code></pre>
+<hr>
+<h3 id="一个类比银行保险箱的存储系统"><a class="header" href="#一个类比银行保险箱的存储系统">一个类比：银行保险箱的存储系统</a></h3>
+<pre><code>银行保险箱存储类比：
+
+银行大楼（ObjectStore）
+│
+├── 保险箱库A（OSToken）
+│   ├── 库记录文件（token.object）
+│   │   ├── 库名称
+│   │   ├── 管理员密码（加密）
+│   │   ├── 客户密码（加密）
+│   │   └── 库状态
+│   │
+│   ├── 保险箱001（ObjectFile）
+│   │   ├── 保险箱文件（001.object）
+│   │   ├── 内容：钥匙属性
+│   │   └── 锁文件（事务用）
+│   │
+│   ├── 保险箱002（ObjectFile）
+│   │   └── ...
+│   │
+│   └── 版本记录（generation）
+│       └── 记录最后修改时间
+│
+├── 保险箱库B（OSToken）
+│   └── ...
+│
+└── 访客临时柜（SessionObjectStore）
+    ├── 临时柜1（SessionObject）
+    │   ├── 内容：临时钥匙
+    │   ├── 绑定访客Session
+    │   └── 访客离开后清空
+    │
+    ├── 临时柜2（SessionObject）
+    │   └── ...
+    │
+    └── 访客离开时清空
+</code></pre>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们分析了SoftHSM2的Object存储架构。</p>
+<p><strong>层次结构</strong>：</p>
+<ul>
+<li>ObjectStore：顶层存储管理器</li>
+<li>OSToken：Token存储（一个目录）</li>
+<li>ObjectFile/SessionObject：Object存储</li>
+</ul>
+<p><strong>两种Object类型</strong>：</p>
+<ul>
+<li>Token Object（ObjectFile）：持久化，文件存储</li>
+<li>Session Object（SessionObject）：临时，内存存储</li>
+</ul>
+<p><strong>文件存储特点</strong>：</p>
+<ul>
+<li>每个Object一个文件</li>
+<li>UUID命名</li>
+<li>Generation版本控制</li>
+<li>事务支持（锁文件）</li>
+</ul>
+<p><strong>Session Object生命周期</strong>：</p>
+<ul>
+<li>绑定到Session</li>
+<li>Session关闭后自动删除</li>
+<li>Logout后私有对象删除</li>
+</ul>
+<p>下一节，我们将分析Token存储实现——PIN如何存储，Token元数据如何管理。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>Token的元数据存储在哪里？</p>
+<p>PIN如何安全存储？</p>
+<p>token.object文件包含什么？</p>
+<p>DBToken与OSToken有什么区别？</p>
+<p>下一节，Token存储实现。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/4.7-Handle管理模块.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/4.9-Token存储实现.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/4.7-Handle管理模块.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/4.9-Token存储实现.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

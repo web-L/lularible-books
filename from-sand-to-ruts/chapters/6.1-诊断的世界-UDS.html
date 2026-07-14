@@ -1,0 +1,599 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>诊断的世界 · UDS - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="61-诊断的世界uds"><a class="header" href="#61-诊断的世界uds">6.1 诊断的世界：UDS</a></h1>
+<h3 id="会说话的机器"><a class="header" href="#会说话的机器">会说话的机器</a></h3>
+<p>1965年，底特律。一辆V8引擎的轿车因间歇性动力丧失被拖进维修车间。维修技师打开引擎盖，面对的不是故障码，而是一个完全沉默的金属疙瘩。换分电器盖——不行。调化油器混合比——不行。拆到第三天，把进气系统全部解下来，才在歧管密封垫片上找到一条只有热胀时才显现的发丝裂纹。</p>
+<p>诊断耗时：两周。唯一的方法是拆、看、试、猜。</p>
+<p>五十年后。一辆车在高速上检测到失火。ECU在几个监控周期内确认了故障，存储了DTC P0302，附带完整的freeze frame数据。诊断仪接入OBD口，发出一条请求。车回答：“2号缸失火。发生时的条件：车速87km/h，转速2450rpm，冷却液温度92°C，长期燃油修正+3.1%。”</p>
+<p>诊断耗时：三秒钟。</p>
+<p>这不是工具的事。是哲学的事。1965年的车是一个<strong>会做的系统</strong>——它执行功能，但从不解释自身。今天的车是一个<strong>会说也会做的系统</strong>——它内置了自我描述的能力。UDS（Unified Diagnostic Services，ISO 14229）就是这种语言的语法。</p>
+<hr>
+<h3 id="诊断的姿态不是拆是问"><a class="header" href="#诊断的姿态不是拆是问">诊断的姿态：不是“拆“，是“问“</a></h3>
+<p>所有复杂系统都有两种存在方式。</p>
+<p>第一种：只能做，不能说。它执行功能，但从不解释状态。当它出问题时，你只能从外部观察、猜测、逐层拆解。你像一个考古学家面对古代器物——根据外部痕迹推断内部构造。</p>
+<p>第二种：不仅能做，还能说。它内置了自我监测的回路。每一个异常条件，它主动记录。每一个内部状态，它愿意公开。当它出问题时，它不需要被解剖——它自己告诉你哪里不对、什么时候开始不对、附带什么上下文数据。</p>
+<p>UDS为第二种系统定义了语言。</p>
+<p>在这个语言里，诊断仪问ECU“你的软件版本是什么“，ECU回答版本字节。诊断仪问“你把当前检测到的所有故障码报出来“，ECU逐一返回每个DTC及其状态。诊断仪对制动ECU说“激活你的ABS泵两秒，我要测液压回路“，制动ECU泵转了两秒后回复“已执行，液压正常。“</p>
+<p>这背后有一整条协议栈在支撑——UDS应用层定义“问什么“和“怎么问“，ISO 15765-2传输层负责把长回复拆成CAN帧并在多帧之间协调收发，CAN数据链路层和差分物理层负责比特的实际传输。那套细节在《UDS诊断书》里已经穷尽了。</p>
+<p>在这里你只需要看见<strong>为什么</strong>。为什么人类创造了诊断协议？因为系统越复杂，它就越不能靠“拆开看看“来维修。当一辆车有100个ECU，你不可能把100个ECU都拆出来单独测试每一个——工时是天价，而且拆过之后的ECU要重新标定、重新配置、重新安全校验。解决这个问题的唯一方法，是让每个ECU自己学会说话。</p>
+<hr>
+<h3 id="诊断协议栈的核心dcm-如何分发请求"><a class="header" href="#诊断协议栈的核心dcm-如何分发请求">诊断协议栈的核心：DCM 如何分发请求</a></h3>
+<p>UDS 请求到达 ECU 后，第一个处理它的是 <strong>DCM（Diagnostic Communication Manager）</strong>。DCM 的角色类似于网络的 HTTP 服务器——它接收请求、解析服务 ID、分发到对应的处理函数。</p>
+<p>一个极简的 DCM 分发器实现：</p>
+<pre><code class="language-c">/* DCM_ServiceDispatcher.c — 简化的诊断通信管理器 */
+
+#define UDS_SID_DIAGNOSTIC_SESSION_CONTROL  0x10
+#define UDS_SID_ECU_RESET                    0x11
+#define UDS_SID_READ_DATA_BY_IDENTIFIER      0x22
+#define UDS_SID_READ_DTC_INFORMATION         0x19
+#define UDS_SID_SECURITY_ACCESS              0x27
+#define UDS_SID_CLEAR_DIAGNOSTIC_INFORMATION  0x14
+#define UDS_SID_ROUTINE_CONTROL              0x31
+#define UDS_SID_TESTER_PRESENT               0x3E
+
+typedef enum {
+    DCM_SESSION_DEFAULT  = 0x01,
+    DCM_SESSION_PROGRAMMING = 0x02,
+    DCM_SESSION_EXTENDED = 0x03,
+} Dcm_SessionType;
+
+static Dcm_SessionType g_current_session = DCM_SESSION_DEFAULT;
+static uint8_t g_security_level = 0;  /* 0=锁定, 1=解锁 */
+
+/* UDS负响应码 */
+#define NRC_SERVICE_NOT_SUPPORTED     0x11
+#define NRC_CONDITIONS_NOT_CORRECT    0x22
+#define NRC_SECURITY_ACCESS_DENIED    0x33
+
+void Dcm_ProcessRequest(const uint8_t *req, uint16_t req_len,
+                         uint8_t *resp, uint16_t *resp_len)
+{
+    uint8_t sid = req[0];
+
+    /* 首先检查诊断仪是否"活着"——不插会话超时 */
+    Dcm_ResetSessionTimer();
+
+    switch (sid) {
+    case UDS_SID_DIAGNOSTIC_SESSION_CONTROL:
+        Dcm_HandleSessionControl(req, req_len, resp, resp_len);
+        break;
+
+    case UDS_SID_READ_DATA_BY_IDENTIFIER:
+        Dcm_HandleReadDataById(req, req_len, resp, resp_len);
+        break;
+
+    case UDS_SID_READ_DTC_INFORMATION:
+        Dcm_HandleReadDTC(req, req_len, resp, resp_len);
+        break;
+
+    case UDS_SID_SECURITY_ACCESS:
+        Dcm_HandleSecurityAccess(req, req_len, resp, resp_len);
+        break;
+
+    case UDS_SID_CLEAR_DIAGNOSTIC_INFORMATION:
+        Dcm_HandleClearDTC(req, req_len, resp, resp_len);
+        break;
+
+    case UDS_SID_ROUTINE_CONTROL:
+        Dcm_HandleRoutineControl(req, req_len, resp, resp_len);
+        break;
+
+    case UDS_SID_TESTER_PRESENT:
+        Dcm_HandleTesterPresent(req, req_len, resp, resp_len);
+        break;
+
+    case UDS_SID_ECU_RESET:
+        Dcm_HandleEcuReset(req, req_len, resp, resp_len);
+        break;
+
+    default:
+        /* 不支持的服务——返回负响应 */
+        resp[0] = 0x7F;  /* 负响应SID */
+        resp[1] = sid;
+        resp[2] = NRC_SERVICE_NOT_SUPPORTED;
+        *resp_len = 3;
+        break;
+    }
+}
+
+void Dcm_HandleSessionControl(const uint8_t *req, uint16_t req_len,
+                               uint8_t *resp, uint16_t *resp_len)
+{
+    uint8_t new_session = req[1];
+
+    switch (new_session) {
+    case DCM_SESSION_DEFAULT:
+        g_current_session = DCM_SESSION_DEFAULT;
+        g_security_level = 0;  /* 回到默认会话 → 自动锁定安全访问 */
+        resp[0] = 0x50;  /* 正响应SID = 请求SID + 0x40 */
+        resp[1] = new_session;
+        *resp_len = 2;
+        break;
+
+    case DCM_SESSION_EXTENDED:
+        g_current_session = new_session;
+        resp[0] = 0x50;
+        resp[1] = new_session;
+        *resp_len = 2;
+        break;
+
+    // 在生产代码中，此处应检查 g_security_level &gt;= 1 后才允许进入编程会话
+    case DCM_SESSION_PROGRAMMING:
+        g_current_session = new_session;
+        resp[0] = 0x50;
+        resp[1] = new_session;
+        *resp_len = 2;
+        break;
+
+    default:
+        resp[0] = 0x7F;
+        resp[1] = UDS_SID_DIAGNOSTIC_SESSION_CONTROL;
+        resp[2] = NRC_CONDITIONS_NOT_CORRECT;
+        *resp_len = 3;
+        break;
+    }
+}
+
+/* 会话超时定时器——如果5秒内没有收到TesterPresent，自动退回默认会话 */
+void Dcm_ResetSessionTimer(void)
+{
+    g_session_timer = DCM_SESSION_TIMEOUT_MS;
+}
+
+void Dcm_SessionTimer_Tick(void)
+{
+    if (g_session_timer &gt; 0) {
+        g_session_timer--;
+        if (g_session_timer == 0) {
+            /* 会话超时——退回到默认 */
+            g_current_session = DCM_SESSION_DEFAULT;
+            g_security_level = 0;
+        }
+    }
+}
+</code></pre>
+<p>DCM 不复杂。它就是一张查找表——把服务 ID 映射到处理函数。整个 UDS 协议的复杂性不在 DCM 本身，而在各个服务处理函数内部——以及这些处理函数调用的下层模块（如 DEM 对 DTC 的管理）。</p>
+<hr>
+<h3 id="诊断的三个层次看动改"><a class="header" href="#诊断的三个层次看动改">诊断的三个层次：看、动、改</a></h3>
+<p>诊断不是单一操作。它有三个层次。</p>
+<p><strong>读取。</strong> 诊断仪可以读ECU的各种信息——软件版本、硬件编号、故障码、传感器实时值、通信计数器。这是“让系统报告自己“。不需要任何权限。任何诊断仪都可以问任何一个ECU“你是谁“。对应的 UDS 服务是 0x22（ReadDataByIdentifier）和 0x19（ReadDTCInformation）。</p>
+<p><strong>控制。</strong> 诊断仪可以激活ECU的执行器——让ABS泵短暂运转、让空调风扇启动、让某个喷油器喷射。这是“让系统按你的要求动作“。对应的 UDS 服务是 0x31（RoutineControl）——诊断仪说“执行例程 0x0201（激活ABS泵100ms）“，ECU执行后返回结果。</p>
+<p><strong>写入。</strong> 诊断仪可以向ECU写入标定数据——更新发动机map、修改传感器阈值、刷写新的固件。这是“改变系统的行为“。对应的服务是 0x2E（WriteDataByIdentifier）、0x34/0x36/0x37（RequestDownload/TransferData/RequestTransferExit）。</p>
+<p>前两个层次的哲学是：<strong>系统主动暴露自己，帮助维修者更快定位故障。</strong> 第三个层次是另一回事：你赋予了维修者修改系统的权力。这需要一个锁。</p>
+<hr>
+<h3 id="安全访问谁给了你写的权力"><a class="header" href="#安全访问谁给了你写的权力">安全访问：谁给了你写的权力？</a></h3>
+<p>ECU出厂时，它的HSM内部存储了一个密钥。这个密钥永远不离开HSM——主CPU可以请求HSM用这个密钥做加密运算，但主CPU自己读不出密钥的值。</p>
+<p>当诊断仪需要执行写操作时，ECU不会直接同意。它要求诊断仪证明自己知道这个密钥：</p>
+<pre><code>Tester (诊断仪)                        ECU
+    |                                      |
+    |  Request Seed (0x27 0x01)            |
+    |  ─────────────────────────────────&gt;    |
+    |                                      |  生成随机数 Seed (4字节)
+    |  Seed: 0x5A8F_3C21                   |
+    |  &lt;─────────────────────────────────    |
+    |                                      |
+    |  Key = AES(Seed, SecretKey)           |
+    |      截取前4字节                     |
+    |                                      |
+    |  Send Key (0x27 0x02, key)           |
+    |  ─────────────────────────────────&gt;    |
+    |                                      |  HSM重新计算 Key'
+    |                                      |  Key == Key' ?
+    |                                      |  匹配 → 解锁安全级别1
+    |  Positive Response                    |
+    |  &lt;─────────────────────────────────    |
+</code></pre>
+<p>质询—响应（Challenge-Response）的核心设计原则：<strong>密钥永不在总线上传输。</strong> 每次的seed是随机数，每次的key也不同。攻击者录制了全部通信，也无法提取密钥，也无法用录制的key重放——因为下一次的seed不同。</p>
+<p>如果连续发送错误的key——比如三次——ECU进入“安全访问延迟“状态，每次错误后等待时间指数增长（1秒、2秒、4秒……），拒绝进一步的解锁尝试。这是抗暴力破解的措施。</p>
+<p>解锁成功后，诊断仪进入<strong>编程会话</strong>或<strong>扩展会话</strong>，获得写权限。执行完毕后退出到默认会话——写权限关闭。如果诊断仪在规定时间内没有任何通信（通常5秒），ECU自动退回到默认会话。这是“人走关门“的策略。</p>
+<p><strong>会话是门。安全访问是钥匙。</strong> 诊断仪想进门，先用钥匙证明身份，然后在门关闭之前把事做完。</p>
+<hr>
+<h3 id="诊断会话状态机"><a class="header" href="#诊断会话状态机">诊断会话状态机</a></h3>
+<p>诊断会话不是简单的“默认/编程“二选一。它是一个完整的状态机：</p>
+<pre><code>                          ┌──────────────┐
+         上电/复位        │              │
+    ┌──────────────────→ │  默认会话     │←──────────────┐
+    │                     │  (0x01)      │               │
+    │                     │              │               │
+    │                     └──────┬───────┘               │
+    │                            │                       │
+    │                   0x10 0x03                        │ 0x10 0x01
+    │                            │                       │ (返回默认)
+    │                            ↓                       │
+    │                     ┌──────────────┐               │
+    │                     │  扩展会话     │───────────────┤
+    │                     │  (0x03)      │               │
+    │                     │              │               │
+    │                     └──────┬───────┘               │
+    │                            │                       │
+    │                   0x10 0x02                        │ 0x10 0x01
+    │                            │                       │
+    │                            ↓                       │
+    │                     ┌──────────────┐               │
+    │                     │  编程会话     │───────────────┘
+    │                     │  (0x02)      │
+    │                     │              │
+    │                     └──────────────┘
+    │                            │
+    └────────────────────────────┘
+              ECU复位 (0x11 0x01)
+</code></pre>
+<ul>
+<li><strong>默认会话（0x01）</strong>：只读权限。读取 DID、读取 DTC、TesterPresent。没有写权限。</li>
+<li><strong>扩展会话（0x03）</strong>：读写权限。可以写入标定数据、执行例程控制。需要安全访问解锁才能写。</li>
+<li><strong>编程会话（0x02）</strong>：最高权限。允许固件刷写（RequestDownload）。必须在扩展会话中通过安全访问后才能进入。</li>
+</ul>
+<p>在许多OEM的诊断策略中，你不能直接从默认会话跳到编程会话。典型的做法是：默认会话→扩展会话→安全访问解锁→编程会话。这不是ISO 14229-1的强制要求，而是OEM通过会话安全策略实现的额外保护——确保攻击者不能在跳过安全访问的情况下获得刷写权限。</p>
+<hr>
+<h3 id="dtc的生命它不是一个布尔值"><a class="header" href="#dtc的生命它不是一个布尔值">DTC的生命：它不是一个布尔值</a></h3>
+<p>初学者以为DTC就是“有故障/没故障“的标志位。大错。</p>
+<p>一个DTC有一整套生命周期。它不是“检测到了所以亮灯“，而是一个由 DEM（Diagnostic Event Manager）管理的有穷状态机。</p>
+<p>让我们看 DEM 如何追踪一个 DTC 的状态：</p>
+<pre><code class="language-c">/* DEM_DTCStatus.c — 诊断事件管理器：DTC状态字节管理 */
+
+/* DTC状态字节中的位定义 (UDS bit numbering) */
+#define DTC_BIT_TEST_FAILED            0x01  /* bit 0: 本次测试失败 */
+#define DTC_BIT_TEST_FAILED_THIS_OP    0x02  /* bit 1: 本操作周期失败 */
+#define DTC_BIT_PENDING_DTC            0x04  /* bit 2: 待确认DTC */
+#define DTC_BIT_CONFIRMED_DTC          0x08  /* bit 3: 已确认DTC */
+#define DTC_BIT_TEST_NOT_COMPLETE_SINCE_CLEAR  0x10 /* bit 4 */
+#define DTC_BIT_TEST_FAILED_SINCE_CLEAR        0x20 /* bit 5 */
+#define DTC_BIT_TEST_NOT_COMPLETE_THIS_OP      0x40 /* bit 6 */
+#define DTC_BIT_WARNING_INDICATOR_REQUESTED    0x80 /* bit 7 */
+
+typedef struct {
+    uint32_t dtc_code;          /* 如 0xC00202 = P0202 */
+    uint8_t  status;            /* DTC状态字节 */
+    uint8_t  fault_counter;     /* 故障确认计数器 */
+    uint8_t  aging_counter;     /* 老化计数器 */
+    uint8_t  healing_counter;   /* 自愈计数器 */
+    uint32_t occurrence_count;  /* 累计发生次数 */
+    uint32_t freeze_frame_data[4]; /* freeze frame快照 */
+} Dem_DTCRecord_t;
+
+static Dem_DTCRecord_t g_dtc_table[MAX_DTC_COUNT];
+
+/* SWC 监测函数调用此API报告故障事件 */
+void Dem_SetEventStatus(uint32_t dtc_code, uint8_t event_status)
+{
+    Dem_DTCRecord_t *dtc = Dem_FindOrCreateDTC(dtc_code);
+    if (!dtc) return;
+
+    /* 本次测试结果 */
+    if (event_status == DEM_EVENT_FAILED) {
+        dtc-&gt;status |= DTC_BIT_TEST_FAILED;
+        dtc-&gt;status |= DTC_BIT_TEST_FAILED_THIS_OP;
+        dtc-&gt;status |= DTC_BIT_TEST_FAILED_SINCE_CLEAR;
+        dtc-&gt;fault_counter++;
+
+        /* 确认逻辑：连续N个操作周期检测到故障 → 确认DTC */
+        if (dtc-&gt;fault_counter &gt;= DEM_CONFIRMATION_THRESHOLD) {
+            dtc-&gt;status |= DTC_BIT_CONFIRMED_DTC;
+            dtc-&gt;status &amp;= ~DTC_BIT_PENDING_DTC;
+            dtc-&gt;aging_counter = 0;
+
+            /* 写入非易失存储——DTC被永久记录 */
+            NvM_WriteBlock(NVM_DTC_BLOCK_ID, g_dtc_table);
+
+            /* 如果需要点亮MIL灯 */
+            if (Dem_IsEmissionRelated(dtc_code)) {
+                dtc-&gt;status |= DTC_BIT_WARNING_INDICATOR_REQUESTED;
+            }
+
+            /* 保存freeze frame——首次确认时的环境快照 */
+            if (dtc-&gt;occurrence_count == 0) {
+                Dem_CaptureFreezeFrame(dtc);
+            }
+            dtc-&gt;occurrence_count++;
+        } else if (dtc-&gt;fault_counter &gt;= DEM_PENDING_THRESHOLD) {
+            /* 尚未确认——标记为pending */
+            dtc-&gt;status |= DTC_BIT_PENDING_DTC;
+        }
+    } else if (event_status == DEM_EVENT_PASSED) {
+        dtc-&gt;status &amp;= ~DTC_BIT_TEST_FAILED;
+        dtc-&gt;status &amp;= ~DTC_BIT_PENDING_DTC;
+
+        /* 老化逻辑：连续N个周期通过 → 清除确认状态 */
+        if (dtc-&gt;status &amp; DTC_BIT_CONFIRMED_DTC) {
+            dtc-&gt;aging_counter++;
+            if (dtc-&gt;aging_counter &gt;= DEM_AGING_THRESHOLD) {
+                dtc-&gt;status &amp;= ~DTC_BIT_CONFIRMED_DTC;
+            }
+        }
+
+        /* 自愈 */
+        if (dtc-&gt;fault_counter &gt; 0) {
+            dtc-&gt;healing_counter++;
+            if (dtc-&gt;healing_counter &gt;= DEM_HEALING_THRESHOLD) {
+                dtc-&gt;fault_counter = 0;
+                dtc-&gt;healing_counter = 0;
+                dtc-&gt;status &amp;= ~DTC_BIT_TEST_FAILED_THIS_OP;
+            }
+        }
+    }
+}
+</code></pre>
+<p>这个 DTC 状态机的完整时间线是这样的：</p>
+<pre><code>操作周期 1: 检测到故障 → TestFailed=1, TestFailedThisOp=1, faultCounter=1
+操作周期 2: 检测到故障 → faultCounter=2, PendingDTC=1
+操作周期 3: 检测到故障 → faultCounter=3, ConfirmedDTC=1, PendingDTC=0
+           → 写入NVM, 捕获freeze frame, MIL灯可能亮
+操作周期 4: 检测到通过 → TestFailed=0, agingCounter=1
+操作周期 5: 检测到通过 → agingCounter=2
+...
+操作周期 42: 检测到通过 → agingCounter=40 (达到阈值)
+           → ConfirmedDTC=0 (DTC从"已确认"变为"老化清除")
+           → 但occurrenceCount不为0——维修技师仍可见"这个DTC历史发生过"
+</code></pre>
+<p><strong>一个故障出现后，它需要连续 3 个监控周期被确认才成为“真实故障“——这是为了过滤偶发的电压毛刺、接触不良、瞬态 EMI。</strong> 一个故障消失后，它需要连续 40 个监控周期才被自动清除——这是为了防止间歇性故障被认为“已经好了“。3 个周期确认、40 个周期清除——这些数字不是随意定的，是 OEM 在多年售后数据的基础上权衡“不漏报“和“不误报“的结果。</p>
+<hr>
+<h3 id="穿透从一个-dtc-状态位到-flash-中的电子"><a class="header" href="#穿透从一个-dtc-状态位到-flash-中的电子">穿透：从一个 DTC 状态位到 Flash 中的电子</a></h3>
+<p><strong>一个 DTC 状态字节的第 3 位（ConfirmedDTC）从 0 翻到 1——在物理上，这是 Flash 中的一个 bit 在几十微秒内完成了编程操作。</strong></p>
+<p>让我们穿透这一瞬间。</p>
+<p>最上层：<code>dtc-&gt;status |= DTC_BIT_CONFIRMED_DTC</code>——C 语言代码中一次按位或。</p>
+<p>往下一层：编译器生成了 <code>LDRB R0,[R1]; ORR R0,#0x08; STRB R0,[R1]</code>——一个字节从 SRAM 加载，OR 上 0x08，写回。</p>
+<p>往下一层：<code>NvM_WriteBlock()</code> 把整个 DTC 表写入 Flash。Flash 控制器收到命令——“扇区 12，地址 0x0801E000，写入 64 字节”。</p>
+<p>往下一层：Flash 控制器启动内部状态机。电荷泵把 VDD（3.3V）升压到编程电压（约 10V）。NOR Flash cell 的沟道热电子在高压下被注入浮栅。浮栅中积累的负电荷改变了 cell 晶体管的阈值电压——从“擦除态“（读取为 1）变为“编程态“（读取为 0）。</p>
+<p>往下一层：扇区中的几个 cell 在第 3 位对应的物理位置完成了编程。这个 0 就是 ConfirmedDTC 在非易失存储中的<strong>物理存在</strong>——不是软件记录的逻辑值，而是一组被囚禁在二氧化硅层中、影响着晶体管开关行为的电子。</p>
+<p><strong>DTC 之所以能在断电后仍然存在，不是因为有软件帮你保存——而是因为这些电子被物理地困在浮栅中。</strong> 浮栅是二氧化硅层包围的多晶硅岛——电子无处可逃。除非你在足够高的温度下让它自然泄漏（数据保持 20 年），或者你施加一个高压擦除脉冲把它们通过 Fowler-Nordheim 隧穿拉走（扇区擦除）。</p>
+<p>从仪表盘上的一盏黄色 MIL 灯，到 NOR Flash 浮栅中被困住的电子。诊断连接了这辆车从人机界面到硅晶片物理结构的每一层。这就是“穿透“——你不是只看表面的故障现象，你沿着因果关系链一路追溯到物理根源。</p>
+<hr>
+<h3 id="工程师留给未来的信"><a class="header" href="#工程师留给未来的信">工程师留给未来的信</a></h3>
+<p>一个好的诊断系统设计者，不是在写代码。他是在写一封信。</p>
+<p>收信人是十年后面对这辆车束手无策的维修技师。是下一代接手维护这段代码的工程师。也是未来某天已经忘记了自己当初设计思路的自己。</p>
+<p>每定义一个 DID——“这个数据标识符 0xF190 读取冷却液温度”——你是在告诉未来的人：“当系统在这里表现异常，想一想温度传感器。“每配置一个 DTC 的确认阈值——“连续 3 个监控周期失败才确认为真实故障”——你是在平衡“不漏报“和“不误报“，是为未来的人做了一次取舍决定。每编写一个 RoutineControl 的测试例程——“激活 ABS 泵 2 秒然后读取压力传感器”——你是在为未来的人准备了一条自动化的排查路径。</p>
+<p>1965 年的维修技师只能拆开引擎——因为那台车在设计时就从未考虑过“让机器描述自己“。那条歧管裂纹是一个工程缺陷，但沉默的金属无法自述。</p>
+<p><strong>诊断，是工程师递出的接力棒。</strong></p>
+<p>你写的每一个DTC、每一行故障处理代码，都是一根递向未来的接力棒——接棒的可能是10年后某个4S店里的维修技师。他从未见过你，但你留下的诊断逻辑会在他接通OBD口的那一瞬间开口说话。你不在场，但你的工程判断在场。</p>
+<p>但诊断能发现问题。不能阻止有人故意制造问题。</p>
+<p>诊断仪可以读故障码，也可以写标定数据。如果攻击者能通过安全访问——或绕过安全访问——他就能改写 ECU 的行为。2015 年，两位安全研究员在高速公路上远程控制了一辆 Jeep Cherokee。他们没有走诊断协议。他们走了信息娱乐系统的互联网入口，进入了车内 CAN 网络——一个没有认证机制的广播网络。他们直接伪造了“刹车释放““油门全开”“方向盘锁死“的 CAN 帧。</p>
+<p><strong>诊断是你留给未来维修者的信。安全是你不让攻击者拆开这封信。</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>理解诊断不是“读取故障码“——而是工程师跨越时间写给未来的一封信，穿透从人机界面到硅晶片物理结构的每一层抽象。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>DTC不是一个布尔值——它是一个有生命周期的状态机</strong>：从“当前操作周期检测到故障“到“连续N个周期确认“到“写入非易失存储“到被清除——每个状态转换都有明确的工程取舍（灵敏度 vs 误报率）。</li>
+<li><strong>诊断是工程师的遗产</strong>：你写的每一个DID定义、每一个确认阈值、每一个RoutineControl测试例程——都是在为10年后面对这辆车的维修技师铺设一条自动化的排查路径。你不在场，但你的工程判断在场。</li>
+<li><strong>从仪表盘MIL灯到NOR Flash浮栅中被困的电子——诊断连接了这条物理因果链的每一层</strong>：<code>dtc-&gt;status |= DTC_BIT_CONFIRMED_DTC</code>最终变成浮栅中被囚禁的电荷。断电不丢——不是因为软件，是因为物理。</li>
+</ol>
+<p>下一节，诊断能发现问题，但不能阻止有人故意制造问题。硬件安全——HSM。信任不在代码里，在硅里。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>Jeep 事件之后，汽车信息安全从一个“未来可能发生的问题“变成了“立法强制解决的问题“。UNECE R155 法规和 ISO/SAE 21434 标准相继出台。</p>
+<p>信息安全的基础不是“把代码写好“——再好的代码也有 bug。信息安全的基础是物理隔离和密码学——具体来说，是一块嵌在 MCU 硅晶片内部的独立安全处理器。它的密钥永不可读出。它在主 CPU 启动之前就已完成验签。</p>
+<p>这个安全处理器叫 HSM。它的信任不来自任何一行代码——代码本身是被验证的对象。信任来自硅——具体来说，来自一块一次性编程的熔丝阵列。编程时，一个高压脉冲物理地烧断一根金属连线。这根连线永远不可能再接回去。这就是安全的物理根基——不是数学保证，是热力学保证。</p>
+<p>下一节：硬件安全——HSM。信任不在代码里，在硅里。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/5.3-AUTOSAR-CP-AP.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/6.2-硬件安全-HSM.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/5.3-AUTOSAR-CP-AP.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/6.2-硬件安全-HSM.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

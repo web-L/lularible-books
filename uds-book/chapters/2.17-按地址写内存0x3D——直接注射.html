@@ -1,0 +1,451 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>按地址写内存0x3D——直接注射 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="217-按地址写内存0x3d直接注射"><a class="header" href="#217-按地址写内存0x3d直接注射">2.17 按地址写内存(0x3D)——直接注射</a></h1>
+<h3 id="当did体系成了一道墙"><a class="header" href="#当did体系成了一道墙">当DID体系成了一道墙</a></h3>
+<p>你在做一件DID框架干不了的事。某个ECU的Flash中0xA0004000地址处，存放着一组工厂校准参数——这组参数没有被分配任何DID。为什么？因为它太“底层“了——它不是“发动机转速“，不是“冷却液温度“——它是CPU读取ADC原始通道后使用的线性化系数。它存在于硬件层面，但在诊断语义层面上没有名字。</p>
+<p>你需要改它。发动机的某个传感器换了供应商，新传感器在2.5V的输出对应的是85°C而不是原来老传感器的83°C——不改这个系数，ECU读到的温度就永远是偏的。</p>
+<p>你只有裸地址。没有DID。你怎么写？</p>
+<p>这条命令就是0x3D WriteMemoryByAddress——UDS里最“原始“也最“危险“的写入手段。它完全绕过DID映射层，直接按物理地址打入内存——就像医生不通过病历记录，直接把一管药注射到血管里。</p>
+<hr>
+<h3 id="三个不得不绕过did的真实场景"><a class="header" href="#三个不得不绕过did的真实场景">三个不得不绕过DID的真实场景</a></h3>
+<p><strong>场景一：工厂标定站</strong></p>
+<p>产线末端的EOL（End of Line，生产线终端）工位上，一辆新车的发动机刚刚跑完首次热试。标定软件读取了以下数据：喷油器1在2.0ms喷射脉冲下的实际流量是0.042g——比标称值0.040g偏高5%。ECU软件需要把这个偏差补偿值写进NvM的标定区——但标定区没有DID映射，因为它是在ECU软件开发完成后才确定的、由产线动态生成的数据。标定工程师只能按地址写。</p>
+<p><strong>场景二：安全研究/渗透测试</strong></p>
+<p>安全研究员正在验证某个ECU的内存保护机制。“按照AUTOSAR规范，安全等级为0的会话不应该能写入校准区——让我们来试试。“他发出一条0x3D请求，目标地址正好落在NvM校准块的地址范围。如果ECU直接接受了——这就是一个安全漏洞——意味着不需要解锁安全访问就能篡改标定数据。渗透测试团队需要0x3D作为验证工具。</p>
+<p><strong>场景三：ODX数据库不一致时的紧急修复</strong></p>
+<p>一辆待交付的新车在最终质检测试时发现某ECU的一个校准参数错误。服务站查询ODX数据库试图用0x2E写该参数对应的DID——但发现ODX数据库版本陈旧，没有包含这个DID的定义。等新数据库发布需要两周——车不能等。工程团队通过调试工具查到了该参数的物理地址——用0x3D直接写入。</p>
+<p>这三个场景有一个共同点：<strong>你操作的不是“参数“，是“内存“。</strong> DID体系是语义层——0x3D是物理层。这是UDS最底层的写入手术。</p>
+<hr>
+<h3 id="addressandlengthformatidentifier深度解析"><a class="header" href="#addressandlengthformatidentifier深度解析">addressAndLengthFormatIdentifier深度解析</a></h3>
+<p>0x3D和0x23（按地址读）以及0x34（下载）共享同一个编码机制——用一个字节同时描述地址宽度和长度宽度：</p>
+<pre><code>addressAndLengthFormatIdentifier (1字节):
+┌───────────┬───────────┐
+│ Bit 7 ~ 4 │ Bit 3 ~ 0 │
+├───────────┼───────────┤
+│memorySize │memoryAddr │
+│  Length   │  Length   │
+└───────────┴───────────┘
+
+memoryAddressLength = 该字段实际值 (多少字节来编码地址)
+  0x1 = 1字节地址 (最大256B空间——仅适用于小MCU)
+  0x2 = 2字节地址 (最大64KB空间)
+  0x4 = 4字节地址 (最大4GB空间——32位处理器)
+  0x8 = 8字节地址 (64位处理器)
+
+memorySizeLength = 该字段实际值 (多少字节来编码"写入多少字节")
+  0x1 = 1字节 (最多写入255字节)
+  0x2 = 2字节 (最多写入65535字节)
+  0x4 = 4字节 (最多写入约4GB)
+</code></pre>
+<p><strong>为什么用半字节而不是各自独立字节？</strong> 如果你已经读过0x34下载服务的章节，你会记得相同的问题和相同的答案——节省帧头开销。CAN单帧只能携带7字节的有效载荷——每省下一字节就是8个bit。用一个字节编码两种信息（地址宽度+长度宽度）而不是两个字节——这是ISO 15765-2传输层极限带宽约束下的设计。诊断协议的设计者们在每一个bit上都精打细算。</p>
+<blockquote>
+<p><strong>核心洞察</strong>：addressAndLengthFormatIdentifier不是数据——它是<strong>元数据</strong>。它告诉ECU“接下来几字节是地址、接下来几字节是长度“——让报文解析器不需要额外的配置就能理解变长字段。这是UDS协议自描述性的一个经典案例——报文自己携带着如何被解析的指令。</p>
+</blockquote>
+<hr>
+<h3 id="完整请求与响应解剖"><a class="header" href="#完整请求与响应解剖">完整请求与响应解剖</a></h3>
+<p><strong>请求</strong>：</p>
+<pre><code>┌─────┬──────────────────────────────────┬──────────────────────┬──────────────────────┐
+│ 0x3D│  addressAndLengthFormatIdentifier│  memoryAddress[ ]     │  memorySize[ ]      │  dataRecord[ ]
+├─────┼──────────────────────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
+│ SID │ 1 byte                           │ n bytes              │ m bytes              │ k ytes               │
+└─────┴──────────────────────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
+      n = memoryAddressLength
+      m = memorySizeLength
+      k = memorySize的值 (即实际要写入的数据的字节数)
+</code></pre>
+<p><strong>正响应</strong>：</p>
+<pre><code>┌─────┬──────────────────────────────────┬──────────────────────┬──────────────────────┐
+│ 0x7D│  addressAndLengthFormatIdentifier│  memoryAddress[ ]     │  memorySize[ ]      │
+├─────┼──────────────────────────────────┼──────────────────────┼──────────────────────┤
+│SID+ │ 回声                              │ 回声                  │ 回声                 │
+│0x40 │                                  │                       │                     │
+└─────┴──────────────────────────────────┴──────────────────────┴──────────────────────┘
+</code></pre>
+<p><strong>具体实例</strong>——向地址0xA0004000写入4字节系数0x3F800000（浮点1.0）：</p>
+<pre><code>请求:
+  0x3D 0x44 0xA0 0x00 0x40 0x00 0x00 0x00 0x00 0x04 0x3F 0x80 0x00 0x00
+  │SID│ │memSizeLen=4 │──────memoryAddress=0xA0004000───────│ │mSize=4│ │data=1.0f│
+       │memAddrLen=4                        (4 bytes)          (4 bytes)  (4 bytes)
+        ↓
+  0x44 = 高位半字节0x4(memSizeLen=4) + 低位半字节0x4(memAddrLen=4)
+
+正响应:
+  0x7D 0x44 0xA0 0x00 0x40 0x00 0x00 0x00 0x00 0x04
+  │   │同印│──────地址回声──────│ │─长度回声─│
+</code></pre>
+<p>注意：正响应<strong>不返回写入的数据</strong>——和0x2E一样的设计哲学——诊断仪持有自己发送的数据。但正响应返回了地址和长度——因为同一个ECU可能支持不同的地址宽度（比如0x2和0x4并行），回声机制确保诊断仪知道ECU是按哪个地址宽度解析的请求。</p>
+<hr>
+<h3 id="0x3d-vs-0x340x360x37注射vs手术"><a class="header" href="#0x3d-vs-0x340x360x37注射vs手术">0x3D vs 0x34→0x36→0x37——注射vs手术</a></h3>
+<p>这是UDS里两条写入物理内存的路径，但设计哲学截然不同：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>0x3D （按地址写）</th><th>0x34→0x36→0x37 （下载）</th></tr>
+</thead>
+<tbody>
+<tr><td>步数</td><td><strong>1步</strong>——一次性完成</td><td>3步——RequestDownload→TransferData→RequestTransferExit</td></tr>
+<tr><td>最大数据量</td><td>受传输层MTU限制——CAN上约4KB</td><td><strong>不限</strong>——可传输完整固件镜像（数MB）</td></tr>
+<tr><td>地址解析</td><td>每次请求携带完整地址</td><td>地址只在RequestDownload中指定一次</td></tr>
+<tr><td>完整性校验</td><td><strong>无</strong>——不校验写入是否完整</td><td>有——TransferData携带BlockSequenceCounter</td></tr>
+<tr><td>并发性</td><td>无并发保护</td><td>阻塞式——下载进行中拒绝其他写入</td></tr>
+<tr><td>撤销能力</td><td>无——写入即生效</td><td>有——RequestTransferExit可以报错阻止全量写入</td></tr>
+<tr><td>安全等级要求</td><td>高——通常Level 3</td><td>高——编程会话+Level 3</td></tr>
+<tr><td>医院类比</td><td><strong>门诊注射</strong>——一针下去，即刻生效</td><td><strong>住院手术</strong>——麻醉→手术→复苏，全流程管理</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>什么时候用0x3D而不是下载流程？</strong></p>
+<ul>
+<li>修改单个参数值（校准系数、DID之外的阈值）</li>
+<li>数据量小——几十到几百字节</li>
+<li>需要立即生效——不希望走“请求→传输→提交“的三步流程</li>
+<li>目标地址已知且不变</li>
+</ul>
+<p><strong>什么时候用下载流程？</strong></p>
+<ul>
+<li>固件升级——传输完整的新版软件镜像</li>
+<li>大批量配置——几百KB的标定数据表</li>
+<li>需要传输完整性保证——BlockSequenceCounter校验每个数据块</li>
+<li>需要失败回滚——如果传输中断，下载未完成则旧固件保留</li>
+</ul>
+<hr>
+<h3 id="风险为什么0x3d是uds里最危险的服务之一"><a class="header" href="#风险为什么0x3d是uds里最危险的服务之一">风险——为什么0x3D是UDS里最危险的服务之一</a></h3>
+<p>0x3D是UDS协议里少数的几条“后果自负“指令。它绕过了DID框架所有的语义检查——DID检查给了你什么？会话校验、安全等级校验、数据长度校验、值范围校验。0x3D只保留了会话和安全等级——其他的要靠你自己。</p>
+<p><strong>风险清单：</strong></p>
+<pre><code>1. 地址错误 → Flash写入到错误区域 → 覆盖了Bootloader或固件 → ECU变砖
+2. 长度错误 → 写到了目标区域之外的相邻数据 → 破坏其它配置
+3. 没有原子性 → 中途CAN总线错误导致报文丢弃 → 部分数据写入、部分是旧值
+4. 绕过值范围校验 → 写了非法值 → ECU后续读取时产生除零/溢出 → Crash
+5. NvM未同步 → 写到RAM但NvM还未更新 → 下电后修改丢失
+</code></pre>
+<p>这就是为什么大多数ECU对0x3D的实施条件极其苛刻：</p>
+<ul>
+<li><strong>必须是编程会话（0x10 0x02）</strong>——大多数OEM实现将其限制在编程会话，默认和扩展会话下通常不可用</li>
+<li><strong>必须解锁最高安全等级</strong>——通常是Level 3（非对称密钥算法——包含私钥计算）</li>
+<li><strong>地址范围白名单</strong>——ECU维护一份允许0x3D写入的地址范围表，落在白名单之外的地址返回NRC 0x31</li>
+<li><strong>写入后校验</strong>——ECU在写入完成后将数据回读并与请求对比——不匹配就触发安全复位</li>
+</ul>
+<hr>
+<h3 id="基本ecu端校验逻辑"><a class="header" href="#基本ecu端校验逻辑">基本ECU端校验逻辑</a></h3>
+<pre><code class="language-c">FUNC(Std_ReturnType, DCM_CODE) Dsp_Memory_WriteByAddress(
+    P2CONST(uint8, AUTOMATIC, DCM_APPL_DATA) pReqData,
+    uint16 reqLen)
+{
+    uint8 addr_len, size_len;
+    uint32 mem_addr = 0, mem_size = 0;
+    uint16 header_len, total_len;
+
+    /* 1. 解析地址/长度宽度 */
+    addr_len = pReqData[0] &amp; 0x0F;    /* 低半字节 */
+    size_len = (pReqData[0] &gt;&gt; 4) &amp; 0x0F; /* 高半字节 */
+
+    /* 2. 最短长度检查 */
+    header_len = 1 + addr_len + size_len;  /* SID+addrLen已在之前减掉1 */
+    if (reqLen &lt; header_len) {
+        Dcm_SendNrc(0x3D, NRC_IMLOIF);
+        return E_NOT_OK;
+    }
+
+    /* 3. 解析地址（支持1/2/4字节） */
+    for (uint8 i = 0; i &lt; addr_len; i++) {
+        mem_addr = (mem_addr &lt;&lt; 8) | pReqData[1 + i];
+    }
+
+    /* 4. 解析长度（支持1/2/4字节） */
+    for (uint8 i = 0; i &lt; size_len; i++) {
+        mem_size = (mem_size &lt;&lt; 8) | pReqData[1 + addr_len + i];
+    }
+
+    /* 5. 总长度一致性验证 */
+    total_len = header_len + (uint16)mem_size;
+    if (reqLen != total_len) {
+        Dcm_SendNrc(0x3D, NRC_IMLOIF);
+        return E_NOT_OK;
+    }
+
+    /* 6. 地址范围白名单检查 */
+    if (!MemIf_IsWritableAddress(mem_addr, mem_size)) {
+        Dcm_SendNrc(0x3D, NRC_REQUEST_OUT_OF_RANGE);
+        return E_NOT_OK;
+    }
+
+    /* 7. Flash对齐检查 */
+    if ((mem_addr % FLASH_WRITE_ALIGNMENT) != 0) {
+        Dcm_SendNrc(0x3D, NRC_GENERAL_REJECT);
+        return E_NOT_OK;
+    }
+
+    /* 8. 执行写入 */
+    P2CONST(uint8, AUTOMATIC, DCM_APPL_DATA) pData = &amp;pReqData[header_len];
+    Std_ReturnType ret = FlashIf_Write(mem_addr, pData, (uint32)mem_size);
+    if (ret != E_OK) {
+        Dcm_SendNrc(0x3D, NRC_GENERAL_REJECT);
+        return E_NOT_OK;
+    }
+
+    /* 9. 正响应 */
+    {
+        uint8 resp[1 + 1 + 4 + 4]; /* SID+0x40 + addrLenFormat + addr + size */
+        uint8 idx = 0;
+        resp[idx++] = 0x7D;
+        resp[idx++] = pReqData[0]; /* 地址长度格式回声 */
+
+        for (uint8 i = 0; i &lt; addr_len; i++) {
+            resp[idx++] = pReqData[1 + i];
+        }
+        for (uint8 i = 0; i &lt; size_len; i++) {
+            resp[idx++] = pReqData[1 + addr_len + i];
+        }
+
+        Dcm_SendPositiveResponse(resp, idx);
+    }
+
+    return E_OK;
+}
+</code></pre>
+<p>注意第6步的<strong>白名单检查</strong>——这是ECU防御0x3D误用的最后一道屏障。一个典型的白名单可能只包含NvM的校准区和配置区——再多的就不会开放。任何试图写入代码区、Bootloader区、或RAM中堆栈/堆的请求都将被拒绝。</p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<ol>
+<li>0x3D WriteMemoryByAddress 是UDS中最底层的写入手段——完全绕过DID语义层，直接按物理地址操作内存。</li>
+<li>addressAndLengthFormatIdentifier用一个字节的半字节编码分别表示地址宽度和长度宽度——是CAN带宽约束下节省帧头的精密设计。</li>
+<li>0x3D和0x34下载流程是“注射vs手术“的关系——前者一步完成、适合小数据、无完整性保证；后者三步流程、适合大文件传输、有BlockSequenceCounter校验。</li>
+<li>0x3D的风险极高——地址错误可致ECU变砖——因此大多数ECU将其限制在编程会话+最高安全等级+地址白名单三重门禁之内。</li>
+<li>主要使用场景：工厂EOL标定、安全渗透测试、ODX数据库缺失时的紧急参数修复——都是开发/产线/安全场景而非售后常规诊断。</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>【下集预告】</strong>：常用服务你已经读完了——但还有最后一个主角，它不是一个SID，而是一个影子角色——负响应码(NRC)。一个简单的’不行’要附带上20多种不同的’为什么不行’——NRC是把沉默变成指南的编码系统。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../uds-book/chapters/2.16-上传下载0x34-35-36-37——手术四步曲.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../uds-book/chapters/2.18-负响应码NRC——当ECU说不.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../uds-book/chapters/2.16-上传下载0x34-35-36-37——手术四步曲.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../uds-book/chapters/2.18-负响应码NRC——当ECU说不.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

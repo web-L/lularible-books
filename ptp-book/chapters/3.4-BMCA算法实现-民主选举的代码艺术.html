@@ -1,0 +1,918 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>BMCA算法实现 · 民主选举的代码艺术 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="34-bmca算法实现民主选举的代码艺术"><a class="header" href="#34-bmca算法实现民主选举的代码艺术">3.4 BMCA算法实现：民主选举的代码艺术</a></h1>
+<h2 id="从协议到代码"><a class="header" href="#从协议到代码">从协议到代码</a></h2>
+<p>第二章我们详细讲解了BMCA（最佳主时钟算法）的原理。</p>
+<p>现在，让我们看看这个算法在LinuxPTP中是如何实现的。</p>
+<hr>
+<h2 id="bmca的核心函数"><a class="header" href="#bmca的核心函数">BMCA的核心函数</a></h2>
+<p>LinuxPTP的BMCA实现集中在<strong>bmc.c</strong>文件中，只有<strong>175行代码</strong>。</p>
+<h3 id="核心函数列表"><a class="header" href="#核心函数列表">核心函数列表</a></h3>
+<pre><code>bmc.c提供的函数：
+
+1. dscmp(struct dataset *a, struct dataset *b)
+   - 比较两个数据集，决定哪个更适合当主时钟
+
+2. dscmp2(struct dataset *a, struct dataset *b)
+   - 第二阶段比较（当clockIdentity相同时）
+
+3. portid_cmp(struct PortIdentity *a, struct PortIdentity *b)
+   - 比较两个端口标识
+
+4. bmc_state_decision(struct clock *c, struct port *r, ...)
+   - 根据BMCA结果决定端口状态
+</code></pre>
+<hr>
+<h2 id="数据集比较函数详解"><a class="header" href="#数据集比较函数详解">数据集比较函数详解</a></h2>
+<h3 id="portid_cmp端口标识比较"><a class="header" href="#portid_cmp端口标识比较">portid_cmp：端口标识比较</a></h3>
+<pre><code class="language-c">/* bmc.c, 第24-33行 */
+
+static int portid_cmp(struct PortIdentity *a, struct PortIdentity *b)
+{
+    int diff = memcmp(&amp;a-&gt;clockIdentity, &amp;b-&gt;clockIdentity, 
+                      sizeof(a-&gt;clockIdentity));
+
+    if (diff == 0) {
+        diff = a-&gt;portNumber - b-&gt;portNumber;
+    }
+
+    return diff;
+}
+</code></pre>
+<p><strong>返回值含义</strong>：</p>
+<pre><code>diff &lt; 0：a &lt; b（a排在前面）
+diff = 0：a = b（完全相同）
+diff &gt; 0：a &gt; b（b排在前面）
+</code></pre>
+<p><strong>比较顺序</strong>：</p>
+<pre><code>先比较clockIdentity（8字节）：
+- 如果不同，直接返回比较结果
+
+如果clockIdentity相同，再比较portNumber（2字节）：
+- 返回端口号的差异
+
+这意味着：
+- 同一设备的两个端口，用端口号区分
+- 不同设备的端口，用clockIdentity区分
+</code></pre>
+<h3 id="dscmp主比较函数"><a class="header" href="#dscmp主比较函数">dscmp：主比较函数</a></h3>
+<pre><code class="language-c">/* bmc.c, 第83-127行 */
+
+int dscmp(struct dataset *a, struct dataset *b)
+{
+    int diff;
+
+    /* 特殊情况：同一数据集 */
+    if (a == b)
+        return 0;
+    
+    /* 特殊情况：其中一个为空 */
+    if (a &amp;&amp; !b)
+        return A_BETTER;
+    if (b &amp;&amp; !a)
+        return B_BETTER;
+
+    /* 比较clockIdentity */
+    diff = memcmp(&amp;a-&gt;identity, &amp;b-&gt;identity, sizeof(a-&gt;identity));
+    if (!diff)
+        return dscmp2(a, b);  /* 相同，进入第二阶段 */
+
+    /* 比较priority1 */
+    if (a-&gt;priority1 &lt; b-&gt;priority1)
+        return A_BETTER;
+    if (a-&gt;priority1 &gt; b-&gt;priority1)
+        return B_BETTER;
+
+    /* 比较clockClass */
+    if (a-&gt;quality.clockClass &lt; b-&gt;quality.clockClass)
+        return A_BETTER;
+    if (a-&gt;quality.clockClass &gt; b-&gt;quality.clockClass)
+        return B_BETTER;
+
+    /* 比较clockAccuracy */
+    if (a-&gt;quality.clockAccuracy &lt; b-&gt;quality.clockAccuracy)
+        return A_BETTER;
+    if (a-&gt;quality.clockAccuracy &gt; b-&gt;quality.clockAccuracy)
+        return B_BETTER;
+
+    /* 比较offsetScaledLogVariance */
+    if (a-&gt;quality.offsetScaledLogVariance &lt;
+        b-&gt;quality.offsetScaledLogVariance)
+        return A_BETTER;
+    if (a-&gt;quality.offsetScaledLogVariance &gt;
+        b-&gt;quality.offsetScaledLogVariance)
+        return B_BETTER;
+
+    /* 比较priority2 */
+    if (a-&gt;priority2 &lt; b-&gt;priority2)
+        return A_BETTER;
+    if (a-&gt;priority2 &gt; b-&gt;priority2)
+        return B_BETTER;
+
+    /* 比较clockIdentity */
+    return diff &lt; 0 ? A_BETTER : B_BETTER;
+}
+</code></pre>
+<p><strong>返回值定义</strong>：</p>
+<pre><code class="language-c">/* bmc.h */
+
+#define A_BETTER        1   /* A更好，选择A */
+#define B_BETTER       -1   /* B更好，选择B */
+#define A_BETTER_TOPO   2   /* A更好（拓扑原因） */
+#define B_BETTER_TOPO  -2   /* B更好（拓扑原因） */
+</code></pre>
+<p><strong>比较流程图</strong>：</p>
+<pre><code>dscmp比较流程（IEEE 1588-2019标准）：
+
+┌────────────────────────────────────────┐
+│ 0. 检查特殊情况                        │
+│    - 同一数据集 → 0                    │
+│    - 一个为空 → 选择非空的              │
+├────────────────────────────────────────┤
+│ 1. 比较clockIdentity                   │
+│    - 相同 → 调用dscmp2                 │
+│    - 不同 → 记录差异，继续              │
+├────────────────────────────────────────┤
+│ 2. 比较priority1                       │
+│    - A小 → A_BETTER                    │
+│    - B小 → B_BETTER                    │
+│    - 相同 → 继续                        │
+├────────────────────────────────────────┤
+│ 3. 比较clockClass                      │
+│    - A小 → A_BETTER                    │
+│    - B小 → B_BETTER                    │
+│    - 相同 → 继续                        │
+├────────────────────────────────────────┤
+│ 4. 比较clockAccuracy                   │
+│    - A小 → A_BETTER                    │
+│    - B小 → B_BETTER                    │
+│    - 相同 → 继续                        │
+├────────────────────────────────────────┤
+│ 5. 比较offsetScaledLogVariance         │
+│    - A小 → A_BETTER                    │
+│    - B小 → B_BETTER                    │
+│    - 相同 → 继续                        │
+├────────────────────────────────────────┤
+│ 6. 比较priority2                       │
+│    - A小 → A_BETTER                    │
+│    - B小 → B_BETTER                    │
+│    - 相同 → 继续                        │
+├────────────────────────────────────────┤
+│ 7. 比较clockIdentity（使用之前记录的差异）│
+│    - A小 → A_BETTER                    │
+│    - B大 → B_BETTER                    │
+└────────────────────────────────────────┘
+</code></pre>
+<p><strong>关键点</strong>：</p>
+<pre><code>为什么先检查clockIdentity？
+
+    diff = memcmp(&amp;a-&gt;identity, &amp;b-&gt;identity, sizeof(a-&gt;identity));
+    if (!diff)
+        return dscmp2(a, b);
+
+如果两个数据集的clockIdentity相同：
+- 它们来自同一个设备
+- 需要用dscmp2进行拓扑比较
+- 判断哪个路径更短
+
+如果clockIdentity不同：
+- 它们来自不同设备
+- 继续比较priority1等属性
+- 最后用clockIdentity打破平局
+</code></pre>
+<h3 id="dscmp2拓扑比较函数"><a class="header" href="#dscmp2拓扑比较函数">dscmp2：拓扑比较函数</a></h3>
+<pre><code class="language-c">/* bmc.c, 第35-81行 */
+
+int dscmp2(struct dataset *a, struct dataset *b)
+{
+    int diff;
+    unsigned int A = a-&gt;stepsRemoved, B = b-&gt;stepsRemoved;
+
+    /* 情况1：stepsRemoved差距大于1 */
+    if (A + 1 &lt; B)
+        return A_BETTER;  /* A的跳数明显少 */
+    if (B + 1 &lt; A)
+        return B_BETTER;  /* B的跳数明显少 */
+
+    /* 情况2：A的跳数少1 */
+    if (A &lt; B) {
+        diff = portid_cmp(&amp;b-&gt;receiver, &amp;b-&gt;sender);
+        if (diff &lt; 0)
+            return A_BETTER;
+        if (diff &gt; 0)
+            return A_BETTER_TOPO;
+        return 0;  /* error-1 */
+    }
+
+    /* 情况3：B的跳数少1 */
+    if (A &gt; B) {
+        diff = portid_cmp(&amp;a-&gt;receiver, &amp;a-&gt;sender);
+        if (diff &lt; 0)
+            return B_BETTER;
+        if (diff &gt; 0)
+            return B_BETTER_TOPO;
+        return 0;  /* error-1 */
+    }
+
+    /* 情况4：跳数相同，比较sender */
+    diff = portid_cmp(&amp;a-&gt;sender, &amp;b-&gt;sender);
+    if (diff &lt; 0)
+        return A_BETTER_TOPO;
+    if (diff &gt; 0)
+        return B_BETTER_TOPO;
+
+    /* 情况5：比较receiver端口号 */
+    if (a-&gt;receiver.portNumber &lt; b-&gt;receiver.portNumber)
+        return A_BETTER_TOPO;
+    if (a-&gt;receiver.portNumber &gt; b-&gt;receiver.portNumber)
+        return B_BETTER_TOPO;
+
+    /* error-2 */
+    return 0;
+}
+</code></pre>
+<p><strong>拓扑比较的逻辑</strong>：</p>
+<pre><code>场景：同一设备的多个Announce报文（clockIdentity相同）
+
+为什么要进行拓扑比较？
+
+因为：
+- 同一设备可能通过不同路径发送Announce
+- 有些路径更短（stepsRemoved更小）
+- 需要选择最短路径
+
+步骤1：比较stepsRemoved
+- 如果差距大于1，选择跳数少的
+- 如果差距小于等于1，需要进一步分析
+
+步骤2：分析拓扑关系
+- 检查receiver和sender的关系
+- 判断是否存在环路
+
+步骤3：比较sender和receiver
+- 选择端口号小的
+- 确保决策一致性
+</code></pre>
+<p><strong>图解dscmp2</strong>：</p>
+<pre><code>场景一：stepsRemoved差距大
+
+网络拓扑：
+主时钟 → BC1 → BC2 → 端口A（stepsRemoved = 3）
+主时钟 → BC3 → 端口B（stepsRemoved = 2）
+
+比较：
+A的stepsRemoved = 3
+B的stepsRemoved = 2
+
+判断：
+B + 1 = 3 = A
+不满足"A + 1 &lt; B"
+但满足"B &lt; A"
+
+结果：B_BETTER（B更接近主时钟）
+
+
+场景二：stepsRemoved差距小
+
+网络拓扑：
+主时钟 → BC1 → 端口A（stepsRemoved = 2）
+主时钟 → BC2 → 端口A（stepsRemoved = 1）
+
+两个Announce来自同一个端口A，但stepsRemoved不同。
+
+如果stepsRemoved差1：
+- 检查拓扑关系
+- 判断哪个路径更合理
+</code></pre>
+<hr>
+<h2 id="状态决策函数"><a class="header" href="#状态决策函数">状态决策函数</a></h2>
+<h3 id="bmc_state_decision函数"><a class="header" href="#bmc_state_decision函数">bmc_state_decision函数</a></h3>
+<pre><code class="language-c">/* bmc.c, 第129-175行 */
+
+enum port_state bmc_state_decision(struct clock *c, struct port *r,
+                                   int (*compare)(struct dataset *a, 
+                                                  struct dataset *b))
+{
+    struct dataset *clock_ds, *clock_best, *port_best;
+    enum port_state ps;
+
+    clock_ds = clock_default_ds(c);        /* 本时钟的数据集 */
+    clock_best = clock_best_foreign(c);    /* 全局最佳外部时钟 */
+    port_best = port_best_foreign(r);      /* 本端口最佳外部时钟 */
+    ps = port_state(r);                    /* 当前端口状态 */
+
+    /* 特殊情况：BMCA_NOOP模式 */
+    if (!port_best &amp;&amp; port_bmca(r) == BMCA_NOOP) {
+        return ps;
+    }
+
+    /* 特殊情况：LISTENING状态没有外部时钟 */
+    if (!port_best &amp;&amp; PS_LISTENING == ps)
+        return ps;
+
+    /* 规则M1/P1：clockClass &lt;= 127 */
+    if (clock_class(c) &lt;= 127) {
+        if (compare(clock_ds, port_best) &gt; 0) {
+            return PS_GRAND_MASTER; /* M1 */
+        } else {
+            return PS_PASSIVE;      /* P1 */
+        }
+    }
+
+    /* 规则M2：本时钟比全局最佳更好 */
+    if (compare(clock_ds, clock_best) &gt; 0) {
+        return PS_GRAND_MASTER; /* M2 */
+    }
+
+    /* 规则S1：本端口是最佳端口 */
+    if (clock_best_port(c) == r) {
+        return PS_SLAVE; /* S1 */
+    }
+
+    /* 规则P2/M3：比较全局最佳和端口最佳 */
+    if (compare(clock_best, port_best) == A_BETTER_TOPO) {
+        return PS_PASSIVE; /* P2 */
+    } else {
+        return PS_MASTER;  /* M3 */
+    }
+}
+</code></pre>
+<p><strong>IEEE 1588标准的状态决策规则</strong>：</p>
+<pre><code>规则M1：
+- 本时钟的clockClass &lt;= 127
+- 本时钟比端口最佳外部时钟更好
+- 结果：成为Grand Master
+
+规则P1：
+- 本时钟的clockClass &lt;= 127
+- 本时钟不如端口最佳外部时钟
+- 结果：Passive（避免环路）
+
+规则M2：
+- 本时钟比全局最佳外部时钟更好
+- 结果：成为Grand Master
+
+规则S1：
+- 本端口是全局最佳外部时钟的来源
+- 结果：成为Slave
+
+规则P2：
+- 全局最佳比端口最佳拓扑更好
+- 结果：Passive（环路避免）
+
+规则M3：
+- 其他情况
+- 结果：成为Master
+</code></pre>
+<h3 id="状态决策流程图"><a class="header" href="#状态决策流程图">状态决策流程图</a></h3>
+<pre><code>bmc_state_decision流程：
+
+┌──────────────────────────────────────────────────────────┐
+│ 开始                                                      │
+└──────────────────────────────────────────────────────────┘
+                         │
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│ port_best为空 且 BMCA_NOOP？                              │
+│ → 是：保持当前状态                                         │
+└──────────────────────────────────────────────────────────┘
+                         │ 否
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│ port_best为空 且 LISTENING？                              │
+│ → 是：保持LISTENING                                        │
+└──────────────────────────────────────────────────────────┘
+                         │ 否
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│ clockClass &lt;= 127？                                       │
+│ → 是：                                                    │
+│    compare(clock_ds, port_best) &gt; 0？                     │
+│    → 是：PS_GRAND_MASTER (M1)                             │
+│    → 否：PS_PASSIVE (P1)                                  │
+└──────────────────────────────────────────────────────────┘
+                         │ 否
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│ compare(clock_ds, clock_best) &gt; 0？                       │
+│ → 是：PS_GRAND_MASTER (M2)                                │
+└──────────────────────────────────────────────────────────┘
+                         │ 否
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│ clock_best_port(c) == r？                                 │
+│ → 是：PS_SLAVE (S1)                                       │
+└──────────────────────────────────────────────────────────┘
+                         │ 否
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│ compare(clock_best, port_best) == A_BETTER_TOPO？         │
+│ → 是：PS_PASSIVE (P2)                                     │
+│ → 否：PS_MASTER (M3)                                      │
+└──────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="外部时钟管理"><a class="header" href="#外部时钟管理">外部时钟管理</a></h2>
+<h3 id="foreign_clock结构"><a class="header" href="#foreign_clock结构">foreign_clock结构</a></h3>
+<pre><code class="language-c">/* foreign.h */
+
+struct foreign_clock {
+    struct port *port;              /* 所属端口 */
+    struct PortIdentity identity;   /* 外部时钟标识 */
+    struct dataset dataset;         /* 外部时钟数据集 */
+    
+    /* Announce报文队列 */
+    LIST_ENTRY(foreign_clock) list;
+};
+</code></pre>
+<h3 id="端口的外部时钟列表"><a class="header" href="#端口的外部时钟列表">端口的外部时钟列表</a></h3>
+<pre><code class="language-c">/* port_private.h */
+
+struct port {
+    /* ... */
+    
+    struct foreign_clock *best;    /* 最佳外部时钟 */
+    LIST_HEAD(foreign_clocks, foreign_clock) foreign;  /* 外部时钟列表 */
+    
+    /* ... */
+};
+</code></pre>
+<h3 id="外部时钟管理函数"><a class="header" href="#外部时钟管理函数">外部时钟管理函数</a></h3>
+<pre><code class="language-c">/* foreign.c中的核心函数（简化） */
+
+/* 添加外部时钟Announce */
+struct foreign_clock *foreign_add(struct port *p, struct ptp_message *msg)
+{
+    struct foreign_clock *fc;
+    
+    /* 分配内存 */
+    fc = calloc(1, sizeof(*fc));
+    
+    /* 初始化 */
+    fc-&gt;port = p;
+    fc-&gt;identity = msg-&gt;announce.hdr.sourcePortIdentity;
+    
+    /* 添加到列表 */
+    LIST_INSERT_HEAD(&amp;p-&gt;foreign, fc, list);
+    
+    return fc;
+}
+
+/* 查找外部时钟 */
+struct foreign_clock *foreign_lookup(struct port *p, 
+                                     struct PortIdentity *identity)
+{
+    struct foreign_clock *fc;
+    
+    LIST_FOREACH(fc, &amp;p-&gt;foreign, list) {
+        if (pid_eq(&amp;fc-&gt;identity, identity))
+            return fc;
+    }
+    
+    return NULL;
+}
+
+/* 更新外部时钟 */
+void foreign_update(struct foreign_clock *fc, struct ptp_message *msg)
+{
+    /* 更新数据集 */
+    fc-&gt;dataset.priority1 = msg-&gt;announce.grandmasterPriority1;
+    fc-&gt;dataset.quality = msg-&gt;announce.grandmasterClockQuality;
+    /* ... */
+}
+</code></pre>
+<h3 id="计算最佳外部时钟"><a class="header" href="#计算最佳外部时钟">计算最佳外部时钟</a></h3>
+<pre><code class="language-c">/* port.c中的port_compute_best（简化） */
+
+struct foreign_clock *port_compute_best(struct port *p)
+{
+    struct foreign_clock *fc, *best = NULL;
+    int (*compare)(struct dataset *a, struct dataset *b);
+    
+    compare = clock_dscmp(p-&gt;clock);
+    
+    /* 遍历所有外部时钟 */
+    LIST_FOREACH(fc, &amp;p-&gt;foreign, list) {
+        if (!best || compare(&amp;fc-&gt;dataset, &amp;best-&gt;dataset) &gt; 0) {
+            best = fc;
+        }
+    }
+    
+    p-&gt;best = best;
+    return best;
+}
+</code></pre>
+<hr>
+<h2 id="bmca的完整流程"><a class="header" href="#bmca的完整流程">BMCA的完整流程</a></h2>
+<h3 id="1-announce报文接收"><a class="header" href="#1-announce报文接收">1. Announce报文接收</a></h3>
+<pre><code class="language-c">/* port.c中的Announce处理（简化） */
+
+static int port_rx_announce(struct port *p, struct ptp_message *msg)
+{
+    struct foreign_clock *fc;
+    
+    /* 步骤1：查找或创建外部时钟 */
+    fc = foreign_lookup(p, &amp;msg-&gt;hdr.sourcePortIdentity);
+    if (!fc) {
+        fc = foreign_add(p, msg);
+    }
+    
+    /* 步骤2：更新外部时钟信息 */
+    foreign_update(fc, msg);
+    
+    /* 步骤3：重启Announce超时定时器 */
+    timer_restart(&amp;p-&gt;timers[ANNOUNCE_TIMER]);
+    
+    /* 步骤4：触发状态决策事件 */
+    port_dispatch(p, EV_STATE_DECISION_EVENT, 0);
+    
+    return 0;
+}
+</code></pre>
+<h3 id="2-状态决策事件处理"><a class="header" href="#2-状态决策事件处理">2. 状态决策事件处理</a></h3>
+<pre><code class="language-c">/* port.c中的状态决策事件处理（简化） */
+
+static void port_state_decision(struct port *p)
+{
+    struct foreign_clock *best;
+    enum port_state next;
+    int mdiff = 0;
+    
+    /* 步骤1：计算最佳外部时钟 */
+    best = port_compute_best(p);
+    
+    /* 步骤2：检查主时钟是否变化 */
+    if (best &amp;&amp; p-&gt;best &amp;&amp; 
+        !pid_eq(&amp;best-&gt;identity, &amp;p-&gt;best-&gt;identity)) {
+        mdiff = 1;  /* 主时钟变了 */
+    }
+    
+    /* 步骤3：执行BMCA状态决策 */
+    next = bmc_state_decision(p-&gt;clock, p, clock_dscmp(p-&gt;clock));
+    
+    /* 步骤4：转换为事件 */
+    enum fsm_event event = state_to_event(next);
+    
+    /* 步骤5：触发状态机 */
+    port_dispatch(p, event, mdiff);
+}
+</code></pre>
+<h3 id="3-状态到事件转换"><a class="header" href="#3-状态到事件转换">3. 状态到事件转换</a></h3>
+<pre><code class="language-c">/* port.c中的状态到事件转换（简化） */
+
+static enum fsm_event state_to_event(enum port_state next)
+{
+    switch (next) {
+    case PS_GRAND_MASTER:
+        return EV_RS_GRAND_MASTER;
+    case PS_MASTER:
+        return EV_RS_MASTER;
+    case PS_SLAVE:
+        return EV_RS_SLAVE;
+    case PS_PASSIVE:
+        return EV_RS_PASSIVE;
+    default:
+        return EV_NONE;
+    }
+}
+</code></pre>
+<hr>
+<h2 id="bmca时序图"><a class="header" href="#bmca时序图">BMCA时序图</a></h2>
+<pre><code>时间轴上的BMCA过程：
+
+t=0: 端口启动
+     │
+     ▼
+t=1: 进入INITIALIZING状态
+     │
+     ▼
+t=2: 初始化完成，进入LISTENING状态
+     │
+     │ 启动Announce超时定时器
+     │
+     ▼
+t=3: 收到Announce报文（来自外部时钟A）
+     │
+     │ 创建foreign_clock结构
+     │ 更新外部时钟信息
+     │ 重启Announce超时定时器
+     │
+     ▼
+t=4: 计算最佳外部时钟
+     │
+     │ 比较本时钟与外部时钟A
+     │ 决定状态（假设本时钟更好）
+     │
+     ▼
+t=5: 进入PRE_MASTER状态
+     │
+     │ 启动资格超时定时器
+     │
+     ▼
+t=6: 资格超时
+     │
+     ▼
+t=7: 进入MASTER/GRAND_MASTER状态
+     │
+     │ 开始发送Announce
+     │ 开始发送Sync
+     │
+
+假设t=10收到更好的外部时钟：
+
+t=10: 收到Announce报文（来自外部时钟B）
+      │
+      │ B的priority1 &lt; 本时钟的priority1
+      │
+      ▼
+t=11: 状态决策：B更好
+      │
+      ▼
+t=12: 进入UNCALIBRATED状态
+      │
+      │ 停止发送Announce
+      │ 开始同步到B
+      │
+      ▼
+t=13: 同步完成
+      │
+      ▼
+t=14: 进入SLAVE状态
+</code></pre>
+<hr>
+<h2 id="小结bmca的代码智慧"><a class="header" href="#小结bmca的代码智慧">小结：BMCA的代码智慧</a></h2>
+<p><strong>分层设计</strong>：</p>
+<ul>
+<li>数据集比较（dscmp/dscmp2）</li>
+<li>状态决策（bmc_state_decision）</li>
+<li>外部时钟管理（foreign_clock）</li>
+</ul>
+<p><strong>函数式编程</strong>：</p>
+<ul>
+<li>比较函数作为参数传递</li>
+<li>无副作用，易测试</li>
+</ul>
+<p><strong>标准映射</strong>：</p>
+<ul>
+<li>代码逻辑与IEEE 1588规则一一对应</li>
+<li>注释标注规则编号（M1、P1、S1等）</li>
+</ul>
+<p><strong>效率优化</strong>：</p>
+<ul>
+<li>快速路径处理</li>
+<li>避免不必要的比较</li>
+</ul>
+<hr>
+<h2 id="下集预告"><a class="header" href="#下集预告">下集预告</a></h2>
+<p>BMCA决定谁当主时钟，伺服控制器决定如何调整时钟。</p>
+<p>下一节，我们将分析<strong>伺服控制器实现</strong>——看看LinuxPTP如何实现PI控制器。</p>
+<blockquote>
+<p><strong>【悬念留给3.5】</strong></p>
+<p>时钟同步需要伺服控制器。</p>
+<p>LinuxPTP实现了多种伺服：</p>
+<ul>
+<li>PI控制器（最常用）</li>
+<li>线性回归滤波器</li>
+<li>空滤波器</li>
+</ul>
+<p>其中PI控制器只有231行代码，却实现了：</p>
+<ul>
+<li>频率估计</li>
+<li>相位调整</li>
+<li>阶跃检测</li>
+</ul>
+<p>它是如何工作的？</p>
+<p>下一节，我们详细解读伺服控制器。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../ptp-book/chapters/3.3-端口状态机-200行代码驾驭9种状态.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../ptp-book/chapters/3.5-伺服控制器-让时钟追上主人的艺术.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../ptp-book/chapters/3.3-端口状态机-200行代码驾驭9种状态.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../ptp-book/chapters/3.5-伺服控制器-让时钟追上主人的艺术.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

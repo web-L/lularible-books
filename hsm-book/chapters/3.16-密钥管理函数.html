@@ -1,0 +1,813 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>密钥管理函数 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h2 id="316-密钥管理函数密钥的生与死"><a class="header" href="#316-密钥管理函数密钥的生与死">3.16 密钥管理函数：密钥的“生与死“</a></h2>
+<h3 id="密钥管理函数概览"><a class="header" href="#密钥管理函数概览">密钥管理函数概览</a></h3>
+<p>PKCS#11规范第5.18节定义了密钥管理函数，涵盖密钥的生成、包装、解包和派生。</p>
+<pre><code>密钥管理函数列表：
+
+函数名              作用
+──────────────────────────────────────
+C_GenerateKey       生成对称密钥
+C_GenerateKeyPair   生成公私钥对
+C_WrapKey           包装（加密）密钥
+C_UnwrapKey         解包（解密）密钥
+C_DeriveKey         从基密钥派生新密钥
+</code></pre>
+<p>密钥管理函数是PKCS#11的“密钥工厂“——所有密钥的创建、备份、恢复都通过这些函数完成。</p>
+<hr>
+<h3 id="c_generatekey生成对称密钥"><a class="header" href="#c_generatekey生成对称密钥">C_GenerateKey：生成对称密钥</a></h3>
+<p><strong>函数原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_GenerateKey(
+    CK_SESSION_HANDLE hSession,
+    CK_MECHANISM_PTR pMechanism,
+    CK_ATTRIBUTE_PTR pTemplate,
+    CK_ULONG ulCount,
+    CK_OBJECT_HANDLE_PTR phKey
+);
+</code></pre>
+<p><strong>密钥生成机制</strong>：</p>
+<pre><code>对称密钥生成机制：
+
+CKM_AES_KEY_GEN        AES密钥（128/192/256位）
+CKM_DES_KEY_GEN        DES密钥（56位，不推荐）
+CKM_DES2_KEY_GEN       2密钥3DES（112位）
+CKM_DES3_KEY_GEN       3密钥3DES（168位）
+CKM_GENERIC_SECRET_KEY_GEN 通用密钥
+
+国密密钥（厂商扩展，非PKCS#11 v3.1标准）：
+CKM_SM4_KEY_GEN        SM4密钥（128位）
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：SM4等国密机制是厂商对PKCS#11的扩展，并非OASIS PKCS#11 v3.1标准规范的一部分。</p>
+</blockquote>
+<hr>
+<h3 id="aes密钥生成示例"><a class="header" href="#aes密钥生成示例">AES密钥生成示例</a></h3>
+<pre><code class="language-c">/* 生成256位AES密钥 */
+
+CK_MECHANISM mechanism = {CKM_AES_KEY_GEN, NULL_PTR, 0};
+
+CK_ULONG keySize = 32;  // 32字节 = 256位
+CK_BYTE keyId[] = {0x01};
+CK_BBOOL true = CK_TRUE;
+CK_BBOOL sensitive = CK_TRUE;
+CK_BBOOL extractable = CK_FALSE;
+
+CK_ATTRIBUTE keyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(true)},
+    {CKA_VALUE_LEN, &amp;keySize, sizeof(keySize)},
+    {CKA_ID, keyId, sizeof(keyId)},
+    {CKA_SENSITIVE, &amp;sensitive, sizeof(sensitive)},
+    {CKA_EXTRACTABLE, &amp;extractable, sizeof(extractable)},
+    {CKA_ENCRYPT, &amp;true, sizeof(true)},
+    {CKA_DECRYPT, &amp;true, sizeof(true)}
+};
+
+CK_OBJECT_HANDLE hAesKey;
+rv = C_GenerateKey(hSession, &amp;mechanism, keyTemplate, 7, &amp;hAesKey);
+
+if (rv == CKR_OK) {
+    printf("AES密钥生成成功\n");
+    // CKA_LOCAL = TRUE（本地生成）
+    // CKA_ALWAYS_SENSITIVE = TRUE
+    // CKA_NEVER_EXTRACTABLE = TRUE（因为设置EXTRACTABLE=FALSE）
+}
+</code></pre>
+<hr>
+<h3 id="cka_local属性的意义"><a class="header" href="#cka_local属性的意义">CKA_LOCAL属性的意义</a></h3>
+<p>通过C_GenerateKey生成的密钥有特殊属性：</p>
+<pre><code>C_GenerateKey生成的密钥属性：
+
+CKA_LOCAL = TRUE
+→ 密钥在Token内生成，不是外部导入
+
+CKA_KEY_GEN_MECHANISM = CKM_AES_KEY_GEN
+→ 记录密钥的生成机制
+
+CKA_ALWAYS_SENSITIVE = TRUE（如果CKA_SENSITIVE = TRUE）
+→ 从创建开始就是敏感的，永不改变
+
+CKA_NEVER_EXTRACTABLE = TRUE（如果CKA_EXTRACTABLE = FALSE）
+→ 从创建开始就不可导出，永不改变
+</code></pre>
+<p><strong>与C_CreateObject对比</strong>：</p>
+<pre><code>密钥来源对比：
+
+C_GenerateKey生成：
+- CKA_LOCAL = TRUE
+- CKA_ALWAYS_SENSITIVE继承CKA_SENSITIVE
+- 密钥值在Token内部产生，更安全
+
+C_CreateObject创建：
+- CKA_LOCAL = FALSE
+- CKA_ALWAYS_SENSITIVE = FALSE
+- 密钥值由应用程序提供，存在泄露风险
+</code></pre>
+<hr>
+<h3 id="c_generatekeypair生成公私钥对"><a class="header" href="#c_generatekeypair生成公私钥对">C_GenerateKeyPair：生成公私钥对</a></h3>
+<p><strong>函数原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_GenerateKeyPair(
+    CK_SESSION_HANDLE hSession,
+    CK_MECHANISM_PTR pMechanism,
+    CK_ATTRIBUTE_PTR pPublicKeyTemplate,
+    CK_ULONG ulPublicKeyAttributeCount,
+    CK_ATTRIBUTE_PTR pPrivateKeyTemplate,
+    CK_ULONG ulPrivateKeyAttributeCount,
+    CK_OBJECT_HANDLE_PTR phPublicKey,
+    CK_OBJECT_HANDLE_PTR phPrivateKey
+);
+</code></pre>
+<p><strong>公私钥对生成机制</strong>：</p>
+<pre><code>公私钥对生成机制：
+
+CKM_RSA_PKCS_KEY_PAIR_GEN  RSA密钥对
+
+CKM_DH_PKCS_KEY_PAIR_GEN   DH密钥对
+
+CKM_EC_KEY_PAIR_GEN        EC密钥对（通用，通过曲线参数区分ECDSA/ECDH）
+
+国密密钥：
+CKM_SM2_KEY_PAIR_GEN       SM2密钥对（厂商扩展）
+</code></pre>
+<hr>
+<h3 id="rsa密钥对生成示例"><a class="header" href="#rsa密钥对生成示例">RSA密钥对生成示例</a></h3>
+<pre><code class="language-c">/* 生成2048位RSA密钥对 */
+
+CK_MECHANISM mechanism = {CKM_RSA_PKCS_KEY_PAIR_GEN, NULL_PTR, 0};
+
+CK_ULONG modulusBits = 2048;
+CK_BYTE publicExponent[] = {0x01, 0x00, 0x01};  // 65537
+CK_BYTE keyId[] = {0x01};
+CK_BBOOL true = CK_TRUE;
+
+CK_ATTRIBUTE publicKeyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(true)},
+    {CKA_MODULUS_BITS, &amp;modulusBits, sizeof(modulusBits)},
+    {CKA_PUBLIC_EXPONENT, publicExponent, sizeof(publicExponent)},
+    {CKA_ID, keyId, sizeof(keyId)},
+    {CKA_ENCRYPT, &amp;true, sizeof(true)},
+    {CKA_VERIFY, &amp;true, sizeof(true)}
+};
+
+CK_ATTRIBUTE privateKeyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(true)},
+    {CKA_ID, keyId, sizeof(keyId)},
+    {CKA_SENSITIVE, &amp;true, sizeof(true)},
+    {CKA_EXTRACTABLE, &amp;true, sizeof(true)},  // 可导出备份
+    {CKA_DECRYPT, &amp;true, sizeof(true)},
+    {CKA_SIGN, &amp;true, sizeof(true)}
+};
+
+CK_OBJECT_HANDLE hPublicKey, hPrivateKey;
+rv = C_GenerateKeyPair(hSession, &amp;mechanism,
+                       publicKeyTemplate, 6,
+                       privateKeyTemplate, 6,
+                       &amp;hPublicKey, &amp;hPrivateKey);
+
+if (rv == CKR_OK) {
+    printf("RSA密钥对生成成功\n");
+    printf("公钥句柄=%lu, 私钥句柄=%lu\n", hPublicKey, hPrivateKey);
+}
+</code></pre>
+<hr>
+<h3 id="ec密钥对生成示例"><a class="header" href="#ec密钥对生成示例">EC密钥对生成示例</a></h3>
+<pre><code class="language-c">/* 生成ECDSA密钥对（P-256曲线） */
+
+CK_MECHANISM mechanism = {CKM_EC_KEY_PAIR_GEN, NULL_PTR, 0};
+
+// P-256曲线OID：1.2.840.10045.3.1.7
+CK_BYTE ecParams[] = {0x06, 0x08, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07};
+
+CK_BYTE keyId[] = {0x02};
+CK_BBOOL true = CK_TRUE;
+
+CK_ATTRIBUTE publicKeyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(true)},
+    {CKA_EC_PARAMS, ecParams, sizeof(ecParams)},
+    {CKA_ID, keyId, sizeof(keyId)},
+    {CKA_VERIFY, &amp;true, sizeof(true)}
+};
+
+CK_ATTRIBUTE privateKeyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(true)},
+    {CKA_ID, keyId, sizeof(keyId)},
+    {CKA_SENSITIVE, &amp;true, sizeof(true)},
+    {CKA_EXTRACTABLE, &amp;true, sizeof(true)},
+    {CKA_SIGN, &amp;true, sizeof(true)}
+};
+
+CK_OBJECT_HANDLE hPublicKey, hPrivateKey;
+rv = C_GenerateKeyPair(hSession, &amp;mechanism,
+                       publicKeyTemplate, 4,
+                       privateKeyTemplate, 5,
+                       &amp;hPublicKey, &amp;hPrivateKey);
+</code></pre>
+<hr>
+<h3 id="密钥对的原子性保证"><a class="header" href="#密钥对的原子性保证">密钥对的原子性保证</a></h3>
+<p>规范明确保证：密钥对生成是原子操作。</p>
+<pre><code>C_GenerateKeyPair原子性：
+
+可能结果：
+1. 成功 → 创建匹配的公私钥对
+2. 失败 → 不创建任何密钥
+
+不可能结果：
+- 只创建公钥
+- 只创建私钥
+- 公私钥不匹配
+
+这是PKCS#11的重要设计原则：
+要么全部成功，要么全部失败，保证密钥对的完整性。
+</code></pre>
+<hr>
+<h3 id="c_wrapkey包装密钥"><a class="header" href="#c_wrapkey包装密钥">C_WrapKey：包装密钥</a></h3>
+<p><strong>函数原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_WrapKey(
+    CK_SESSION_HANDLE hSession,
+    CK_MECHANISM_PTR pMechanism,
+    CK_OBJECT_HANDLE hWrappingKey,
+    CK_OBJECT_HANDLE hKey,
+    CK_BYTE_PTR pWrappedKey,
+    CK_ULONG_PTR pulWrappedKeyLen
+);
+</code></pre>
+<p><strong>用途</strong>：将密钥加密导出，用于备份或传输。</p>
+<pre><code>密钥包装场景：
+
+场景1：密钥备份
+┌─────────────────────────────────────┐
+│ Token A                             │
+│                                     │
+│ AES密钥（hKey）                     │
+│ CKA_EXTRACTABLE = TRUE              │
+│                                     │
+│ C_WrapKey(hWrappingKey, hKey)       │
+│ → wrappedKey                        │
+│                                     │
+│ 存储wrappedKey到安全备份服务器       │
+└─────────────────────────────────────┘
+
+场景2：密钥传输
+┌─────────────────────────────────────┐
+│ Token A → Token B                   │
+│                                     │
+│ AES密钥                             │
+│ C_WrapKey → wrappedKey              │
+│                                     │
+│ 通过安全通道传输wrappedKey           │
+│                                     │
+│ Token B                             │
+│ C_UnwrapKey → 新密钥                │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="aes密钥包装示例"><a class="header" href="#aes密钥包装示例">AES密钥包装示例</a></h3>
+<pre><code class="language-c">/* AES密钥包装（使用AES密钥加密） */
+
+CK_MECHANISM mechanism = {CKM_AES_KEY_WRAP, NULL_PTR, 0};
+
+CK_OBJECT_HANDLE hWrappingKey;  // 包装密钥（AES）
+CK_OBJECT_HANDLE hKeyToWrap;    // 待包装密钥（AES或私钥）
+
+CK_BYTE wrappedKey[256];
+CK_ULONG wrappedKeyLen = sizeof(wrappedKey);
+
+rv = C_WrapKey(hSession, &amp;mechanism, hWrappingKey, hKeyToWrap,
+               wrappedKey, &amp;wrappedKeyLen);
+
+if (rv == CKR_OK) {
+    printf("密钥包装成功，长度=%lu\n", wrappedKeyLen);
+    // 可以安全存储wrappedKey
+}
+</code></pre>
+<hr>
+<h3 id="密钥包装约束"><a class="header" href="#密钥包装约束">密钥包装约束</a></h3>
+<p>密钥包装受到多个属性约束：</p>
+<pre><code>包装约束：
+
+包装密钥（hWrappingKey）：
+- CKA_WRAP = TRUE（必须支持包装）
+
+被包装密钥（hKey）：
+- CKA_EXTRACTABLE = TRUE（必须可导出）
+
+失败情况：
+CKR_KEY_UNEXTRACTABLE → CKA_EXTRACTABLE = FALSE
+CKR_KEY_NOT_WRAPPABLE → Token特定原因无法包装
+CKR_KEY_SIZE_RANGE → 密钥长度不匹配机制
+CKR_WRAPPING_KEY_TYPE_INCONSISTENT → 包装密钥类型不匹配
+</code></pre>
+<hr>
+<h3 id="rsa密钥包装"><a class="header" href="#rsa密钥包装">RSA密钥包装</a></h3>
+<p>使用RSA公钥包装对称密钥：</p>
+<pre><code class="language-c">/* RSA公钥包装AES密钥 */
+
+CK_MECHANISM mechanism = {CKM_RSA_PKCS, NULL_PTR, 0};
+
+CK_OBJECT_HANDLE hPublicKey;  // RSA公钥
+CK_OBJECT_HANDLE hAesKey;     // AES密钥
+
+CK_BYTE wrappedKey[256];  // RSA密钥长度
+CK_ULONG wrappedKeyLen = sizeof(wrappedKey);
+
+rv = C_WrapKey(hSession, &amp;mechanism, hPublicKey, hAesKey,
+               wrappedKey, &amp;wrappedKeyLen);
+
+if (rv == CKR_OK) {
+    // wrappedKey是用RSA公钥加密的AES密钥
+    // 只有对应的RSA私钥才能解包
+}
+</code></pre>
+<hr>
+<h3 id="c_unwrapkey解包密钥"><a class="header" href="#c_unwrapkey解包密钥">C_UnwrapKey：解包密钥</a></h3>
+<p><strong>函数原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_UnwrapKey(
+    CK_SESSION_HANDLE hSession,
+    CK_MECHANISM_PTR pMechanism,
+    CK_OBJECT_HANDLE hUnwrappingKey,
+    CK_BYTE_PTR pWrappedKey,
+    CK_ULONG ulWrappedKeyLen,
+    CK_ATTRIBUTE_PTR pTemplate,
+    CK_ULONG ulAttributeCount,
+    CK_OBJECT_HANDLE_PTR phKey
+);
+</code></pre>
+<pre><code class="language-c">/* AES密钥解包 */
+
+CK_MECHANISM mechanism = {CKM_AES_KEY_WRAP, NULL_PTR, 0};
+
+CK_OBJECT_HANDLE hUnwrappingKey;  // 解包密钥
+
+CK_BYTE wrappedKey[] = {...};  // 包装后的密钥数据
+CK_ULONG wrappedKeyLen = sizeof(wrappedKey);
+
+CK_BYTE keyId[] = {0x03};
+CK_BBOOL true = CK_TRUE;
+CK_BBOOL sensitive = CK_TRUE;
+CK_BBOOL extractable = CK_FALSE;
+
+CK_ATTRIBUTE keyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(true)},
+    {CKA_ID, keyId, sizeof(keyId)},
+    {CKA_SENSITIVE, &amp;sensitive, sizeof(sensitive)},
+    {CKA_EXTRACTABLE, &amp;extractable, sizeof(extractable)}
+};
+
+CK_OBJECT_HANDLE hNewKey;
+rv = C_UnwrapKey(hSession, &amp;mechanism, hUnwrappingKey,
+                 wrappedKey, wrappedKeyLen,
+                 keyTemplate, 4, &amp;hNewKey);
+
+if (rv == CKR_OK) {
+    printf("密钥解包成功\n");
+    // CKA_LOCAL = FALSE（不是本地生成）
+}
+</code></pre>
+<hr>
+<h3 id="c_derivekey密钥派生"><a class="header" href="#c_derivekey密钥派生">C_DeriveKey：密钥派生</a></h3>
+<p><strong>函数原型</strong>：</p>
+<pre><code class="language-c">CK_RV C_DeriveKey(
+    CK_SESSION_HANDLE hSession,
+    CK_MECHANISM_PTR pMechanism,
+    CK_OBJECT_HANDLE hBaseKey,
+    CK_ATTRIBUTE_PTR pTemplate,
+    CK_ULONG ulAttributeCount,
+    CK_OBJECT_HANDLE_PTR phKey
+);
+</code></pre>
+<p><strong>用途</strong>：从基密钥派生新密钥，用于密钥协商、密钥分层等场景。</p>
+<pre><code>密钥派生场景：
+
+场景1：ECDH密钥协商
+┌─────────────────────────────────────┐
+│ Alice                               │
+│                                     │
+│ EC私钥（hPrivateKeyA）              │
+│                                     │
+│ 收到Bob的EC公钥                     │
+│                                     │
+│ C_DeriveKey(hPrivateKeyA,           │
+│             mechanism={ECDH,        │
+│             BobPublicKey})          │
+│ → 共享密钥                          │
+└─────────────────────────────────────┘
+
+场景2：HKDF密钥派生
+┌─────────────────────────────────────┐
+│ 密钥分层                            │
+│                                     │
+│ 主密钥（Master Key）                │
+│                                     │
+│ C_DeriveKey → 加密密钥              │
+│ C_DeriveKey → HMAC密钥              │
+│ C_DeriveKey → 会话密钥              │
+└─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="ecdh密钥派生示例"><a class="header" href="#ecdh密钥派生示例">ECDH密钥派生示例</a></h3>
+<pre><code class="language-c">/* ECDH密钥协商 */
+
+CK_ECDH1_DERIVE_PARAMS ecdhParams = {
+    .kdf = CKD_NULL,              // 密钥派生函数
+    .ulSharedDataLen = 0,
+    .pSharedData = NULL_PTR,
+    .ulPublicDataLen = sizeof(bobPublicKey),
+    .pPublicData = bobPublicKey   // Bob的公钥数据
+};
+
+CK_MECHANISM mechanism = {
+    CKM_ECDH1_DERIVE,
+    &amp;ecdhParams,
+    sizeof(ecdhParams)
+};
+
+CK_BYTE keyId[] = {0x05};
+CK_BBOOL true = CK_TRUE;
+
+CK_ATTRIBUTE keyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(true)},
+    {CKA_ID, keyId, sizeof(keyId)},
+    {CKA_KEY_TYPE, &amp;(CK_KEY_TYPE){CKK_AES}, sizeof(CK_KEY_TYPE)},
+    {CKA_VALUE_LEN, &amp;(CK_ULONG){32}, sizeof(CK_ULONG)},
+    {CKA_SENSITIVE, &amp;true, sizeof(true)}
+};
+
+CK_OBJECT_HANDLE hSharedKey;
+rv = C_DeriveKey(hSession, &amp;mechanism, hPrivateKeyA,
+                 keyTemplate, 5, &amp;hSharedKey);
+
+if (rv == CKR_OK) {
+    printf("共享密钥派生成功\n");
+    // hSharedKey与Bob派生的密钥相同
+}
+</code></pre>
+<hr>
+<h3 id="hkdf密钥派生"><a class="header" href="#hkdf密钥派生">HKDF密钥派生</a></h3>
+<p>HKDF（HMAC-based Key Derivation Function）是常用的密钥派生方法：</p>
+<pre><code class="language-c">/* HKDF密钥派生 */
+
+CK_HKDF_PARAMS hkdfParams = {
+    TRUE,                       /* bExtract */
+    TRUE,                       /* bExpand */
+    CKM_SHA256,                 /* prfHashMechanism */
+    CKZ_SALT_SPECIFIED,         /* ulSaltType */
+    salt, sizeof(salt),         /* pSalt, ulSaltLen */
+    CK_INVALID_HANDLE,          /* hSaltKey */
+    info, sizeof(info)          /* pInfo, ulInfoLen */
+};
+
+CK_MECHANISM mechanism = {
+    CKM_HKDF_DERIVE,
+    &amp;hkdfParams,
+    sizeof(hkdfParams)
+};
+
+CK_ULONG keyLen = 32;  /* 派生32字节密钥 */
+
+CK_ATTRIBUTE keyTemplate[] = {
+    {CKA_TOKEN, &amp;true, sizeof(CK_BBOOL)},
+    {CKA_VALUE_LEN, &amp;keyLen, sizeof(CK_ULONG)},
+    {CKA_KEY_TYPE, &amp;(CK_KEY_TYPE){CKK_AES}, sizeof(CK_KEY_TYPE)}
+};
+
+CK_OBJECT_HANDLE hDerivedKey;
+rv = C_DeriveKey(hSession, &amp;mechanism, hMasterKey,
+                 keyTemplate, 3, &amp;hDerivedKey);
+</code></pre>
+<hr>
+<h3 id="密钥派生与安全属性"><a class="header" href="#密钥派生与安全属性">密钥派生与安全属性</a></h3>
+<p>派生密钥的安全属性受到基密钥属性的影响：</p>
+<pre><code>派生密钥安全属性继承：
+
+基密钥属性                 派生密钥属性约束
+───────────────────────────────────────
+CKA_SENSITIVE = TRUE    → 派生密钥可以设置SENSITIVE=TRUE
+CKA_SENSITIVE = FALSE   → 派生密钥必须SENSITIVE=FALSE
+
+CKA_EXTRACTABLE = TRUE  → 派生密钥可以设置EXTRACTABLE=TRUE
+CKA_EXTRACTABLE = FALSE → 派生密钥必须EXTRACTABLE=FALSE
+
+CKA_ALWAYS_SENSITIVE    → 继承自基密钥
+CKA_NEVER_EXTRACTABLE   → 继承自基密钥
+</code></pre>
+<hr>
+<h3 id="密钥生命周期管理"><a class="header" href="#密钥生命周期管理">密钥生命周期管理</a></h3>
+<pre><code>密钥完整生命周期：
+
+1. 生成
+   ┌─────────────────────────────────────┐
+   │ C_GenerateKey / C_GenerateKeyPair   │
+   │                                     │
+   │ Token内生成                         │
+   │ CKA_LOCAL = TRUE                    │
+   │ 安全属性完整                         │
+   └─────────────────────────────────────┘
+
+2. 使用
+   ┌─────────────────────────────────────┐
+   │ C_Encrypt / C_Decrypt               │
+   │ C_Sign / C_Verify                   │
+   │                                     │
+   │ 密钥生命周期内反复使用               │
+   └─────────────────────────────────────┘
+
+3. 备份（可选）
+   ┌─────────────────────────────────────┐
+   │ C_WrapKey                           │
+   │                                     │
+   │ 加密导出到备份介质                   │
+   │ CKA_EXTRACTABLE = TRUE              │
+   └─────────────────────────────────────┘
+
+4. 恢复（可选）
+   ┌─────────────────────────────────────┐
+   │ C_UnwrapKey                         │
+   │                                     │
+   │ 从备份导入到Token                   │
+   │ CKA_LOCAL = FALSE                   │
+   └─────────────────────────────────────┘
+
+5. 派生（可选）
+   ┌─────────────────────────────────────┐
+   │ C_DeriveKey                         │
+   │                                     │
+   │ 从基密钥派生子密钥                   │
+   │ 密钥分层管理                         │
+   └─────────────────────────────────────┘
+
+6. 销毁
+   ┌─────────────────────────────────────┐
+   │ C_DestroyObject                     │
+   │                                     │
+   │ 密钥从Token删除                      │
+   │ CKA_DESTROYABLE = TRUE              │
+   └─────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3 id="小结密钥管理函数的设计智慧"><a class="header" href="#小结密钥管理函数的设计智慧">小结：密钥管理函数的设计智慧</a></h3>
+<pre><code>密钥管理要点回顾：
+
+1. 生成密钥的安全优势
+   - CKA_LOCAL = TRUE（本地生成）
+   - 密钥值不暴露给应用程序
+   - CKA_ALWAYS_SENSITIVE保护敏感密钥
+
+2. 密钥对的原子性
+   - 公私钥要么同时生成，要么都不生成
+   - 保证密钥对的匹配性
+
+3. 包装导出的可控性
+   - CKA_EXTRACTABLE控制导出权限
+   - CKA_WRAP控制包装权限
+   - 包装后密钥安全传输
+
+4. 派生密钥的层次管理
+   - ECDH用于密钥协商
+   - HKDF用于密钥分层
+   - 派生密钥继承安全属性
+
+5. 密钥来源区分
+   - 本地生成：最安全，CKA_LOCAL=TRUE
+   - 外部导入：需谨慎，CKA_LOCAL=FALSE
+   - 密钥派生：层次管理，继承基密钥属性
+</code></pre>
+<p>密钥管理函数为PKCS#11提供了完整的密钥生命周期管理能力，从生成、使用到备份、销毁，构成密钥安全的“闭环“。
+下一节，我们将学习Mechanism系统——看算法机制的定义。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>Mechanism是什么？</p>
+<p>CK_MECHANISM结构是什么？</p>
+<p>Mechanism怎么查询和选择？</p>
+<p>下一节，Mechanism系统。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../hsm-book/chapters/3.15-哈希与MAC函数.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../hsm-book/chapters/3.17-Mechanism系统.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../hsm-book/chapters/3.15-哈希与MAC函数.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../hsm-book/chapters/3.17-Mechanism系统.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

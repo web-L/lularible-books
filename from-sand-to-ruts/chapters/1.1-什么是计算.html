@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>什么是计算 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="第一部分-计算的本质从哲学到数学"><a class="header" href="#第一部分-计算的本质从哲学到数学">第一部分 计算的本质——从哲学到数学</a></h1>
+<h2 id="11-什么是计算"><a class="header" href="#11-什么是计算">1.1 什么是“计算“？</a></h2>
+<h3 id="一间屋子一叠白纸"><a class="header" href="#一间屋子一叠白纸">一间屋子，一叠白纸</a></h3>
+<p>你被困在一间屋子里。房间里有一张桌子、一把椅子、一叠白纸、一支铅笔。墙上有一扇小窗，偶尔会有人从窗口递进来一张纸条，上面写着一个数字。</p>
+<p>你可以看一眼纸条，然后在白纸上写字、画图、撕掉、揉成一团。你也可以把一张写好的纸从窗口递出去。</p>
+<p><strong>问题是：你能否判断递进来的那些数字中，是否有两个是相同的？</strong></p>
+<p>你可能会说：这还不简单？把每一个递进来的数字都记下来，新的数字来了就翻看之前的记录，看看有没有重复。但等等——那叠白纸是有限的。假设只有 100 张，每张纸只能写 50 个数。窗口递进来的数字可能有几千个。</p>
+<p>在有限的白纸——也就是<strong>有限的记忆空间</strong>——和有限的时间——也就是天黑之前必须给出答案——之下，你能否完成这个任务？</p>
+<p>如果有无限的白纸、无限的时间，这个问题当然可解。但现实中，你总是在<strong>有限资源</strong>下工作。</p>
+<p>这就是“计算“的本质问题。</p>
+<p>在计算机科学里，这个问题叫做<strong>集合成员判定问题（set membership）</strong>。在内存和查找次数都小于数据流长度时，绝对的精确判定本质上不可能——这不是“困难“，而是原理上的天花板。现实的出路只有两条：要么放宽资源上限，要么接受近似解。一个没有计算机的人会怎么做？也许把数字从小到大排列在白纸上——新数字来了，折半查找。如果白纸快用完了，就只记录那些出现频率最高的数字。如果实在装不下，就放弃精确答案，用概率方法给出近似结果。</p>
+<p><strong>你逃不出资源的牢笼。一切计算策略，本质上都是“在限制下做最优选择“。</strong></p>
+<hr>
+<h3 id="算法白纸上的兵法"><a class="header" href="#算法白纸上的兵法">算法：白纸上的兵法</a></h3>
+<p>让我们把刚才那个“判断重复数字“的过程，用工程师的语言写下来。这不是某种特定编程语言，而是任何懂逻辑的人都能读懂的<strong>伪代码</strong>——它本身就是“计算的食谱“：</p>
+<pre><code>算法：在有界内存中判断重复数字
+
+输入：一串数字流 D[1], D[2], D[3]... 从窗口递入
+资源：N 张白纸，每张可写 M 个数字（总容量 C = N × M）
+输出：发现重复时返回 true，纸用完时返回 unknown
+
+步骤：
+1.  维护一个有序列表 S，初始为空
+2.  对于每一个递进来的数字 x：
+    a.  在 S 中二分查找 x
+        - 如果找到：输出 true（发现重复），终止
+        - 如果未找到：继续
+    b.  如果 S 的大小 &lt; C：
+        - 将 x 插入 S 中正确位置，保持有序
+        - 继续处理下一个数字
+    c.  如果 S 已满：
+        - 输出 unknown（白纸耗尽，无法判定）
+        - 终止
+</code></pre>
+<p>你看，这就是一个<strong>算法</strong>——确定的步骤、有限的资源、明确的终止条件。这里没有灵感、没有顿悟、没有“运气“。每一步都是机械的。</p>
+<p>这个算法有什么问题？对——<strong>它可能输出 unknown</strong>。在资源有限的约束下，正确性不再是“百分百对“，而是“在能力范围内做到最好“。这就是现实世界的计算。你在 ECU 上跑的每一段代码，本质上都是这个算法的变体：你有 64KB 的栈空间，你有 10ms 的周期预算，你有 8 个优先级的抢占调度——你总是在约束下做最优决策。</p>
+<p>现在我们退一步。这个白纸+铅笔+窗口的模型，到底抓住了计算的什么本质？是三个东西：<strong>输入、规则、输出</strong>。你拿到输入（纸条上的数字），按照确定的规则（二分查找 + 有序插入），产生确定的输出（true 或 unknown）。这套模式——输入、规则、输出——在人类的文明史上，早就有迹可循。而且演化了数千年。</p>
+<hr>
+<h3 id="算盘骨头与齿轮计算工具的前世"><a class="header" href="#算盘骨头与齿轮计算工具的前世">算盘、骨头与齿轮：计算工具的前世</a></h3>
+<p>在讨论图灵之前，我们需要回到更早的起点——人类是从什么时候开始“计算“的？</p>
+<p><strong>算盘</strong>大约出现在公元前 500 年的中国。它本质上是一个手动操作的寄存器组——上面两珠子代表 5，下面五珠子代表 1，每列是一个十进制位。你拨珠子，就是在改变“存储单元“的值。算盘的巧妙之处在于：它是一种<strong>人机协作</strong>的计算模型。人负责提供“算法“（口诀），算盘负责提供“状态存储“和“机械操作“（进位）。它没有自动化的运算器，但它是人类第一次把“计算“从脑子里外包到一个物理工具上。</p>
+<p>算盘在中国用了两千多年。但西方走了一条不同的路。</p>
+<p>1614 年，苏格兰数学家约翰·纳皮尔（John Napier）发明了<strong>对数</strong>，并制造了<strong>纳皮尔骨筹</strong>（Napier’s bones）——一组刻有乘法表的木棒。你把木棒排列起来，就能把乘法转化成加法。这本质上是一个“查表机器“——它不计算，它只是把预先算好的结果存储起来供你检索。纳皮尔骨筹很聪明，但它不能自动化。它还是一把“辅助尺“，不是一台“自动机“。</p>
+<p>紧接而来的是<strong>计算尺</strong>（slide rule）。1622 年，威廉·奥特雷德（William Oughtred）把两根对数刻度的尺子放在一起，滑动它们来做乘除运算。计算尺的原理是纳皮尔对数的直接应用：log(a×b) = log(a) + log(b)。你滑动尺子，就是在“做加法“，而刻度告诉你“加法结果对应的真数“。计算尺不擅长加减法——它只擅长乘除法——但它在工程领域统治了三百多年。阿波罗 11 号的宇航员带着计算尺上了月球，以防那台只有 4KB RAM 的导航计算机失灵。<strong>把复杂运算映射到简单运算、把精确运算映射到近似运算——计算的思想，从一开始就带着“降维“的基因。</strong></p>
+<p>但这还不够。这些工具只“辅助“计算，不“自动“计算。真正的转折发生在 17 世纪。</p>
+<hr>
+<h3 id="帕斯卡和莱布尼茨齿轮上的梦想"><a class="header" href="#帕斯卡和莱布尼茨齿轮上的梦想">帕斯卡和莱布尼茨：齿轮上的梦想</a></h3>
+<p>1642 年，19 岁的布莱兹·帕斯卡（Blaise Pascal）在法国鲁昂，看着他的税务官父亲每天跟成堆的账目搏斗。他决定造一台能自动做加减法的机器——<strong>帕斯卡加法机</strong>（Pascaline）。</p>
+<p>这台机器的核心是一个黄铜齿轮组。每个齿轮有 10 个齿，代表 0 到 9。当你拨动齿轮做加法时，每转满 10 个齿就通过一个棘爪机构推动高位的齿轮前进一格——<strong>这就是进位</strong>。帕斯卡加法机是世界上第一台真正的机械计算器——虽然它只能做加减法（乘法可以通过反复加法实现，除法也可以通过反复减法实现，只是非常慢）。帕斯卡造了大约 50 台，现在仍有 9 台存世。</p>
+<p>帕斯卡的机器很美，但有一个严重局限：它只能做加减。乘除需要人工把运算分解成多次加减，这实际上混淆了“计算“和“操作者“的界限。帕斯卡加法机没有解决“自动进行复杂计算“的问题。</p>
+<p>三十年后的 1673 年，莱布尼茨在巴黎展出了一台更先进的机器——<strong>莱布尼茨阶梯鼓轮计算器</strong>（Stepped Reckoner）。莱布尼茨的天才之处在于他设计了一种“阶梯鼓轮“——一个圆柱体，上面刻有 9 条不同长度的齿条，使得不同位数的齿轮可以啮合不同的齿数。这使得他的机器能直接做乘法：你输入被乘数，转动曲柄，机器自动完成“累加“操作。它甚至能做除法。</p>
+<p>但更重要的是，莱布尼茨不只是个工程师——他是<strong>第一个把计算和哲学等同起来的人</strong>。他在设计这台机器的同时，正在酝酿一个更宏大的想法：如果数字可以在齿轮上自动运算——那逻辑行不行？推理行不行？<strong>人类的全部知识，能不能也有一套“通用表意文字“（Characteristica Universalis），让所有争议都变成“算一算就清楚“的问题？</strong></p>
+<p>莱布尼茨的机器因为 17 世纪的精密加工水平达不到要求而频频卡齿——但他在哲学层面埋下的种子，长出了整个现代计算机科学的大树。冯·诺依曼说“计算机是逻辑的机器“时，他只是在回应莱布尼茨。</p>
+<hr>
+<h3 id="巴贝奇和艾达超前了一个世纪的幻想"><a class="header" href="#巴贝奇和艾达超前了一个世纪的幻想">巴贝奇和艾达：超前了一个世纪的幻想</a></h3>
+<p>帕斯卡和莱布尼茨造的是“计算器“——它们能根据输入的数值算出结果。但真正接近“通用计算机“的狂想，来自 19 世纪的英国。</p>
+<p>查尔斯·巴贝奇（Charles Babbage）是个脾气很坏的人。他讨厌伦敦街头的风琴手（说他们“污染了城市的声学环境“）、讨厌出版商、讨厌英国政府。但他有一项无与伦比的才华：他可以用机械零件——齿轮、杠杆、曲柄、滑块——构建极其复杂的逻辑系统。</p>
+<p>1822 年，巴贝奇开始设计<strong>差分机</strong>（Difference Engine）。这台机器的目的是用“差分法“自动计算并打印数学表格（对数表、三角函数表等）。当时的数学表格完全靠人工手工计算，错误率极高——航海家靠着一张算错了的对数表漂到了不该去的地方，船毁人亡。巴贝奇受够了这种不可靠：“如果有办法把错误的数学表格付之一炬或沉入海底，世界的良心会安宁得多。”</p>
+<p>差分机的原理很漂亮。许多复杂的数学函数（如多项式、三角函数）可以用“有限差分“来表示。比如 f(x) = x² 的值是 1, 4, 9, 16, 25… 一阶差是 3, 5, 7, 9… 二阶差是 2, 2, 2… 看——二阶差是常数！所以如果你知道初始值和各阶差分，你只需要反复做加法就能生成整个表格。差分机就是一台“加法 + 进位 + 打印“的专用机。</p>
+<p>英国政府给巴贝奇投了相当于今天的几百万英镑。但巴贝奇中途放弃了差分机，因为他脑子里已经有了一个更宏大的蓝图——<strong>分析机</strong>（Analytical Engine）。</p>
+<p>分析机的设计已经惊人地接近现代计算机。它有<strong>存储器</strong>（Store，用于存放数字）、<strong>运算室</strong>（Mill，相当于 CPU 的 ALU）、<strong>穿孔卡片输入系统</strong>（从雅卡尔提花织机借来的灵感），以及<strong>条件跳转能力</strong>（可以根据计算结果选择不同的执行路径）。它是一台<strong>通用计算机</strong>——至少在设计图纸上是。</p>
+<p>巴贝奇的设计如此复杂，19 世纪的精工水平根本造不出来。模具加工需要的公差（微米级）远超出了当时最好的机械水平。他花了几十年，烧掉了政府和个人自己的大笔财富，分析机始终是一堆图纸。</p>
+<p>这里我想插入一段作为工程师的共鸣。我曾经在面板厂做过良率工程师。CVD（化学气相沉积）机台往玻璃基板上沉积氮化硅薄膜的时候，厚度的均匀性要控制在百分之几以内——也就是十几到几十个原子的堆叠精度。曝光机的对准精度要跑到亚微米级。在这样的精度下，一颗肉眼根本看不见的微尘落上去——只要落在关键图形上——就足以让那个面板单元的TFT电路短路，严重时这块片子直接报废。巴贝奇造不出他的分析机，本质上是因为他生活在一个物理精度还追不上逻辑想象的时代。计算不只是一个数学概念——它需要一个物理载体。载体如果不够完美，理论就是“空中楼阁”。这不仅仅是19世纪的问题——在21世纪的半导体工厂里，工程师们每天都在对抗同一个问题：<strong>物理世界永远在往逻辑世界里面掺沙子</strong>。</p>
+<p>但话说回来。巴贝奇的分析机虽然没造成，它却间接促成了人类历史上最重要的编程事件。</p>
+<p><strong>艾达·洛夫莱斯</strong>（Ada Lovelace）是诗人拜伦的女儿，但她的母亲立志把她培养成数学家，以免她像父亲一样“感性泛滥“。艾达在 17 岁时认识了巴贝奇，成了他的崇拜者和合作者。1842-1843 年间，她翻译了一篇关于分析机的法语论文——但她写的附录（Note A 到 Note G）远比原文长，也比原文重要。在 Note G 中，她详细描述了如何用分析机计算伯努利数——<strong>这是人类历史上第一个公开发表的计算机程序</strong>。</p>
+<p>艾达比巴贝奇看得更远。巴贝奇主要把分析机看成一台“超级计算器“——处理数字。但艾达在注释里写道：“分析机可以处理任何能够用符号表示的对象……它可以谱写精密复杂的音乐作品”。<strong>她看到了计算机的本质不是算数，而是符号操作。</strong> 任何可以被符号化、被规则化处理的东西——数字、文字、音符、甚至逻辑命题——都在计算机的射程之内。这个洞见早了整整 100 年。</p>
+<p>Note G 里的那个伯努利数算法，如果你用今天的伪代码写出来，包含循环、条件分支、变量赋值、嵌套迭代——和你在 ECU 上写的嵌入式 C 代码没有本质区别。1843 年，法拉第已发现电磁感应原理十余年，第一条电报线路即将在英国建成——但“电“在多数人眼中仍是一种神秘的自然力。第一个白炽灯泡还要等三十多年，计算机更是一个无人知晓的词汇。而艾达已经用鹅毛笔在纸上写出了一份可执行算法。</p>
+<p>巴贝奇和艾达都没有活着看到分析机实现。巴贝奇死在贫困中，伦敦的科学界给了他一个寒酸的葬礼。但他们的图纸和笔记留下来了。1991 年，伦敦科学博物馆按照巴贝奇的原设计，用当时的公差水平，完整复刻了一台差分机 2 号——它工作了，精确到 31 位有效数字。<strong>不是设计错了——是时代还没到。</strong></p>
+<hr>
+<h3 id="穿孔卡片计算离开书桌"><a class="header" href="#穿孔卡片计算离开书桌">穿孔卡片：计算离开书桌</a></h3>
+<p>巴贝奇从雅卡尔提花织机借来了穿孔卡片的灵感，但真正把穿孔卡片变成大规模数据处理工具的人是<strong>赫尔曼·何勒内斯</strong>（Herman Hollerith）。</p>
+<p>1880 年代，美国人口普查局面临一个危机。上一次手工普查花了 7 年才统计完——等报告出版的时候，数据已经老了 7 年。何勒内斯发明了一套机电制表系统：用穿孔卡片记录每个人的属性（性别、年龄、种族、职业等），然后把卡片塞进一台读卡机——读卡机里有一排弹簧针，针穿过卡片上的孔就会触碰到下方的汞杯，接通电路，推动计数器走一格。<strong>这就是“电“第一次正式介入计算——虽然还只是做统计，不是做逻辑。</strong></p>
+<p>1890 年普查用了何勒内斯的系统，只花了 6 周就算完了初步结果（完整统计用了 2.5 年）——为政府省了 500 万美元。何勒内斯从此发家，他的公司后来经过几轮合并，在 1924 年改名为——<strong>IBM</strong>。</p>
+<p>穿孔卡片的哲学含义很深远：<strong>信息可以脱离“人脑“而存在在物理介质上，可以被机器“阅读“和“处理“。</strong> 莱布尼茨的“通用表意文字“，在穿孔卡片上找到了第一次工业化实践。</p>
+<p>而 IBM 的那些制表机、排序机、卡片打孔机——它们虽然还不算“通用计算机“，但它们已经发展了输入/输出子系统、脉冲检测电路、继电器逻辑——<strong>这些后来都成了真正计算机的器官。</strong></p>
+<hr>
+<h3 id="计算究竟是什么意思"><a class="header" href="#计算究竟是什么意思">“计算“究竟是什么意思？</a></h3>
+<p>有了这些历史铺垫，我们可以回到最初的哲学问题。</p>
+<p>从数学上，我们可以这样定义：</p>
+<p><strong>计算，是一组确定性的规则，作用于一组给定的输入，经过有限步骤，产生确定的输出。</strong></p>
+<p>这个定义里有三个关键词。</p>
+<p><strong>确定性</strong>：同样的输入，同样的规则，必须产生同样的输出。你今天算 1+1=2，明天算也得是 2。帕斯卡的齿轮每次转同样的角度，你做除法时的口诀每次念同样的字。确定性是计算的第一前提。</p>
+<p><strong>有限性</strong>：必须在有限步骤内完成。永远算不完，等于没算。巴贝奇的分析机设计了“条件跳转“，就是为了在满足某个条件时终止循环——否则齿轮会永远转下去。你的 ECU 的每个 task 必须在规定时间内完成——否则操作系统会触发 watchdog 超时、复位、进 safe state。</p>
+<p><strong>机械性</strong>：每一步操作都是简单机械的，不需要“灵感“或“顿悟“。理论上，一个傻子也能执行。算盘口诀、纳皮尔骨筹的查表、穿孔卡片的弹簧针——全部满足这个条件。</p>
+<p>这个定义有一个极其重要的推论：<strong>如果一个问题存在机械性的求解步骤，那它就是“可计算的“。如果没有这样的步骤，它就是“不可计算的“。</strong></p>
+<hr>
+<h3 id="从白纸到-ecu资源约束下的计算"><a class="header" href="#从白纸到-ecu资源约束下的计算">从白纸到 ECU：资源约束下的计算</a></h3>
+<p>让我们把白纸实验和真实汽车电子场景做一个穿透式的映射。</p>
+<p><code>ECU 资源：64KB SRAM, 512KB Flash, 112MHz Cortex-M4F。CAN 负载率 85%，每 10ms 一次 MAIN task，每 1ms 一次 fast ISR。</code></p>
+<p>你不是在一间屋子里翻白纸。你是在一个比指甲还小的硅片上，以 112MHz 的频率做着同样的事。</p>
+<p>你写的每一行 C 代码——while 循环、if 判断、数组访问——都在指挥这间“硅屋“：这块 Flash 页存这个数组、那个外设寄存器值和这个阈值对比、如果 CAN ID 匹配就拷贝到转发缓冲区。</p>
+<p>你写代码时，可曾意识到：<strong>你的每一个 if 语句，都在消耗有限的计算资源——时钟周期、栈深度、分支预测表的条目？</strong> 汽车电子不同于服务器。服务器加内存就好了。ECU 的 MCU 是焊死在 PCB 上的——128KB SRAM 不够用，你只能优化代码，不能换芯片。服务器没有实时性。ECU 的 Main Task 超时 1 毫秒也不行——因为碰撞传感器的信号如果在 5ms 内没有到达 ESP 控制器，系统会进入降级模式，刹车助力减弱。</p>
+<p><strong>有限资源 + 确定性规则 + 有限步骤 + 硬实时约束 → 这就是汽车嵌入式的“计算“。</strong></p>
+<h3 id="物理基底的诅咒为什么半导体工程师比理论家更焦虑"><a class="header" href="#物理基底的诅咒为什么半导体工程师比理论家更焦虑">物理基底的诅咒：为什么半导体工程师比理论家更焦虑</a></h3>
+<p>作为在半导体工厂工作过的人，我对“有限资源“有一种别人没有的切肤之痛。</p>
+<p>理论家说“内存不够就加内存”——但在芯片行业，加内存意味着加 SRAM 面积。6T SRAM cell 在 40nm 工艺下大约占 0.3 μm²——要加 1KB 的 SRAM，就需要额外约 8192 个这样的 cell，相当于在 die 上多占 0.0025 mm²。对于一些 die 面积本身很小的芯片（比如几十 mm² 的），这已经是不可忽略的开销。而硅面积就是钱——每多占一点，晶圆厂的成本模型就要重算。</p>
+<p>更微妙的是，加面积会降良率。缺陷密度（D0）是晶圆厂的命门——以 40nm 为例，典型 D0 在 0.5-1.0 defects/cm²。一颗 10 mm² 的 die，良率大约 90% 出头；如果设计改动让它增加到 12 mm²，良率就会掉到 88-89%。看似几个百分点的下降，乘以每月数万片的产能，损失就是数百万美元级别的。</p>
+<p>所以当我看到巴贝奇的分析机因为 19 世纪机械加工精度不够而造不出来时，我完全理解那种感觉：<strong>不是想法错了——是物理基底不够好。</strong> 在无尘车间，我们 24 小时盯着 CVD 机台的气体流量、PVD 机台的溅射功率、光刻机的 focus/exposure 参数——表面上在做“生产“，实际上是在和物理世界的噪声、随机涨落、缺陷密度搏斗。</p>
+<p>而你作为一个嵌入式工程师，可能没有进过无尘室。但你在 ECU 上用 MISRA C 约束语言、关掉数据缓存、锁定内存区——和我在面板厂里追踪一颗颗粒物的逻辑是完全一样的。<strong>所有工程师，无论上游还是下游，本质上都在和“基底的不完美“交手。</strong></p>
+<hr>
+<h3 id="以有涯求无涯"><a class="header" href="#以有涯求无涯">以有涯求无涯</a></h3>
+<p>当我们把“什么是计算“追问到底，会撞上一件奇妙的事：<strong>计算，其实是人类试图用有限的手段，去把握无限的世界的努力。</strong></p>
+<p>算盘用的是两颗上珠 + 五颗下珠。纳皮尔骨筹用的是牛骨上刻的数字。帕斯卡的齿轮用的是 17 世纪黄铜冶金和手工锉削。巴贝奇的设计——如果真能造出来——会是一个两吨重的黄铜巨兽，由蒸汽驱动。何勒内斯的制表机用的是弹簧针和汞杯。你的 S32K144，用的是 55nm 硅工艺、FinFET 晶体管、铜互连。</p>
+<p><strong>介质一直在变——但“输入、规则、输出“这个三元结构从来没变过。</strong></p>
+<p>复杂的汽车电子系统不过是这个结构的层层叠加：CAN 收发器的模拟比较器在做“输入“的差分阈值判定。FlexCAN 协议引擎在做 CRC 的“规则“运算。你的 ISR 在做“输出“——往发送缓冲写数据。外部 LED 亮起——最终输出。</p>
+<p>庄子说：“吾生也有涯，而知也无涯。以有涯随无涯，殆已。“他说的“殆“是“累死了“的意思。但工程人的回答是：<strong>正因为有涯，才更要追求无涯。每进一寸，世界就变大一分。</strong></p>
+<p>这条路，算盘工匠走过，纳皮尔走过，帕斯卡走过，莱布尼茨走过，巴贝奇走过，艾达·洛夫莱斯走过，何勒内斯走过。现在轮到你了。</p>
+<p>莱布尼茨站在 17 世纪的书房里，望着窗外说：“我们要造一台机器，把人类的知识都算出来。”</p>
+<p><strong>问题是：这可能吗？</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>重新思考“计算“到底是什么。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>计算是输入、规则、输出的三元结构</strong>：从算盘到ECU，介质一直在变，但这三个要素从未改变。</li>
+<li><strong>一切计算都在有限资源下运行</strong>：巴贝奇的分析机败给了19世纪的机械精度，你的ECU在64KB SRAM和10ms周期下做最优决策——同一个故事。</li>
+<li><strong>计算的物理基底决定了它的上限</strong>：逻辑从来不缺想象力，缺的是能把想象力刻进硅片的工艺。</li>
+</ol>
+<p>下一节，我们看莱布尼茨那个“把所有人类知识都算出来“的梦想——是怎么被击碎的。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>莱布尼茨的梦想太狂野了。他觉得人类的所有争论都可以“算“出来——不需要吵架，不需要打仗，坐下来算一算就知道谁对谁错。</p>
+<p>200 年后的 1900 年，巴黎。一位德国数学家在第二届国际数学家大会上，把莱布尼茨的梦想升级成了 23 个具体问题。他说“我们必须知道——我们必将知道“。他相信答案一定是 YES。</p>
+<p><strong>他错了。而且错得如此壮烈——因为击碎这场梦的，是一个 24 岁瘦弱的奥地利年轻人，用一张纸、一支笔，和一句“这句话不可证“。</strong></p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/序言.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/1.2-计算的梦想与破灭.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/序言.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/1.2-计算的梦想与破灭.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

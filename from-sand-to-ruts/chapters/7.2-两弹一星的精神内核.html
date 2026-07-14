@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>两弹一星的精神内核 - 汽车电子七部曲</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-5d0903ad.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-366f4311.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">汽车电子七部曲</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="72-两弹一星的精神内核"><a class="header" href="#72-两弹一星的精神内核">7.2 两弹一星的精神内核</a></h1>
+<h3 id="1960-年苏联人走了"><a class="header" href="#1960-年苏联人走了">1960 年，苏联人走了</a></h3>
+<p>1960 年 7 月，中苏关系恶化到了临界点。1959年苏联已拒绝向中国提供核技术援助。赫鲁晓夫一纸命令——苏联一夜之间撤走全部在华专家。1390 名专家，从核武器研究所、导弹设计院、钢铁厂、矿山——同时撤离。所有图纸带走。所有技术资料带走。正在建设中的铀浓缩工厂的离心机拆了一半，安装指南被塞进箱子，运上了开往莫斯科的火车。</p>
+<p>正在起步的中国核武器和导弹研发项目——氧气被切断。</p>
+<p>多年后，邓稼先回忆这件事时说了一句话：</p>
+<p><strong>“苏联人走的时候，对我们说：没有我们，你们一辈子也造不出原子弹”。</strong></p>
+<p>这不是一句赌气的话——这是当时公认的“事实“。中国没有大型计算机——只有几台苏联留下的 M-3 电子管计算机，每秒约 30 次操作。换成你熟悉的单位——30 FLOPS。你手机里随便一个 Cortex-M0 都远不只这个数。没有精密机床——造离心机转子需要微米级公差，而当时国内最好的磨床大约只能到丝级（10μm）精度。没有充足的铀矿——地质勘探队还在全国各地找矿。没有受过完整核物理训练的工程师队伍——很多参与项目的年轻人是直接从大学物理系提前毕业拉过来的。在 1959 年的全球科技版图上，中国几乎是一切短缺。</p>
+<p>但有些事情，不因为“条件不具备“就能不做。国家安全不能挂“待资源到位后再建设“的牌子。</p>
+<p>后面发生了什么？</p>
+<p>1964 年 10 月 16 日——从零开始，5 年。第一颗原子弹在罗布泊爆炸。
+1967 年 6 月 17 日——又 3 年。第一颗氢弹爆炸。从原子弹到氢弹，中国只用了 2 年 8 个月。同样的跨越，美国用了 7 年 3 个月，苏联用了 4 年——中国的速度是全人类最快的。
+1970 年 4 月 24 日——又 3 年。第一颗人造卫星“东方红一号“升空。</p>
+<p>从零基础，到核弹 + 导弹 + 卫星全面成功——一共 10 年多一点。这十年里，参与者面对的“设备环境“，放在今天的标准下看——几乎等同于空白。</p>
+<p>怎么做到的？这不是“精神胜利法“。这是有具体的、量化的工程操作在里面。</p>
+<hr>
+<h3 id="三个人三种选择"><a class="header" href="#三个人三种选择">三个人，三种选择</a></h3>
+<p><strong>邓稼先——28 年。</strong></p>
+<p>1950 年，邓稼先 26 岁，在普渡大学拿到物理学博士学位。第 9 天他就登上了回国的轮船。1958 年，钱三强找到他，说：“国家要放一个’大炮仗’，想请你参加。“邓稼先回家对妻子许鹿希说：“我要调动工作。今后我的生命就交给这件事了。做成了，死了也值得。”</p>
+<p>从此 28 年，邓稼先的名字从国际物理学界彻底消失。他的妻子不知道他在做什么，不知道他在哪里。直到 1985 年，邓稼先因直肠癌晚期住进医院——癌症的诱因，是 1979 年一次核试验中弹头未能爆炸。作为理论设计负责人，邓稼先<strong>亲自进入爆心区域</strong>查看未爆弹头——他身上穿了防护服，但放射性沾染不可能完全隔绝。</p>
+<p>许鹿希在他的病床前握住他的手，那双手因为辐射烧伤已经严重溃烂。邓稼先全身的造血功能被辐射摧毁，医生能做的只有缓解疼痛。1986 年 7 月 29 日，邓稼先去世。享年 62 岁。他去世前最后的要求是：“不要让人家把我们落得太远。”</p>
+<p><strong>王淦昌——十七年，一个假名字。</strong></p>
+<p>1961 年，一位已经享誉世界的核物理学家从苏联杜布纳联合原子核研究所回国。他刚刚带领团队发现了反西格玛负超子——当时全球物理学界公认的重大突破，学界普遍认为他距诺贝尔奖仅一步之遥。如果他留在苏联或去欧美，他会继续走在一流科学的最前沿。</p>
+<p>但他走进北京的一个办公室，接受了一项任务。从此，他的名字从所有国际学术期刊上消失了。</p>
+<p>他叫<strong>王淦昌</strong>。此后十七年，他只用化名：“<strong>王京</strong>”。</p>
+<p>他的子女不知道父亲在哪里、做什么。妻子只能通过一个信箱号码和他联系。孩子们问母亲“爸爸去哪了“，母亲说：“爸爸在一个信箱里。“有一年，王淦昌的小女儿在报纸上看到一则报道“王淦昌同志”，她问妈妈：“这个王淦昌是谁？是爸爸吗？“妈妈看了看说：“不是。爸爸叫王京。”</p>
+<p>十七年。不是十七天，不是十七个月。是从孩子上小学到大学毕业的整个成长周期——父亲的身份只存在于一个信箱号码里。王淦昌后来写下一句话：“我愿以身许国。“六个字，十七年。</p>
+<p><strong>郭永怀——生命的最后一刻。</strong></p>
+<p>1968 年 12 月 5 日，一架飞机在接近北京机场时坠毁。</p>
+<p>郭永怀当时在青海核武器研制基地连续工作了两个多月。他发现了一个关键数据需要立即带回北京核实。基地领导劝他坐火车——安全。坐了十几个小时火车的郭永怀到兰州后，听说当晚有便机飞北京，立刻改了机票。他等不了。数据等不了。</p>
+<p>飞机在距离北京机场跑道仅 400 米时失速坠毁。搜救人员在残骸中发现了两具紧紧抱在一起的遗体。当人们用力将两具遗体分开时，他们愣住了——两人的胸膛之间，夹着一个完好无损的公文包。里面是热核武器实验的关键数据。</p>
+<p>其中一个人叫<strong>郭永怀</strong>。世界顶级的空气动力学家，康奈尔大学教授。1956 年，他在回国前夕，当着美国同事的面，把自己多年未发表的手稿付之一炬——他说：“这些东西属于人类的知识。但在我回国之前，我不能让它们落到美国政府手里。“另一个人是他的警卫员牟方东。他们在生命的最后时刻，用身体做了一个防火保险柜。</p>
+<p>22 天后，1968 年 12 月 27 日，中国成功进行了一次热核武器试验（中国的首颗氢弹试验于1967年6月17日成功）。郭永怀没有看到——但他在飞机坠毁的那十几秒里，用最后的意识保护了他必须保护的东西。不是他的生命，是数据。</p>
+<p>2018 年，国际小行星中心将一颗小行星命名为“郭永怀星“。</p>
+<p>这不是个例。当时中国几乎所有顶尖的物理学家——邓稼先、钱三强、于敏、朱光亚、程开甲、陈能宽、周光召——都在用不同的方式做着同样的选择。他们中的很多人本来可以在国外过优越的生活、做前沿的研究、发顶级的论文。但他们回来了。回来面对的不是一流实验室，是算盘、手摇计算机、和戈壁滩上的帐篷。</p>
+<hr>
+<h3 id="算盘和手摇计算机算出了内爆结构"><a class="header" href="#算盘和手摇计算机算出了内爆结构">算盘和手摇计算机：算出了内爆结构</a></h3>
+<p>原子弹的<strong>内爆结构</strong>是核心难题。原理听起来简单：用高能化学炸药的爆轰波，将次临界状态的裂变材料（钚-239 或铀-235）从四面八方均匀压缩，密度升高到超临界——然后链式反应启动。但工程实现的难度令人窒息。</p>
+<p>炸药透镜（Explosive Lens）——它不是一块普通的炸药块。它由快/慢两种不同爆速的炸药层交替叠合而成，设计目标是让球面引爆面上各个点发出的爆轰波<strong>同时</strong>到达中心。任何一点的到达时间偏差超过几十纳秒，压缩就不再是球对称的——钚球会被“捏“成一个不规则的形状，链式反应可能根本启动不了，或者局部先超临界然后材料飞散——爆炸威力大幅下降。</p>
+<p>要设计炸药透镜的几何，你需要求解的不仅仅是简单的几何问题。你需要算<strong>爆轰波在曲面分层介质中的传播与马赫反射</strong>，你需要算<strong>材料在百万大气压下的非线性状态方程</strong>，你需要算<strong>中子在超临界系统中的增殖和反射</strong>。每一个都涉及极度计算密集的偏微分方程。</p>
+<p>用什么算？</p>
+<p>当时全国只有几台苏联留下的电子管计算机。算速大约每秒 30 次操作。远远不够。大量计算被分发到全国各地的大学和研究所，用<strong>手摇计算机 + 算盘</strong>完成。</p>
+<p>具体怎么算？不是随便拨几下算盘珠子。他们用的是有严谨算法框架的数值方法。</p>
+<p><strong>逐次超松弛法（SOR, Successive Over-Relaxation）</strong>——求解大型稀疏线性方程组的标准迭代方法。几千个网格点，每一轮迭代分成四组并行推进：第一组人负责当前的迭代估值，第二组人算残差，第三组人做超松弛外推（把残差乘以一个大于 1 的松弛因子，加速收敛），第四组人做校对。算盘珠子拨动的节奏，被组织成了一台以人为动力的<strong>数值计算流水线</strong>。一个网格点算错，整个迭代轮的残差就偏了——校对组能够从汇总的数据里发现异常，回溯定位到出错的组和位置。这就是用组织管理弥补单点计算不可靠——和今天分布式系统里的 checksum + retry 是一模一样的思想。</p>
+<p><strong>量纲分析</strong>——用π定理把涉及七八个物理参数的复杂偏微分方程化简到只涉及两三个无量纲数的简单关系。举个例子：冲击波的传播依赖于爆炸能量、距离、时间、初始空气密度、初始空气压力——五个有量纲参数。π定理告诉你，这五个参数其实只决定两个无量纲数：无量纲距离和无量纲时间。你把五个变量的搜索空间压缩到了两个，参数空间从五维压缩到了二维。计算量下降了不止一个数量级。这不是偷懒——这是用物理直觉做数学降维。和你在嵌入式系统里用一个 LUT（查找表）替代浮点多项式——本质上是一样的：在有限资源下，用物理关系做降维压缩。</p>
+<p><strong>蒙特卡洛方法的原始形式</strong>——不是计算机生成的伪随机数，而是用物理随机源（掷骰子、抽签）生成采样点，用这些采样点求中子输运方程的积分近似值。效率极低——但精度可控。只要你掷足够多次骰子，统计误差就能收敛到可接受范围。他们用掷骰子和抽签的方式模拟了成千上万次中子碰撞——每一次碰撞的散射角度、能量损失、吸收概率——全部手工记录在长卷纸上。一张纸卷打开几十米长，密密麻麻全是数字。这就是中国的第一个“蒙特卡洛模拟引擎“——运行介质不是硅基晶体管，而是碳基神经元。</p>
+<p>北京中科院计算所把计算表格写在一卷一卷的大纸卷上，一个一个值地算。每次实验室更新一个参数——比如某一批炸药的实测爆速比标称值高了 0.3%——全部值重算半个月。几千个点、无数次迭代、纯手工。任何一行出错，从头来过。</p>
+<p><strong>他们的计算工具，比你今天在任何调试平台上可用的工具差几千倍——但计算结果没有错。</strong></p>
+<p>想象你正在用命令行 gdb 调试一段棘手的 CAN FD 报文解析逻辑。你抱怨工具不够直观。现在想象：你要解的是一个非线性偏微分方程，工具是一把算盘和一支铅笔。一个材料参数更新，全部重算半个月。</p>
+<p>你现在还觉得你的 gdb 不好用吗？</p>
+<hr>
+<h3 id="手工打磨替代精密机床的是时间和身体"><a class="header" href="#手工打磨替代精密机床的是时间和身体">手工打磨：替代精密机床的，是时间和身体</a></h3>
+<p>铀浓缩需要离心机。离心机转子以每分钟数万转的速度旋转——在这个转速下，转子外壁承受的离心力高达自身重量的几十万倍。任何微小的质量不对称——哪怕转子直径偏差超过 1μm——都会产生剧烈的周期振动，把转子轴承在几秒内撕裂。飞出的碎片像子弹一样射穿离心机外壳。这不是比喻——是发生过的事故。</p>
+<p>精密机床？没有。苏联专家带走了图纸。</p>
+<p>上海一家制造厂的工人们接下了这个任务。没有数控磨床，没有激光自动测量系统，没有恒温恒湿厂房。<strong>他们用几个月的时间——纯手工打磨 + 光学准直仪反复测量——搞出了能转数万转/分钟不抖振的转子。</strong> 一位师傅每天拿着细油石，在转子表面画圈摩擦。每一轮打磨之后，把转子架在 V 型块上，用千分表找跳动。超过公差——继续磨。低了——报废，从头来。重复几百次、几千次——直到公差稳定在亚微米级别。几个月。</p>
+<p>他没有高精密机床。但<strong>他用时间和耐心取代了机床。</strong></p>
+<p>这不是“苦劳“。这是<strong>工程方法论</strong>：用最小可行工具达成目标精度，用人力闭环替代自动化闭环。本质上和你调试 PCB 时没有逻辑分析仪、用示波器手动 decode SPI 波形一帧一帧看——是一模一样的方法论：测量→修正→再测量→再修正，形成闭环。只不过他面对的是微米级转子，你面对的是微秒级时序。闭环的频率不同——他的循环周期是“一次打磨→一次测量“约 10 分钟，你的循环周期是“一次烧写→一次观察波形“约 5 分钟——但闭环的本质完全一样。</p>
+<hr>
+<h3 id="白衬衫用个人风险担保集体安全"><a class="header" href="#白衬衫用个人风险担保集体安全">白衬衫：用个人风险担保集体安全</a></h3>
+<p>核武器实验不是开玩笑。一个计算错误、一次操作失误——就是几十人的生命和不可逆的环境污染。</p>
+<p>有一位负责现场指挥的将军，在每次实验之前会做一件事：只穿一件白衬衫，步行到实验场地的最前沿，走一圈。确认所有安全措施都做完，确认每一个撤离检查点都到位。确认起爆电缆的连接、确认地震仪的触发设置、确认所有人员都在掩体内的指定位置。然后他回到指挥部，拿起话筒，下令起爆。</p>
+<p>他为什么要亲自去？他可以派一个参谋去，可以在指挥部里看报告。但他不。<strong>他用个人风险来担保集体安全——这是不能量化的责任意识。</strong> 如果你在现场负责爆炸物的布线——看到将军走过你面前，他的白衬衫在戈壁滩的风里飘动——你心里会踏实。你没有在职级上向他汇报，但你愿意为他做到极致。</p>
+<p>这中间没有 KPI 考核、没有绩效考核奖金、没有“安全责任人署名“。他就是去了。因为他是负责人，他在场，他心里有数，他就睡不着觉。这种责任意识——你可以在你最好的技术经理身上看到它的影子。深夜发版前最后一遍 review，生产事故时第一个进会议室，产线上停工的时候他第一个去找 root cause——工程界需要这种人在现场。</p>
+<hr>
+<h3 id="mura-的弧线从人眼到物理根因"><a class="header" href="#mura-的弧线从人眼到物理根因">Mura 的弧线——从人眼到物理根因</a></h3>
+<p>我在面板厂做良率工程师的时候，体会过类似的感受——虽然规模和重量不可同日而语，但那种“倾尽一切去找到答案“的紧迫感是相通的。</p>
+<p>有一次，我在抽样查看灰阶图时，发现一道淡淡的弧形 Mura。</p>
+<p>Mura 是显示面板上的亮度不均匀。AOI 能检测颗粒、划痕，但检测不了 Mura——Mura 的判定，基本靠人眼。我看到的那道 Mura，很淡，是一段小弧线。</p>
+<p>我追溯前后批次——Mura 越往前越浅，某个时间点之前完全没有。<strong>时间范围锁定了。</strong></p>
+<p>我观察空间分布：一个大面板上，只有固定位置的相邻几片边缘有这道 Mura——而且这些位置拼接起来，<strong>像一个环状</strong>。</p>
+<p><strong>环状分布 → 环状机构接触</strong>。这是物理直觉的第一步。</p>
+<p>面板厂有几百道工序，几百个机台。我根据环状现象，排除了没有环状结构的设备（清洗机台、湿蚀刻机台），缩小到有环状接触件的设备。</p>
+<p>然后找来这些设备的点位图——机械臂或承载机构的接触位置。把 Mura 的弧形位置，同点位图比对。对应到三台设备：黄光机台的取送机械臂、CVD 机台的承载机构、离子注入设备的抓取机构。</p>
+<p>接下来是排除法：拉取只经过 CVD 机台的面板——没有 Mura。CVD 排除。</p>
+<p>离子注入设备只有两台，刚好一台在保养——所有面板都经过同一台。黄光机台的面板，一定也经过这台离子注入机台。两台设备都有嫌疑——线索断了。</p>
+<p><strong>物理直觉的第二步：生产顺序。</strong></p>
+<p>我突然想起：同一个 Cassette 中的面板，越靠上的 Mura 越深。时间越靠后，Mura 越严重。这说明：Cassette 中的面板在异常机台里，是从下到上生产的。</p>
+<p>我查了两台设备的生产顺序：</p>
+<ul>
+<li>黄光机台——从下到上</li>
+<li>离子注入机台——从上到下（方向相反）</li>
+</ul>
+<p><strong>方向对上了。锁定：黄光机台。</strong></p>
+<p>设备工程师检查取送机械臂——一个接触面板的垫片老化了。垫片老化导致接触压力异常，在面板表面留下了规律性的痕迹，最终表现为弧形 Mura。</p>
+<p>更换垫片。良率提升 0.3%。问题解决。</p>
+<p>从发现 Mura 到锁定设备，花了一天半。核心的排查思路只有两步：<strong>环状分布 → 环状机构</strong>（物理直觉）；<strong>Cassette 生产顺序 → 设备方向</strong>（物理直觉）。</p>
+<hr>
+<h3 id="你自己的两弹一星时刻"><a class="header" href="#你自己的两弹一星时刻">你自己的“两弹一星“时刻</a></h3>
+<p>你可能会觉得：两弹一星是宏大叙事，跟我有什么关系？</p>
+<p>有关系。你在汽车电子工程中遇到的“资源不足“，就是你的戈壁滩：</p>
+<ul>
+<li>没有逻辑分析仪？示波器手动 decode SPI 波形，一帧一帧看。一帧一帧。看一天。</li>
+<li>没有仿真环境？把代码烧进 Flash，不断重启地试。一百次重启。两百次重启。直到时序对了。</li>
+<li>没有外部 RAM？128KB SRAM 里精细分配——CAN 缓冲区、UDS 帧缓冲区、校准数据缓冲区、DTC 记录区——每一片的起始地址都算过，相邻块之间不能留一个字节的浪费。</li>
+<li>没有专用安全芯片？用 MCU 内部的 CSEc + MPU + ECC 校验拼出一个“类 HSM“方案。不是真正的 HSM——但安全等级够用了，攻击成本也够高了。</li>
+<li>32KB Flash 不够放标定数据？分段压缩 + 差分存储 + 磨损均衡——从有限空间里“偷“出余量。</li>
+<li>Autosar 配置工具 license 太贵？用免费的 ARXML 编辑器手写配置，一行一行核对。慢。但不会出错。</li>
+<li>只有一个样件，坏了就没了？示波器探头夹上去之前想三遍、确认三遍、深呼吸。像穿白衬衫走进实验场地。因为你知道——<strong>坏了，就没有了。</strong></li>
+</ul>
+<p><strong>每次你用有限资源完成了一个看上去不可能的任务——你在写你自己的“两弹一星“。</strong></p>
+<p>前辈们的算盘和手摇计算机——就是你的示波器和命令行调试器。你的约束不比他们小（时间、算力、安全的不可妥协性），但你依然做出来了。你在 32KB Flash 里放了标定数据 + Bootloader + 应用程序 + CRC 校验区——还需要留出擦除余量——你做到了。这不是 trick。这是工程。</p>
+<hr>
+<h3 id="两弹一星不是历史它是一种人生态度"><a class="header" href="#两弹一星不是历史它是一种人生态度">“两弹一星“不是历史——它是一种人生态度</a></h3>
+<p>两弹一星的精神，经常被简化成“艰苦奋斗“四个字。但这种简化是有问题的——它很容易滑向“越穷越光荣“的误解。吃粗粮、穿补丁衣服、熬夜加班——这些不是精神本身。<strong>精神本身是：在给定的有限条件下，用人的能动性去创造超越条件限制的结果。</strong></p>
+<p>如果当时有大型计算机，他们会用。如果有精密数控机床，他们会用。如果有外国专家，他们会虚心学习。但当时没有。<strong>所以他们走了一条更艰难的路——并且走下来了，因为他们没有放弃。</strong></p>
+<p>你在面对 ISO 26262 ASIL-D 的几千条安全需求时——选择逐条啃下来，而不是寄希望于“客户降低安全等级“。
+你在面对 AUTOSAR 多层抽象带来的调试噩梦时——选择理解每一层的时序语义，而不是抱怨“软件太重了“。
+你在面对一把示波器、一颗样片、一本 3000 页的参考手册，要把整套电机控制算法跑通时——你选择了<strong>上手</strong>。</p>
+<p><strong>这就是两弹一星。不是一段历史——是一种人生态度。</strong></p>
+<p>你现在接手的每一个“看起来不可能“的项目，都是你个人的两弹一星。那个 1964 年在戈壁滩上围着一块传感器愁眉不展的工程师，1979 年穿着防护服走进核爆中心查看未爆弹的邓稼先，今天凌晨三点还穿着无尘服在 CMP 机台前拆抛光垫的设备工程师，和今天晚上坐在示波器面前的你——是同一类人。</p>
+<p>你不是在“苦“。吃泡面不是精神，熬夜不是精神。精神是你知道条件不够——但你没有把“条件不够“当成放弃的理由。你选择了<strong>找方法</strong>。你用差分抵消了噪声。你用过采样提纯了信号。你用卡尔曼滤波融合了多路传感器。你用校准传递把精度从计量院搬到了产线。你用掷骰子的方式模拟了中子碰撞。你用手工打磨取代了精密机床。</p>
+<p><strong>你在用主观能动性对抗永恒的资源边界。</strong> 这就是两弹一星。从1964年到今天，从罗布泊的帐篷到上海的离心机车间，从硅谷的贝尔实验室到深圳的嵌入式开发板，从天上的星星到你手里的电路板——是同一种精神在延续。</p>
+<p>有一天你老了。你坐在沙发上，你的孩子问你：“爸爸/妈妈，你年轻的时候是做什么的？“你说：“我造过车上的东西。很小很小的东西——一颗芯片上跑的程序。“然后你可能会沉默一会儿。你不知道怎么解释。但你知道——那些夜晚你坐在示波器面前、手指按在探头上的重量；那些你在 128KB SRAM 里一寸一寸挪地址偏移的下午；那些你面对 bug 想放弃、然后又深吸一口气继续调试的凌晨——它们加起来，比任何言语都更真实地定义了你的一生。</p>
+<p>你不是在做“嵌入式开发“。你在做一件比那大得多的事。<strong>你在延续一种人类精神——在不够好的条件下，不放弃，找到方法，做出成果，然后记录下来交给下一个人。</strong></p>
+<hr>
+<h3 id="本篇小结"><a class="header" href="#本篇小结">本篇小结</a></h3>
+<p>今天我们做了一件事：<strong>把“两弹一星“从宏大叙事还原成具体的、有血有肉的工程故事。</strong></p>
+<p>关键结论：</p>
+<ol>
+<li><strong>邓稼先28年隐姓埋名、王淦昌十七年只用化名“王京“、郭永怀用身体保护数据——这三个人做出了同一种选择：用个人一切换国家底牌</strong>。</li>
+<li><strong>他们用算盘和手摇计算机算出了原子弹的内爆结构</strong>：逐次超松弛法、量纲分析、手工蒙特卡洛——方法论的创造力弥补了算力的匮乏。</li>
+<li><strong>“两弹一星“的精神不是“艰苦奋斗”，而是“在给定的有限条件下，用人的能动性去创造超越条件限制的结果“</strong>——你每次用有限资源完成一个看似不可能的任务，都在写你自己的“两弹一星“。</li>
+</ol>
+<p>下一节，我们换个角度：匮乏没有消失，它只是换了衣服。50年后的工程师看我们，会觉得我们也很艰苦。</p>
+<blockquote>
+<p><strong>【下集预告】</strong></p>
+<p>两弹一星的故事让我们觉得：前辈们好苦。但如果我们换个角度——50 年后的工程师看我们现在，会不会也觉得：2020 年代的人好苦，他们居然用 28nm 工艺做 L3 自动驾驶？<strong>资源的匮乏是永恒的。匮乏没有消失——它只是换了衣服。</strong> 下一节，聊这个。</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../from-sand-to-ruts/chapters/7.1-思想实验-低精度传感器测出精确值.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/7.3-资源的匮乏是永恒的.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../from-sand-to-ruts/chapters/7.1-思想实验-低精度传感器测出精确值.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../from-sand-to-ruts/chapters/7.3-资源的匮乏是永恒的.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
