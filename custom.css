@@ -328,6 +328,13 @@ body.sans-reading {
   font-size: 1.4rem;
 }
 
+/* 分册 GitHub 原仓库跳转按钮（custom.js 注入） */
+.repo-link-btn .fa-svg svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: currentColor;
+}
+
 /* ---------- 选中文字 ---------- */
 ::selection {
   background: #f3d9a4;
