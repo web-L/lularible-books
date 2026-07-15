@@ -57,7 +57,7 @@ def title_of(real_filename: str) -> str:
 # book -> (显示名, [(分组标题, [起始节, 结束节] 用于按 N 分组), ...])
 BOOKS = {
     "from-sand-to-ruts": {
-        "title": "从沙子到车辙——技术总纲",
+        "title": "从沙子到车辙 · 一个工程师的理解",
         "groups": [
             ("第一部分 · 计算的本质", 1),
             ("第二部分 · 计算的物质基础", 2),
