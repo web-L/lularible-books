@@ -20,6 +20,7 @@ BOOKS = [
     "ptp-book",
     "storage-book",
     "uds-book",
+    "safety-book-iso26262",
 ]
 
 

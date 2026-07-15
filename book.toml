@@ -1,6 +1,6 @@
 [book]
 title = "汽车电子七部曲"
-description = "从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS"
+description = "从计算的本质到汽车电子工程实践的开源技术书系列——技术总纲 + PTP + HSM + 存储 + UDS + 功能安全"
 authors = ["Lularible"]
 language = "zh"
 src = "src"

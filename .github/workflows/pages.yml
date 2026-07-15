@@ -25,7 +25,7 @@ jobs:
 
       - name: Clone book repos
         run: |
-          for repo in from-sand-to-ruts ptp-book hsm-book storage-book uds-book; do
+          for repo in from-sand-to-ruts ptp-book hsm-book storage-book uds-book safety-book-iso26262; do
             git clone --depth 1 "https://github.com/Lularible/${repo}.git"
           done
 
