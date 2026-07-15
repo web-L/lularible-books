@@ -261,7 +261,7 @@
         - [5.5 交互式诊断终端——命令行上的UDS控制台](uds-book/chapters/5.5-交互式诊断终端——命令行上的UDS控制台.md)
         - [5.6 全线测试——一次完整的诊断闭环](uds-book/chapters/5.6-全线测试——一次完整的诊断闭环.md)
 
-- [功能安全技术书 · ISO 26262 分析与代码实现](safety-book-iso26262/README.md)
+- [功能安全 · ISO 26262 分析与代码实现](safety-book-iso26262/README.md)
     - [第一章 · 哲学地基]()
         - [1.1 免疫系统——人体里的功能安全系统](safety-book-iso26262/chapters/1.1-免疫系统——人体里的功能安全系统.md)
         - [1.2 希尔伯特之梦——ISO · 26262的精神祖先](safety-book-iso26262/chapters/1.2-希尔伯特之梦——ISO-26262的精神祖先.md)
