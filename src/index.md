@@ -4,20 +4,20 @@
 
 ## 如何阅读
 
-- **[从沙子到车辙——一个工程师的理解](from-sand-to-ruts/README.md)** 是全系列的**技术总纲**，建立从计算本质到汽车电子的全局认知，建议先读。
-- 之后可按需深入专题分册：**PTP**（时间同步）、**HSM**（硬件安全模块）、**存储**（文件系统）、**UDS**（诊断协议）、**功能安全**（ISO 26262）。每本专题书都从思想实验/元问题出发，逐机制拆解协议或规范，再走进开源工业级源码，最后亲手实现一个教学级的轻量版本。
+- **[从沙子到车辙（总纲）](from-sand-to-ruts/README.md)** 建议先读，建立全局认知。
+- 之后可按需深入专题分册：**PTP 时间同步**、**HSM 安全模块**、**Flash 存储技术**、**UDS 诊断协议**、**功能安全**。
 - 每本书内部按章节编号（如 `1.1`、`3.2`）顺序阅读即可，左侧目录已按章节分组，点击左上角搜索图标可全文检索，点击右上角图标切换深色模式。
 
 ## 分册总览
 
-| 分册 | 内容 | 篇幅 |
+| 分册 | 专题 | 篇幅 |
 |---|---|---|
-| [从沙子到车辙](from-sand-to-ruts/README.md) | 计算本质 → 半导体物理 → 总线通信 → AUTOSAR → 工程精神 | 7 部分 33 节 |
-| [PTP 技术书](ptp-book/README.md) | 时间同步思想实验 → 协议机制 → LinuxPTP 源码 → ptp-lite 实现 | 4 章 41 节 |
-| [HSM 技术书](hsm-book/README.md) | 密码学起源 → PKCS#11 规范 → SoftHSM2 源码 → hsm-lite 实现 → SDK 集成 | 6 章 57 节 |
-| [存储技术书](storage-book/README.md) | 存储原罪 → Flash 物理 → 文件系统理论 → LittleFS 源码 → KnotFS 实现 | 5 章 39 节 |
-| [UDS 技术书](uds-book/README.md) | 诊断元问题 → UDS 逐服务拆解 → 传输层 → AUTOSAR DCM 源码 → uds-lite 实现 | 5 章 48 节 |
-| [功能安全技术书](safety-book-iso26262/README.md) | 免疫系统隐喻 → ISO 26262 标准 → 安全机制 → Arctic Core 源码 → safe-lite 实现 | 5 章 44 节 |
+| [从沙子到车辙（总纲）](from-sand-to-ruts/README.md) | 计算哲学、芯片物理、处理器、通信、AUTOSAR、系统、工程哲学 | 7 部分 33 节 |
+| [PTP 时间同步](ptp-book/README.md) | IEEE 1588/gPTP、LinuxPTP 源码、ptp-lite 实现 | 4 章 41 节 |
+| [HSM 安全模块](hsm-book/README.md) | PKCS#11 v3.1、SoftHSM2 源码、hsm-lite 实现 | 6 章 57 节 |
+| [Flash 存储技术](storage-book/README.md) | Flash 物理、LittleFS 源码、KnotFS 实现 | 5 章 39 节 |
+| [UDS 诊断协议](uds-book/README.md) | ISO 14229、AUTOSAR DCM 源码、uds-lite 实现 | 5 章 48 节 |
+| [功能安全](safety-book-iso26262/README.md) | ISO 26262、安全机制设计、safe-lite 实现 | 5 章 44 节 |
 
 ## 许可证
 

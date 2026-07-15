@@ -23,14 +23,14 @@
 
 「汽车电子七部曲」目前包含以下 6 本独立成册的技术书籍，均为原作者 Lularible 在各自 GitHub 仓库中独立维护、独立更新：
 
-| 书名 | 简介 | 篇幅 | 仓库 |
+| 书名 | 专题 | 篇幅 | 仓库 |
 | --- | --- | --- | --- |
-| 从沙子到车辙——一个工程师的理解 | 技术总纲 | 7 部分 · 33 节 | [Lularible/from-sand-to-ruts](https://github.com/Lularible/from-sand-to-ruts) |
-| PTP 技术书——从思想实验到协议实现 | 时间同步协议 | 4 章 · 41 节 | [Lularible/ptp-book](https://github.com/Lularible/ptp-book) |
-| HSM 技术书——从思想实验到安全基石 | 硬件安全模块 | 6 章 · 57 节 | [Lularible/hsm-book](https://github.com/Lularible/hsm-book) |
-| 存储技术书——在不可靠的硬件上构建可靠的数据家园 | 文件系统 | 5 章 · 39 节 | [Lularible/storage-book](https://github.com/Lularible/storage-book) |
-| UDS 技术书——从望闻问切到 UDS 协议实现 | 诊断协议 | 5 章 · 48 节 | [Lularible/uds-book](https://github.com/Lularible/uds-book) |
-| 功能安全技术书——ISO 26262 分析与代码实现 | 功能安全 | 5 章 · 44 节 | [Lularible/safety-book-iso26262](https://github.com/Lularible/safety-book-iso26262) |
+| 从沙子到车辙（总纲） | 计算哲学、芯片物理、处理器、通信、AUTOSAR、系统、工程哲学 | 7 部分 · 33 节 | [Lularible/from-sand-to-ruts](https://github.com/Lularible/from-sand-to-ruts) |
+| PTP 时间同步 | IEEE 1588/gPTP、LinuxPTP 源码、ptp-lite 实现 | 4 章 · 41 节 | [Lularible/ptp-book](https://github.com/Lularible/ptp-book) |
+| HSM 安全模块 | PKCS#11 v3.1、SoftHSM2 源码、hsm-lite 实现 | 6 章 · 57 节 | [Lularible/hsm-book](https://github.com/Lularible/hsm-book) |
+| Flash 存储技术 | Flash 物理、LittleFS 源码、KnotFS 实现 | 5 章 · 39 节 | [Lularible/storage-book](https://github.com/Lularible/storage-book) |
+| UDS 诊断协议 | ISO 14229、AUTOSAR DCM 源码、uds-lite 实现 | 5 章 · 48 节 | [Lularible/uds-book](https://github.com/Lularible/uds-book) |
+| 功能安全 | ISO 26262、安全机制设计、safe-lite 实现 | 5 章 · 44 节 | [Lularible/safety-book-iso26262](https://github.com/Lularible/safety-book-iso26262) |
 
 > 以上仓库均为原作者独立维护，本站点内容与结构随其更新同步刷新，具体章节以各自仓库最新内容为准。
 
