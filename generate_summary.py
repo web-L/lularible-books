@@ -57,7 +57,7 @@ def title_of(real_filename: str) -> str:
 # book -> (显示名, [(分组标题, [起始节, 结束节] 用于按 N 分组), ...])
 BOOKS = {
     "from-sand-to-ruts": {
-        "title": "从沙子到车辙——一个工程师的理解",
+        "title": "从沙子到车辙（总纲）",
         "groups": [
             ("第一部分 · 计算的本质", 1),
             ("第二部分 · 计算的物质基础", 2),
@@ -70,7 +70,7 @@ BOOKS = {
         "preface": ["扉页.md", "序言.md"],
     },
     "ptp-book": {
-        "title": "PTP技术书 — 从思想实验到协议实现",
+        "title": "PTP 时间同步",
         "groups": [
             ("第一章 · 时间的本质与同步的意义", 1),
             ("第二章 · PTP 协议逐机制拆解", 2),
@@ -80,7 +80,7 @@ BOOKS = {
         "preface": [],
     },
     "hsm-book": {
-        "title": "HSM 技术书 — 从思想实验到安全基石",
+        "title": "HSM 安全模块",
         "groups": [
             ("第一章 · 安全通信的起源", 1),
             ("第二章 · 认识 HSM", 2),
@@ -92,7 +92,7 @@ BOOKS = {
         "preface": [],
     },
     "storage-book": {
-        "title": "存储技术书——在不可靠的硬件上构建可靠的数据家园",
+        "title": "Flash 存储技术",
         "groups": [
             ("第一章 · 存储的本质", 1),
             ("第二章 · Flash 物理世界", 2),
@@ -103,7 +103,7 @@ BOOKS = {
         "preface": [],
     },
     "uds-book": {
-        "title": "UDS技术书 — 从望闻问切到UDS协议实现",
+        "title": "UDS 诊断协议",
         "groups": [
             ("第一章 · 诊断的本质", 1),
             ("第二章 · UDS 协议逐服务拆解", 2),
@@ -114,7 +114,7 @@ BOOKS = {
         "preface": [],
     },
     "safety-book-iso26262": {
-        "title": "功能安全 — ISO 26262分析与代码实现",
+        "title": "功能安全",
         "groups": [
             ("第一章 · 哲学地基", 1),
             ("第二章 · ISO 26262 标准深度解析", 2),

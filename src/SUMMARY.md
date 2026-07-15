@@ -4,7 +4,7 @@
 
 # 分册
 
-- [从沙子到车辙——一个工程师的理解](from-sand-to-ruts/README.md)
+- [从沙子到车辙（总纲）](from-sand-to-ruts/README.md)
     - [扉页](from-sand-to-ruts/chapters/扉页.md)
     - [序言](from-sand-to-ruts/chapters/序言.md)
     - [第一部分 · 计算的本质]()
@@ -48,7 +48,7 @@
         - [7.4 兰亭集序的启示](from-sand-to-ruts/chapters/7.4-兰亭集序的启示.md)
         - [7.5 全书结语](from-sand-to-ruts/chapters/7.5-全书结语.md)
 
-- [PTP技术书 — 从思想实验到协议实现](ptp-book/README.md)
+- [PTP 时间同步](ptp-book/README.md)
     - [第一章 · 时间的本质与同步的意义]()
         - [1.1 如果你周围的一切都静止了](ptp-book/chapters/1.1-如果你周围的一切都静止了.md)
         - [1.2 人类为时间画下的刻度](ptp-book/chapters/1.2-人类为时间画下的刻度.md)
@@ -95,7 +95,7 @@
         - [4.5 编译运行与测试](ptp-book/chapters/4.5-编译运行与测试.md)
         - [4.6 问题排查与优化](ptp-book/chapters/4.6-问题排查与优化.md)
 
-- [HSM 技术书 — 从思想实验到安全基石](hsm-book/README.md)
+- [HSM 安全模块](hsm-book/README.md)
     - [第一章 · 安全通信的起源]()
         - [1.1 岩壁上的第一条信息](hsm-book/chapters/1.1-岩壁上的第一条信息.md)
         - [1.2 信道的原罪](hsm-book/chapters/1.2-信道的原罪.md)
@@ -160,7 +160,7 @@
         - [6.7 TCP命令接口](hsm-book/chapters/6.7-TCP命令接口.md)
         - [6.8 集成经验总结](hsm-book/chapters/6.8-集成经验总结.md)
 
-- [存储技术书——在不可靠的硬件上构建可靠的数据家园](storage-book/README.md)
+- [Flash 存储技术](storage-book/README.md)
     - [第一章 · 存储的本质]()
         - [1.1 结绳记事——人类第一条存储记录](storage-book/chapters/1.1-结绳记事——人类第一条存储记录.md)
         - [1.2 从泥板到纸张——存储介质的万年进化](storage-book/chapters/1.2-从泥板到纸张——存储介质的万年进化.md)
@@ -206,7 +206,7 @@
         - [5.14 自测试程序——跑一遍全部操作](storage-book/chapters/5.14-自测试程序——跑一遍全部操作.md)
         - [5.15 从教学到生产——传递人的最后一课](storage-book/chapters/5.15-从教学到生产——传递人的最后一课.md)
 
-- [UDS技术书 — 从望闻问切到UDS协议实现](uds-book/README.md)
+- [UDS 诊断协议](uds-book/README.md)
     - [第一章 · 诊断的本质]()
         - [1.1 望闻问切——人类诊断的原型](uds-book/chapters/1.1-望闻问切——人类诊断的原型.md)
         - [1.2 听诊器到故障灯——汽车诊断的第一次哭喊](uds-book/chapters/1.2-听诊器到故障灯——汽车诊断的第一次哭喊.md)
@@ -261,7 +261,7 @@
         - [5.5 交互式诊断终端——命令行上的UDS控制台](uds-book/chapters/5.5-交互式诊断终端——命令行上的UDS控制台.md)
         - [5.6 全线测试——一次完整的诊断闭环](uds-book/chapters/5.6-全线测试——一次完整的诊断闭环.md)
 
-- [功能安全 — ISO 26262分析与代码实现](safety-book-iso26262/README.md)
+- [功能安全](safety-book-iso26262/README.md)
     - [第一章 · 哲学地基]()
         - [1.1 免疫系统——人体里的功能安全系统](safety-book-iso26262/chapters/1.1-免疫系统——人体里的功能安全系统.md)
         - [1.2 希尔伯特之梦——ISO · 26262的精神祖先](safety-book-iso26262/chapters/1.2-希尔伯特之梦——ISO-26262的精神祖先.md)
